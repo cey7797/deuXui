@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd01050_t05" classname="afd01050_t05" left="0" top="0" width="1018" height="700" titletext="DM 현황" onload="afd01050_t05_onload">
+    <Layouts>
+      <Layout>
+        <Static id="Static21" taborder="0" text="h10" visible="false" left="0" top="0" width="1018" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static22" taborder="1" text="h10" visible="false" left="0" top="32" width="1018" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static17" taborder="2" text="h10" visible="false" left="437" top="665" width="576" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_count" taborder="3" text="Count &lt;b v='true'&gt;999&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" right="5" width="60" height="20" bottom="5"/>
+        <Grid id="grdMain" taborder="4" binddataset="ds_afdDmsndng" autoenter="select" useinputpanel="false" cellsizingtype="row" cellmovingtype="col" autofittype="col" left="0" top="37" right="5" bottom="35" readonly="true" autosizingtype="row" extendsizetype="row">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="40" band="left"/>
+                <Column size="732"/>
+                <Column size="110"/>
+                <Column size="135"/>
+              </Columns>
+              <Rows>
+                <Row size="26" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="안내문 구분"/>
+                <Cell col="2" text="발송일자"/>
+                <Cell col="3" text="적요"/>
+              </Band>
+              <Band id="body">
+                <Cell expr="expr:currow +1"/>
+                <Cell col="1" displaytype="normal" edittype="textarea" style="align:left middle;" text="bind:dmSndngCntn" editclipmode="excludespace" editscrollbar="autovert" autosizecol="default"/>
+                <Cell col="2" text="bind:dmSndngDt"/>
+                <Cell col="3" text="bind:remark"/>
+              </Band>
+            </Format>
+            <Format id="format_copy">
+              <Columns>
+                <Column size="30"/>
+                <Column size="30"/>
+                <Column size="30"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="200"/>
+              </Columns>
+              <Rows>
+                <Row size="26" band="head"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" displaytype="checkbox" tooltiptype="center"/>
+                <Cell col="2" text="순번"/>
+                <Cell col="3" text="근무기관명"/>
+                <Cell col="4" text="부서명"/>
+                <Cell col="5" text="직급"/>
+                <Cell col="6" text="경력구분"/>
+                <Cell col="7" text="시작일자"/>
+                <Cell col="8" text="재직여부"/>
+                <Cell col="9" text="종료일자"/>
+                <Cell col="10" text="경력년수"/>
+                <Cell col="11" text="비고"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="normal" tooltiptype="center"/>
+                <Cell col="1"/>
+                <Cell col="2" text="bind:증빙종류"/>
+                <Cell col="3"/>
+                <Cell col="4" text="bind:증빙일자"/>
+                <Cell col="5" text="bind:적요"/>
+                <Cell col="6"/>
+                <Cell col="7"/>
+                <Cell col="8"/>
+                <Cell col="9"/>
+                <Cell col="10"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2"/>
+                <Cell col="3"/>
+                <Cell col="4"/>
+                <Cell col="5"/>
+                <Cell col="6"/>
+                <Cell col="7"/>
+                <Cell col="8"/>
+                <Cell col="9" text="0"/>
+                <Cell col="10"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static76" taborder="5" text="DM현황" onclick="Static76_onclick" cssclass="page_stitle" left="0%" top="4" right="904" height="28"/>
+        <Static id="Static00" taborder="6" text="h10" visible="false" left="437" top="690" width="576" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static27" taborder="7" text="w&#13;&#10;5" visible="false" left="1013" top="37" width="5" height="431" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_afdDmsndng">
+        <ColumnInfo>
+          <Column id="remark" type="string" size="32"/>
+          <Column id="inspySeq" type="string" size="32"/>
+          <Column id="dmPostNo" type="string" size="32"/>
+          <Column id="chk" type="string" size="32"/>
+          <Column id="dmAddrDiv" type="string" size="32"/>
+          <Column id="dmAddr1" type="string" size="32"/>
+          <Column id="inspyMgnNo" type="string" size="32"/>
+          <Column id="dmSndngNo" type="string" size="32"/>
+          <Column id="dmAddr2" type="string" size="32"/>
+          <Column id="dmSndngDt" type="string" size="32"/>
+          <Column id="rowStatus" type="string" size="32"/>
+          <Column id="dmOvseaAddr" type="string" size="32"/>
+          <Column id="memberNo" type="string" size="32"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::lib_String.xjs";
+
+this.afd01050_t05_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	var essGrd = new Array();
+	essGrd[0] = this.ds_afdDmsndng;
+ 	
+ 	this.gfn_essDataset(essGrd);
+	this.gfn_bindCmmnFunction();
+	
+	this.gfn_getDatasetCount(this.ds_afdDmsndng, this.sta_count);
+	
+	this.fn_search();
+}
+
+this.fn_search = function()
+{
+	//var strArg = "memberNo=" + nexacro.wrapQuote(this.gfn_nvl(this.parent.parent.div_search.edt_sMemberNo.value, ""));
+	var parent_memberNO = this.parent.parent.ds_afdMaster.getColumn(this.parent.parent.ds_afdMaster.rowposition,"memberNo");
+	var strArg = "memberNo=" + nexacro.wrapQuote(parent_memberNO);
+	
+	/*this.gfn_transaction("SEARCH"
+						,"txCobUrl::com/admi/afd/afd01/retrieveAfdDmsndng.do"
+						,""
+						,"ds_afdDmsndng=resultList"
+						,strArg
+						,"");
+	*/					
+	this.gfn_transaction("SEARCH"
+						,"txAdmUrl::com/admi/afd/afd01/retrieveAfdDmsndng.do"
+						,""
+						,"ds_afdDmsndng=resultList"
+						,strArg
+						,"");
+}
+
+this.fn_callBack = function(trId, errCd, errMsg) 
+{
+	if(errCd < 0 ) 
+	{
+		this.gfn_message("A", errMsg);
+		return;
+	}
+	
+	//
+	if("SEARCH" == trId) 
+	{
+		this.gfn_getDatasetCount(this.ds_afdDmsndng, this.sta_count);
+	}
+}]]></Script>
+  </Form>
+</FDL>

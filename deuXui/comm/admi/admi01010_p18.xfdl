@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="admi01010_p18" classname="Component_Guide" inheritanceid="" position="absolute" scrollbars="none" left="0" top="0" width="790" height="283" titletext="반려사유입력팝업" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="0" left="15" top="45" width="760" height="40" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static33" taborder="32" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="1" top="0" width="20" height="39"/>
+              <Static id="Static14" taborder="33" text="W10" cssclass="tipGuide" visible="false" left="58" top="1" width="14" height="37"/>
+              <Static id="Static12" taborder="34" text="H9" cssclass="tipGuide" visible="false" left="156" top="0" width="30" height="9"/>
+              <Static id="Static11" taborder="35" text="H9" cssclass="tipGuide" visible="false" left="156" top="30" width="30" height="9"/>
+              <Static id="Static02" taborder="40" text="반려사유" cssclass="search" left="23" top="8" width="50" height="22"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static00" taborder="2" text="반려사유입력팝업" cssclass="sta_WF_Title" left="15" top="9" width="170" height="29"/>
+        <Static id="Static34" taborder="3" text="h45" cssclass="tipGuide" visible="false" left="198" top="0" width="74" height="45"/>
+        <Static id="Static02" taborder="4" text="w15" cssclass="tipGuide" visible="false" left="0" top="6" width="15" height="271"/>
+        <Static id="Static06" taborder="5" text="w15" cssclass="tipGuide" visible="false" left="775" top="6" width="15" height="271"/>
+        <Static id="Static21" taborder="6" text="h15" cssclass="tipGuide" visible="false" left="119" top="84" right="329" height="15"/>
+        <Static id="Static03" taborder="9" text="h10" cssclass="tipGuide" visible="false" left="741" top="0" width="34" height="10"/>
+        <Static id="Static04" taborder="11" text="h10" cssclass="tipGuide" visible="false" left="741" top="35" width="34" height="10"/>
+        <Static id="Static28" taborder="13" text="10" cssclass="tipGuide" visible="false" right="15" bottom="28" width="136" height="10"/>
+        <Static id="Static01" taborder="14" text="10" cssclass="tipGuide" visible="false" right="15" bottom="-3" width="136" height="10"/>
+        <Static id="Static22" taborder="15" text="h17" cssclass="tipGuide" visible="false" left="36" top="0" width="74" height="17"/>
+        <Static id="Static23" taborder="16" text="h14" cssclass="tipGuide" visible="false" left="36" top="31" width="74" height="14"/>
+        <Button id="btn_confirm" taborder="17" text="확인" cssclass="btn_POP_Common" left="716" top="255" width="60" height="21" onclick="btn_confirm_onclick"/>
+        <TextArea id="D_RCL_RSN" taborder="18" left="2.03%" top="99" right="1.9%" height="131" imemode="hangul"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_dummy" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" onrowposchanged="ds_account_onrowposchanged"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[/* ====================================================================
+ * 01. 업무구분	: 행정공통
+ * 02. 화면명		: admi01010_p18.xfdl
+ * 03. 화면설명	: (회계용)반려사유입력팝업
+ * 04. 작성일		: 2016.02.11
+ * 05. 작성자		: 박태희
+ * 06. 수정이력	: 
+ * ====================================================================
+ *     수정일     수정자   내용
+ * ====================================================================
+ *
+ * ==================================================================== */
+ 
+/* ====================================================================
+ * 1. 공통 라이브러리
+ * ==================================================================== */
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+
+var autoClose;  //자동종료옵션
+var autoSearch; //자동조회옵션
+
+/******************************************************************************
+* 함 수 명 	: form_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+ 	this.fn_postLoad();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{	
+	this.autoClose  = this.gfn_nvl(this.parent.autoClose,false);	//자동선택후 종료옵션
+	this.autoSearch = this.gfn_nvl(this.parent.autoSearch,false);	//자동조회 옵션
+		
+	if(this.autoSearch) {
+		
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_confirm_onclick
+ * 함수설명 	: 확인
+ *********************************************************************/
+this.btn_confirm_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_confirm();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_confirm
+ * 함수설명 	: 부모로 리턴
+ *********************************************************************/
+this.fn_confirm = function()
+{
+	if ( this.gfn_isNull(this.D_RCL_RSN.text) ) {
+		
+		//confirm
+		var bOK = this.gfn_message("C", "반려사유가 없습니다. 계속 진행 하시겠습니까?");
+				
+		if (bOK ==true)
+		{
+			this.close(this.D_RCL_RSN.text);
+		}
+		else
+		{
+			this.D_RCL_RSN.setFocus();
+			return false;
+		}
+	}
+	
+	this.close(this.D_RCL_RSN.value);
+}
+
+]]></Script>
+  </Form>
+</FDL>

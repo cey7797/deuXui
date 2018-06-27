@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="ac01010" classname="bg01030" left="0" top="0" width="326" height="233" titletext="출력" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="36" left="0" top="0" right="16" height="161" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout width="1038" height="42">
+              <Static id="Static00" taborder="60" text="귀속년도" cssclass="search" left="15" top="9" width="60" height="21"/>
+              <Static id="Static04" taborder="83" text="계산서" cssclass="search" left="14" top="73" width="60" height="21"/>
+              <Static id="Static05" taborder="84" text="거래기간" cssclass="search" left="14" top="105" width="60" height="21"/>
+              <Radio id="rdo_reptDiv2" taborder="88" left="28.39%" top="43" right="5.81%" height="18" innerdataset="@ds_reptDiv2" codecolumn="comCd" datacolumn="comCdNm" direction="horizontal" columncount="3" index="0" value="10"/>
+              <Spin id="spn_yyyy" taborder="91" value="0" onspin="div_search_S_ACNT_YY_onspin" left="89" top="11" width="76" height="21"/>
+              <Radio id="rdo_reptDiv1" taborder="92" columncount="2" index="0" innerdataset="@ds_reptDiv" codecolumn="comCd" datacolumn="comCdNm" value="10" left="56.77%" top="13" right="2.9%" height="18"/>
+              <Radio id="rdo_billDiv" taborder="93" columncount="2" index="0" innerdataset="@ds_billDiv" codecolumn="comCd" datacolumn="comCdNm" value="10" left="28.39%" top="76" right="5.81%" height="18"/>
+              <Calendar id="Calendar00" taborder="94" dateformat="yyyy-MM-dd" left="84" top="104" width="100" height="21"/>
+              <Static id="Static10" taborder="95" text="~" onclick="div_search_Static00_onclick" cssclass="search" left="188" top="104" width="10" height="21"/>
+              <Calendar id="Calendar01" taborder="96" dateformat="yyyy-MM-dd" left="202" top="104" width="95" height="21"/>
+              <Static id="Static01" taborder="97" text="작성일자" cssclass="search" left="14" top="133" width="60" height="21"/>
+              <Calendar id="Calendar02" taborder="98" dateformat="yyyy-MM-dd" left="84" top="133" width="100" height="21"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Button id="btn_close" taborder="37" text="닫기" cssclass="btn_WF_Common" top="195" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="Excel" userBtnAuth="D" onclick="btn_close_onclick"/>
+        <Button id="btn_print" taborder="38" text="출력" cssclass="btn_WF_Common" top="195" right="77" width="60" height="22" tooltiptype="hover" tooltiptext="Excel" userBtnAuth="D" onclick="btn_print_onclick"/>
+        <Static id="Static00" taborder="39" text="거래기간은 실매입일자와" left="6.75%" top="174" right="49.08%" height="28" wordwrap="none" style="color:red;"/>
+        <Static id="Static01" taborder="40" text="무관. 합계표에 표시만함." left="6.75%" top="192" right="49.08%" height="28" style="color:red;"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_billDiv">
+        <ColumnInfo>
+          <Column id="comCd" type="STRING" size="256"/>
+          <Column id="comCdNm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="comCd">10</Col>
+            <Col id="comCdNm">세금계산서</Col>
+          </Row>
+          <Row>
+            <Col id="comCd">20</Col>
+            <Col id="comCdNm">계산서</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_reptDiv">
+        <ColumnInfo>
+          <Column id="comCd" type="STRING" size="256"/>
+          <Column id="comCdNm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="comCd">1</Col>
+            <Col id="comCdNm">1기</Col>
+          </Row>
+          <Row>
+            <Col id="comCd">2</Col>
+            <Col id="comCdNm">2기</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_cfmDiv">
+        <ColumnInfo>
+          <Column id="comCd" type="STRING" size="256"/>
+          <Column id="comCdNm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="comCd">10</Col>
+            <Col id="comCdNm">예,확정 분리</Col>
+          </Row>
+          <Row>
+            <Col id="comCd">20</Col>
+            <Col id="comCdNm">전부확정</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_reptDiv2">
+        <ColumnInfo>
+          <Column id="comCd" type="STRING" size="256"/>
+          <Column id="comCdNm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="comCd">1</Col>
+            <Col id="comCdNm">예정</Col>
+          </Row>
+          <Row>
+            <Col id="comCd">2</Col>
+            <Col id="comCdNm">확정</Col>
+          </Row>
+          <Row>
+            <Col id="comCdNm">전체</Col>
+            <Col id="comCd"/>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Bind>
+      <BindItem id="item5" compid="edt_bizNm" propid="value" datasetid="ds_acntList" columnid="acntIncNm"/>
+      <BindItem id="item0" compid="div_search.spn_yyyy" propid="value" datasetid="ds_cmd_acnt_yy" columnid="acntYy"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[
+/* ====================================================================
+ * 01. 업무구분	: 계산서합계표현황
+ * 02. 화면명		: ac04020.xfdl
+ * 03. 화면설명	: (세금)계산서 합계표 내역을 조회 및 출력하는 화면이다.
+ * 04. 작성일		: 2015.12.07
+ * 05. 작성자		: 유남규
+ * 06. 수정이력	: 
+ * ====================================================================
+ *     수정일     수정자   내용
+ * ====================================================================
+ *
+ * ==================================================================== */
+ 
+/* ====================================================================
+ * 1. 공통 라이브러리
+ * ==================================================================== */
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+
+var F_BIZ_REG_NO = this.parent.BIZ_REG_NO;
+var F_BUY_SELL_DIV = this.parent.BUY_SELL_DIV;
+/* ====================================================================
+ * 2. 변수 선언부
+ * ==================================================================== */
+ 
+/* ====================================================================
+ * 3. Event 처리 부분
+ * ==================================================================== */
+ 
+/******************************************************************************
+* 함 수 명 	: form_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.fn_postLoad();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{
+	this.gfn_bindCmmnFunction();
+
+	this.div_search.spn_yyyy.set_value(this.gfn_getCurrentDate("YYYY"));
+	
+	var strDate = this.gfn_getCurrentDate();
+	var strMm = strDate.substr(4,2);
+	
+	if ( strMm == "01" || strMm == "02" || strMm == "03" || strMm == "04" || strMm == "05" || strMm == "06" ) {
+		this.div_search.rdo_reptDiv1.set_index(0);
+		if (strMm == "01" || strMm == "02" || strMm == "03") {
+			this.div_search.rdo_reptDiv2.set_index(0);
+		} else {
+			this.div_search.rdo_reptDiv2.set_index(1);
+		}
+	} else {
+		this.div_search.rdo_reptDiv1.set_index(1);
+		if (strMm == "07" || strMm == "08" || strMm == "09") {
+			this.div_search.rdo_reptDiv2.set_index(0);
+		} else {
+			this.div_search.rdo_reptDiv2.set_index(1);
+		}
+	}
+	
+	this.div_search.Calendar00.set_value(this.gfn_getCurrentDate("YYYY")+"0101");	
+	this.div_search.Calendar01.set_value(this.gfn_getCurrentDate("YYYY")+"1231");	
+	this.div_search.Calendar02.set_value(this.gfn_getCurrentDate());
+}
+
+/* ==================================================================== 
+ * 4. Local Function(사용자 FUNCTION 영역)
+ * ==================================================================== */
+ 
+
+/* ====================================================================
+ * 5. fn_callBack 처리 부분
+ * ==================================================================== */
+ this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.gfn_message("A", errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		}
+	}
+}
+
+this.btn_close_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.close();
+}
+
+this.btn_print_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.gfn_isNull(this.div_search.spn_yyyy.value)) {
+		this.gfn_message("A", "귀속년도를 입력하세요.");
+		this.div_search.spn_yyyy.setFocus();
+		return;
+	}
+
+	if(this.gfn_isNull(this.div_search.Calendar00.value)) {
+		this.gfn_message("A", "거래기간을 입력하세요.");
+		this.div_search.Calendar00.setFocus();
+		return;
+	}
+	if(this.gfn_isNull(this.div_search.Calendar01.value)) {
+		this.gfn_message("A", "거래기간을 입력하세요.");
+		this.div_search.Calendar01.setFocus();
+		return;
+	}
+
+
+    var strArg  = "YYYY:"  + this.div_search.spn_yyyy.value;
+ 		strArg += "|REPT_DIV1:" + this.div_search.rdo_reptDiv1.value;
+ 		strArg += "|REPT_DIV2:" + this.div_search.rdo_reptDiv2.value;
+ 		strArg += "|FR_DT:" + this.div_search.Calendar00.value;
+ 		strArg += "|TO_DT:" + this.div_search.Calendar01.value;
+ 		strArg += "|CUR_DT:" + this.div_search.Calendar02.value;
+ 		strArg += "|BIZ_REG_NO:" + F_BIZ_REG_NO;
+ 		strArg += "|BUY_SELL_DIV:" + F_BUY_SELL_DIV;
+
+    var callType = ""; 
+    var crfName = this.div_search.rdo_billDiv.value == "10" ? "com/ac04020_r01" : "com/ac04020_r02"; 
+    var crfParams = strArg; //예) 키:값|키:값|키:값
+    var crfDbName = ""; // null 값이나 "oracle1" 값으로 던질것
+	this.gfn_openClipReport(callType,crfName,crfParams,crfDbName);
+}
+]]></Script>
+  </Form>
+</FDL>

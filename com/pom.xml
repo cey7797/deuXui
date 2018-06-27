@@ -1,0 +1,56 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>egov</groupId>
+    <artifactId>deu</artifactId>
+    <version>3.2.0</version>
+    <relativePath>/deu/pom.xml</relativePath>
+  </parent>
+  <artifactId>com</artifactId>
+  <packaging>war</packaging>
+  <name>com</name>
+  <description>DEU통합정보시스템 공통</description>
+
+  <profiles>
+  <profile>
+  <dependencies>
+    <dependency>
+      <groupId>egov</groupId>
+      <artifactId>deuXui</artifactId>
+	  <type>war</type>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+          <overlays>
+            <overlay>
+              <groupId>egov</groupId>
+              <artifactId>deuXui</artifactId>
+            </overlay>
+          </overlays>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  </profile>
+  </profiles>
+    <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+          <attachClasses>true</attachClasses>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+    <groupId>egov</groupId>
+</project>

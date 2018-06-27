@@ -1,0 +1,1339 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script type="xscript5.0"><![CDATA[include "commJs::commonUtils.xjs";
+
+/******************************************************************************
+* 동의대 예산 공통
+*******************************************************************************
+* 리스트
+****************** DEU *******************************
+* cfn_rolePopup			    	권한조회팝업 호출.
+* cfn_bgAcntPopup				계정조회팝업 호출.
+* cfn_bgBudgOrgPopup			부셔예산조회팝업 호출.
+* cfn_bgBizPopup				사업조회팝업 호출.
+* cfn_bgFresPopup				재원조회팝업 호출.
+* cfn_bgBudgPopup				예산조회팝업 호출.
+* cfn_zipPopup					우편번호조회팝업 호출.
+* cfn_deptPopup					조직도조회팝업 호출.
+* cfn_acntYy		 		    회계연도 호출.
+* cfn_acntUntCombo				회계단위콤보 호출.
+* cfn_getUprAcntLvl				상위계정레벨 return
+* cfn_acntItmSeqCombo			세세목콤보 호출.
+* cfn_BudgOrgIdCombo			소속부서및관리부서콤보 호출.
+* cfn_addrDeptCombo				결의 수신처 부서 콤보 호출
+* cfn_acntNoPopup				계좌조회팝업 호출.
+* cfn_vendPopup					거래처조회팝업 호출.
+* cfn_bankPopup					은행조회팝업 호출.
+* cfn_AcntOrgIdCombo			(관리)부서콤보 호출(회계용).
+* cfn_excelExport				엑셀export
+* cfn_AcntOrgBudgPopup			(회계)부서별예산조회팝업 호출.
+* cfn_comEtcIncUserPopup		(회계)기타소득자조회팝업 호출.
+* cfn_comResiCntyPopup			(회계)국가조회팝업 호출.
+* cfn_ac02010_p01               결의서팝업 호출.
+* cfn_comRclRsnPopup            (회계)반려사유입력팝업 호출.
+* cfn_comVendAcntNoPopup        거래처계좌조회팝업 호출.
+* cfn_comEmpAcntNoPopup         교직원계좌조회팝업 호출.
+* cfn_comEtcAcntNoPopup         기타계좌조회팝업 호출.
+* cfn_comOrigyVouPopup          (원)결의서조회팝업 호출.
+* cfn_comAcntSttnSubstPopup     계정과목조회팝업(결산대체) 호출.
+* cfn_admiPopup23 				입금내역연계팝업 호출.
+* cfn_admiPopup24 				법인카드승인내역팝업 호출.
+* cfn_fileUpDownloadPop			파일 업 / 다운로드 팝업 호출.
+* cfn_memberEnggDtlPop			약정상세 팝업 호출.
+* cfn_isManager             : 접속한 사용자가 관리자인지 구분한다.(새로만듬 16.07.01 라병수)
+
+****************** DEU *******************************
+******************************************************************************/ 
+
+/******************************************************************************
+* 전역변수
+* 변수명								사용함수 명
+******************************************************************************/ 
+ 
+/******************************************************************************
+* 함 수 명	: cfn_rolePopup
+* 함수설명	: 권한코드 팝업 호출
+* 작성자	: 김현수
+* 입    력	: 1. parameter objArr
+              2. popupCallback 
+* 결    과	: 입력한 dataset addRow
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.11.23       김현수         최초생성
+ *****************************************************************************/ 
+this.cfn_rolePopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p01";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p01.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+	
+// 	ex)	
+// 	this.Button00_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+// 	{
+// 		this.cfn_rolePopup({roleNm:"test"},"fn_popCallback");
+// 	}
+// 
+// 	this.fn_popCallback = function (strID, rtnVal)
+// 	{
+// 		if(rtnVal == "close") {
+// 			return;
+// 		}
+// 		this.ds_rtnVal.clearData();
+// 		this.ds_rtnVal.loadXML(rtnVal);
+// 	}
+} 
+ 
+/******************************************************************************
+* 함 수 명	: cfn_bgAcntPopup
+* 함수설명	: 계정코드 팝업 호출
+* 작성자	: 김현수
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.12.01       김현수         최초생성
+ *****************************************************************************/ 
+this.cfn_bgAcntPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p02";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p02.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+	
+// 	ex)상위계정코드 호출
+// 	var strParam = {acntUnt:this.ds_acntList.getColumn(this.ds_acntList.rowposition,"acntUnt")
+// 				   ,acntYy:this.ds_acntList.getColumn(this.ds_acntList.rowposition,"acntYy")
+// 				   ,acntLvl:this.cfn_getUprAcntLvl(this.ds_acntList.getColumn(this.ds_acntList.rowposition,"acntLvl"))
+// 				   ,autoSearch:true
+// 				   }
+// 	
+// 	this.cfn_bgAcntPopup(strParam ,"fn_popCallback");
+
+//	ex)전년도계정코드 호출
+
+// 	var strParam = {acntUnt:this.ds_acntList.getColumn(this.ds_acntList.rowposition,"acntUnt")
+// 	               ,acntYy:this.ds_acntList.getColumn(this.ds_acntList.rowposition,"acntYy") - 1
+// 	               ,acntLvl:this.ds_acntList.getColumn(this.ds_acntList.rowposition,"acntLvl")
+// 	               ,autoSearch:true
+// 	               }
+// 	
+// 	this.cfn_bgAcntPopup(strParam ,"fn_popCallback");
+
+
+// 	this.fn_popCallback = function (strID, rtnVal)
+// 	{
+// 		if(rtnVal == "close") {
+// 			return;
+// 		}
+// 		this.ds_rtnVal.clearData();
+// 		this.ds_rtnVal.loadXML(rtnVal);
+// 	}
+}
+
+/******************************************************************************
+* 함 수 명	: cfn_bgBudgOrgPopup
+* 함수설명	: 부서예산 팝업 호출 (회계용)
+* 작성자	: 라병수
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2016.01.20       라병수         최초생성
+ *****************************************************************************/ 
+this.cfn_bgBudgOrgPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p15";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p15.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+	
+}
+
+/******************************************************************************
+* 함 수 명	: cfn_bgBudgOrgPopupBg
+* 함수설명	: 부서예산 팝업 호출 (예산용)
+* 작성자	: 라병수
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2016.01.20       라병수         최초생성
+ *****************************************************************************/ 
+this.cfn_bgBudgOrgPopupBg = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p15_bg";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p15_bg.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+	
+}
+
+/******************************************************************************
+* 함 수 명	: cfn_bgBizPopup
+* 함수설명	: 사업검색 팝업 호출
+* 작성자	: 김현수
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.12.01       김현수         최초생성
+ *****************************************************************************/ 
+this.cfn_bgBizPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p03";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p03.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+	
+// 	ex)	
+// 	this.Button00_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+// 	{
+// 		this.cfn_bgBizPopup({acntUnt:"test",acntYy:"test111"},"fn_popCallback");
+// 	}
+// 
+// 	this.fn_popCallback = function (strID, rtnVal)
+// 	{
+// 		if(rtnVal == "close") {
+// 			return;
+// 		}
+// 		this.ds_rtnVal.clearData();
+// 		this.ds_rtnVal.loadXML(rtnVal);
+// 	}
+}
+
+/******************************************************************************
+* 함 수 명	: cfn_bgFresPopup
+* 함수설명	: 재원검색 팝업 호출
+* 작성자	: 김현수
+* 입    력	: 1. parameter objArr
+              2. popupCallback 
+* 결    과	: 입력한 dataset addRow
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.11.23       김현수         최초생성
+ *****************************************************************************/ 
+this.cfn_bgFincPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p04";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p04.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+	
+// 	ex)	
+// 	this.Button00_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+// 	{
+// 		this.cfn_bgFincPopup({acntUnt:"test",fincNm:""},"fn_popCallback");
+// 	}
+// 
+// 	this.fn_popCallback = function (strID, rtnVal)
+// 	{
+// 		if(rtnVal == "close") {
+// 			return;
+// 		}
+// 		this.ds_rtnVal.clearData();
+// 		this.ds_rtnVal.loadXML(rtnVal);
+// 	}
+}
+
+/******************************************************************************
+* 함 수 명	: cfn_bgBudgPopup
+* 함수설명	: 예산검색 팝업 호출
+* 작성자	: 김현수
+* 입    력	: 1. parameter objArr
+              2. popupCallback 
+* 결    과	: 입력한 dataset addRow
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.11.23       김현수         최초생성
+ *****************************************************************************/ 
+this.cfn_bgBudgPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p05";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p05.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+	
+// 	ex)	
+// 	this.Button00_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+// 	{
+// 		this.cfn_bgBudgPopup({acntUnt:"test",acntYy:"test111"},"fn_popCallback");
+// 	}
+// 
+// 	this.fn_popCallback = function (strID, rtnVal)
+// 	{
+// 		if(rtnVal == "close") {
+// 			return;
+// 		}
+// 		this.ds_rtnVal.clearData();
+// 		this.ds_rtnVal.loadXML(rtnVal);
+// 	}
+}
+
+/******************************************************************************
+* 함 수 명	: cfn_zipPopup
+* 함수설명	: 우편번호조회팝업 호출
+* 작성자	: 김현수
+* 입    력	: 1. parameter objArr
+              2. popupCallback 
+* 결    과	: 입력한 dataset addRow
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.11.23       김현수         최초생성
+ *****************************************************************************/ 
+this.cfn_zipPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p06";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p06.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+	
+// 	ex)	
+// 	this.Button00_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+// 	{
+// 	var strParam = {sidoGb:""
+// 	               ,doroZipNm:""
+// 	               ,autoSearch:false
+// 	               ,autoClose:false
+// 	               }
+// 	
+// 	this.cfn_zipPopup(strParam ,"fn_popCallback");
+// 	}
+// 
+// 	this.fn_popCallback = function (strID, rtnVal)
+// 	{
+// 		if(rtnVal == "close") {
+// 			return;
+// 		}
+// 		this.ds_rtnVal.clearData();
+// 		this.ds_rtnVal.loadXML(rtnVal);
+// 	}
+}
+
+/******************************************************************************
+* 함 수 명	: cfn_deptPopup
+* 함수설명	: 조직도조회팝업 호출
+* 작성자	: 김현수
+* 입    력	: 1. parameter objArr
+              2. popupCallback 
+* 결    과	: 입력한 dataset addRow
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.11.23       김현수         최초생성
+ *****************************************************************************/ 
+this.cfn_deptPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p07";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p07.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+	
+// 	ex)	
+// 	var strParam = {jojikCdNm:""
+// 				   ,autoSearch:true};
+// 	
+// 	this.cfn_deptPopup(strParam,"fn_popCallback");
+// 
+// 	this.fn_popCallback = function (strID, rtnVal)
+// 	{
+// 		if(rtnVal == "close") {
+// 			return;
+// 		}
+// 		this.ds_rtnVal.clearData();
+// 		this.ds_rtnVal.loadXML(rtnVal);
+// 	}
+}		
+
+/******************************************************************************
+* 함 수 명	: cfn_acntNoopup
+* 함수설명	: 계좌조회팝업 호출
+* 작성자	: 이현욱
+* 입    력	: 1. parameter objArr
+              2. popupCallback 
+* 결    과	: 입력한 dataset addRow
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.12.08       이현욱         최초생성
+ *****************************************************************************/ 
+this.cfn_acntNoPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p08";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p08.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+	
+// 	ex)	
+// 	var strParam = {jojikCdNm:""
+// 				   ,autoSearch:true};
+// 	
+// 	this.cfn_deptPopup(strParam,"fn_popCallback");
+// 
+// 	this.fn_popCallback = function (strID, rtnVal)
+// 	{
+// 		if(rtnVal == "close") {
+// 			return;
+// 		}
+// 		this.ds_rtnVal.clearData();
+// 		this.ds_rtnVal.loadXML(rtnVal);
+// 	}
+}	
+
+this.cfn_acntNoPopup30 = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p27";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p27.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+}
+
+/******************************************************************************
+* 함 수 명	: cfn_vendPopup
+* 함수설명	: 거래처조회팝업 호출
+* 작성자	: 김현수
+* 입    력	: 1. parameter objArr
+              2. popupCallback 
+* 결    과	: 입력한 dataset addRow
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.11.23       김현수         최초생성
+ *****************************************************************************/ 
+this.cfn_vendPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p09";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p09.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+	
+	// 	ex)	
+// 	var strParam = {vendCdNm:""
+// 				   ,autoSearch:true};
+// 	
+// 	this.cfn_vendPopup(strParam,"fn_popCallback");
+// 
+// 	this.fn_popCallback = function (strID, rtnVal)
+// 	{
+// 		if(rtnVal == "close") {
+// 			return;
+// 		}
+// 		this.ds_rtnVal.clearData();
+// 		this.ds_rtnVal.loadXML(rtnVal);
+// 	}
+}	
+
+/******************************************************************************
+* 함 수 명 : cfn_acntYy
+* 함수설명 : 회계연도 호출
+* 작성자   : 라병수
+* 입    력 : 1. parameter objArr
+              2. popupCallback 
+* 결    과 	: 입력한 dataset addRow
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.11.23       라병수         최초생성
+ *****************************************************************************/ 
+this.cfn_acntYy = function (objDs)
+{
+		
+	if(this.gfn_isNull(objDs)) objDs = "ds_acntYy";
+
+	this.gfn_transaction("ACNTYY",
+						 "txComUrl::com/admi/selectAcntYy.do",
+						 "",
+						 objDs+"=resultList",
+						 "",
+						 "fn_callBack",
+						 false);
+}
+
+/******************************************************************************
+* 함 수 명 : cfn_acntUntCombo
+* 함수설명 : 회계단위 콤보 호출
+* 작성자   : 라병수
+* 입    력 : 1. parameter objArr
+              2. popupCallback 
+* 결    과 	: 입력한 dataset addRow
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.11.23       라병수         최초생성
+ *****************************************************************************/ 
+this.cfn_acntUntCombo = function (objDs,strAcntYy, strAuthYn, strUseYn, strAddYn, strPgmId, strType)
+{
+	//return ds,회계연도,권한적용여부,사용여부,합산회계여부,프로그램ID
+		
+	if ( strAddYn == null || strAddYn == "" ) strAddYn = '0';
+	
+	var strArg = "acntYy=" + nexacro.wrapQuote(strAcntYy);
+		strArg += " authYn=" + nexacro.wrapQuote(strAuthYn);
+		strArg += " useYn=" + nexacro.wrapQuote(strUseYn);
+		strArg += " addYn=" + nexacro.wrapQuote(strAddYn);
+		strArg += " pgmId=" + nexacro.wrapQuote(strPgmId);
+		strArg += " memberNo=" + nexacro.wrapQuote(application.gds_user.getColumn(application.gds_user.rowposition,"memberNo"));
+		strArg += " strType=" + nexacro.wrapQuote(strType);
+		
+	if(this.gfn_isNull(objDs)) objDs = "ds_acntUntCmb";
+
+	this.gfn_transaction("ACNTUNTCOMBO",
+						 "txComUrl::com/admi/selectAcntUntCmb.do",
+						 "",
+						 objDs+"=resultList",
+						 strArg,
+						 "fn_callBack",
+						 false);
+}
+
+
+/******************************************************************************
+* 함 수 명	: fn_getUprAcntLvl
+* 함수설명	: 상위계정레벨 return
+* 작성자	: 김현수
+* 입    력	: 현재계정레벨
+* 결    과	: 상위계정레벨
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.11.23       김현수         최초생성
+ *****************************************************************************/ 
+this.cfn_getUprAcntLvl = function(strLvl)
+{
+	if(!this.gfn_isNull(strLvl)) {
+		if(strLvl == "10") {
+			return "";
+		} else if(strLvl == "20") {
+			return "10";
+		} else if(strLvl == "30") {
+			return "20";
+		} else if(strLvl == "40") {
+			return "30";
+		} else if(strLvl == "50") {
+			return "40";
+		}
+	} else {
+		return "";
+	}
+}
+
+/******************************************************************************
+* 함 수 명 : cfn_acntItmSeqCombo
+* 함수설명 : 세세목 콤보 호출
+* 작성자   : 라병수
+* 입    력 : 1. parameter objArr
+              2. popupCallback 
+* 결    과 	: 입력한 dataset addRow
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.11.23       라병수         최초생성
+ *****************************************************************************/ 
+this.cfn_acntItmSeqCombo = function (objDs,strAcntUnt,strAcntYy, strAcntCd, strBalDiv)
+{	
+
+	var strArg = "acntUnt=" + nexacro.wrapQuote(strAcntUnt);
+		strArg += " acntYy=" + nexacro.wrapQuote(strAcntYy);
+		strArg += " acntCd=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(strAcntCd));
+		strArg += " balDiv=" + nexacro.wrapQuote(strBalDiv);
+		
+	this.gfn_transaction("ACNTITMSEQCOMBO",
+						 "txComUrl::com/admi/selectBgItmSeqCombo.do",
+						 "",
+						 objDs+"=resultList",
+						 strArg,
+						 "fn_callBack",
+						 false);
+
+}
+
+/******************************************************************************
+* 함 수 명 : cfn_BudgOrgIdCombo
+* 함수설명 : 소속부서및 관리부서 콤보 호출
+* 작성자   : 라병수
+* 입    력 : 1. parameter objArr
+              2. popupCallback 
+* 결    과 	: 입력한 dataset addRow
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.11.23       라병수         최초생성
+ *****************************************************************************/ 
+this.cfn_BudgOrgIdCombo = function (objDs,strAcntUnt)
+{
+//	var strArg = "deptCd=" + nexacro.wrapQuote(application.gds_user.getColumn(application.gds_user.rowposition,"deptCd"));
+//	    strArg += " acntUnt=" + nexacro.wrapQuote(strAcntUnt);
+		
+	var strArg = "memberNo=" + nexacro.wrapQuote(application.gds_user.getColumn(application.gds_user.rowposition, "memberNo"));
+	    strArg += " acntUnt=" + nexacro.wrapQuote(strAcntUnt);
+
+
+	this.gfn_transaction("BUDGORGIDCOMBO",
+						 "txComUrl::com/admi/selectBudgOrgIdCombo.do",
+						 "",
+						 objDs+"=resultList",
+						 strArg,
+						 "fn_callBack",
+						 false);
+}
+
+/******************************************************************************
+* 함 수 명 : cfn_addrDeptCombo
+* 함수설명 : 결의 수신처 부서 콤보 호출
+* 작성자   : 라병수
+* 입    력 : 1. parameter objArr
+              2. popupCallback 
+* 결    과 	: 입력한 dataset addRow
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2016.06.10       라병수         최초생성
+ *****************************************************************************/ 
+this.cfn_addrDeptCombo = function (objDs)
+{
+		
+	this.gfn_transaction("ADDRDEPTCOMBO",
+						 "txComUrl::com/admi/selectAddrDeptCombo.do",
+						 "",
+						 objDs+"=resultList",
+						 "",
+						 "fn_callBack",
+						 false);
+}
+
+this.cfn_privateAddrDeptCombo = function (objDs)
+{
+	var strArg = "memberNo=" + nexacro.wrapQuote(application.gds_user.getColumn(0,"memberNo"));
+	
+	this.gfn_transaction("PRIVATEADDRDEPTCOMBO",
+						 "txComUrl::com/admi/selectPrivateAddrDeptCombo.do",
+						 "",
+						 objDs+"=resultList",
+						 strArg,
+						 "fn_callBack",
+						 false);
+}
+
+/******************************************************************************
+* 함 수 명	: cfn_bankPopup
+* 함수설명	: 은행조회팝업 호출
+* 작성자	: 이현욱
+* 입    력	: 1. parameter objArr
+              2. popupCallback 
+* 결    과	: 입력한 dataset addRow
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.12.08       이현욱         최초생성
+ *****************************************************************************/ 
+this.cfn_bankPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p13";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p13.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+	
+// 	ex)	
+// 	var strParam = {bankCdNm:""
+// 				   ,autoSearch:true};
+// 	
+// 	this.cfn_bankPopup(strParam,"fn_popCallback");
+// 
+// 	this.fn_popCallback = function (strID, rtnVal)
+// 	{
+// 		if(rtnVal == "close") {
+// 			return;
+// 		}
+// 		this.ds_rtnVal.clearData();
+// 		this.ds_rtnVal.loadXML(rtnVal);
+// 	}
+}
+	
+/******************************************************************************
+* 함 수 명	: cfn_comUserPopup
+* 함수설명	: 교직원조회 팝업 호출
+* 작성자	: 박태희
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.12.23       박태희         최초생성
+ *****************************************************************************/ 
+this.cfn_comUserPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p14";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p14.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+}
+
+/******************************************************************************
+* 함 수 명 : cfn_AcntOrgIdCombo
+* 함수설명 : (회계)소속부서및 관리부서 콤보 호출
+* 작성자   : 	박태희
+* 입    력 : 1. parameter objArr
+              2. popupCallback 
+* 결    과 	: 입력한 dataset addRow
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.12.23       박태희         최초생성
+ *****************************************************************************/ 
+this.cfn_AcntOrgIdCombo = function (objDs, strAcntUnt, strWorkDiv)
+{
+	var strArg = "memberNo=" + nexacro.wrapQuote(application.gds_user.getColumn(application.gds_user.rowposition,"memberNo"));
+	    strArg += " ACNT_UNT=" + nexacro.wrapQuote(strAcntUnt);
+	    strArg += " WORK_DIV=" + nexacro.wrapQuote(strWorkDiv);
+		
+	this.gfn_transaction("ACNTORGIDCOMBO",
+						 "txAdmUrl::com/admi/adcom/selectAcntOrgIdCombo.do",
+						 "",
+						 objDs+"=resultList",
+						 strArg,
+						 "fn_callBack",
+						 false);
+}
+
+/******************************************************************************
+* 함 수 명 : cfn_excelExport
+* 함수설명 : 엑셀 EXPORT
+* 작성자   : 라병수
+* 입    력 : 1. parameter objArr
+              2. popupCallback 
+* 결    과 	: 
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2016.01.06       라병수         최초생성
+ *****************************************************************************/ 
+this.cfn_excelExport = function (objGrd, fileNm)
+{
+	this.url = application.gv_svrUrl+"XExportImport";
+	this.ExcelExportObject00 = new ExcelExportObject();
+		
+	
+	this.ExcelExportObject00.addEventHandler("onprogress", this.ExcelExportObject00_onprogress, this);
+	this.ExcelExportObject00.addEventHandler("onsuccess", this.ExcelExportObject00_onsuccess, this);	
+	this.ExcelExportObject00.addEventHandler("onerror", this.ExcelExportObject00_onerror, this);		
+
+	var ret = this.ExcelExportObject00.addExportItem(nexacro.ExportItemTypes.GRID, objGrd, "Sheet1!A1");
+
+	this.ExcelExportObject00.set_exportmessageprocess("%d [ %d / %d ]");
+	this.ExcelExportObject00.set_exportuitype("exportprogress");
+	this.ExcelExportObject00.set_exporteventtype("itemrecord");
+    this.ExcelExportObject00.set_exporttype(nexacro.ExportTypes.EXCEL2007); 
+ 
+	this.ExcelExportObject00.set_exportfilename(fileNm);
+    this.ExcelExportObject00.set_exporturl(this.url);       
+    this.ExcelExportObject00.exportData();      
+}
+
+/******************************************************************************
+* 함 수 명	: cfn_AcntOrgBudgPopup
+* 함수설명	: (회계)부서별예산조회 팝업 호출
+* 작성자	: 박태희
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2016.01.07       박태희         최초생성
+ *****************************************************************************/ 
+this.cfn_AcntOrgBudgPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p15";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p15.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+}
+
+/******************************************************************************
+* 함 수 명	: cfn_comEtcIncUserPopup
+* 함수설명	: 기타소득자조회 팝업 호출
+* 작성자	: 박태희
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2016.01.18       박태희         최초생성
+ *****************************************************************************/ 
+this.cfn_comEtcIncUserPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p16";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p16.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+}
+
+/******************************************************************************
+* 함 수 명	: cfn_comResiCntyPopup
+* 함수설명	: 국가조회팝업 팝업 호출
+* 작성자	: 박태희
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2016.01.19       박태희         최초생성
+ *****************************************************************************/ 
+this.cfn_comResiCntyPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p17";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p17.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+}
+
+
+/******************************************************************************
+* 함 수 명	: cfn_ac02010_p01
+* 함수설명	: 결의서팝업 호출
+* 작성자	: 박태희
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2016.02.03       박태희         최초생성
+ *****************************************************************************/ 
+this.cfn_ac02010_p01 = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "ac02010_p01";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "ac02::ac02010_p01.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=1038,height=900,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+}
+
+
+
+
+
+
+
+/******************************************************************************
+* 함 수 명	: cfn_comRclRsnPopup
+* 함수설명	: (회계)반려사유입력팝업 호출
+* 작성자	: 박태희
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2016.02.11       박태희         최초생성
+ *****************************************************************************/ 
+this.cfn_comRclRsnPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p18";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p18.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=290,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+}
+
+
+
+
+
+
+
+
+/******************************************************************************
+* 함 수 명	: cfn_comVendAcntNoPopup
+* 함수설명	: 거래처계좌조회팝업 호출
+* 작성자	: 박태희
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2016.02.12       박태희         최초생성
+ *****************************************************************************/ 
+this.cfn_comVendAcntNoPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p19";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p19.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+}
+
+
+
+
+
+
+
+/******************************************************************************
+* 함 수 명	: cfn_comEmpAcntNoPopup
+* 함수설명	: 교직원계좌조회팝업 호출
+* 작성자	: 박태희
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2016.02.12       박태희         최초생성
+ *****************************************************************************/ 
+this.cfn_comEmpAcntNoPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p20";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p20.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+}
+
+
+
+
+/******************************************************************************
+* 함 수 명	: cfn_comEtcAcntNoPopup
+* 함수설명	: 기타계좌조회팝업 호출
+* 작성자	: 박태희
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2016.02.12       박태희         최초생성
+ *****************************************************************************/ 
+this.cfn_comEtcAcntNoPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p21";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p21.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+}
+
+
+
+
+/******************************************************************************
+* 함 수 명	: cfn_comOrigyVouPopup
+* 함수설명	: (원)결의서조회팝업 호출
+* 작성자	: 박태희
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2016.03.03       박태희         최초생성
+ *****************************************************************************/ 
+this.cfn_comOrigyVouPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p12";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p12.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+}
+
+
+
+
+
+
+/******************************************************************************
+* 함 수 명	: cfn_comAcntSttnSubstPopup
+* 함수설명	: 계정과목조회팝업(결산대체) 호출
+* 작성자	: 박태희
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2016.03.04       박태희         최초생성
+ *****************************************************************************/ 
+this.cfn_comAcntSttnSubstPopup = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p22";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "admi::admi01010_p22.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+}
+
+
+
+
+
+
+/******************************************************************************
+* 함 수 명	: cfn_admiPopup23
+* 함수설명	: 입금내역연계팝업 호출
+* 작성자	: 김현수
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2016.04.14       김현수         최초생성
+ *****************************************************************************/ 
+this.cfn_admiPopup23 = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	var popupCallback = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p23";
+	} else {
+		popupId = strPopupId;
+	}
+	if(this.gfn_isNull(strPopupCallback)) {
+		popupCallback = "fn_popCallback";
+	} else {
+		popupCallback = strPopupCallback;
+	}
+	
+	var popupUrl = "admi::admi01010_p23.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=870,height=522,title=true,titletext=null";
+	var popupCallback = popupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+}
+
+
+
+
+
+
+/******************************************************************************
+* 함 수 명	: cfn_admiPopup24
+* 함수설명	: 법인카드승인내역팝업 호출
+* 작성자	: 김현수
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2016.04.14       김현수         최초생성
+ *****************************************************************************/ 
+this.cfn_admiPopup24 = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	var popupCallback = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "admi01010_p24";
+	} else {
+		popupId = strPopupId;
+	}
+	if(this.gfn_isNull(strPopupCallback)) {
+		popupCallback = "fn_popCallback";
+	} else {
+		popupCallback = strPopupCallback;
+	}
+	
+	var popupUrl = "admi::admi01010_p24.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=790,height=522,title=true,titletext=null";
+	var popupCallback = popupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+}
+
+
+
+/******************************************************************************
+* 함 수 명	: cfn_fileUpDownloadPop
+* 함수설명	: 파일업다운로드팝업 호출
+* 작성자	: 라병수
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2016.05.03       라병수         최초생성
+ *****************************************************************************/ 
+this.cfn_fileUpDownloadPop = function(objArr, strPopupCallback, strPopupId)
+{
+
+	var popupId = "";
+	var popupCallback = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "fileUploadPop";
+	} else {
+		popupId = strPopupId;
+	}
+	if(this.gfn_isNull(strPopupCallback)) {
+		popupCallback = "fn_popCallback";
+	} else {
+		popupCallback = strPopupCallback;
+	}
+	
+	var popupUrl = "component::fileUploadPop.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=810,height=180,title=true,titletext=null";
+	var popupCallback = popupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+}
+
+
+
+/******************************************************************************
+* 함 수 명	: cfn_memberEnggDtlPop
+* 함수설명	: 약정회원정보 팝업
+* 작성자	: 김현수
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2016.05.11       김현수         최초생성
+ *****************************************************************************/ 
+this.cfn_memberEnggDtlPop = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	var popupCallback = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "afd02030_p01";
+	} else {
+		popupId = strPopupId;
+	}
+	if(this.gfn_isNull(strPopupCallback)) {
+		popupCallback = "fn_popCallback";
+	} else {
+		popupCallback = strPopupCallback;
+	}
+	
+	var popupUrl = "afd02::afd02030_p01.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=1038,height=572,title=true,titletext=null";
+	var popupCallback = popupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+}
+
+
+
+
+
+
+/******************************************************************************
+* 함 수 명	: cfn_ac02010_purc_p01
+* 함수설명	: 전표관리팝업 호출
+* 작성자	: 라병수
+* 입    력	: 1. objArr
+              2. strPopupCallback 
+* 결    과	: 선택한 dataset Row
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2016.02.03       박태희         최초생성
+ *****************************************************************************/ 
+this.cfn_ac02010_purc_p01 = function(objArr, strPopupCallback, strPopupId)
+{
+	var popupId = "";
+	if(this.gfn_isNull(strPopupId)) {
+		popupId = "ac02020_purc_p01";
+	} else {
+		popupId = strPopupId;
+	}
+	var popupUrl = "ac02::ac02020_purc_p01.xfdl";
+	var argumentsList = objArr;
+	var option = "top=-1,left=-1,width=1038,height=900,title=true,titletext=null";
+	var popupCallback = strPopupCallback;
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+}
+
+
+
+
+/*********************************************************************
+ * 함 수 명 : cfn_isManager
+ * 함수설명 : 접속한 사용자가 관리자인지 구분한다.
+ * 작성자   : 라병수
+ * 입    력 : 
+ * 결    과 : 관리자 true / false
+ *********************************************************************/
+this.gfn_isManager = function()
+{
+	var managerFlag = application.gds_user.getColumn(application.gds_user.rowposition, "userGb");
+	
+	if(managerFlag == "010"){
+		return true;	
+	}else{
+		return false;
+	}
+}
+]]></Script>

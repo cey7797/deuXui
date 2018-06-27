@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="MDIFrame" classname="MDIFrame" left="0" top="0" width="1038" height="43" titletext="MDI 영역" onload="MDIFrame_onload">
+    <Layouts>
+      <Layout>
+        <Tab id="workTab" taborder="0" left="0" top="0" right="0" height="33" tabindex="0" scrollbars="autoboth" dragscrolltype="none" cssclass="menu_tab" onchanged="workTab_onchanged" onextrabuttonclick="workTab_onextrabuttonclick" style="padding:15 0 0 15;">
+          <Tabpages>
+            <Tabpage id="tabpage1"/>
+          </Tabpages>
+        </Tab>
+        <Button id="btn_closeAll" taborder="1" top="7" height="21" width="29" right="8" visible="true" onclick="btn_closeAll_onclick" style="bordertype:round 3 3 ;" cssclass="btn_MDI_Allclose"/>
+        <Button id="btn_closeOthers" taborder="2" visible="true" top="136" right="147" height="22" tooltiptext="closeOthers" width="22" style="bordertype:round 3 3 ;" onclick="btn_closeOthers_onclick" cssclass="nowClose"/>
+        <Button id="btn_favorite" taborder="3" visible="true" top="136" right="171" width="22" height="22" tooltiptext="마이메뉴등록" cssclass="favorite" style="bordertype:round 3 3 ;" onclick="btn_favorite_onclick"/>
+        <Static id="Static01" taborder="5" cssclass="sta_MDI_Line" top="7" right="54" width="2" height="12"/>
+        <Button id="btn_cascade" taborder="6" onclick="btn_arrange_onclick" cssclass="btn_MDI_Casecade" top="7" right="37" width="29" height="21" visible="false"/>
+        <Button id="btn_maximize" taborder="7" onclick="btn_arrange_onclick" cssclass="btn_MDI_Full" top="7" right="95" width="29" height="21" visible="false"/>
+        <Button id="btn_tilevertical" taborder="9" onclick="btn_arrange_onclick" cssclass="btn_MDI_tile" top="7" right="66" width="29" height="21" visible="false"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.0"><![CDATA[include "commJs::frameUtils.xjs";
+
+
+this.MDIFrame_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.workTab.removeTabpage(0);
+}
+
+this.workTab_onextrabuttonclick = function(obj:Tab, e:nexacro.TabMouseEventInfo)
+{
+	var curMenuId = application.gds_open.getColumn(e.index, "parentId");
+	var curProgId = application.gds_open.getColumn(e.index, "menuId");
+	
+	var delObj = "application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.ChildFrame_"+curProgId;
+	
+	for(var i=application.gds_essDataset.getRowCount()-1; i>=0; i--){
+		var dsMenuId = application.gds_essDataset.getColumn(i, "menuId");
+		var dsProgId = application.gds_essDataset.getColumn(i, "progId");
+		var chkDs = delObj+".form."+application.gds_essDataset.getColumn(i, "dsNm");
+		var chkGrd = delObj+".form."+application.gds_essDataset.getColumn(i, "grdNm");
+		//this.alert(application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.ChildFrame_ahm01010.form.tab_master.tabpages[2].ds_main);
+		//trace(chkDs+ "    " +chkGrd);
+// 		if(dsMenuId == curMenuId && dsProgId == curProgId){
+//  			if(this.gfn_isCloseUpdate(eval(chkDs), eval(chkGrd))){ //frameUtil의 gfn_isCloseUpdate에서 dataset을 update해준다.
+//  				//미저장 data가 존재
+//  				if(!this.confirm("미저장 data가 존재합니다. 계속하시겠습니까?")){
+// 					return;
+//  				} 				
+//  			}
+// 			application.gds_essDataset.deleteRow(i);
+// 		}		
+	}
+	
+	var gCnt = application.gds_eventHandler.getRowCount();
+	
+	for(var j=gCnt-1; j>=0; j--){
+		var dsMenuId = application.gds_eventHandler.getColumn(j, "menuId");
+		var dsProgId = application.gds_eventHandler.getColumn(j, "progId")
+
+		if(dsMenuId == curMenuId && dsProgId == curProgId){
+			application.gds_eventHandler.deleteRow(j);
+		}
+	}
+	
+	if(application.gds_dummy.getRowCount() > 0){
+		application.gds_dummy.clear();
+	}
+	
+	for(var i= application.gds_countData.getRowCount(); i>=0; i--){
+		var findRow = application.gds_countData.findRowExpr("progId=='"+application.gds_open.getColumn(application.gds_open.rowposition, "menuId")+"'");
+		application.gds_countData.deleteRow(findRow);
+	}
+	
+	application.gds_open.deleteRow(e.index);
+	this.workTab.removeTabpage(e.index);
+	
+	application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.removeChild(delObj);
+	var cmd = delObj+".destroy()";
+	eval(cmd);
+	
+	if(application.gds_open.getRowCount() == 0){
+		application.mainframe.VFrameSet.MiddleFrameSet.LeftFrame.form.tab_menuLv3.set_top(0);
+		application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.WorkFrame.set_formurl("commMain::WorkFrame.xfdl");
+	}
+}
+
+this.workTab_onchanged = function(obj:Tab, e:nexacro.TabIndexChangeEventInfo)
+{
+	if(e.preindex > -1){
+		var menuId = application.gds_open.getColumn(e.postindex, "menuId");
+		var focus = "application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.ChildFrame_"+menuId;
+		var cmd = focus+".setFocus()";
+		application.gds_open.set_rowposition(e.postindex);
+		eval(cmd);		
+	}
+}
+
+this.btn_closeAll_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	for(i=application.gds_open.getRowCount()-1; i>=0; i--){
+		this.workTab.removeTabpage(i);
+		var menuId = application.gds_open.getColumn(i, "menuId");
+		
+		var delObj = "application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.ChildFrame_"+menuId;
+		application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.removeChild(delObj);
+ 		var cmd = delObj+".destroy()";
+ 		eval(cmd);
+	}
+	
+	application.gds_open.deleteAll();
+}
+
+this.btn_closeOthers_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var curIdx = this.workTab.tabindex;
+	for(i=application.gds_open.getRowCount()-1; i>=0; i--){
+		if(curIdx != i){
+			this.workTab.removeTabpage(i);
+			var menuId = application.gds_open.getColumn(i, "menuId");
+			
+			var delObj = "application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.ChildFrame_"+menuId;
+			application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.removeChild(delObj);
+			var cmd = delObj+".destroy()";
+			eval(cmd);
+			
+			application.gds_open.deleteRow(i);
+ 		}
+	}
+}
+
+this.btn_favorite_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.alert("준비중입니다.");
+}
+
+this.fn_extraClose = function(index)
+{
+	var curMenuId = application.gds_open.getColumn(index, "parentId");
+	var curProgId = application.gds_open.getColumn(index, "menuId");
+	
+	var delObj = "application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.ChildFrame_"+curProgId;
+	
+	for(var i=application.gds_essDataset.getRowCount()-1; i>=0; i--){
+		var dsMenuId = application.gds_essDataset.getColumn(i, "menuId");
+		var dsProgId = application.gds_essDataset.getColumn(i, "progId");
+		var chkDs = delObj+".form."+application.gds_essDataset.getColumn(i, "dsNm");
+		var chkGrd = delObj+".form."+application.gds_essDataset.getColumn(i, "grdNm");
+		//this.alert(application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.ChildFrame_ahm01010.form.tab_master.tabpages[2].ds_main);
+		//trace(chkDs+ "    " +chkGrd);
+// 		if(dsMenuId == curMenuId && dsProgId == curProgId){
+//  			if(this.gfn_isCloseUpdate(eval(chkDs), eval(chkGrd))){ //frameUtil의 gfn_isCloseUpdate에서 dataset을 update해준다.
+//  				//미저장 data가 존재
+//  				if(!this.confirm("미저장 data가 존재합니다. 계속하시겠습니까?")){
+// 					return;
+//  				} 				
+//  			}
+// 			application.gds_essDataset.deleteRow(i);
+// 		}		
+	}
+	
+	var gCnt = application.gds_eventHandler.getRowCount();
+	
+	for(var j=gCnt-1; j>=0; j--){
+		var dsMenuId = application.gds_eventHandler.getColumn(j, "menuId");
+		var dsProgId = application.gds_eventHandler.getColumn(j, "progId")
+
+		if(dsMenuId == curMenuId && dsProgId == curProgId){
+			application.gds_eventHandler.deleteRow(j);
+		}
+	}
+	
+	if(application.gds_dummy.getRowCount() > 0){
+		application.gds_dummy.clear();
+	}
+	
+	for(var i= application.gds_countData.getRowCount(); i>=0; i--){
+		var findRow = application.gds_countData.findRowExpr("progId=='"+application.gds_open.getColumn(application.gds_open.rowposition, "menuId")+"'");
+		application.gds_countData.deleteRow(findRow);
+	}
+	
+	application.gds_open.deleteRow(index);
+	this.workTab.removeTabpage(index);
+	
+	application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.removeChild(delObj);
+	var cmd = delObj+".destroy()";
+	eval(cmd);
+}
+
+this.btn_arrange_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.alert("개발중입니다.");
+//     var strType = this.gfn_replace(obj.name, "btn_", "");
+// 	this.gfn_arrangeWin(strType);
+}
+
+/**
+ * @class 열려있는 윈도우 화면을 정렬
+ * @param strType: 정렬 타입
+ * @return None
+ */  
+this.gfn_arrangeWin = function(strType) 
+{
+	// workFrame영역에 open된 childFrame 갯수
+	var iFramesCnt = application.apWorkFrame.frames.length;
+	
+	//if (applicaton.gds_openMenu.getRowCount() < 1) return;
+   
+	switch (strType){
+		case "maximize":
+			var sWinId = application.apWorkFrame.getActiveFrame().arguments["winKey"];
+			for (var i=0; i<iFramesCnt; i++){
+				application.apWorkFrame.frames[i].set_openstatus("maximize");		
+				application.apWorkFrame.frames[i].set_showtitlebar(false);		
+				application.apWorkFrame.frames[i].style.set_bordertype("");
+				application.apWorkFrame.frames[i].style.set_border("0 solid #24322b");
+			}
+			application.apWorkFrame.frames[sWinId].setFocus();
+		   break;
+	   case "closeAll":
+			for (var i=iFramesCnt-1; i>=0; i--){
+				application.apWorkFrame.frames[i].form.close();
+			}
+			this.gfn_setVFrameChange("main");
+			break;
+	   case "hidden":
+			for (var i=0; i<iFramesCnt; i++){
+				application.apWorkFrame.frames[i].set_showtitlebar(true);
+				application.apWorkFrame.frames[i].style.set_border("1 solid #00387f");
+				application.apWorkFrame.frames[i].style.set_bordertype("normal 0 0");
+				application.apWorkFrame.frames[i].set_openstatus("minimize");		
+			}
+			application.apWorkFrame.arrange(strType);
+			break;
+	    default:
+			for (var i=0; i<iFramesCnt; i++){	
+				application.apWorkFrame.frames[i].set_showtitlebar(true);
+				application.apWorkFrame.frames[i].style.set_border("1 solid #00387f");
+				application.apWorkFrame.frames[i].style.set_bordertype("normal 0 0");
+				application.apWorkFrame.frames[i].set_openstatus("normal");				
+			}
+			application.apWorkFrame.arrange(strType);
+			break;
+	}
+}
+
+/**
+ * @class 입력된 문자열의 일부분을 다른 문자열로 치환하는 함수
+ * @param strString 원본 문자열.
+ * @param strOld    원본 문자열에서 찾을 문자열.
+ * @param strNew    새로 바꿀 문자열.
+ * @return String 대체된 문자열
+ */  
+this.gfn_replace = function (val, strOld, strNew)
+{
+	val = this.gfn_toString(val);
+	val = val.split(eval("/" + strOld + "/g")).join(strNew);
+	// val = val.split(strOld).join(strNew);
+	return val;
+}
+
+/**
+ * @class 입력값을 String으로 변경한다.
+ * @param Val
+ * @return String
+ */  
+this.gfn_toString = function (val)
+{
+	if (this.gfn_isNull(val)){
+		return new String();
+	}
+	return new String(val);
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_isNull
+ * 함수설명 	: variable의 Null을 체크한다.
+ * 입    력 	: variable
+ * 결    과 	: variable의 Null을 체크
+ *********************************************************************/
+this.gfn_isNull = function(value)
+{
+	if (new String(value).valueOf() == "undefined" || new String(value).valueOf() == "null" || value == undefined || value == null){
+		return true;
+	}else {
+		var stringValue = new String(value);
+		if (stringValue == null || stringValue.trim() == ""){
+			return true;
+		}
+	}
+	return false;
+}
+]]></Script>
+  </Form>
+</FDL>

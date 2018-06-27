@@ -1,0 +1,469 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="ac01010" classname="bg01030" left="0" top="0" width="1038" height="855" titletext="계산서합계표현황" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Static id="Static76" taborder="2" text="거래처목록" cssclass="page_stitle" left="0" top="89" width="324" height="20"/>
+        <Static id="Static22" taborder="3" text="h5" visible="false" left="0" top="110" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static20" taborder="11" text="h15" visible="false" left="0" top="73" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static04" taborder="15" text="w&#13;&#10;15" visible="false" top="42" right="0" width="15" height="782" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_grdMain" taborder="16" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" top="459" right="15" width="86" height="20" style="border:0 none #808080ff ;align:right middle;"/>
+        <Static id="Static00" taborder="17" text="h5" visible="false" left="945" top="458" width="93" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static02" taborder="19" text="w&#13;&#10;15" visible="false" top="462" right="0" width="15" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Grid id="grd_mainList" taborder="20" binddataset="ds_mainList" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="col" onkeydown="grd_basicInfo_onkeydown" onheadclick="grd_basicInfo_onheadclick" oncelldblclick="grd_main_oncelldblclick" left="0" top="115" right="15" height="343">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="30" band="left"/>
+                <Column size="30" band="left"/>
+                <Column size="94"/>
+                <Column size="105"/>
+                <Column size="77"/>
+                <Column size="235"/>
+                <Column size="120"/>
+                <Column size="110"/>
+                <Column size="110"/>
+                <Column size="110"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell displaytype="none" text="Column0"/>
+                <Cell col="1" text="순번"/>
+                <Cell col="2" text="신고구분"/>
+                <Cell col="3" text="계산서구분"/>
+                <Cell col="4" text="전자여부"/>
+                <Cell col="5" text="거래처명"/>
+                <Cell col="6" text="거래처사업자번호"/>
+                <Cell col="7" text="총금액"/>
+                <Cell col="8" text="공급가액"/>
+                <Cell col="9" text="부가세"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="image" text="bind:rowStatus" expr="expr:rowStatus==2?&quot;URL('theme://images/ico_i.png')&quot;:rowStatus==4?&quot;URL('theme://images/ico_u.png')&quot;:rowStatus==8?&quot;URL('theme://images/ico_d.png')&quot;:&quot;&quot;"/>
+                <Cell col="1" text="expr:currow + 1"/>
+                <Cell col="2" displaytype="combo" text="bind:reptDiv" combodataset="ds_reptDiv" combocodecol="comCd" combodatacol="comCdNm"/>
+                <Cell col="3" displaytype="combo" text="bind:billDiv" combodataset="ds_billDiv" combocodecol="comCd" combodatacol="comCdNm"/>
+                <Cell col="4" displaytype="checkbox" text="bind:elecYn"/>
+                <Cell col="5" style="align:left;" text="bind:vendNm"/>
+                <Cell col="6" text="bind:vendBizRegNo" mask="###-##-#####"/>
+                <Cell col="7" displaytype="number" style="align:right;" text="bind:issAmtSum"/>
+                <Cell col="8" displaytype="number" style="align:right;" text="bind:splyAmtSum"/>
+                <Cell col="9" displaytype="number" style="align:right;" text="bind:vatSum"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2"/>
+                <Cell col="3"/>
+                <Cell col="4"/>
+                <Cell col="5"/>
+                <Cell col="6"/>
+                <Cell col="7" displaytype="number" style="align:right;" text="expr:dataset.getSum(&quot;issAmtSum&quot;)"/>
+                <Cell col="8" displaytype="number" style="align:right;" text="expr:dataset.getSum(&quot;splyAmtSum&quot;)"/>
+                <Cell col="9" displaytype="number" style="align:right;" text="expr:dataset.getSum(&quot;vatSum&quot;)"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="btn_search" taborder="26" text="조회" onclick="btn_search_onClick" cssclass="search" top="88" right="205" width="60" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R"/>
+        <Static id="Static01" taborder="28" text="h5" visible="false" left="945" top="474" width="93" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_grdSub" taborder="29" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" top="835" right="15" width="86" height="20" style="border:0 none #808080ff ;align:right middle;"/>
+        <Static id="Static06" taborder="30" text="h5" visible="false" left="945" top="834" width="93" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static16" taborder="31" text="w&#13;&#10;15" visible="false" top="838" right="0" width="15" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static17" taborder="32" text="h5" visible="false" left="945" top="850" width="93" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Grid id="grd_subList" taborder="33" binddataset="ds_subList" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="col" onkeydown="grd_basicInfo_onkeydown" onheadclick="grd_basicInfo_onheadclick" oncelldblclick="grd_main_oncelldblclick" left="0" top="484" right="15" height="350">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="30" band="left"/>
+                <Column size="20" band="left"/>
+                <Column size="30" band="left"/>
+                <Column size="150"/>
+                <Column size="150"/>
+                <Column size="150"/>
+                <Column size="150"/>
+                <Column size="150"/>
+              </Columns>
+              <Rows>
+                <Row size="24" band="head"/>
+                <Row size="24"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell displaytype="none" text="Column0"/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox"/>
+                <Cell col="2" text="순번"/>
+                <Cell col="3" text="발행일자"/>
+                <Cell col="4" text="총금액"/>
+                <Cell col="5" text="공급가액"/>
+                <Cell col="6" text="부가세액"/>
+                <Cell col="7" text="결의번호"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="image" text="bind:rowStatus" expr="expr:rowStatus==2?&quot;URL('theme://images/ico_i.png')&quot;:rowStatus==4?&quot;URL('theme://images/ico_u.png')&quot;:rowStatus==8?&quot;URL('theme://images/ico_d.png')&quot;:&quot;&quot;"/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox" text="bind:chk"/>
+                <Cell col="2" text="expr:currow + 1"/>
+                <Cell col="3" displaytype="date" text="bind:issDt" calendardisplaynulltype="none"/>
+                <Cell col="4" displaytype="number" style="align:right;" text="bind:issAmt"/>
+                <Cell col="5" style="align:right;" text="bind:splyAmt"/>
+                <Cell col="6" displaytype="number" style="align:right;" text="bind:vat"/>
+                <Cell col="7" text="bind:vouNo" mask="########-####"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2"/>
+                <Cell col="3"/>
+                <Cell col="4" displaytype="number" style="align:right;" text="expr:dataset.getSum(&quot;issAmt&quot;)"/>
+                <Cell col="5" displaytype="number" style="align:right;" text="expr:dataset.getSum(&quot;splyAmt&quot;)"/>
+                <Cell col="6" displaytype="number" style="align:right;" text="expr:dataset.getSum(&quot;vat&quot;)"/>
+                <Cell col="7"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static18" taborder="34" text="지급목록" cssclass="page_stitle" left="0" top="459" width="324" height="20"/>
+        <Static id="Static19" taborder="35" text="h5" visible="false" top="479" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;" right="0" left="0"/>
+        <Div id="div_search" taborder="36" left="0" top="0" right="0" height="73" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout width="1038" height="42">
+              <Static id="Static00" taborder="60" text="사업자번호" onclick="div_search_Static00_onclick" cssclass="search" left="15" top="9" width="60" height="21"/>
+              <Static id="Static01" taborder="61" text="연도" onclick="div_search_Static00_onclick" cssclass="search" left="397" top="9" width="36" height="21"/>
+              <Static id="Static02" taborder="62" text="신고구분" onclick="div_search_Static00_onclick" cssclass="search" left="517" top="9" width="60" height="21"/>
+              <Combo id="cmb_reptDiv" taborder="66" autoselect="true" innerdataset="ds_schReptDiv" codecolumn="comCd" datacolumn="comCdNm" onitemchanged="div_search_cmb_acntUnt_onitemchanged" left="567" top="9" width="120" height="21" class="essential"/>
+              <Static id="Static06" taborder="69" text="계산서구분" onclick="div_search_Static00_onclick" cssclass="search" left="14" top="36" width="60" height="21"/>
+              <Combo id="cmb_billDiv" taborder="75" autoselect="true" innerdataset="ds_schBillDiv" codecolumn="comCd" datacolumn="comCdNm" onitemchanged="div_search_cmb_acntUnt_onitemchanged" left="81" top="36" width="120" height="21" class="essential"/>
+              <Spin id="spn_year" taborder="76" value="0" onchar="div_search_spn_year_onchar" left="425" top="9" width="72" height="21"/>
+              <Combo id="cmb_bizNo" taborder="78" autoselect="true" innerdataset="ds_bizNo" codecolumn="bizRegNo" datacolumn="bizRegNm" left="81" top="9" width="120" height="21" class="essential"/>
+              <Static id="Static03" taborder="79" text="매입매출구분" onclick="div_search_Static00_onclick" cssclass="search" left="215" top="9" width="76" height="21"/>
+              <Combo id="cmb_buySellDiv" taborder="80" autoselect="true" innerdataset="@ds_buySellDiv" codecolumn="comCd" datacolumn="comCdNm" onitemchanged="div_search_cmb_acntUnt_onitemchanged" left="293" top="9" width="96" height="21" class="essential"/>
+              <Static id="Static07" taborder="81" text="전자여부" onclick="div_search_Static00_onclick" cssclass="search" left="238" top="36" width="60" height="21"/>
+              <Combo id="cmb_elecYn" taborder="82" autoselect="true" text="전체" codecolumn="codecolumn" datacolumn="datacolumn" index="0" onitemchanged="div_search_cmb_acntUnt_onitemchanged" left="293" top="36" width="96" height="21" class="essential">
+                <Dataset id="innerdataset">
+                  <ColumnInfo>
+                    <Column id="codecolumn" size="256"/>
+                    <Column id="datacolumn" size="256"/>
+                  </ColumnInfo>
+                  <Rows>
+                    <Row>
+                      <Col id="codecolumn"/>
+                      <Col id="datacolumn">전체</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">1</Col>
+                      <Col id="datacolumn">전자</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">0</Col>
+                      <Col id="datacolumn">종이</Col>
+                    </Row>
+                  </Rows>
+                </Dataset>
+              </Combo>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Button id="btn_excel" taborder="37" text="엑셀" onclick="btn_excel_Ctrl_onclick" cssclass="btn_WF_Common" top="88" right="143" width="60" height="22" tooltiptype="hover" tooltiptext="Excel" userBtnAuth="D"/>
+        <Button id="btn_execute" taborder="38" text="일괄변경" cssclass="btn_WF_Common" top="88" right="81" width="60" height="22" tooltiptype="hover" tooltiptext="Excel" userBtnAuth="D" onclick="btn_execute_onclick"/>
+        <Button id="btn_print" taborder="39" text="출력" cssclass="btn_WF_Common" top="88" right="19" width="60" height="22" tooltiptype="hover" tooltiptext="Excel" userBtnAuth="D" onclick="btn_print_onclick"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_mainList" onrowposchanged="ds_mainList_onrowposchanged"/>
+      <Dataset id="ds_reptDiv"/>
+      <Dataset id="ds_billDiv"/>
+      <Dataset id="ds_schBillDiv"/>
+      <Dataset id="ds_bizNo"/>
+      <Dataset id="ds_schReptDiv"/>
+      <Dataset id="ds_buySellDiv"/>
+      <Dataset id="ds_subList"/>
+    </Objects>
+    <Bind>
+      <BindItem id="item5" compid="edt_bizNm" propid="value" datasetid="ds_acntList" columnid="acntIncNm"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[
+/* ====================================================================
+ * 01. 업무구분	: 계산서합계표현황
+ * 02. 화면명		: ac04020.xfdl
+ * 03. 화면설명	: (세금)계산서 합계표 내역을 조회 및 출력하는 화면이다.
+ * 04. 작성일		: 2015.12.07
+ * 05. 작성자		: 유남규
+ * 06. 수정이력	: 
+ * ====================================================================
+ *     수정일     수정자   내용
+ * ====================================================================
+ *
+ * ==================================================================== */
+ 
+/* ====================================================================
+ * 1. 공통 라이브러리
+ * ==================================================================== */
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+
+/* ====================================================================
+ * 2. 변수 선언부
+ * ==================================================================== */
+ 
+/* ====================================================================
+ * 3. Event 처리 부분
+ * ==================================================================== */
+ 
+/******************************************************************************
+* 함 수 명 	: form_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+ 	var arrDataSet = Array(4);
+ 		arrDataSet[0]  = "ds_reptDiv";  			//신고부분
+ 		arrDataSet[1]  = "ds_schReptDiv";  			//서치 사업레벨
+ 		arrDataSet[2]  = "ds_billDiv";  			//계산서구분
+ 		arrDataSet[3]  = "ds_schBillDiv";  			//서치 계산서구분
+ 		arrDataSet[4]  = "ds_buySellDiv";  			//매입매출구분
+ 		
+  	var arrGrpCd = Array(4);
+  		arrGrpCd[0]  = "AC018"; 					//
+  		arrGrpCd[1]  = "AC018"; 					//
+  		arrGrpCd[2]  = "AC009"; 					//
+  		arrGrpCd[3]  = "AC009"; 					//
+  		arrGrpCd[4]  = "AC010"; 					//
+ 		
+  	// 사용여부	지정할 아큐먼트를 넘긴다.
+  	var arrUseYn =	Array(4);
+  		arrUseYn[0]  =	"Y";
+  		arrUseYn[1]  =	"Y";
+  		arrUseYn[2]  =	"Y";
+  		arrUseYn[3]  =	"Y";
+  		arrUseYn[4]  =	"Y";
+ 		
+  	// T:전체,S:선택,X:없음 
+  	var arrModeFg =	Array(4);
+  		arrModeFg[0]  =	"X";
+  		arrModeFg[1]  =	"X";
+  		arrModeFg[2]  =	"X";
+  		arrModeFg[3]  =	"T";
+  		arrModeFg[4]  =	"X";
+  	
+  	// WHERE절 내용 "X":없음
+  	var arrWhere =	Array(4);
+  		arrWhere[0]  =	"X";//ABB_CD IN ('S','K')
+  		arrWhere[1]  =	"X";//ABB_CD IN ('S','K')
+  		arrWhere[2]  =	"X";//ABB_CD IN ('S','K')
+  		arrWhere[3]  =	"X";//ABB_CD IN ('S','K')
+  		arrWhere[4]  =	"X";//ABB_CD IN ('S','K')
+  
+ 	/* 메소드명     : ComboLoad
+ 	 * 설명			 : 공통코드 테이블을 조회하여 콤보박스를 생성한다.
+ 	 * 메소드인수1  : DataSet명의 배열
+ 	 * 메소드인수2  : 그룹코드번호의 배열
+ 	 * 메소드인수3  : 조건문의 배열 (1:사용, 0:사용안함)
+ 	 * 메소드인수4  : 전체공란 첨부여부 "T": 전체, "S":선택, "X" : 데이터시작
+ 	 * 메소드인수5  : WHERE절 내용 "X":없음
+ 	 */
+ 
+   	 this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{
+	this.gfn_transaction("BIZ_SEARCH",
+						 "txAdmUrl::com/admi/ac04/selectAcBizNo.do",
+						 "",
+						 "ds_bizNo=resultList",
+						 "",
+						 "fn_callBack",
+						 false);
+
+	this.div_search.cmb_bizNo.set_index(1);
+
+	//var essGrd = new Array();
+	//	essGrd[0] = this.grd_mainList;
+
+	//this.gfn_essDataset(essGrd);
+	this.gfn_bindCmmnFunction();
+
+	this.div_search.spn_year.set_value(this.gfn_getCurrentDate("YYYY"));	
+	this.div_search.cmb_reptDiv.set_index(0);
+	this.div_search.cmb_billDiv.set_index(0);
+	this.div_search.cmb_buySellDiv.set_index(0);
+}
+
+/* ==================================================================== 
+ * 4. Local Function(사용자 FUNCTION 영역)
+ * ==================================================================== */
+ 
+ /*********************************************************************
+ * 함 수 명  : div_detail_spn_acntYy_onchar
+ * 함수설명  : 개시연도 자릿수 '4'자리제한
+ *********************************************************************/ 
+this.div_search00_spn_year_onchar = function(obj:Spin, e:nexacro.CharEventInfo)
+{
+	if(e.posttext.length > 4) {
+		return false;
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_search_onclick
+ * 함수설명 	: 조회버튼 클릭이벤트
+********************************************************************************/
+this.btn_search_onClick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preSearch
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preSearch = function()
+{
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 메인그리드 조회 함수
+********************************************************************************/
+this.fn_search = function()
+{
+	if(this.fn_preSearch()){
+	
+		this.ds_subList.clearData();
+		this.ds_mainList.clearData();
+	
+		var strArg  = "bizRegNo=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.cmb_bizNo.value));
+		    strArg += " reptDiv=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.cmb_reptDiv.value));
+	        strArg += " billDiv=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.cmb_billDiv.value));
+	        strArg += " buySellDiv="    + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.cmb_buySellDiv.value));
+	        strArg += " yyyy="    + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.spn_year.value));
+	        strArg += " elecYn="  + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.cmb_elecYn.value));
+	
+		this.gfn_transaction("SEARCH",
+							 "txAdmUrl::com/admi/ac04/selectAc04020MainList.do",
+							 "",
+							 "ds_mainList=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+/********************************************************************************
+ * 함 수 명 	: fn_postSearch
+ * 함수설명 	: 메인그리드 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearch = function()
+{
+	this.gfn_getDatasetCount(this.ds_mainList, this.sta_grdMain);
+}
+ 
+/* ====================================================================
+ * 5. fn_callBack 처리 부분
+ * ==================================================================== */
+ this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.gfn_message("A", errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		} else if(trId == "SEARCH"){
+			this.fn_postSearch();
+		} else if(trId == "SEARCHSUB"){
+			this.fn_postSubSearch();
+		}
+	}
+}
+
+this.ds_mainList_onrowposchanged = function(obj:Dataset, e:nexacro.DSRowPosChangeEventInfo)
+{
+	if ( e.newrow < 0 ) return;
+	
+	this.fn_subSearch();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_subSearch
+ * 함수설명 	: 메인그리드 조회 함수
+********************************************************************************/
+this.fn_subSearch = function()
+{
+	this.ds_subList.clearData();
+
+	var strArg  = "bizRegNo=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.ds_mainList.getColumn(this.ds_mainList.rowposition, "bizRegNo")));
+		strArg += " reptDiv=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.ds_mainList.getColumn(this.ds_mainList.rowposition, "reptDiv")));
+		strArg += " billDiv=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.ds_mainList.getColumn(this.ds_mainList.rowposition, "billDiv")));
+		strArg += " buySellDiv="    + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.ds_mainList.getColumn(this.ds_mainList.rowposition, "buySellDiv")));
+		strArg += " yyyy="  + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.ds_mainList.getColumn(this.ds_mainList.rowposition, "yyyy")));
+		strArg += " vendId="  + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.ds_mainList.getColumn(this.ds_mainList.rowposition, "vendId")));
+		strArg += " elecYn="  + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.ds_mainList.getColumn(this.ds_mainList.rowposition, "elecYn")));
+
+	this.gfn_transaction("SEARCHSUB",
+						 "txAdmUrl::com/admi/ac04/selectAc04020SubList.do",
+						 "",
+						 "ds_subList=resultList",
+						 strArg,
+						 "fn_callBack");
+} 
+/********************************************************************************
+ * 함 수 명 	: fn_postSearch
+ * 함수설명 	: 메인그리드 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSubSearch = function()
+{
+	this.gfn_getDatasetCount(this.ds_subList, this.sta_grdSub);
+}
+
+this.btn_excel_Ctrl_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.cfn_excelExport(this.grd_mainList,  "(세금)계산서합계표내역");
+}
+
+this.btn_execute_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var popupId = "ac04020_p01";
+	var popupUrl = "ac04::ac04020_p01.xfdl";
+	var argumentsList = {BIZ_REG_NO:this.div_search.cmb_bizNo.value};
+	var option = "top=-1,left=-1,width=326,height=204,title=true,titletext=null";
+	var popupCallback = "fn_popCallBack";
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);
+}
+
+this.fn_popCallBack = function(strID, rtnVal)
+{
+	if ( rtnVal == "Execute" ) {
+		this.ds_subList.clearData();
+		this.ds_mainList.clearData();
+	}
+}
+
+
+this.btn_print_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var popupId = "ac04020_p02";
+	var popupUrl = "ac04::ac04020_p02.xfdl";
+	var argumentsList = {BIZ_REG_NO:this.div_search.cmb_bizNo.value
+	                    ,BUY_SELL_DIV:this.div_search.cmb_buySellDiv.value
+	                    };
+	var option = "top=-1,left=-1,width=326,height=233,title=true,titletext=null";
+	var popupCallback = "fn_popCallBack2";
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option, popupCallback);	
+}
+
+this.fn_popCallBack2 = function(strID, rtnVal)
+{
+}]]></Script>
+  </Form>
+</FDL>

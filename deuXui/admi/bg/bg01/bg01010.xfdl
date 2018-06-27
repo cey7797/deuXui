@@ -1,0 +1,996 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="bg01010" classname="bg01010_t" left="0" top="0" width="1038" height="855" titletext="회계단위등록" onload="bg01010_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="0" left="0" top="0" right="15" height="42" scrollbars="none" cssclass="search"/>
+        <Static id="Static20" taborder="1" text="h15" visible="false" left="0" top="42" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static00" taborder="3" text="h5" visible="false" left="0" top="79" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_search" taborder="5" text="조회" onclick="btn_search_onclick" cssclass="search" top="57" right="139" width="60" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R"/>
+        <Button id="btn_save" taborder="8" text="저장" onclick="btn_save_onclick" cssclass="save" top="57" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S"/>
+        <Static id="Static76" taborder="9" text="회계단위목록" cssclass="page_stitle" left="0" top="58" width="220" height="20"/>
+        <Static id="Static01" taborder="10" text="h5" visible="false" left="930" top="508" width="8.96%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_grdMain" taborder="11" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" right="15" width="86" height="20" style="border:0 none #808080ff ;align:right middle;" bottom="325"/>
+        <Static id="Static03" taborder="13" text="h15" visible="false" left="0" top="523" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Grid id="grd_acnt" taborder="14" binddataset="ds_acntUnt" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="col" onkeydown="grd_acnt_onkeydown" left="0" top="84" right="15" bottom="347">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="30"/>
+                <Column size="140"/>
+                <Column size="170"/>
+                <Column size="140"/>
+                <Column size="140"/>
+                <Column size="140"/>
+                <Column size="140"/>
+                <Column size="140"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="회계단위ID"/>
+                <Cell col="2" text="회계단위명"/>
+                <Cell col="3" text="사업자번호"/>
+                <Cell col="4" text="신설년도"/>
+                <Cell col="5" text="폐쇄년도"/>
+                <Cell col="6" text="사용여부"/>
+                <Cell col="7" text="정렬순서"/>
+              </Band>
+              <Band id="body">
+                <Cell text="expr:currow + 1"/>
+                <Cell col="1" text="bind:acntUnt"/>
+                <Cell col="2" text="bind:acntUntNm"/>
+                <Cell col="3" text="bind:bizRegNo" mask="###-##-#####"/>
+                <Cell col="4" text="bind:creYy"/>
+                <Cell col="5" text="bind:closeYy"/>
+                <Cell col="6" displaytype="combo" text="bind:useYn" combodataset="ds_useYn" combocodecol="code" combodatacol="name"/>
+                <Cell col="7" text="bind:sortOrd"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Tab id="tab" taborder="17" left="0" right="15" height="318" canchange="tab_canchange" onchanged="tab_onchanged" tabindex="0" scrollbars="autoboth" bottom="1">
+          <Tabpages>
+            <Tabpage id="tabpage1" text="상세정보">
+              <Layouts>
+                <Layout>
+                  <Div id="div_info" taborder="0" left="-2" top="0" right="0" height="282">
+                    <Layouts>
+                      <Layout>
+                        <Static id="Static30" taborder="22" cssclass="detail_bg" left="0" top="0" right="0" height="29"/>
+                        <Edit id="edt_acntUnt" taborder="0" left="135" top="4" width="205" height="21" style="border:1 solid #ccccccff ;"/>
+                        <Static id="Static00" taborder="24" cssclass="detail_bg" left="0" top="28" right="0" height="29"/>
+                        <Static id="Static01" taborder="25" cssclass="detail_bg" left="0" top="56" right="0" height="29"/>
+                        <Static id="Static02" taborder="26" cssclass="detail_bg" left="0" top="84" right="0" height="29"/>
+                        <Static id="Static03" taborder="27" cssclass="detail_bg" left="0" top="112" right="0" height="29"/>
+                        <Static id="Static04" taborder="28" cssclass="detail_bg" left="0" top="140" right="0" height="29"/>
+                        <Static id="Static05" taborder="29" cssclass="detail_bg" left="0" top="168" right="0" height="29"/>
+                        <Static id="Static06" taborder="30" cssclass="detail_bg" left="0" top="196" right="0" height="29"/>
+                        <Static id="Static07" taborder="31" cssclass="detail_bg" left="0" top="224" right="0" height="29"/>
+                        <Static id="Static08" taborder="32" cssclass="detail_bg" left="0" top="252" right="0" height="29"/>
+                        <Static id="Static09" taborder="33" text="상호" cssclass="detail_title" left="2" top="28" width="130" height="29" style="align:left;"/>
+                        <Static id="Static10" taborder="34" text="사업자등록번호" cssclass="detail_title" left="2" top="56" width="130" height="29" style="background:#f7f7f7ff;align:left;"/>
+                        <Static id="Static11" taborder="35" text="우편번호" cssclass="detail_title" left="2" top="84" width="130" height="29" style="align:left;"/>
+                        <Static id="Static12" taborder="36" text="상세주소" cssclass="detail_title" left="2" top="112" width="130" height="29" style="align:left;"/>
+                        <Static id="Static13" taborder="37" text="영문주소" cssclass="detail_title" left="2" top="140" width="130" height="29" style="align:left;"/>
+                        <Static id="Static14" taborder="38" text="업태" cssclass="detail_title" left="2" top="168" width="130" height="29" style="align:left;"/>
+                        <Static id="Static15" taborder="39" text="세무서코드" cssclass="detail_title" left="2" top="196" width="130" height="29" style="align:left;"/>
+                        <Static id="Static16" taborder="40" text="신설년도" cssclass="detail_title" left="2" top="224" width="130" height="29" style="background:#f7f7f7ff;align:left;"/>
+                        <Static id="Static17" taborder="41" text="비고" cssclass="detail_title" left="2" top="252" width="130" height="29" style="align:left;"/>
+                        <Static id="Static18" taborder="42" text="회계단위명" cssclass="detail_title" left="343" top="0" width="130" height="29" style="background:#f7f7f7ff;border:1 solid #e6e6e6ff ;color:#313131ff;align:left;"/>
+                        <Edit id="edt_acntUntNm" taborder="1" left="476" top="4" width="205" height="21" style="border:1 solid #ccccccff ;"/>
+                        <Static id="Static19" taborder="43" text="합산여부" cssclass="detail_title" left="684" top="0" width="130" height="29" style="align:left;"/>
+                        <Combo id="cmb_addYn" taborder="2" innerdataset="@ds_addYn" codecolumn="code" datacolumn="name" onitemchanged="Tab00_tabpage1_div_info_cmb_drcrCd1_onitemchanged" left="817" top="4" width="207" height="21"/>
+                        <Static id="Static20" taborder="44" text="영문명" cssclass="detail_title" left="343" top="28" width="130" height="29" style="align:left;"/>
+                        <Static id="Static21" taborder="45" text="법인번호" cssclass="detail_title" left="343" top="56" width="130" height="29" style="align:left;"/>
+                        <Static id="Static22" taborder="46" text="주소" cssclass="detail_title" left="343" top="84" width="130" height="29" style="align:left;"/>
+                        <Static id="Static23" taborder="47" text="대표자명" cssclass="detail_title" left="684" top="28" width="130" height="29" style="align:left;"/>
+                        <Static id="Static25" taborder="48" text="전화번호" cssclass="detail_title" left="684" top="56" width="130" height="29" style="align:left;"/>
+                        <Edit id="edt_univNm" taborder="3" left="135" top="32" width="205" height="21" style="border:1 solid #ccccccff ;"/>
+                        <Button id="btn_popBfAcnt" taborder="49" onclick="btn_pfm_reqAcDd_onclick" cssclass="popupDetail" left="318" top="88" width="22" height="21" tooltiptype="hover" tooltiptext="초기화" userBtnAuth="S"/>
+                        <Edit id="edt_univEnm" taborder="4" left="476" top="32" width="205" height="21" style="border:1 solid #ccccccff ;"/>
+                        <Edit id="edt_prsdtNm" taborder="5" left="817" top="32" width="207" height="21" style="border:1 solid #ccccccff ;"/>
+                        <Edit id="edt_telNo" taborder="8" left="817" top="60" width="207" height="21" style="border:1 solid #ccccccff ;"/>
+                        <MaskEdit id="msk_corpNo" taborder="7" mask="#####-#####" autoselect="true" left="476" top="60" width="205" height="21" type="string" limitbymask="both"/>
+                        <Edit id="wkty" taborder="13" left="135" top="172" width="205" height="21" style="border:1 solid #ccccccff ;"/>
+                        <Static id="Static26" taborder="50" text="종목" cssclass="detail_title" left="343" top="168" width="130" height="29" style="align:left;"/>
+                        <Static id="Static27" taborder="51" text="세무서명" cssclass="detail_title" left="343" top="196" width="130" height="29" style="align:left;"/>
+                        <Static id="Static28" taborder="52" text="폐쇄년도" cssclass="detail_title" left="343" top="224" width="130" height="29" style="align:left;"/>
+                        <Edit id="edt_txofcNo" taborder="15" left="135" top="200" width="205" height="21" style="border:1 solid #ccccccff ;"/>
+                        <Spin id="spn_creYy" taborder="18" value="0" left="135" top="228" width="206" height="21"/>
+                        <Spin id="spn_closeYy" taborder="19" value="0" left="476" top="228" width="206" height="21"/>
+                        <Edit id="edt_knd" taborder="14" left="476" top="172" width="205" height="21" style="border:1 solid #ccccccff ;"/>
+                        <Edit id="edt_txofcNm" taborder="16" left="476" top="200" width="205" height="21" style="border:1 solid #ccccccff ;"/>
+                        <Static id="Static29" taborder="53" text="사용여부" cssclass="detail_title" left="684" top="196" width="130" height="29" style="align:left;"/>
+                        <Static id="Static31" taborder="54" text="정렬순서" cssclass="detail_title" left="684" top="224" width="130" height="29" style="align:left;"/>
+                        <Combo id="cmb_useYn" taborder="17" innerdataset="@ds_useYn" codecolumn="code" datacolumn="name" onitemchanged="Tab00_tabpage1_div_info_Combo01_onitemchanged" left="817" top="200" width="207" height="21"/>
+                        <Edit id="edt_sortOrd" taborder="20" left="817" top="228" width="207" height="21" style="border:1 solid #ccccccff ;"/>
+                        <MaskEdit id="msk_bizRegNo" taborder="6" mask="###-##-#####" autoselect="true" left="135" top="60" width="205" height="21" clipmode="includespace" limitbymask="both" type="string"/>
+                        <MaskEdit id="msk_zipNo" taborder="9" autoselect="true" left="135" top="88" width="185" height="21" limitbymask="both" type="string" mask="#####"/>
+                        <Static id="Static24" taborder="55" text="회계단위ID" cssclass="detail_title" left="2" top="0" width="130" height="29" style="align:left;"/>
+                        <Static id="Static39" taborder="56" cssclass="tipGuide" visible="false" left="132" top="1" width="3" height="281"/>
+                        <Static id="Static32" taborder="57" cssclass="tipGuide" visible="false" left="340" top="1" width="3" height="281"/>
+                        <Static id="Static33" taborder="58" cssclass="tipGuide" visible="false" left="473" top="1" width="3" height="281"/>
+                        <Static id="Static34" taborder="59" cssclass="tipGuide" visible="false" left="681" top="1" width="3" height="281"/>
+                        <Static id="Static35" taborder="60" cssclass="tipGuide" visible="false" left="814" top="1" width="3" height="281"/>
+                        <Edit id="edt_addrDet" taborder="11" left="135" top="116" width="889" height="21" style="border:1 solid #ccccccff ;"/>
+                        <Edit id="edt_addrEng" taborder="12" left="135" top="144" width="889" height="21" style="border:1 solid #ccccccff ;"/>
+                        <Edit id="edt_addr" taborder="10" left="476" top="88" width="548" height="22" style="border:1 solid #ccccccff ;"/>
+                        <Edit id="edt_rmk" taborder="21" left="135" top="256" width="889" height="21" style="border:1 solid #ccccccff ;"/>
+                      </Layout>
+                    </Layouts>
+                  </Div>
+                </Layout>
+              </Layouts>
+            </Tabpage>
+            <Tabpage id="tabpage2" text="권한" style="background:transparent;">
+              <Layouts>
+                <Layout>
+                  <Static id="Static20" taborder="23" text="h15" visible="false" left="0" top="0" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+                  <Static id="Static22" taborder="24" text="h5" visible="false" left="0" top="37" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+                  <Button id="btn_new" taborder="25" text="추가" onclick="tab_tabpage2_btn_new_onclick" cssclass="new" top="15" right="140" width="60" height="22" tooltiptype="hover" tooltiptext="추가" userBtnAuth="S"/>
+                  <Button id="btn_del" taborder="26" text="삭제" onclick="tab_tabpage2_btn_del_onclick" cssclass="del" top="15" right="78" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" userBtnAuth="S"/>
+                  <Button id="btn_save" taborder="27" text="저장" onclick="tab_tabpage2_btn_save_onclick" cssclass="save" top="15" right="16" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S"/>
+                  <Static id="Static21" taborder="28" text="w&#13;&#10;15" visible="false" top="7" right="0" width="15" height="284" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+                  <Static id="Static01" taborder="29" text="h5" visible="false" left="915" top="262" width="8.9%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+                  <Static id="sta_grdMain" taborder="30" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" top="264" right="14" width="86" height="20" style="border:0 none #808080ff ;align:right middle;"/>
+                  <Static id="Static02" taborder="31" text="h5" visible="false" left="915" top="280" width="8.9%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+                  <Grid id="grd_auth" taborder="32" binddataset="ds_acntUntPerm" useinputpanel="false" autofittype="col" left="0%" top="42" right="1.37%" height="220" onexpandup="tab_tabpage2_grd_auth_onexpandup" onkeyup="tab_tabpage2_grd_auth_onkeyup" autoenter="select">
+                    <Formats>
+                      <Format id="default">
+                        <Columns>
+                          <Column size="35" band="left"/>
+                          <Column size="20" band="left"/>
+                          <Column size="30" band="left"/>
+                          <Column size="250"/>
+                          <Column size="440"/>
+                          <Column size="250"/>
+                        </Columns>
+                        <Rows>
+                          <Row size="24" band="head"/>
+                          <Row size="24"/>
+                        </Rows>
+                        <Band id="head">
+                          <Cell/>
+                          <Cell col="1" displaytype="checkbox" edittype="checkbox"/>
+                          <Cell col="2" text="순번"/>
+                          <Cell col="3" text="권한ID"/>
+                          <Cell col="4" text="권한명"/>
+                          <Cell col="5" text="권한유형"/>
+                        </Band>
+                        <Band id="body">
+                          <Cell displaytype="image" text="bind:rowStatus" expr="expr:rowStatus==2?&quot;URL('theme://images/ico_i.png')&quot;:rowStatus==4?&quot;URL('theme://images/ico_u.png')&quot;:rowStatus==8?&quot;URL('theme://images/ico_d.png')&quot;:&quot;&quot;"/>
+                          <Cell col="1" displaytype="checkbox" edittype="checkbox" text="bind:chk"/>
+                          <Cell col="2" text="expr:currow + 1"/>
+                          <Cell col="3" edittype="normal" text="bind:permId" expandshow="show" expandimage="URL('theme://images\ico_expand.png')"/>
+                          <Cell col="4" edittype="normal"/>
+                          <Cell col="5" displaytype="combo" edittype="combo" text="bind:mgtCd" combodataset="ds_authGb" combocodecol="cd" combodatacol="nm"/>
+                        </Band>
+                      </Format>
+                    </Formats>
+                  </Grid>
+                </Layout>
+              </Layouts>
+            </Tabpage>
+            <Tabpage id="tabpage3" text="합산회계">
+              <Layouts>
+                <Layout>
+                  <Static id="Static20" taborder="20" text="h15" visible="false" left="0" top="0" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+                  <Static id="Static22" taborder="21" text="h5" visible="false" left="0" top="37" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+                  <Button id="btn_new" taborder="22" text="추가" onclick="tab_tabpage3_btn_new_onclick" cssclass="new" top="15" right="140" width="60" height="22" tooltiptype="hover" tooltiptext="추가" userBtnAuth="S"/>
+                  <Button id="btn_del" taborder="23" text="삭제" onclick="tab_tabpage3_btn_del_onclick" cssclass="del" top="15" right="78" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" userBtnAuth="S"/>
+                  <Button id="btn_save" taborder="24" text="저장" onclick="tab_tabpage3_btn_save_onclick" cssclass="save" top="15" right="16" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S"/>
+                  <Static id="Static21" taborder="25" text="w&#13;&#10;15" visible="false" top="7" right="0" width="15" height="284" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+                  <Static id="Static01" taborder="26" text="h5" visible="false" left="915" top="263" width="8.9%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+                  <Static id="sta_grdMain" taborder="27" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" top="265" right="15" width="86" height="20" style="border:0 none #808080ff ;align:right middle;"/>
+                  <Static id="Static02" taborder="28" text="h5" visible="false" left="915" top="281" width="8.9%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+                  <Grid id="grd_addAcntUnt" taborder="29" binddataset="ds_acntUntAdd" useinputpanel="false" autofittype="col" left="0%" top="42" right="1.47%" height="221">
+                    <Formats>
+                      <Format id="default">
+                        <Columns>
+                          <Column size="35" band="left"/>
+                          <Column size="20" band="left"/>
+                          <Column size="30" band="left"/>
+                          <Column size="940"/>
+                        </Columns>
+                        <Rows>
+                          <Row size="24" band="head"/>
+                          <Row size="24"/>
+                        </Rows>
+                        <Band id="head">
+                          <Cell/>
+                          <Cell col="1" displaytype="checkbox" edittype="checkbox"/>
+                          <Cell col="2" text="순번"/>
+                          <Cell col="3" text="회계단위"/>
+                        </Band>
+                        <Band id="body">
+                          <Cell displaytype="image" text="bind:rowStatus" expr="expr:rowStatus==2?&quot;URL('theme://images/ico_i.png')&quot;:rowStatus==4?&quot;URL('theme://images/ico_u.png')&quot;:rowStatus==8?&quot;URL('theme://images/ico_d.png')&quot;:&quot;&quot;"/>
+                          <Cell col="1" displaytype="checkbox" edittype="checkbox" text="bind:chk"/>
+                          <Cell col="2" text="expr:currow + 1"/>
+                          <Cell col="3" displaytype="combo" edittype="combo" text="bind:addAcntUnt" combodataset="ds_addAcntUntCmb" combocodecol="cd" combodatacol="nm" combodisplayrowcount="0"/>
+                        </Band>
+                      </Format>
+                    </Formats>
+                  </Grid>
+                </Layout>
+              </Layouts>
+            </Tabpage>
+          </Tabpages>
+        </Tab>
+        <Button id="btn_new" taborder="18" text="추가" cssclass="new" top="57" right="77" width="60" height="22" tooltiptype="hover" tooltiptext="추가" userBtnAuth="S" onclick="btn_new_onclick"/>
+        <Static id="Static21" taborder="19" text="w&#13;&#10;15" visible="false" top="25" right="0" width="15" height="819" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_addAcntUntCmb"/>
+      <Dataset id="ds_acntUnt" onrowposchanged="ds_acntUnt_onrowposchanged" useclientlayout="false" updatecontrol="true" loadfiltermode="keep" loadkeymode="keep" preload="false" reversesubsum="false" enableevent="true" firefirstcount="0">
+        <ColumnInfo>
+          <Column id="acntUnt" type="STRING" size="256"/>
+          <Column id="acntUntNm" type="STRING" size="256"/>
+          <Column id="addYn" type="STRING" size="256"/>
+          <Column id="univNm" type="STRING" size="256"/>
+          <Column id="univEnm" type="STRING" size="256"/>
+          <Column id="prsdtNm" type="STRING" size="256"/>
+          <Column id="bizRegNo" type="STRING" size="256"/>
+          <Column id="corpNo" type="STRING" size="256"/>
+          <Column id="telNo" type="STRING" size="256"/>
+          <Column id="zipNo" type="STRING" size="256"/>
+          <Column id="addr" type="STRING" size="256"/>
+          <Column id="addrDet" type="STRING" size="256"/>
+          <Column id="addrEng" type="STRING" size="256"/>
+          <Column id="wkty" type="STRING" size="256"/>
+          <Column id="knd" type="STRING" size="256"/>
+          <Column id="txofcNo" type="STRING" size="256"/>
+          <Column id="txofcNm" type="STRING" size="256"/>
+          <Column id="useYn" type="STRING" size="256"/>
+          <Column id="creYy" type="STRING" size="256"/>
+          <Column id="closeYy" type="STRING" size="256"/>
+          <Column id="sortOrd" type="STRING" size="256"/>
+          <Column id="rmk" type="STRING" size="256"/>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_acntUntCmb"/>
+      <Dataset id="ds_useYn">
+        <ColumnInfo>
+          <Column id="code" type="STRING" size="256"/>
+          <Column id="name" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="code">1</Col>
+            <Col id="name">예</Col>
+          </Row>
+          <Row>
+            <Col id="code">0</Col>
+            <Col id="name">아니오</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_acntUntPerm">
+        <ColumnInfo>
+          <Column id="acntUnt" type="STRING" size="256"/>
+          <Column id="permId" type="STRING" size="256"/>
+          <Column id="mgtCd" type="STRING" size="256"/>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="permIdKey" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_acntUntAdd">
+        <ColumnInfo>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="acntUnt" type="STRING" size="256"/>
+          <Column id="addAcntUnt" type="STRING" size="256"/>
+          <Column id="addAcntUntKey" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_addYn">
+        <ColumnInfo>
+          <Column id="code" type="STRING" size="256"/>
+          <Column id="name" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="code">0</Col>
+            <Col id="name">단위회계</Col>
+          </Row>
+          <Row>
+            <Col id="code">1</Col>
+            <Col id="name">합산회계</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_authGb">
+        <ColumnInfo>
+          <Column id="cd" type="STRING" size="256"/>
+          <Column id="nm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="cd">1</Col>
+            <Col id="nm">일반사용자</Col>
+          </Row>
+          <Row>
+            <Col id="nm">관리자</Col>
+            <Col id="cd">2</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Bind>
+      <BindItem id="item0" compid="tab.tabpage1.div_info.edt_acntUnt" propid="value" datasetid="ds_acntUnt" columnid="acntUnt"/>
+      <BindItem id="item1" compid="tab.tabpage1.div_info.edt_univNm" propid="value" datasetid="ds_acntUnt" columnid="univNm"/>
+      <BindItem id="item2" compid="tab.tabpage1.div_info.msk_bizRegNo" propid="value" datasetid="ds_acntUnt" columnid="bizRegNo"/>
+      <BindItem id="item3" compid="tab.tabpage1.div_info.edt_acntUntNm" propid="value" datasetid="ds_acntUnt" columnid="acntUntNm"/>
+      <BindItem id="item4" compid="tab.tabpage1.div_info.edt_univEnm" propid="value" datasetid="ds_acntUnt" columnid="univEnm"/>
+      <BindItem id="item5" compid="tab.tabpage1.div_info.msk_corpNo" propid="value" datasetid="ds_acntUnt" columnid="corpNo"/>
+      <BindItem id="item6" compid="tab.tabpage1.div_info.edt_addr" propid="value" datasetid="ds_acntUnt" columnid="addr"/>
+      <BindItem id="item7" compid="tab.tabpage1.div_info.edt_telNo" propid="value" datasetid="ds_acntUnt" columnid="telNo"/>
+      <BindItem id="item8" compid="tab.tabpage1.div_info.edt_prsdtNm" propid="value" datasetid="ds_acntUnt" columnid="prsdtNm"/>
+      <BindItem id="item9" compid="tab.tabpage1.div_info.cmb_addYn" propid="value" datasetid="ds_acntUnt" columnid="addYn"/>
+      <BindItem id="item10" compid="tab.tabpage1.div_info.msk_zipNo" propid="value" datasetid="ds_acntUnt" columnid="zipNo"/>
+      <BindItem id="item11" compid="tab.tabpage1.div_info.edt_addrDet" propid="value" datasetid="ds_acntUnt" columnid="addrDet"/>
+      <BindItem id="item12" compid="tab.tabpage1.div_info.edt_addrEng" propid="value" datasetid="ds_acntUnt" columnid="addrEng"/>
+      <BindItem id="item13" compid="tab.tabpage1.div_info.wkty" propid="value" datasetid="ds_acntUnt" columnid="wkty"/>
+      <BindItem id="item14" compid="tab.tabpage1.div_info.edt_txofcNo" propid="value" datasetid="ds_acntUnt" columnid="txofcNo"/>
+      <BindItem id="item15" compid="tab.tabpage1.div_info.spn_creYy" propid="value" datasetid="ds_acntUnt" columnid="creYy"/>
+      <BindItem id="item16" compid="tab.tabpage1.div_info.edt_rmk" propid="value" datasetid="ds_acntUnt" columnid="rmk"/>
+      <BindItem id="item17" compid="tab.tabpage1.div_info.spn_closeYy" propid="value" datasetid="ds_acntUnt" columnid="closeYy"/>
+      <BindItem id="item18" compid="tab.tabpage1.div_info.edt_txofcNm" propid="value" datasetid="ds_acntUnt" columnid="txofcNm"/>
+      <BindItem id="item19" compid="tab.tabpage1.div_info.edt_knd" propid="value" datasetid="ds_acntUnt" columnid="knd"/>
+      <BindItem id="item20" compid="tab.tabpage1.div_info.cmb_useYn" propid="value" datasetid="ds_acntUnt" columnid="useYn"/>
+      <BindItem id="item21" compid="tab.tabpage1.div_info.edt_sortOrd" propid="value" datasetid="ds_acntUnt" columnid="sortOrd"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[// [프로젝트]	동의대학교 예산회계시스템 구축
+// [시스템명]	행정
+// [부시스템]	예산관리
+// [프로그램]	기초정보 > 회계단위등록
+// [설명] 
+//	         
+// [작성자명]	라병수
+// [작성일자]	2015.11.26
+//////////////////////////////////[수정이력]//////////////////////////////////
+// [수정일자] 2015.11.26
+// [수 정 자] 라병수
+// [수정내용] 
+
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs"; 
+
+/******************************************************************************
+* 전역변수
+* 변수명
+******************************************************************************/ 
+var arrDsInit = Array(1);
+	arrDsInit[0]  = this.ds_acntUnt;
+	
+/******************************************************************************
+* 함 수 명 	: bg01010_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.bg01010_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+// 	var arrDataSet = Array(1);
+// 		arrDataSet[0]  = "ds_grdCloseGb";  			// 마감구분
+// 	
+// 	// 조회조건으로	넘어갈 공통코드	정의.(화면대로 순서꼭 지켜주세요.)
+// 	
+// 	var arrGrpCd = Array(1);
+// 		arrGrpCd[0]  = "ABG01"; 					//공통코드구분
+// 			
+// 	// 사용여부	지정할 아큐먼트를 넘긴다.
+// 	var arrUseYn =	Array(1);
+// 		arrUseYn[0]  =	"Y";
+// 	
+// 	// T:전체,S:선택,X:없음 
+// 	var arrModeFg =	Array(1);
+// 		arrModeFg[0]  =	"S";
+// 	
+// 	// WHERE절 내용 "X":없음
+// 	var arrWhere =	Array(1);
+// 		arrWhere[0]  =	"X";//ABB_CD IN ('S','K')
+// 		
+// 	/* 메소드명     : ComboLoad
+// 	 * 설명         : 공통코드 테이블을 조회하여 콤보박스를 생성한다.
+// 	 * 메소드인수1  : DataSet명의 배열
+// 	 * 메소드인수2  : 그룹코드번호의 배열
+// 	 * 메소드인수3  : 캠퍼스구분 배열 ("T":전체, "C":공통만, "S":서울, "K":경주)
+// 	 * 메소드인수4  : 조건문의 배열 (1:사용, 0:사용안함)
+// 	 * 메소드인수5  : 전체공란 첨부여부 "T": 전체, "S":선택, "X" : 데이터시작
+// 	 * 메소드인수6  : WHERE절 내용 "X":없음
+// 	 */
+// 
+//  	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+	//return ds,회계연도,권한적용여부,사용여부,합산회계여부,프로그램ID
+	//this.cfn_acntUntCombo("ds_acntUntCmb","","","","0","bg01010"); //회계단위콤보호출
+// 	var essGrd = new Array();
+// 		essGrd[0] = this.grd_acntUnt;
+// 		essGrd[1] = this.tab.tabpage2.grd_auth;
+// 		essGrd[2] = this.tab.tabpage3.grd_addAcntUnt;
+// 
+// 	this.gfn_essDataset(essGrd);
+// 	this.gfn_bindCmmnFunction();
+// 	
+ 	//return ds,회계연도,권한적용여부,사용여부,합산회계여부,프로그램ID
+ 	this.cfn_acntUntCombo("ds_addAcntUntCmb","","","","0","bg01010"); //회계단위콤보호출
+
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{	
+	var essGrd = new Array();
+		essGrd[0] = this.grd_acntUnt;
+		essGrd[1] = this.tab.tabpage2.grd_auth;
+		essGrd[2] = this.tab.tabpage3.grd_addAcntUnt;
+
+	this.gfn_essDataset(essGrd);
+	this.gfn_bindCmmnFunction();
+// 	
+// 	//return ds,회계연도,권한적용여부,사용여부,합산회계여부,프로그램ID
+// 	this.cfn_acntUntCombo("ds_addAcntUntCmb","","","","0","bg01010"); //회계단위콤보호출
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_search_onclick
+ * 함수설명 	: 조회버튼 클릭이벤트
+********************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preSearch
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preSearch = function()
+{
+	
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_search = function()
+{
+	//if(this.fn_preSearch()){
+		
+		this.gfn_transaction("SEARCH",
+							 "txComUrl::com/admi/selectAcntUntList.do",
+							 "",
+							 "ds_acntUnt=resultList",
+							 "",
+							 "fn_callBack");
+	//}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postSearch
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearch = function()
+{
+	this.gfn_getDatasetCount(this.ds_acntUnt, this.sta_grdMain);
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preSearchPerm
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preSearchPerm = function()
+{
+
+// 	if(this.gfn_isUpdate(this.ds_acntUntPerm)){
+// 		this.gfn_message("A", "변경된 데이터가 있습니다.");
+// 		return false;
+// 	}
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_searchPerm = function()
+{
+	if(this.fn_preSearchPerm()){
+		var strArg = "acntUnt=" + nexacro.wrapQuote(this.ds_acntUnt.getColumn(this.ds_acntUnt.rowposition,"acntUnt"));
+		this.gfn_transaction("SEARCHPERM",
+							 "txComUrl::com/admi/selectAcntPermList.do",
+							 "",
+							 "ds_acntUntPerm=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postSearchPerm
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearchPerm = function()
+{
+	this.gfn_getDatasetCount(this.ds_acntUntPerm, this.tab.tabpage2.sta_grdMain);
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preSearchAdd
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preSearchAdd = function()
+{
+// 	if(this.gfn_isUpdate(this.ds_acntUntAdd)){
+// 		this.gfn_message("A", "변경된 데이터가 있습니다.");
+// 		return false;
+// 	}
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_searchAdd
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_searchAdd = function()
+{
+	if(this.fn_preSearchAdd()){
+		var strArg = "acntUnt=" + nexacro.wrapQuote(this.ds_acntUnt.getColumn(this.ds_acntUnt.rowposition,"acntUnt"));
+		this.gfn_transaction("SEARCHADD",
+							 "txComUrl::com/admi/selectAcntAddList.do",
+							 "",
+							 "ds_acntUntAdd=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postSearchAdd
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearchAdd = function()
+{
+	this.gfn_getDatasetCount(this.ds_acntUntAdd, this.tab.tabpage3.sta_grdMain);
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_new_onclick
+ * 함수설명 	: Row를 추가한다.
+********************************************************************************/
+this.btn_new_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var nRow = this.ds_acntUnt.addRow();
+
+	this.ds_acntUnt.setColumn(nRow, "rowStatus", 2);
+	this.ds_acntUnt.setColumn(nRow, "addYn", "0");
+	this.ds_acntUnt.setColumn(nRow, "useYn", "1");
+	this.ds_acntUnt.setColumn(nRow, "creYy", this.gfn_getCurrentDate("YYYY"));
+	this.ds_acntUnt.setColumn(nRow, "closeYy", "9999");
+	if(this.ds_acntUnt.getRowCount() == 0){
+		this.ds_acntUnt.setColumn(this.ds_acntUnt.rowposition, "sortOrd", 10);
+	}else{
+		this.ds_acntUnt.setColumn(this.ds_acntUnt.rowposition, "sortOrd", parseInt(this.gfn_nvl(this.ds_acntUnt.getColumn(this.ds_acntUnt.rowposition-1, "sortOrd"),0))+10);
+	}
+	this.tab.tabindex = 0;
+	this.tab.tabpage1.div_info.edt_acntUnt.setFocus();
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_del_onclick
+ * 함수설명 	: 선택한 Data를 삭제한다.
+ *********************************************************************/
+this.btn_del_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_deleteRow(this.ds_acntUnt, "this.fn_save()");
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_save_onclick
+ * 함수설명 	: 저장버튼 클릭 event
+ *********************************************************************/
+this.btn_save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{	
+	this.fn_save();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_preSave
+ * 함수설명 	: DataSet을 저장 전 처리 함수.
+ *********************************************************************/
+this.fn_preSave = function()
+{
+	if(!this.gfn_isUpdate(this.ds_acntUnt)){
+		this.gfn_message("A", "변경된 데이터가 없습니다.");
+		return false;
+	}
+
+	/*
+	 * 필수값 입력 체크
+	 */
+	var colNm = "acntUnt";
+	var korNm = "회계단위";
+	var cmpNm = "$";
+	
+	var result = this.gfn_chkEssItem("ds_acntUnt", colNm, korNm, cmpNm);
+	if (result[0] != "success") {
+		this.gfn_message("A", result[0]);
+		this.ds_acntUnt.set_rowposition(result[1]);
+		if(result[3] != ""){
+			this.objects[result[3]].setFocus();
+		}
+		return false;	
+	}
+	return true;
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_save
+ * 함수설명 	: DataSet을 저장한다.
+ *********************************************************************/
+this.fn_save = function()
+{
+	if(this.fn_preSave()){
+		this.gfn_transaction("SAVE",
+							 "txComUrl::com/admi/saveAcntUntList.do",
+							 "resultList=ds_acntUnt:u",
+							 "",
+							 "",
+							 "fn_callBack");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSave
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postSave = function()
+{
+	this.gfn_message("A", "저장이 완료되었습니다.");
+	this.fn_search();
+}
+
+/********************************************************************************
+ * 함 수 명 	: tab_tabpage2_btn_new_onclick Perm
+ * 함수설명 	: Row를 추가한다.
+********************************************************************************/
+this.tab_tabpage2_btn_new_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_addRow(this.ds_acntUntPerm);
+	this.ds_acntUntPerm.setColumn(this.ds_acntUntPerm.rowposition,"acntUnt",this.ds_acntUnt.getColumn(this.ds_acntUnt.rowposition,"acntUnt"));
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_del_onclick Perm
+ * 함수설명 	: 선택한 Data를 삭제한다.
+ *********************************************************************/
+this.tab_tabpage2_btn_del_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_deleteRow(this.ds_acntUntPerm, "this.fn_savePerm()");
+}
+
+/*********************************************************************
+ * 함 수 명 	: tab_tabpage2_btn_save_onclick Perm
+ * 함수설명 	: 저장버튼 클릭 event
+ *********************************************************************/
+this.tab_tabpage2_btn_save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{	
+	this.fn_savePerm();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_preSavePerm
+ * 함수설명 	: DataSet을 저장 전 처리 함수.
+ *********************************************************************/
+this.fn_preSavePerm = function()
+{
+	if(!this.gfn_isUpdate(this.ds_acntUntPerm)){
+		this.gfn_message("A", "변경된 데이터가 없습니다.");
+		return false;
+	}
+
+	/*
+	 * 필수값 입력 체크
+	 */
+	var colNm = "acntUnt$permId";
+	var korNm = "회계단위ID$권한ID";
+	var cmpNm = "$";
+	
+	var result = this.gfn_chkEssItem("ds_acntUntPerm", colNm, korNm, cmpNm);
+	if (result[0] != "success") {
+		this.gfn_message("A", result[0]);
+		this.ds_acntUntPerm.set_rowposition(result[1]);
+		if(result[3] != ""){
+			this.objects[result[3]].setFocus();
+		}
+		return false;	
+	}
+	return true;
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_savePerm
+ * 함수설명 	: DataSet을 저장한다.
+ *********************************************************************/
+this.fn_savePerm = function()
+{
+	if(this.fn_preSavePerm()){
+		this.gfn_transaction("SAVEPERM",
+							 "txComUrl::com/admi/saveAcntPermList.do",
+							 "resultList=ds_acntUntPerm:u",
+							 "",
+							 "",
+							 "fn_callBack");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSavePerm
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postSavePerm = function()
+{
+	this.gfn_message("A", "저장이 완료되었습니다.");
+	this.fn_searchPerm();
+}
+
+/********************************************************************************
+ * 함 수 명 	: tab_tabpage3_btn_new_onclick
+ * 함수설명 	: Row를 추가한다.
+********************************************************************************/
+this.tab_tabpage3_btn_new_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_addRow(this.ds_acntUntAdd);
+	this.ds_acntUntAdd.setColumn(this.ds_acntUntAdd.rowposition,"acntUnt",this.ds_acntUnt.getColumn(this.ds_acntUnt.rowposition,"acntUnt"));
+	//return ds,회계연도,권한적용여부,사용여부,합산회계여부,프로그램ID
+	this.cfn_acntUntCombo("ds_addAcntUntCmb","","","","0","bg01010"); //회계단위콤보호출
+}
+
+/*********************************************************************
+ * 함 수 명 	: tab_tabpage3_btn_del_onclick
+ * 함수설명 	: 선택한 Data를 삭제한다.
+ *********************************************************************/
+this.tab_tabpage3_btn_del_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_deleteRow(this.ds_acntUntAdd, "this.fn_saveAdd()");
+}
+
+/*********************************************************************
+ * 함 수 명 	: tab_tabpage3_btn_save_onclick
+ * 함수설명 	: 저장버튼 클릭 event
+ *********************************************************************/
+this.tab_tabpage3_btn_save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{	
+	this.fn_saveAdd();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_preSaveAdd
+ * 함수설명 	: DataSet을 저장 전 처리 함수.
+ *********************************************************************/
+this.fn_preSaveAdd = function()
+{
+	if(!this.gfn_isUpdate(this.ds_acntUntAdd)){
+		this.gfn_message("A", "변경된 데이터가 없습니다.");
+		return false;
+	}
+
+	/*
+	 * 필수값 입력 체크
+	 */
+	var colNm = "acntUnt$addAcntUnt";
+	var korNm = "회계단위ID$합산회계단위ID";
+	var cmpNm = "$";
+	
+	var result = this.gfn_chkEssItem("ds_acntUntAdd", colNm, korNm, cmpNm);
+	if (result[0] != "success") {
+		this.gfn_message("A", result[0]);
+		this.ds_acntUntAdd.set_rowposition(result[1]);
+		if(result[3] != ""){
+			this.objects[result[3]].setFocus();
+		}
+		return false;	
+	}
+	return true;
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_saveAdd
+ * 함수설명 	: DataSet을 저장한다.
+ *********************************************************************/
+this.fn_saveAdd = function()
+{
+	if(this.fn_preSaveAdd()){
+		this.gfn_transaction("SAVE",
+							 "txComUrl::com/admi/saveAcntAddList.do",
+							 "resultList=ds_acntUntAdd:u",
+							 "",
+							 "",
+							 "fn_callBack");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSaveAdd
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postSaveAdd = function()
+{
+	this.gfn_message("A", "저장이 완료되었습니다.");
+	this.fn_searchAdd();
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_copy_onclick
+ * 함수설명 	: 전년도 자료 복사 한다.
+ *********************************************************************/
+this.btn_copy_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.alert("개발중입니다");
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.gfn_message("A", errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		} else if(trId == "SEARCH"){
+			this.fn_postSearch();
+		} else if(trId == "SEARCHPERM"){
+			this.fn_postSearchPerm();
+		} else if(trId == "SEARCHADD"){
+			this.fn_postSearchAdd();
+		} else if(trId == "SAVE"){
+			this.fn_postSave();
+		} else if(trId == "SAVEPERM"){
+			this.fn_postSavePerm();
+		} else if(trId == "SAVEADD"){
+			this.fn_postSaveAdd();
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: grd_acnt_onkeydown
+ * 함수설명 	: 그리드 키 입력시
+ *********************************************************************/
+this.grd_acnt_onkeydown = function(obj:Grid, e:nexacro.KeyEventInfo)
+{
+	this.gfn_gridOnkeydown(obj, e);
+}
+
+/*********************************************************************
+ * 함 수 명 	: bg01010_onclose
+ * 함수설명 	: 화면 종료 전 변경사항 확인
+ *********************************************************************/
+this.bg01010_onclose = function(obj:Form, e:nexacro.CloseEventInfo)
+{
+
+	switch(this.tab.tabindex) {
+		case 0:	//상세정보
+			this.gfn_isUpdate(this.ds_acntUnt);
+			break;
+		case 1://권한탭
+			this.gfn_isUpdate(this.ds_acntUntPerm);
+			break;
+		case 2://합산회계
+			this.gfn_isUpdate(this.ds_acntUntAdd);
+			break;
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: tab_canchange
+ * 함수설명 	: tab 변경전 이벤트
+ *********************************************************************/
+this.tab_canchange = function(obj:Tab, e:nexacro.TabIndexChangeEventInfo)
+{
+	if(e.postindex == 2){
+		if(this.ds_acntUnt.getColumn(this.ds_acntUnt.rowposition,"addYn") < 1 ){
+			this.gfn_message("A", "합산여부를 확인해주세요");
+			return false;
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: tab_onchanged
+ * 함수설명 	: tab 변경후 조회 이벤트
+ *********************************************************************/
+this.tab_onchanged = function(obj:Tab, e:nexacro.TabIndexChangeEventInfo)
+{
+	switch(this.tab.tabindex) {
+// 		case 0:	//상세정보
+// 			this.fn_search();
+// 			break;
+		case 1://권한탭
+			this.fn_searchPerm();
+			break;
+		case 2://합산회계
+			this.fn_searchAdd();
+			break;
+	}	
+}
+
+/*********************************************************************
+ * 함 수 명 	: ds_acntUnt_onrowposchanged
+ * 함수설명 	: 메인그리드 로우 변경후 조회 이벤트
+ *********************************************************************/
+this.ds_acntUnt_onrowposchanged = function(obj:Dataset, e:nexacro.DSRowPosChangeEventInfo)
+{
+	this.tab_onchanged();
+}
+
+/*********************************************************************
+ * 함 수 명 	: tab_tabpage2_grd_auth_onkeyup
+ * 함수설명 	: 권한 팝업 호출
+ *********************************************************************/
+this.tab_tabpage2_grd_auth_onkeyup = function(obj:Grid, e:nexacro.KeyEventInfo)
+{
+	var argumentsList = new Array();
+	
+	if(obj.getBindCellIndex("body","permId") == obj.currentcell){
+		if(e.keycode == 13) this.cfn_bgAuthPopup(argumentsList, "fn_bgAuthPopCallBack");
+	} 
+}
+
+/*********************************************************************
+ * 함 수 명 	: tab_tabpage2_grd_auth_onexpandup
+ * 함수설명 	: 권한 팝업 호출
+ *********************************************************************/
+this.tab_tabpage2_grd_auth_onexpandup = function(obj:Grid, e:nexacro.GridMouseEventInfo)
+{
+	var argumentsList = new Array();
+	
+	//argumentsList['acYy']   = this.div_search.div_sch_acYy.fn_valueReturn();	// 예산연도
+	//argumentsList['abg']   = this.div_search.edt_sch_reqAcDdCd.value;	// 예산 계정명 or 코드
+	
+	this.cfn_rolePopup(argumentsList, "fn_bgAuthPopCallBack");
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_bgAuthPopCallBack
+ * 함수설명 	: 상위예산계정 팝업 리턴
+ *********************************************************************/
+this.fn_bgAuthPopCallBack = function(strID, rtnVal)
+{
+	if(rtnVal == "close"){
+		return;
+	}
+	
+	//Dataset을 return 할 경우
+// 	this.ds_dummy.clear();
+// 	this.ds_dummy.loadXML(rtnVal);
+	
+// 	if(this.ds_dummy.getColumn(0, "levl") < "30") {	// 목 상위단이면
+// 		this.gfn_message("A", "'목' 하위단으로 선택해야 합니다.");
+// 		return false;
+// 	}
+	
+// 	this.div_search.edt_sch_reqAcDdCd.set_value(this.ds_dummy.getColumn(0, "abgCd"));
+// 	this.div_search.edt_sch_reqAcDdNm.set_value(this.ds_dummy.getColumn(0, "accntDdNm"));
+	
+	//this.fn_sum();
+}
+
+
+]]></Script>
+  </Form>
+</FDL>

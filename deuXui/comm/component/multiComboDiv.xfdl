@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="multiComboDiv" classname="multiComboPop" left="0" top="0" width="225" height="21" titletext="멀티콤보컴포넌트" onload="multiComboDiv_onload">
+    <Layouts>
+      <Layout>
+        <Edit id="edt_codeNm" taborder="4" left="0" top="0" width="206" height="22" readonly="true"/>
+        <Button id="btn_cmb" taborder="5" cssclass="multiCb" left="205" top="0" width="20" height="22" userBtnAuth="R" onclick="btn_cmb_onclick"/>
+        <Edit id="edt_code" taborder="6" left="367" top="6" width="140" height="20" visible="false"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_multi"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : com01002.xfdl
+* 화면설명     : 우편번호관리
+* 작성자       : 최용현
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.05.01     최용현         최초생성
+* 2015.05.09     최용현         주석 수정
+******************************************************************************/
+include "commJs::commonUtils.xjs";
+
+this.multiComboDiv_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	if(!this.gfn_isNull(this.comCod)){
+		if(this.allGb == "S"){
+			this.allGb = "T";
+		}
+		this.fn_searchCommonCode();
+	}
+	
+	if(!this.gfn_isNull(this.callFunc)){
+		eval("this."+this.callFunc);
+		
+		var objDs = this.parent.parent.objects[this.bindDataset];
+		objDs.addColumn("chk", "string");
+	}
+}
+
+this.fn_postLoad = function()
+{
+	var objDs = this.parent.parent.objects[this.bindDataset];
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_searchCommonCode
+ * 함수설명 	: 공통코드 조회 함수.
+ *********************************************************************/
+this.fn_searchCommonCode = function()
+{
+	var arrDataSet = Array();
+		arrDataSet[0]  = this.bindDataset;  			//binddataset
+	
+	// 조회조건으로	넘어갈 공통코드	정의.(화면대로 순서꼭 지켜주세요.)
+	
+	var arrGrpCd = Array();
+		arrGrpCd[0]  = this.comCod; //공통코드구분
+			
+	// 사용여부	지정할 아큐먼트를 넘긴다.
+	var arrUseYn =	Array();
+		arrUseYn[0]  =	this.useYn;
+	
+	// T:전체,S:선택,X:없음 
+	var arrModeFg =	Array();
+		arrModeFg[0]  =	this.allGb;
+
+	
+	// WHERE절 내용 "X":없음
+	var arrWhere =	Array();
+		arrWhere[0]  =	this.whereGb;
+		
+	/* 메소드명     : ComboLoad
+	 * 설명         : 공통코드 테이블을 조회하여 콤보박스를 생성한다.
+	 * 메소드인수1  : DataSet명의 배열
+	 * 메소드인수2  : 그룹코드번호의 배열
+	 * 메소드인수3  : 캠퍼스구분 배열 ("T":전체, "C":공통만, "S":서울, "K":경주)
+	 * 메소드인수4  : 조건문의 배열 (1:사용, 0:사용안함)
+	 * 메소드인수5  : 전체공란 첨부여부 "T": 전체, "S":선택, "X" : 데이터시작
+	 * 메소드인수6  : WHERE절 내용 "X":없음
+	 */
+
+ 	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_cmb_onclick
+ * 함수설명 	: 콤보 dropdown버튼 클릭 함수.
+ *********************************************************************/
+this.btn_cmb_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	application.gv_multiDsNm =  this.bindDataset;	//글로벌 변수에 멀티 데이터셋 지정
+	application.gv_multiColNm = this.dataColumn;	//글로벌 변수에 멀티 데이터셋 바인딩 컬럼 지정
+	
+	var height = 160;
+	
+	var objDs = this.parent.parent.objects[this.bindDataset];
+	height = (objDs.getRowCount() * 24)+40;
+	
+	if(height > 240){
+		height = 270;
+	}
+	this.gfn_callPopupDiv("multiComboPopDiv", "absolute", e.screenX, e.screenY, "component::multiComboPop.xfdl", "this.edt_codeNm", 0, 22, 230, height, "'fn_popDivCallBack'");
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_popDivCallBack
+ * 함수설명 	: 콤보 dropdown callback 함수.
+ *********************************************************************/
+this.fn_popDivCallBack = function(svcId, msg)
+{
+	application.gv_multiDsNm = "";	//글로벌 변수 초기화
+	application.gv_multiColNm = ""; //글로벌 변수 초기화
+	
+	this.ds_multi.loadXML(msg);	
+	
+	var rtlNm  = "";
+	var rtlVal = "";	
+	
+	for(var i=0; i<this.ds_multi.getRowCount(); i++){
+		rtlNm += this.ds_multi.getColumn(i, this.dataColumn)+", ";
+		rtlVal += "'"+this.ds_multi.getColumn(i, this.codeColumn)+"', ";
+	}
+	
+	rtlNm = rtlNm.substring(0, rtlNm.length-2);
+	rtlVal = rtlVal.substring(0, rtlVal.length-2);
+	
+	if(rtlNm.indexOf("전체")>= 0){
+		this.edt_code.set_value("");
+		this.edt_codeNm.set_value("전체");
+	}else{
+		this.edt_code.set_value(rtlVal);
+		this.edt_codeNm.set_value(rtlNm);
+	}
+		
+	
+	if(!this.gfn_isNull(this.callbackFunc)){
+		this.fn_callFunction(this.callbackFunc);
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callFunction
+ * 함수설명 	: 펑션 호출하기
+ *********************************************************************/
+this.fn_callFunction = function(fncNm)
+{
+	var parentStr = this.gfn_searchParent(fncNm);
+	
+	if(this.gfn_isNull(eval("this." + parentStr)[fncNm])==false)
+	{
+		eval("this." + parentStr +"."+fncNm+"(this)");
+	}
+}]]></Script>
+  </Form>
+</FDL>

@@ -1,0 +1,3492 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script type="xscript5.0"><![CDATA[/******************************************************************************
+    gfn_addRow             : dataset에 row를 추가한다.
+    gfn_deleteRow          : 선택한 row를 삭제한다.
+    gfn_isUpdate           : dataSet의 update유무 확인
+    gfn_transaction        : 서버와의 통신 서비스, 콜백 함수 지정
+    gfn_callBack           : 서버와의 통신 후 콜백 함수
+    gfn_comboLoad          : 공통코드를 조회한다.
+    gfn_unload             : 폼 unload시 gds_open을 클리어한다.
+    gfn_isNull             : variable의 Null을 체크한다.
+    gfn_isEmpty            : 입력값이 Null이거나 빈값인지 체크한다.
+    gfn_popupOpen          : 팝업화면을 호출한다.
+    gfn_windowOpen         : 팝업화면을 호출한다.
+    gfn_jojikPopupOpen     : 조직도 팝업화면을 호출한다.
+    gfn_findMajorCode      : 대표전공코드를 조회한다.
+    gfn_findSysCombo       : 시스템코드를 조회한다.
+    gfn_findSubCombo       : 서브시스템코드를 조회한다.
+    gfn_findMenuCombo      : 메뉴를 조회한다.
+    gfn_findProgCombo	   : 프로그램을 조회한다.
+    gfn_findCampusCombo    : 캠퍼스를 조회한다.
+    gfn_cntStr             : 토큰으로 나눈 문자열 총수 카운트.
+    gfn_chkValidation      : 데이터 중복체크를 한다.
+    gfn_chkEssItem         : 저장 시 필수입력 컬럼체크
+    gfn_nvl                : 입력값이 존재하는지를 판단하여 존재하는 경우 입력값을 그대로 반환, 그렇지 않으면 두 번째 파라미터를 반환하는 함수
+    gfn_getNullToEmpty     : 입력한 문자열이 Null인 경우 빈값을 반환한다.
+    gfn_getCurrentDate     : DB server의 현재 시간을 가져온다.
+    gfn_message            : 구분값에 따라 메세지처리를 한다.
+    gfn_essDataset         : 필수 dataset을 지정한다.
+    gfn_isClose            : form 종료 전 처리 함수
+    gfn_callPopupDiv       : popupDiv를 생성 및 호출한다.
+    gfn_excelDown          : grid를 excel로 export 한다.
+    gfn_getAuth            : 화면 컴포넌트의 권한을 확인한다.
+    gfn_addProgressBar     : progress bar 를 보여준다.
+    gfn_createProgressBar  : progress bar 를 생성한다.
+    gfn_removeProgressBar  : progress bar 를 제거한다.
+    gfn_filterDsCombo      : 콤보컴포넌트 변경시 연계콤보 처리 함수
+    gfn_filterDsGrid       : 그리드 콤보 변경시 연계콤보 처리 함수
+    gfn_openClipReport     : 레포트 출력 화면을 호출한다.(popup)
+    gfn_openClipReportForm : 레포트 출력 화면을 호출한다.(form)
+    gfn_excelUp            : excel을 grid에 import 한다.
+    gfn_excelUpSuccess     : excel import 성공 후 콜백 함수
+    gfn_excelUpError       : excel import 실패 후 콜백 함수
+    gfn_preChkDataset      : 미저장 데이터 유무를 체크한다.
+    gfn_selectDeptCdCmb    : 조직 코드를 조회한다.
+    gfn_searchParent       : function의 부모 찾기
+    gfn_between            : 두 값을 비교한다.
+    gfn_getDatasetCount       : dataset의 row를 count한다.
+    gfn_dragSplitter          : splitter를 사용하기 위한 drag event에서 호출
+    gfn_dropSplitter          : splitter를 사용하기 위한 drop event에서 호출
+    gfn_getCurProgInfo        : 현재 열려있는 화면의 MenuId/ProgId/year/termCd/scheduleCd를 조회한다.
+    gfn_isManager             : 접속한 사용자가 관리자인지 구분한다.
+    gfn_bussRegNoChk          : 사업자등록번호 또는 주민등록번호의 형식을 확인한다.
+    gfn_multiLang             : 화면을 다국어 처리한다.
+    gfn_searchFileDownloadPop : 파일 다운로드 팝업을 호출한다.
+    gfn_searchFileDownloadForm : 파일 다운로드 폼을 호출한다.
+    gfn_searchFileUploadPop    : 파일 업로드 팝업을 호출한다.
+    gfn_searchFileUploadForm   : 파일 업로드 폼을 호출한다.
+    gfn_loadWebEditor          : 웹에디터 화면에 데이터를 로드한다.
+    gfn_previewWebEditor       : 웹에디터 미리보기 화면을 로드한다.
+    gfn_previewWebEditorFile   : 웹에디터 미리보기 화면을 로드한다.(첨부파일 포함)
+******************************************************************************/
+
+// 헤더 클릭시 정렬
+this.fv_constAscMark = "↓";
+this.fv_constDescMark = "↑";
+this.fv_callBack = "";
+this.fv_argumentsList = new Array();
+this.fv_excelGrid = new Grid();
+this.fv_loadYn = 0;  //화면 로드시 0, 조회 버튼 동작 후 1로 세팅
+this.fv_splId = "";  //splitter object Id
+this.fv_excelUserCallback = "";
+this.fv_objDs = "";
+this.fv_grdColPos = 3;
+/******************************************************************************
+* 함 수 명 : gfn_addRow
+* 함수설명 : dataset에 row를 추가한다.
+* 작성자   : 최용현
+* 입    력 : 1. dataset
+* 결    과 	: 입력한 dataset addRow
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.05.01     최용현         최초생성
+* 2015.05.09     최용현         주석 수정
+ *****************************************************************************/ 
+this.gfn_addRow = function(objDs)
+{	
+	var addRow = objDs.addRow();
+	objDs.setColumn(addRow, "rowStatus", "2");
+	
+	var objGrd = this.gfn_getBindComponent(objDs);
+	
+	if(!this.gfn_isNull(objGrd)){
+	
+		var cellIdx = 0;
+		var cellProperty = "";
+		
+		cellIdx = objGrd.getCellCount("Body");
+				
+		for(var i=0 ; i<cellIdx ; i++){
+			cellProperty = objGrd.getCellProperty("Body", i, "edittype");
+			if(cellProperty != "none"){
+				objGrd.setFocus();
+				objGrd.setCellPos(i);
+				objGrd.showEditor(true);
+				break;
+			}
+		}
+	}
+	var findRow = application.gds_countData.findRowExpr("progId=='"+application.gds_open.getColumn(application.gds_open.rowposition, "menuId")+"'&&dsNm=='"+objDs.name+"'");
+	var rowCnt = objDs.getRowCount();
+	var objStaNm = application.gds_countData.getColumn(findRow, "staNm");
+	
+	var objSta = this.components[objStaNm];
+	
+	//objSta.set_text("<b v='true'>총 ["+rowCnt+"] 건</b>");
+	this.gfn_getDatasetCount(objDs, objSta);
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_deleteRow
+ * 함수설명 	: 선택한 row를 삭제한다.
+ * 입    력 	: 1.objDataSet 		  	  
+				  2.저장로직 함수명
+				  3.CONFIRM창 여부
+				  4.CONFIRM 메시지
+ * 결    과 	: 선택한 row를 삭제한다.
+ *********************************************************************/
+this.gfn_deleteRow = function(objDs, strFuncNm, confirmGb, confirmMsg)
+{	
+	if(this.gfn_isNull(confirmGb)){
+		confirmGb = "N";
+	}
+	var nCount = 0;
+	
+	for(i=objDs.getRowCount(); i>=0; i--){
+		if(objDs.getColumn(i,'chk') == '1'){
+			nCount ++;
+		}
+	}
+	
+	if(nCount == 0){
+		this.alert("삭제할 항목을 선택하여 주세요.");
+		return false;
+	}
+	
+	if(confirmGb == "N"){
+		if(!this.confirm("선택한 항목을 삭제하시겠습니까?")){
+			return false;
+		}
+	}else if(confirmGb == "C"){ // 메시지 안뜨고 패스하도록 수정 160603 라병수
+		
+	}else{
+		if(!this.confirm(confirmMsg)){
+			return false;
+		}
+	}
+
+	nCount = 0;
+	
+	for(i=objDs.getRowCount(); i>=0; i--){
+		if(objDs.getColumn(i,'chk') == '1'){
+			if(objDs.getColumn(i, 'rowStatus') == '2'){
+				objDs.deleteRow(i);
+			}else{
+				objDs.setColumn(i, 'rowStatus', '8');
+				nCount++;
+			}
+		}
+	}
+	if(nCount >0){
+		eval(strFuncNm);
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_isUpdate
+ * 함수설명 	: dataSet의 update유무 확인
+ * 입    력 	: objDataSet 
+ * 결    과 	: boolean
+ *********************************************************************/
+this.gfn_isUpdate = function(objDs)
+{
+	var cnt = 0;
+
+	for(var i=0; i<objDs.getRowCount(); i++){
+		if(objDs.getRowType(i) != "1"){
+			cnt++;
+		}
+	}
+	if(objDs.getDeletedRowCount() != 0){
+		cnt++;
+	}
+
+	if(cnt > 0){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_transaction
+ * 함수설명 	: 서버와의 통신 서비스, 콜백 함수 지정
+ * 입    력 	: 필수 svcId, url, inDataSets, outDataSets, argument, "fn_callBack"(callback_function) / 선택 async(true), dataType(0), compress(false)
+ * 결    과 	: none
+ *********************************************************************/
+this.gfn_transaction = function(svcId, url, inDatasets, outDatasets, strArg, strCallBack, async, dataType, compress)
+{
+	//waitCursor Div생성
+// 	if(this.isValidObject("waitCursorDiv")){
+// 		var rtn = this.removeChild("waitCursorDiv");
+// 		 rtn.destroy();
+// 		 rtn = null;
+// 	 }
+// 	this.objWaitCursorDiv = new Div("waitCursorDiv", "absolute", 960,  540, 150, 150, null, null);
+// 	this.addChild("waitCursorDiv", this.objWaitCursorDiv);
+// 	this.objWaitCursorDiv.set_url("commMain::waitCursor.xfdl");
+// 	this.objWaitCursorDiv.show(); 
+	
+	if(this.gfn_isNull(strCallBack)){
+		fv_callBack = "fn_callBack";
+	}else {
+		fv_callBack = strCallBack;
+	}
+	
+	if(this.gfn_isNull(async)){
+		//if(svcId.indexOf("SEARCH") >= 0 || svcId.indexOf("FIND") >= 0){
+		//	async = false;
+		//}else{
+			async = true;
+		//}
+	}
+	
+	if(this.gfn_isNull(dataType)){
+		dataType = 0;
+	}
+	
+	if(this.gfn_isNull(compress)){
+		compress = false;
+	}
+
+	if(!this.gfn_isNull(strArg)){
+		strArg += " gv_pgmParam=" + strArg;
+		strArg += " gv_langFg=" + nexacro.wrapQuote(application.gv_langFg);
+	}
+	
+	if(!this.gfn_isNull(inDatasets)){
+		var arrInDs = inDatasets.split("=");
+		var arrDs = arrInDs[1].split(":");
+		this.fv_objDs = this.objects[arrDs[0]];
+		
+		//공통으로 생성자, 생성자IP, 수정자, 수정자IP 컬럼 추가
+		this.fv_objDs.addColumn("insertId", "string");
+		this.fv_objDs.addColumn("insertIp", "string");
+		this.fv_objDs.addColumn("insertPgm", "string");
+		this.fv_objDs.addColumn("updateId", "string");
+		this.fv_objDs.addColumn("updateIp", "string");
+		this.fv_objDs.addColumn("updatePgm", "string");
+				
+		for(var i=0; i<this.fv_objDs.getRowCount(); i++){
+			//공통으로 생성자, 생성자IP, 수정자, 수정자IP 컬럼 세팅
+			if(this.fv_objDs.getColumn(i, "rowStatus") == 2 || this.fv_objDs.getColumn(i, "rowStatus") == 4 || this.fv_objDs.getColumn(i, "rowStatus") == 10){
+				this.fv_objDs.setColumn(i, "insertId", application.gds_user.getColumn(application.gds_user.rowposition,"memberNo"));
+				this.fv_objDs.setColumn(i, "insertIp", application.gds_user.getColumn(application.gds_user.rowposition,"ipAddr"));
+				this.fv_objDs.setColumn(i, "insertPgm", application.gds_open.getColumn(application.gds_open.rowposition,"menuId"));
+				this.fv_objDs.setColumn(i, "updateId", application.gds_user.getColumn(application.gds_user.rowposition,"memberNo"));
+				this.fv_objDs.setColumn(i, "updateIp", application.gds_user.getColumn(application.gds_user.rowposition,"ipAddr"));
+				this.fv_objDs.setColumn(i, "updatePgm", application.gds_open.getColumn(application.gds_open.rowposition,"menuId"));
+			}
+			
+			if(this.gfn_nvl(this.fv_objDs.getColumn(i, "rowStatus"), 1) == 2 || this.gfn_nvl(this.fv_objDs.getColumn(i, "rowStatus"), 1) == 4){
+				application.gds_dummy.copyData(this.fv_objDs);
+				application.gds_dummy.clearData();
+				application.gds_dummy.copyRow(application.gds_dummy.addRow(), this.fv_objDs, i);
+			}else if(this.gfn_nvl(this.fv_objDs.getColumn(i, "rowStatus"), 1) == 8){
+				if(this.fv_objDs.getColumn(i-1, "rowStatus") != 8){
+					application.gds_dummy.copyData(this.fv_objDs);
+					application.gds_dummy.clearData();
+					application.gds_dummy.copyRow(application.gds_dummy.addRow(), this.fv_objDs, i-1);
+				}else{					
+					for(var j=i; j>=0; j--){
+						 if(this.fv_objDs.getColumn(j, "rowStatus") != 8){
+							application.gds_dummy.copyData(this.fv_objDs);
+							application.gds_dummy.clearData();
+							application.gds_dummy.copyRow(application.gds_dummy.addRow(), this.fv_objDs, j);
+							j=-1;
+						 }
+					}
+				}
+			}
+		}
+	}
+
+	this.transaction(svcId, url, inDatasets, outDatasets, strArg, "gfn_callBack", async, dataType, compress);
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_callBack
+ * 함수설명 	: 서버와의 통신 후 콜백 함수
+ * 입    력 	: 
+ * 결    과 	: trId, errCd, errMsg
+ *********************************************************************/
+this.gfn_callBack = function(trId, errCd, errMsg)
+{
+// 	if(this.isValidObject("waitCursorDiv")){
+// 		var rtn = this.removeChild("waitCursorDiv"); 
+// 		rtn.destroy();
+// 		rtn= null;
+// 	}
+	if(errCd == "-9009"){
+ 		if(application.gds_user.getColumn(0, "loginGb") == "NORMAL"){
+			//window.location.href = application.gv_initUrl+"ustXui/index.html";
+			window.location.href = application.gv_initUrl+"deuXui/index.html";
+		}else if(application.gds_user.getColumn(0, "loginGb") == "RECRUIT"){
+			//window.location.href = application.gv_initUrl+"ustXui/index.jsp?gvformurl=recruit";
+			window.location.href = application.gv_initUrl+"deuXui/index.jsp?gvformurl=recruit";
+		}
+	} else
+	 if(errCd == "-9000"){
+		if(application.gds_user.getColumn(0, "loginGb") == "NORMAL"){
+			//window.location.href = application.gv_initUrl+"ustXui/index.html";
+			window.location.href = application.gv_initUrl+"deuXui/index.html";
+		}else if(application.gds_user.getColumn(0, "loginGb") == "RECRUIT"){
+			//window.location.href = application.gv_initUrl+"ustXui/index.jsp?gvformurl=recruit";
+			window.location.href = application.gv_initUrl+"deuXui/index.jsp?gvformurl=recruit";
+		}
+	
+	} else {	
+		if(errCd < 0){
+			var cmd = "this."+fv_callBack+"(trId, errCd, errMsg)";
+			eval(cmd);
+		}else{
+			var component = this.components;
+			
+			for(var i=0 ; i<component.length ; i++){		
+				if(component[i] == "[object Grid]"){
+					for(var j=0; j<component[i].getCellCount("Head"); j++){
+						if(component[i].getCellProperty("Head", j, "edittype") == "checkbox"){
+							if(component[i].getCellProperty("Head", j, "text") == "1"){
+								component[i].setCellProperty("Head", j, "text", "");
+							}
+						}
+					}
+				}
+			}
+			
+			if(trId.indexOf("SEARCH") >= 0 || trId.indexOf("FIND") >= 0){
+				if(this.fv_loadYn == "0"){
+					this.gfn_getAuth();
+					this.fv_loadYn = "1";
+				}
+				
+				if(this.gfn_isNull(this.fv_objDs)){
+					application.gds_dummy.clear();
+				}
+				
+				if(application.gds_dummy.getRowCount() > 0){
+					application.gds_dummy.set_updatecontrol(false);
+					application.gds_dummy.deleteColumn("createDt");
+					application.gds_dummy.deleteColumn("entryDt");
+					application.gds_dummy.set_updatecontrol(true);
+					
+					var strFindRow = "";
+					for(var i=1; i<this.fv_objDs.getColCount(); i++){
+						if(this.fv_objDs.getColID(i) != "chk" && this.fv_objDs.getColID(i) != "rowStatus"){
+							if(!this.gfn_isNull(application.gds_dummy.getColumn(0, i))){
+								strFindRow += "&&" + this.fv_objDs.getColID(i) + "=='" + this.gfn_nvl(application.gds_dummy.getColumn(0, i), "")+ "'";
+							}
+						}
+					}
+					strFindRow = strFindRow.substring(2);
+
+					var changedIdx = this.fv_objDs.findRowExpr(strFindRow);
+					
+					if(changedIdx < 0){
+						changedIdx = 0;
+					}
+					
+					//this.fv_objDs.set_rowposition(changedIdx);
+	//  				this.fv_objDs.setColumn(0, 0, this.fv_objDs.getColumn(0, 0));
+	//  				this.fv_objDs.applyChange();
+					application.gds_dummy.clear();
+				}
+			}
+			
+			var cmd = "this."+fv_callBack+"(trId, errCd, errMsg)";
+			eval(cmd);			
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_comboLoad
+ * 함수설명 	: 공통코드를 조회한다.
+ * 입    력 	: 1. dataset명의 배열 
+				  2. 공통코드구분의 배열 
+				  3. 사용여부 배열 (1:사용, 0:사용안함)
+				  4. 전체공란 첨부여부의 배열(T:전체 S:선택 X:사용안함) 
+				  5. WHERE절 내용(X:없음)
+ * 결    과 	: 공통코드 데이터셋
+ *********************************************************************/
+this.gfn_comboLoad = function(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere)
+{
+	var arrCnt = arrDataSet.length;
+	if(arrCnt == 0) return;
+	
+	if(arrUseYn == null) arrUseYn = Array(arrCnt);
+	if(arrModeFg == null) arrModeFg = Array(arrCnt);
+	if(arrWhere == null) arrWhere = Array(arrCnt);
+	
+	var strDataSet = "";
+	var strDataSetParam = "";
+	var strGrpCd = "";
+	var strUseYn = "";
+	var strModeFg = "";
+	var strWhere = "";
+	
+	for(var i=0; i<arrCnt; i++) {
+		if(arrDataSet[i] == null || arrDataSet[i].length == 0) {
+			this.alert("DataSet명을 입력하세요");
+			return;
+		}
+		if(arrGrpCd[i] == null || arrGrpCd[i].length == 0) {
+			this.alert("그룹코드를 입력하세요");
+			return;
+		}
+		
+		if(arrUseYn[i] == null || arrUseYn[i].length == 0) {
+			arrUseYn[i] = "Y";
+		} else if(arrUseYn[i] == "T") {
+			arrUseYn[i] = "T";
+		}
+		
+		if(arrModeFg[i] == null || arrModeFg[i].length == 0) {
+			arrModeFg[i] = "X";
+		}
+		
+		if(arrWhere[i] == null || arrWhere[i].length == 0) {
+			arrWhere[i] = "X";
+		}
+		
+		if(i == 0) {
+			strDataSet += arrDataSet[i];
+			strDataSetParam += arrDataSet[i] + "=" + arrDataSet[i];
+			strGrpCd += arrGrpCd[i];
+			strUseYn += arrUseYn[i];
+			strModeFg += arrModeFg[i];
+			strWhere += arrWhere[i];
+		} else {
+			strDataSet += "|"+arrDataSet[i];
+			strDataSetParam += " " + arrDataSet[i] + "=" + arrDataSet[i];
+			strGrpCd += "|"+arrGrpCd[i];
+			strUseYn += "|"+arrUseYn[i];
+			strModeFg += "|"+arrModeFg[i];
+			strWhere += "|"+arrWhere[i];
+		}
+	}
+	
+	var strArg;
+		strArg  = "strType="     + nexacro.wrapQuote("");
+		strArg += " strDataSet=" + nexacro.wrapQuote(strDataSet);
+		strArg += " strGrpCd="   + nexacro.wrapQuote(strGrpCd);
+		strArg += " strUseYn="   + nexacro.wrapQuote(strUseYn);
+		strArg += " strModeFg="  + nexacro.wrapQuote(strModeFg);
+		strArg += " strWhere="   + nexacro.wrapQuote(strWhere);
+	
+	this.gfn_transaction("LOAD", "txComUrl::com/selectComCdCombo.do", "", strDataSetParam, strArg, "fn_callBack");	
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_comboLoadOrder
+ * 함수설명 	: 공통코드를 조회한다.
+ * 입    력 	: 1. dataset명의 배열 
+				  2. 공통코드구분의 배열 
+				  3. 사용여부 배열 (1:사용, 0:사용안함)
+				  4. 전체공란 첨부여부의 배열(T:전체 S:선택 X:사용안함) 
+				  5. WHERE절 내용(X:없음)
+				  6. Order by 할 컬럼
+ * 결    과 	: 공통코드 데이터셋
+ *********************************************************************/
+this.gfn_comboLoadOrder = function(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere, arrOrder)
+{
+	var arrCnt = arrDataSet.length;
+	if(arrCnt == 0) return;
+	
+	if(arrUseYn == null) arrUseYn = Array(arrCnt);
+	if(arrModeFg == null) arrModeFg = Array(arrCnt);
+	if(arrWhere == null) arrWhere = Array(arrCnt);
+	if(arrOrder == null) arrOrder = Array(arrCnt);
+	
+	var strDataSet = "";
+	var strDataSetParam = "";
+	var strGrpCd = "";
+	var strUseYn = "";
+	var strModeFg = "";
+	var strWhere = "";
+	var strOrder = "";
+	
+	for(var i=0; i<arrCnt; i++) {
+		if(arrDataSet[i] == null || arrDataSet[i].length == 0) {
+			this.alert("DataSet명을 입력하세요");
+			return;
+		}
+		if(arrGrpCd[i] == null || arrGrpCd[i].length == 0) {
+			this.alert("그룹코드를 입력하세요");
+			return;
+		}
+		
+		if(arrUseYn[i] == null || arrUseYn[i].length == 0) {
+			arrUseYn[i] = "Y";
+		} else if(arrUseYn[i] == "T") {
+			arrUseYn[i] = "T";
+		}
+		
+		if(arrModeFg[i] == null || arrModeFg[i].length == 0) {
+			arrModeFg[i] = "X";
+		}
+		
+		if(arrWhere[i] == null || arrWhere[i].length == 0) {
+			arrWhere[i] = "X";
+		}
+		
+		if(arrOrder[i] == null || arrOrder[i].length == 0) {
+			arrOrder[i] = "X";
+		}
+		
+		if(i == 0) {
+			strDataSet += arrDataSet[i];
+			strDataSetParam += arrDataSet[i] + "=" + arrDataSet[i];
+			strGrpCd += arrGrpCd[i];
+			strUseYn += arrUseYn[i];
+			strModeFg += arrModeFg[i];
+			strWhere += arrWhere[i];
+			strOrder += arrOrder[i];
+		} else {
+			strDataSet += "|"+arrDataSet[i];
+			strDataSetParam += " " + arrDataSet[i] + "=" + arrDataSet[i];
+			strGrpCd += "|"+arrGrpCd[i];
+			strUseYn += "|"+arrUseYn[i];
+			strModeFg += "|"+arrModeFg[i];
+			strWhere += "|"+arrWhere[i];
+			strOrder += "|"+arrOrder[i];
+		}
+	}
+	
+	var strArg;
+		strArg  = "strType="     + nexacro.wrapQuote("");
+		strArg += " strDataSet=" + nexacro.wrapQuote(strDataSet);
+		strArg += " strGrpCd="   + nexacro.wrapQuote(strGrpCd);
+		strArg += " strUseYn="   + nexacro.wrapQuote(strUseYn);
+		strArg += " strModeFg="  + nexacro.wrapQuote(strModeFg);
+		strArg += " strWhere="   + nexacro.wrapQuote(strWhere);
+		strArg += " strOrder="	 + nexacro.wrapQuote(strOrder);
+
+	this.gfn_transaction("LOAD", "txComUrl::com/selectComCdComboOrder.do", "", strDataSetParam, strArg, "fn_callBack");	
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_unload
+ * 함수설명 	: 폼 unload시 gds_open을 클리어한다.
+ * 입    력 	: 
+ * 결    과 	: ds_open을 클리어
+ *********************************************************************/
+this.gfn_unload = function()
+{
+	if(application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MDIFrame.form.workTab.getTabpageCount() > 0){
+	
+	}else{
+		application.gds_open.clearData();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_isNull
+ * 함수설명 	: variable의 Null을 체크한다.
+ * 입    력 	: variable
+ * 결    과 	: variable의 Null을 체크
+ *********************************************************************/
+this.gfn_isNull = function(value)
+{
+	if (new String(value).valueOf() == "undefined" || new String(value).valueOf() == "null" || value == undefined || value == null){
+		return true;
+	}else {
+		var stringValue = new String(value);
+		if (stringValue == null || stringValue.trim() == ""){
+			return true;
+		}
+	}
+	return false;
+}
+
+/*******************************************************************************
+ * 함 수 명 	: gfn_isEmpty
+ * 함수설명 	: 입력값이 Null이거나 빈값인지 체크한다.
+ * 입    력 	: sValue
+ * 결    과 	: true / false
+ *******************************************************************************/
+this.gfn_isEmpty = function (Val)
+{
+	return this.gfn_isNull(Val);
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_popupOpen
+ * 함수설명 	: 팝업화면을 호출한다.
+ * 입    력 	: 1. popupId
+				  2. argumentsList
+				  3. popupUrl
+				  4. popupCallback
+				  5. nLeft
+				  6. nTop
+				  7. object
+ * 결    과 	: 팝업화면을 호출
+ *********************************************************************/
+ this.gfn_popupOpen = function(popupId, argumentsList, popupUrl, popupCallback, popupWidth, popupHeight, obj)
+ {
+	/*
+	 *	02. 현재 구동되는 정보를 업데이트 한다.
+	 *	globalRunningMode : RIA or HTML5
+	 */
+	var appUrl = application.xadl;
+	//application.globalRunningMode = "HTML5";
+	
+	var childFrame = new ChildFrame;
+	var parentFrame = this.getOwnerFrame();
+
+	// TO-DO 팝업사이즈 미지정 시 디폴트 값 적용
+	if(this.gfn_isNull(obj)){
+		 obj = popupWidth;
+		 //obj만 arg로 넘어오고 size 미지정 case
+		 popupWidth = 790;
+		 popupHeight = 463;
+	} else {
+		//arg로 size정보 넘어오지만 size미정정 시 default size
+		if(this.gfn_isNull(popupWidth)){
+			popupWidth = 790;
+		}
+		
+		if(this.gfn_isNull(popupHeight)){
+			popupHeight = 463;
+		}	
+	}
+	
+	var popupLeft = 70; 
+	var popupTop = 70;
+	
+	childFrame.set_openalign("center middle");	//창 위치 지정
+	childFrame.set_openstatus("normal");
+	childFrame.init(popupId, "absolute", popupLeft, popupTop, popupWidth+4, popupHeight+20+4, null, null, popupUrl);
+	//childFrame.set_autosize(true);
+	childFrame.set_showtitlebar(true);
+	
+	// 색상정보 6자리 + 투명도 2자리
+	childFrame.style.set_overlaycolor("#ffffff39");
+	childFrame.style.set_border("2 solid #0e518c");
+	
+	// 동적으로 생성한 ChildFrame을 Modal Dialog로 보여준다.	
+	childFrame.showModal(parentFrame, argumentsList, obj, popupCallback, true);
+	 	
+ }
+ 
+//2015.07.10 10:39  소스복원
+// /*********************************************************************
+//  * 함 수 명 	: gfn_popupOpen
+//  * 함수설명 	: 팝업화면을 호출한다.
+//  * 입    력 	: 1. popupId
+// 				  2. argumentsList
+// 				  3. popupUrl
+// 				  4. popupCallback
+// 				  5. object
+//  * 결    과 	: 팝업화면을 호출
+//  *********************************************************************/
+//  this.gfn_popupOpen = function(popupId, argumentsList, popupUrl, popupCallback, obj)
+//  {
+// 	/*
+// 	 *	02. 현재 구동되는 정보를 업데이트 한다.
+// 	 *	globalRunningMode : RIA or HTML5
+// 	 */
+// 	var appUrl = application.xadl;
+// 	//application.globalRunningMode = "HTML5";
+// 	
+// 	var childFrame = new ChildFrame();
+// 	var parentFrame = this.getOwnerFrame();
+// 	
+// 	//form을 init하기 위해 default로 적용
+// 	var popupWidth = 400;
+// 	var popupHeight = 350;
+// 	var popupLeft = 70;
+// 	var popupTop = 70;
+// 
+// 	childFrame.set_openalign("center middle");	//창 위치 지정
+// 	childFrame.init(popupId, "absolute", popupLeft, popupTop, popupWidth+4, popupHeight+20+4, null, null, popupUrl);
+// 	
+// 	// 색상정보 6자리 + 투명도 2자리
+// 	childFrame.style.set_overlaycolor("#ffffff39");
+// 	childFrame.style.set_border("2 solid #0e518c");
+// 	
+// 	// 동적으로 생성한 ChildFrame을 Modal Dialog로 보여준다.	
+// 	childFrame.showModal(parentFrame, argumentsList, obj, popupCallback, true); 	
+// 	 	
+//  }
+ 
+ /*********************************************************************
+ * 함 수 명 	: gfn_windowOpen
+ * 함수설명 	: 팝업화면을 호출한다.
+ * 입    력 	: 1. popupId
+				  2. argumentsList
+				  3. popupUrl
+				  4. width
+				  5. height
+				  6. object
+ * 결    과 	: 팝업화면을 호출
+ *********************************************************************/
+ this.gfn_windowOpen = function(popupId, argumentsList, popupUrl, popupWidth, popupHeight, obj){
+	var strName			= popupId;													// 생성될 자식 프레임의 이름
+	var strFormURL		= popupUrl;													// 로딩한 Form의 URL
+	var strOpenStyle	= "";	// ChildFrame에 설정할 속성 리스트
+	var nLeft			= 70;														// ChildFrame의 position 중 left 값
+	var nTop			= 70;														// ChildFrame의 position 중 top 값
+	var nWidth			= popupWidth;												// ChildFrame의 position 중 width 값
+	var nHeight			= popupHeight;												// ChildFrame의 position 중 height 값
+	var objOpener		= this;														// 모덜리스 대화상자의 opener가 될 Form 오브젝트
+	
+	application.open(strName, strFormURL, obj, argumentsList, strOpenStyle, nLeft, nTop ,nWidth, nHeight, objOpener);									
+ }
+ 
+/*********************************************************************
+ * 함 수 명 	: gfn_jojikPopupOpen
+ * 함수설명 	: 조직도 팝업화면을 호출한다.
+ * 입    력 	: 1. popupId
+                  2. argumentsList
+				  3. popupCallback
+				  4. object
+ * 결    과 	: 조직도 팝업화면을 호출
+ *********************************************************************/
+ this.gfn_jojikPopupOpen = function(popupId, argumentsList, popupCallback, obj)
+ {
+	var appUrl = application.xadl;
+	var childFrame = new ChildFrame;
+	var parentFrame = this.getOwnerFrame();
+
+	// TO-DO 팝업사이즈 미지정 시 디폴트 값 적용
+	popupWidth = 790;
+	popupHeight = 463;
+
+	var popupLeft = 70;
+	var popupTop = 70;
+	
+	childFrame.set_openalign("center middle");	//창 위치 지정
+	childFrame.init(popupId, "absolute", popupLeft, popupTop, popupWidth+4, popupHeight+20+4, null, null, "com::com01004_p01.xfdl");
+	
+	// 색상정보 6자리 + 투명도 2자리
+	childFrame.style.set_overlaycolor("#ffffff39");
+	childFrame.style.set_border("2 solid #0e518c");
+	
+	// 동적으로 생성한 ChildFrame을 Modal Dialog로 보여준다.	
+	childFrame.showModal(parentFrame, argumentsList, obj, popupCallback);
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_zipCodePopupOpen
+ * 함수설명 	: 우편번호(주소) 팝업을 호출한다.
+ * 입    력 	: 1. popupId
+                  2. argumentsList
+				  3. popupCallback
+				  4. object
+ * 결    과 	: 우편번호(주소) 팝업을 호출한다.
+ *********************************************************************/
+ this.gfn_zipCodePopupOpen = function(popupId, argumentsList, popupCallback, obj)
+ {
+	var appUrl = application.xadl;
+	var childFrame = new ChildFrame;
+	var parentFrame = this.getOwnerFrame();
+
+	// TO-DO 팝업사이즈 미지정 시 디폴트 값 적용
+	popupWidth = 790;
+	popupHeight = 463;
+
+	var popupLeft = 70;
+	var popupTop = 70;
+	
+	childFrame.set_openalign("center middle");	//창 위치 지정
+	childFrame.init(popupId, "absolute", popupLeft, popupTop, popupWidth+4, popupHeight+20+4, null, null, "com::com01003_p01.xfdl");
+	
+	// 색상정보 6자리 + 투명도 2자리
+	childFrame.style.set_overlaycolor("#ffffff39");
+	childFrame.style.set_border("2 solid #0e518c");
+	
+	// 동적으로 생성한 ChildFrame을 Modal Dialog로 보여준다.	
+	childFrame.showModal(parentFrame, argumentsList, obj, popupCallback); 	
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_comCdPopupOpen
+ * 함수설명 	: 공통코드 팝업을 호출한다.
+ * 입    력 	: 1. popupId
+                  2. argumentsList (argumentList가 null일 경우에는 조회조건 enable, 아니면 disable)
+				  3. popupCallback
+				  4. object
+ * 결    과 	: 공통코드 팝업을 호출한다.
+*********************************************************************/
+this.gfn_comCdPopupOpen = function(popupId, argumentsList, popupCallback, obj)
+{
+	var appUrl = application.xadl;
+	var childFrame = new ChildFrame;
+	var parentFrame = this.getOwnerFrame();
+
+	// TO-DO 팝업사이즈 미지정 시 디폴트 값 적용
+	popupWidth = 790;
+	popupHeight = 463;
+
+	var popupLeft = 70;
+	var popupTop = 70;
+	
+	childFrame.set_openalign("center middle");	//창 위치 지정
+	childFrame.init(popupId, "absolute", popupLeft, popupTop, popupWidth+4, popupHeight+20+4, null, null, "com::com01001_p01.xfdl");
+	
+	// 색상정보 6자리 + 투명도 2자리
+	childFrame.style.set_overlaycolor("#ffffff39");
+	childFrame.style.set_border("2 solid #0e518c");
+	
+	// 동적으로 생성한 ChildFrame을 Modal Dialog로 보여준다.	
+	childFrame.showModal(parentFrame, argumentsList, obj, popupCallback); 	
+}
+
+ /*********************************************************************
+ * 함 수 명 	: gfn_findMajorCode
+ * 함수설명 	: 대표전공코드를 조회한다.
+ * 입    력 	: 전공분야 코드값
+ * 결    과 	: 대표전공코드 List
+ *********************************************************************/
+this.gfn_findMajorCode = function(value)
+{
+	
+	if(this.gfn_isNull(value)){
+		return false;
+	}
+	
+	var strArg = "pv_jungong="  + nexacro.wrapQuote(value);
+		
+	this.gfn_transaction("MAJOR",
+						 "txComUrl::com/comm/selectMajorCdCombo.do",
+						 "",
+						 "ds_major=resultList",
+						 strArg);
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_findSysCombo
+ * 함수설명 	: 시스템코드를 조회한다.
+ * 입    력 	: 
+ * 결    과 	: 시스템코드 List
+ *********************************************************************/
+this.gfn_findSysCombo = function(allGb, objDs)
+{
+	if(this.gfn_isNull(allGb)){
+		var strArg = "";
+	}else{
+		var strArg = "strAllGb="	+ nexacro.wrapQuote(allGb);
+	}
+	
+	var trId = "";
+	if(this.gfn_isNull(objDs)){
+		objDs = "ds_sys_sh";
+		trId = "SYS";
+	}
+		
+	this.gfn_transaction(trId,
+						 "txComUrl::com/comm/selectSysCombo.do",
+						 "",
+						 objDs+"=resultList",
+						 strArg,
+						 "",
+						 false);
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_findSubCombo
+ * 함수설명 	: 서브시스템코드를 조회한다.
+ * 입    력 	: 시스템코드
+ * 결    과 	: 서브시스템코드 List
+ *********************************************************************/
+this.gfn_findSubCombo = function(sysId, allGb, objDs)
+{
+	var strArg = "strSysId=" + sysId;
+	
+	if(!this.gfn_isNull(allGb)){
+		strArg += " strAllGb="	+ nexacro.wrapQuote(allGb);
+	}
+	var trId = "";
+	if(this.gfn_isNull(objDs)){
+		objDs = "ds_sub_sh";
+		trId = "SUB";
+	}
+		
+	this.gfn_transaction(trId,
+						 "txComUrl::com/comm/selectSubCombo.do",
+						 "",
+						 objDs+"=resultList",
+						 strArg,
+						 "",
+						 false);
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_findMenuCombo
+ * 함수설명 	: 메뉴를 조회한다.
+ * 입    력 	: 서브시스템코드
+ * 결    과 	: 메뉴 List
+ *********************************************************************/
+this.gfn_findMenuCombo = function(sysId, subId, allGb, objDs)
+{
+	var strArg  = "strSysId="  + sysId;
+		strArg += " strSubId=" + subId;
+		
+	if(!this.gfn_isNull(allGb)){
+		strArg += " strAllGb="	+ nexacro.wrapQuote(allGb);
+	}
+	
+	var trId = "";
+	if(this.gfn_isNull(objDs)){
+		objDs = "ds_menu_sh";
+		trId = "MENU"
+	}
+		
+	this.gfn_transaction(trId,
+						 "txComUrl::com/comm/selectMenuCombo.do",
+						 "",
+						 objDs+"=resultList",
+						 strArg, 
+						 "",
+						 false);
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_findProgCombo
+ * 함수설명 	: 프로그램ID를 조회한다.
+ * 입    력 	: 메뉴시스템코드
+ * 결    과 	: 프로그램 List
+ *********************************************************************/
+this.gfn_findProgCombo = function(sysId, subId, menuId, allGb, objDs)
+{
+	var strArg  = "strSysId="  + sysId;
+		strArg += " strSubId=" + subId;
+		strArg += " strMenuId=" + menuId;
+		
+	if(!this.gfn_isNull(allGb)){
+		strArg += " strAllGb="	+ nexacro.wrapQuote(allGb);
+	}
+	
+	var trId = "";
+	if(this.gfn_isNull(objDs)){
+		objDs = "ds_prog_sh";
+		trId = "PROG";
+	}
+	
+	this.gfn_transaction(trId,
+						 "txComUrl::com/comm/selectProgCombo.do",
+						 "",
+						 objDs+"=resultList",
+						 strArg);
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_findCampusCombo
+ * 함수설명 	: 캠퍼스를 조회한다.
+ * 입    력 	: 
+ * 결    과 	: 캠퍼스 List
+ *********************************************************************/
+this.gfn_findCampusCombo = function()
+{
+	var strArg = "";
+		
+	this.gfn_transaction("CAMPUS",
+						 "txComUrl::com/comm/selectCampusCombo.do",
+						 "",
+						 "ds_campus_sh=resultList",
+						 strArg);
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_findDeptCombo
+ * 함수설명 	: 부서를 조회한다.
+ * 입    력 	: 
+ * 결    과 	: 부서 List
+ *********************************************************************/
+this.gfn_findDeptCombo = function(objDs, allGb)
+{
+	var strArg = "";
+	if(!this.gfn_isNull(allGb)){
+		strArg += "strAllGb=" + nexacro.wrapQuote(allGb);
+	}
+	
+	this.gfn_transaction("DEPT",
+						 "txComUrl::com/comm/selectDeptCombo.do",
+						 "",
+						 objDs+"=resultList",
+						 strArg,
+						 "",
+						 false);
+}
+
+/*==============================================================================
+ * 메소드명     : gfn_cntStr
+ * 설명          : 토큰으로 나눈 문자열 총수 카운트.
+ * 메소드인수1  : 컨트롤 아이디 리스트
+ * 메소드인수2  : 활성, 비활성화 여부
+ * 리턴값       : 총 컨트롤 수
+==============================================================================*/
+this.gfn_cntStr = function(astrWord, astrToken)
+{
+    var totCnt = 0;
+    var foundPos = -1;
+    var strWord = astrWord;
+	
+    if(astrToken == null){
+		astrToken = "$"; 
+	}
+    
+    foundPos = strWord.indexOf(astrToken);
+    
+    while( foundPos >= 0 )    {
+        totCnt++;
+        strWord = strWord.substr( foundPos+1, strWord.length );
+        foundPos = strWord.indexOf(astrToken);
+    }
+	
+    if( strWord.length != 0 ){
+		totCnt++;
+    }
+
+    return totCnt;
+}
+
+/*********************************************************************
+ * 함 수 명  : gfn_chkValidation
+ * 함수설명  : 데이터 중복체크를 한다.
+ * 입    력  : objDataSet = dataSet
+      strCol = column(컬럼ID)
+      strMessage = column name(출력될 컬럼명)
+ * 결    과  : 값이 Y일경우 이벤트를 중지 시키는 방식으로 사용할수 있다.
+ *********************************************************************/
+this.gfn_chkValidation = function(objDataSet, strCol, strMessage, tableNm)
+{ 
+		var returnChk ="";
+
+		var strTmp   = "";
+		var strTmp2  = "";
+		var strNumber = "";
+
+		var objDs = this.objects[objDataSet];
+
+		if (objDs.RowCount == 1) return true;
+	  
+		nColCnt = this.gfn_cntStr(strCol);
+
+		var strobj = Array(nColCnt); 
+
+		var nCnt = "";
+		var compareStr = "";
+		var currow = "";
+	 
+		for(var i=0; i<objDs.getRowCount(); i++){
+		if(objDs.getColumn(i, "rowStatus") == 2 || objDs.getColumn(i, "rowStatus") == 4){
+			currow = i;
+	   
+			compareStr = "";
+			for (var nCol = 1; nCol <= nColCnt; nCol++){
+			strobj[nCol-1] = strCol.split("$")[nCol-1];
+			compareStr += " && " + strobj[nCol-1] + " == '"+objDs.getColumn(i, strobj[nCol-1])+"'";
+			}
+			compareStr = compareStr.substring(4);
+
+			nCnt = objDs.findRowExpr(compareStr);
+			if(nCnt != currow && nCnt >= 0){
+				this.alert((nCnt+1) + "번째 열과 동일한 데이터 [" + strMessage + "] 가(이) 이미 존재합니다.");
+				return false;
+			}else{
+				nCnt = objDs.findRowExpr(compareStr, currow+1);
+			
+				if(nCnt >=0){
+					this.alert((nCnt+1) + "번째 열과 동일한 데이터 [" + strMessage + "] 가(이) 이미 존재합니다.");
+					return false;
+				}
+			}
+		}
+	} 
+
+ //return true;
+ 
+    //table명이 넘어왔을 경우 db의 중복체크를 수행한다.
+	if(!this.gfn_isNull(tableNm)){
+		var insertGb = 0;
+		for(var i=0; i<objDs.getRowCount(); i++){
+			if(objDs.getColumn(i, "rowStatus") == '2'){
+			insertGb++;
+		}
+	}
+	trace(insertGb);
+	if(insertGb > 0){
+    var replaceCompareStr = compareStr;
+    var replaceColumn = "";
+   
+		for(var i=0; i<compareStr.length; i++){
+
+			if(compareStr.indexOf("==")>-1){
+			var orgColumn = replaceCompareStr.substring(0, replaceCompareStr.indexOf("==") -1);
+			var column = orgColumn;
+			for(var j=0; j<column.length; j++){
+				if(column.charCodeAt(j)>=65 && column.charCodeAt(j)<=90){
+					column = column.replace(column.charAt(j), "_" + column.charAt(j).toLowerCase());
+			}
+		}
+		
+		compareStr = compareStr.replace(orgColumn, column);
+		compareStr = compareStr.replace("==", "=");
+		compareStr = compareStr.replace("&&", "and");
+		replaceCompareStr = compareStr.substring(compareStr.indexOf("and")+4);
+
+		}else{
+			break;
+		}
+	}
+
+		var strArg  = "strTableNm="  + nexacro.wrapQuote(tableNm);
+		strArg += " strColumnList="  + nexacro.wrapQuote(compareStr);
+	   
+		this.gfn_transaction("VALI",
+							 "txComUrl::com/selectValidation.do",
+							 "",
+							 "gds_vali=resultList",
+							 strArg,
+							 "gfn_chkValidation2",
+							 false);
+			 
+				while(this.gfn_isNull(application.gv_while) == false){
+					if(application.gv_while){
+						application.gv_return = true;
+						break;
+					}else{
+						application.gv_return = false;
+						break;
+					}
+				} 
+				application.gv_while = null;
+			   
+				if(!application.gv_return){
+					this.gfn_message("A", "중복데이터가 존재합니다.");
+					return false;
+				}else{
+					return true;
+				}
+		}else{
+			return true;
+		}
+	}else{
+		return true;
+	}
+}
+
+
+/*********************************************************************
+ * 함 수 명 	: gfn_chkEssItem
+ * 함수설명    : 저장 시 필수입력 컬럼체크
+ * 입    력 	: 1. dataset
+  		  	      2. 체크대상 컬럼 아이디 배열
+  		  	      3. 체크대상 컬럼 이름 배열
+  		  	      4. 컴포넌트 아이디 배열
+ * 결    과 	: 리턴 메시지
+ *********************************************************************/
+this.gfn_chkEssItem = function(objDataSet, strColIds, strColNms, strComIds)
+{
+	var retMsg = Array();
+		retMsg[0] = "success";
+		retMsg[1] = "";
+		retMsg[2] = "";
+		retMsg[3] = "";
+		
+	var objDs = this.objects[objDataSet];
+	
+	var nColCnt = this.gfn_cntStr(strColIds);
+	
+	for (var nRow=0; nRow < objDs.getRowCount(); nRow++) {
+		
+		if( objDs.getRowType( nRow ) != "1" && objDs.getColumn(nRow, "rowStatus") != 8){
+			for (var nCol = 1; nCol <= nColCnt; nCol++) {
+				if(unescape(objDs.getColumn(nRow, strColIds.split("$")[nCol-1])) == "undefined" || unescape(objDs.getColumn(nRow, strColIds.split("$")[nCol-1])) == "") {
+					retMsg[0] = "[" + strColNms.split("$")[nCol-1] +"] 항목을 입력하세요.[필수입력항목]";
+					retMsg[1] = nRow;
+					retMsg[2] = strColNms.split("$")[nCol-1];
+					retMsg[3] = strComIds.split("$")[nCol-1];
+				
+				return retMsg;
+				}	
+			}
+		}
+		
+		
+	}
+	
+	return retMsg;
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_nvl
+ * 함수설명    : 입력값이 존재하는지를 판단하여
+ *				  존재하는 경우 입력값을 그대로 반환, 그렇지 않으면
+ *				  두 번째 파라미터를 반환하는 함수
+ * 입    력 	: 1. 입력값
+  		  	      2. null인 경우 반환값
+ * 결    과 	: 입력값 또는 null을 대치한 값
+ *********************************************************************/
+this.gfn_nvl = function (val, newVal)
+{
+	if (this.gfn_isNull(val)) 
+	{
+		return newVal;
+	}
+	return val;
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_getNullToEmpty
+ * 함수설명    : 입력한 문자열이 Null인 경우 빈값을 반환한다.
+ * 입    력 	: 입력값
+ * 결    과 	: 입력값 또는 공백
+ *********************************************************************/
+this.gfn_getNullToEmpty = function() 
+{
+    if (this.gfn_isNull(arguments[0])){ 
+        return "";
+    }
+	
+    return arguments[0];
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_getCurrentDate
+ * 함수설명    : DB server의 현재 시간을 가져온다.
+ * 입    력 	: dataType : default "YYYYMMDD" (등록된 type만 입력된 해당type으로 return - datetype 잘못 입력된 경우 방지하기)
+ * 결    과 	: dataType에 따른 현재시간
+ *********************************************************************/
+this.gfn_getCurrentDate = function(dateType){
+    var v_dateType = "";
+    
+    v_dateType = this.gfn_nvl(dateType, "YYYYMMDD");
+    
+    try{
+        application.gds_currentDate.clearData();
+    }catch(e){      
+        var obj_common = new Dataset;
+        this.obj_common.name = "gds_currentDate";
+        application.addChild("gds_currentDate",obj_common);   
+    }finally{       
+        var strArg  = "strDateType=" + nexacro.wrapQuote(v_dateType);
+
+		this.gfn_transaction("DATE",
+							 "txComUrl::com/selectCurrentDate.do",
+							 "",
+							 "gds_currentDate=resultList",
+							 strArg,
+							 "",
+							 false);
+        
+    }   
+    return  application.gds_currentDate.getColumn(0,"toDay");
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_message
+ * 함수설명 	: 구분값에 따라 메세지처리를 한다.
+ * 입    력 	: 1. alert, confirm, trace 구분자
+                  2. 출력할 메세지
+ * 결    과 	: 메세지처리
+ *********************************************************************/
+this.gfn_message = function(messageFg, message)
+{
+	if(message.substring(0,3) != "MSG"){
+		if(messageFg == "A"){
+			this.alert(message);
+		}else if(messageFg == "C"){
+			var result = this.confirm(message);
+			return result;
+		}else if(messageFg == "T"){
+			trace(message);
+		}
+	}else{
+		var msg = "";
+		var msgRow = application.gds_msg.findRow("msgId", message);
+
+		if(msgRow > -1){
+			if(application.gv_langFg == "eng"){
+				this.alert(application.gds_msg.getColumn(msgRow, "msgEng"));
+			}else{
+				this.alert(application.gds_msg.getColumn(msgRow, "msgKor"));
+			}
+		}else{
+			this.alert("잘못된 메시지ID입니다. 관리자에게 문의바랍니다.");
+		}
+		
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_essDataset
+ * 함수설명 	: 필수 dataset을 지정한다.
+ * 입    력 	: dataSet(MDI 닫힐 때 호출)
+ * 결    과 	: 
+ *********************************************************************/
+this.gfn_essDataset = function(objGrdArr)
+{
+	for(var i=0; i<objGrdArr.length; i++){
+		var addRow = application.gds_essDataset.addRow();
+		application.gds_essDataset.setColumn(addRow, "menuId", application.gds_open.getColumn(application.gds_open.rowposition, "parentId"));
+		application.gds_essDataset.setColumn(addRow, "progId", application.gds_open.getColumn(application.gds_open.rowposition, "menuId"));
+		application.gds_essDataset.setColumn(addRow, "dsNm", objGrdArr[i].binddataset);
+		application.gds_essDataset.setColumn(addRow, "grdNm", objGrdArr[i].id);
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_isClose
+ * 함수설명 	: form 종료 전 처리 함수
+ * 입    력 	: dataSet
+ * 결    과 	: boolean
+ *********************************************************************/
+this.gfn_isClose = function(objDs)
+{
+	if(!this.gfn_isUpdate(objDs)){
+		var gCnt = application.gds_eventHandler.getRowCount();
+
+		for(i=0; i<gCnt; i++){			
+			var dsMenuId = application.gds_eventHandler.getColumn(i, "menuId");
+			var dsProgId = application.gds_eventHandler.getColumn(i, "progId")
+			var curMenuId = application.gds_open.getColumn(application.gds_open.rowposition, "parentId");
+			var curProgId = application.gds_open.getColumn(application.gds_open.rowposition, "menuId");
+			
+			if(dsMenuId == curMenuId && dsProgId == curProgId){
+				application.gds_eventHandler.deleteRow(i);
+			}
+		}
+	}	
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_callPopupDiv
+ * 함수설명 	: popupDiv를 생성 및 호출한다.
+ * 입    력 	: 1. objNm
+				  2. objPosition
+				  3. objLeft
+				  4. objTop
+				  5. objUrl
+				  6. stanObjNm
+				  7. stanObjLeft
+				  8. stanObjTop
+				  9. stanObjWidth
+				  10. stanObjHeight
+				  11. callback
+ * 결    과 	: popupdiv 호출
+ *********************************************************************/
+this.gfn_callPopupDiv = function(objNm, objPosition, objLeft, objTop, objUrl, stanObjNm, stanObjLeft, sanObjTop, stanObjWidth, stanObjHeight, callback)
+{
+	if(!this.isValidObject(objNm)){
+		var objPopupDiv = new PopupDiv();  
+		objPopupDiv.init(objNm, objPosition, objLeft, objTop);
+		this.addChild(objNm, objPopupDiv);
+
+		objPopupDiv.set_url(objUrl);	
+	}
+	application.gv_multiPopNm = objNm;
+	var cmd = "this."+objNm+".trackPopupByComponent("+stanObjNm+","+ stanObjLeft+","+ sanObjTop+","+ stanObjWidth+","+stanObjHeight+","+callback+")";
+
+	eval(cmd);
+}
+
+
+/******************************************************************************
+* 함 수 명 : gfn_excelDown
+* 함수설명 : grid를 excel로 export 한다.
+* 작성자   : 최용현
+* 입    력 : export할 대상 grid
+* 결    과 	: excel export
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.06.06     최용현         최초생성
+* 2015.06.06     최용현         주석 수정
+ *****************************************************************************/ 
+this.gfn_excelDown = function(objGrd, fileNm, mode)
+{	
+
+	this.exportObj = new ExcelExportObject();	
+	
+	this.exportObj.addEventHandler("onexport", this.Export00_onexport, this);
+	this.exportObj.addEventHandler("onerror", this.Export00_onerror, this);
+	this.exportObj.addEventHandler("onsuccess", this.Export00_onsuccess, this);
+		
+	this.exportObj.set_exporttype(nexacro.ExportTypes.EXCEL2007);
+	this.exportObj.set_exporturl(application.gv_svrUrl+"XExportImport");
+	
+	//this.exportObj.set_exporturl("http://www.xplatform.co.kr:8080/nexacro-xeni/XExportImport");
+	this.exportObj.set_exportfilename("aaaa");	
+
+	for(var i=0; i<objGrd.length; i++){	
+		// 엑셀다운용 그리드 생성
+		var objExcelGrd = new Grid();
+		var name = Eco.getUniqueId("grd_excel");
+		var format = "<Formats>" + objGrd[i].getCurFormatString() + "</Formats>";
+		var bindDs = objGrd[i].binddataset;
+		objDs = this.objects[bindDs];
+
+		objExcelGrd.init(name, "absolute", 100,100, 800, 800);
+		objExcelGrd.set_visible(false);
+		objExcelGrd.set_binddataset(objDs);
+		objExcelGrd.set_formats(format);
+
+		this.addChild(name, objExcelGrd);
+		for(var j=objExcelGrd.getCellCount("body")-1; j>=0; j--){
+			var headNm = objExcelGrd.getCellProperty("head", j, "text");
+			var bodyText = objExcelGrd.getCellProperty("body", j, "text");			
+			bodyText = bodyText.substring(5);
+			
+			if(headNm == "순번"){
+				objExcelGrd.deleteContentsCol(j);
+			}else if(bodyText == "chk" || bodyText == "rowStatus"){
+				objExcelGrd.deleteContentsCol(j);
+			}
+		}
+		
+		objExcelGrd.show();
+		
+		if(this.gfn_isNull(mode)){
+			this.exportObj.addExportItem(nexacro.ExportItemTypes.GRID, objExcelGrd, "Sheet"+(i+1)+"!A1");
+		}else{
+			this.exportObj.addExportItem(nexacro.ExportItemTypes.GRID, objExcelGrd, "Sheet"+(i+1)+"!A1", "", "", mode);
+		}
+		
+	}
+
+	this.exportObj.set_exportfilename(fileNm);			
+	this.exportObj.exportData();
+}
+
+/******************************************************************************
+* 함 수 명 : gfn_getAuth
+* 함수설명 : 화면 컴포넌트의 권한을 확인한다.
+* 작성자   : 최용현
+* 입    력 : 
+* 결    과 	: 
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.06.06     최용현         최초생성
+* 2015.06.06     최용현         주석 수정
+ *****************************************************************************/ 
+this.gfn_getAuth = function()
+{	
+	var selAuth = application.gds_menu.getColumn(application.gds_menu.rowposition, 'selectFlag');
+	var saveAuth = application.gds_menu.getColumn(application.gds_menu.rowposition, 'saveFlag');
+	var printAuth = application.gds_menu.getColumn(application.gds_menu.rowposition, 'printFlag');
+	var downAuth = application.gds_menu.getColumn(application.gds_menu.rowposition, 'downloadFlag');
+	var upAuth = application.gds_menu.getColumn(application.gds_menu.rowposition, 'uploadFlag');
+	var sendAuth = application.gds_menu.getColumn(application.gds_menu.rowposition, 'sendFlag');
+
+	var component = this.components;	
+	var str = new Array();
+	var chkStr = new Array();
+	var num = 0;
+	var chkIdx = 0;
+	var all = this.all;
+	
+	for(var i=0 ; i<component.length ; i++){		
+		if(component[i] == "[object Button]"){
+			userBtnAuth = component[i].userBtnAuth;
+
+			if(selAuth == "1" && userBtnAuth == "R"){
+				component[i].set_enable(true);
+			}
+						
+			if(saveAuth == "1" && userBtnAuth == "S"){
+				component[i].set_enable(true);
+			}
+			
+			if(printAuth == "1" && userBtnAuth == "P"){
+				component[i].set_enable(true);
+			}
+			
+			if(downAuth == "1" && userBtnAuth == "D"){
+				component[i].set_enable(true);
+			}
+			
+			if(sendAuth == "1" && userBtnAuth == "T"){ //email&sms발송
+				component[i].set_enable(true);
+			}
+			
+			if(upAuth == "1" && userBtnAuth == "U"){ //upload
+				component[i].set_enable(true);
+			}
+			
+			if(component[i].enable != true){
+				if(userBtnAuth == "N"){
+					component[i].set_enable(true);
+				}else {
+					component[i].set_enable(false);
+				}
+			}
+		}
+		
+		if(component[i] == "[object Div]"){
+			var divComp = component[i].components;
+				
+			for(var j=0; j<divComp.length; j++){
+				if(divComp[j] == "[object Button]"){
+					userBtnAuth = divComp[j].userBtnAuth;
+					if(selAuth == "1" && userBtnAuth == "R"){
+						divComp[j].set_enable(true);
+					}
+					
+					if(saveAuth == "1" && userBtnAuth == "S"){
+						divComp[j].set_enable(true);
+					}
+					
+					if(printAuth == "1" && userBtnAuth == "P"){
+						divComp[j].set_enable(true);
+					}
+					
+					if(downAuth == "1" && userBtnAuth == "D"){
+						divComp[j].set_enable(true);
+					}
+					
+					if(sendAuth == "1" && userBtnAuth == "T"){ //email&sms발송
+						divComp[j].set_enable(true);
+					}
+					
+					if(upAuth == "1" && userBtnAuth == "U"){ //upload
+						divComp[j].set_enable(true);
+					}
+					
+					if(divComp[j].enable != true){
+						if(userBtnAuth == "N"){
+							divComp[j].set_enable(true);
+						}else {
+							divComp[j].set_enable(false);
+						}
+					}
+				}
+				
+				if(divComp[j] == "[object Div]"){
+					var divDivComp = divComp[j].components;
+					
+					for(var k=0; k<divDivComp.length; k++){
+						if(divDivComp[k] == "[object Button]"){
+							userBtnAuth = divDivComp[k].userBtnAuth;
+							if(selAuth == "1" && userBtnAuth == "R"){
+								divDivComp[k].set_enable(true);
+							}
+							
+							if(saveAuth == "1" && userBtnAuth == "S"){
+								divDivComp[k].set_enable(true);
+							}
+							
+							if(printAuth == "1" && userBtnAuth == "P"){
+								divDivComp[k].set_enable(true);
+							}
+							
+							if(downAuth == "1" && userBtnAuth == "D"){
+								divDivComp[k].set_enable(true);
+							}
+							
+							if(sendAuth == "1" && userBtnAuth == "T"){ //email&sms발송
+								divDivComp[k].set_enable(true);
+							}
+							
+							if(upAuth == "1" && userBtnAuth == "U"){ //upload
+								divDivComp[k].set_enable(true);
+							}
+							
+							if(divDivComp[k].enable != true){
+								if(userBtnAuth == "N"){
+									divDivComp[k].set_enable(true);
+								}else {
+									divDivComp[k].set_enable(false);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		if(component[i] == "[object Tab]"){
+			var tabComp = component[i].components;
+			
+			for(var j=0; j<tabComp.length; j++){
+				if(tabComp[j] == "[object Button]"){
+					userBtnAuth = tabComp[j].userBtnAuth;
+					if(selAuth == "1" && userBtnAuth == "R"){
+						tabComp[j].set_enable(true);
+					}
+					
+					if(saveAuth == "1" && userBtnAuth == "S"){
+						tabComp[j].set_enable(true);
+					}
+					
+					if(printAuth == "1" && userBtnAuth == "P"){
+						tabComp[j].set_enable(true);
+					}
+					
+					if(downAuth == "1" && userBtnAuth == "D"){
+						tabComp[j].set_enable(true);
+					}
+					
+					if(sendAuth == "1" && userBtnAuth == "T"){ //email&sms발송
+						tabComp[j].set_enable(true);
+					}
+					
+					if(upAuth == "1" && userBtnAuth == "U"){ //upload
+						tabComp[j].set_enable(true);
+					}
+					
+					if(tabComp[j].enable != true){
+						if(userBtnAuth == "N"){
+							tabComp[j].set_enable(true);
+						}else {
+							tabComp[j].set_enable(false);
+						}
+					}
+				}
+				
+				if(tabComp[j] == "[object Tabpage]"){
+					var pageComp = tabComp[j].components;
+
+					for(var k=0; k<pageComp.length; k++){
+						if(pageComp[k] == "[object Button]"){
+
+							userBtnAuth = pageComp[k].userBtnAuth;
+							
+							if(selAuth == "1" && userBtnAuth == "R"){
+								pageComp[k].set_enable(true);
+							}
+							
+							if(saveAuth == "1" && userBtnAuth == "S"){
+								pageComp[k].set_enable(true);
+							}
+							
+							if(printAuth == "1" && userBtnAuth == "P"){
+								pageComp[k].set_enable(true);
+							}
+							
+							if(downAuth == "1" && userBtnAuth == "D"){
+								pageComp[k].set_enable(true);
+							}
+							
+							if(sendAuth == "1" && userBtnAuth == "T"){ //email&sms발송
+								pageComp[k].set_enable(true);
+							}
+							
+							if(upAuth == "1" && userBtnAuth == "U"){ //upload
+								pageComp[k].set_enable(true);
+							}
+							
+							if(pageComp[k].enable != true){
+								if(pageComp[k].enable != true) {
+									if(userBtnAuth == "N"){
+										pageComp[k].set_enable(true);
+									}else {
+										pageComp[k].set_enable(false);
+									}
+								}
+							}
+						}
+						
+						if(pageComp[k] == "[object Div]"){
+							var pageDivComp = pageComp[k].components;
+							
+							for(var l=0; l<pageDivComp.length; l++){
+								if(pageDivComp[l] == "[object Button]"){
+									userBtnAuth = pageDivComp[l].userBtnAuth;
+
+									if(selAuth == "1" && userBtnAuth == "R"){
+										pageDivComp[l].set_enable(true);
+									}
+									
+									if(saveAuth == "1" && userBtnAuth == "S"){
+										pageDivComp[l].set_enable(true);
+									}
+									
+									if(printAuth == "1" && userBtnAuth == "P"){
+										pageDivComp[l].set_enable(true);
+									}
+									
+									if(downAuth == "1" && userBtnAuth == "D"){
+										pageDivComp[l].set_enable(true);
+									}
+									
+									if(sendAuth == "1" && userBtnAuth == "T"){ //email&sms발송
+										pageDivComp[l].set_enable(true);
+									}
+									
+									if(upAuth == "1" && userBtnAuth == "U"){ //upload
+										pageDivComp[l].set_enable(true);
+									}
+									
+									if(pageDivComp[l].enable != true){
+										if(userBtnAuth == "N"){
+											pageDivComp[l].set_enable(true);
+										}else {
+											pageDivComp[l].set_enable(false);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}		
+	}
+}
+
+/******************************************************************************
+* 함 수 명 : gfn_addProgressBar
+* 함수설명 : progress bar 를 보여준다.
+* 작성자   : 최용현
+* 입    력 : 
+* 결    과 	: progress bar
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.06.06     최용현         최초생성
+* 2015.06.06     최용현         주석 수정
+ *****************************************************************************/ 
+this.gfn_addProgressBar = function()
+{	
+	application.set_usewaitcursor(false);
+	
+	if(!this.isValidObject("ProgressBar00")){
+		var objProgressBar = new ProgressBar();  
+		objProgressBar.init("ProgressBar00", "absolute", 500, 350, 600, 30);
+
+		this.addChild("ProgressBar00", objProgressBar); 
+		objProgressBar.style.set_progressimage('url("theme://images/img_progress.png")');
+	}
+	
+	
+	// Show Object  
+	this.ProgressBar00.show(); 
+	
+	this.setTimer(0, 1000); 
+	
+	this.setEventHandler("ontimer", this.gfn_createProgressBar, this);
+	
+}
+/******************************************************************************
+* 함 수 명 : gfn_createProgressBar
+* 함수설명 : progress bar 를 생성한다.
+* 작성자   : 최용현
+* 입    력 : 
+* 결    과 	: progress bar
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.06.06     최용현         최초생성
+* 2015.06.06     최용현         주석 수정
+ *****************************************************************************/ 
+this.gfn_createProgressBar = function(obj:Form, e:nexacro.TimerEventInfo){ 
+	if (e.timerid == 0) { 
+		if (this.ProgressBar00.pos == this.ProgressBar00.max) { 
+			return; 
+		} 
+		this.ProgressBar00.stepIt(); 
+	} 
+}
+
+/******************************************************************************
+* 함 수 명 : gfn_removeProgressBar
+* 함수설명 : progress bar 를 제거한다.
+* 작성자   : 최용현
+* 입    력 : 
+* 결    과 	: progress bar
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.06.06     최용현         최초생성
+* 2015.06.06     최용현         주석 수정
+ *****************************************************************************/ 
+this.gfn_removeProgressBar = function()
+{	
+	this.killTimer(0); 
+	// Remove Object form Parent Form  
+	this.removeChild("ProgressBar00"); 
+	
+	application.set_usewaitcursor(true);
+}
+
+/******************************************************************************
+* 함 수 명 : gfn_filterDsCombo
+* 함수설명 : 콤보컴포넌트 변경시 연계콤보 처리 함수
+* 작성자   : 최용현
+* 입    력 : 1. 기준 combo object
+              2. 기준 컬럼 id
+              3. 바인딩 combo object
+              4. 필터링 dataset
+              5. 바인딩 될 code 값
+              6. 바인딩 될 data 값
+* 결    과 	: 
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.06.06     최용현         최초생성
+* 2015.06.06     최용현         주석 수정
+ *****************************************************************************/ 
+this.gfn_filterDsCombo = function(objCmb, colNm, objToCmb, objDs, code, data)
+{
+	var dsNm = objDs.id+"_f";
+	var objDsNm;
+	
+     //기준object, 기준column id, 대상object, 대상ds, 대상code컬럼, 대상data컬럼
+	if(!this.isValidObject(dsNm)) {
+	    var ds_temp = new Dataset;
+		ds_temp.loadXML(objDs.saveXML());
+		ds_temp.set_name(dsNm);
+		this.addChild(dsNm, ds_temp);
+		objDsNm = this.objects[dsNm];
+	} else {
+		objDsNm = this.objects[dsNm];
+		objDsNm.loadXML(objDs.saveXML());
+		objDsNm.set_name(dsNm);
+	}
+	
+	objToCmb.set_innerdataset(dsNm);
+	objToCmb.set_codecolumn(code);
+	objToCmb.set_datacolumn(data);
+	objToCmb.set_index(0);
+	
+	objDsNm.filter(colNm+"=='"+objCmb.value+"' || " + colNm+"=='전체' || " + colNm+"=='선택'" );
+}
+
+/******************************************************************************
+* 함 수 명 : gfn_filterDsComboDetail
+* 함수설명 : 콤보컴포넌트 변경시 연계콤보 처리 함수
+* 작성자   : 최용현
+* 입    력 : 1. 기준  컬럼값
+              2. 기준 컬럼 id
+              3. 바인딩 combo object
+              4. 필터링 dataset
+              5. 바인딩 될 code 값
+              6. 바인딩 될 data 값
+* 결    과 	: 
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.07.15     최용현         최초생성
+ *****************************************************************************/ 
+this.gfn_filterDsComboDetail = function(objFrVal, colNm, objToCmb, objDs, code, data)
+{
+	var dsNm = objDs.id+"_f";
+	var objDsNm;
+	
+     //기준object, 기준column id, 대상object, 대상ds, 대상code컬럼, 대상data컬럼
+	if(!this.isValidObject(dsNm)) {
+	    var ds_temp = new Dataset;
+		ds_temp.loadXML(objDs.saveXML());
+		ds_temp.set_name(dsNm);
+		this.addChild(dsNm, ds_temp);
+		objDsNm = this.objects[dsNm];
+	} else {
+		objDsNm = this.objects[dsNm];
+		objDsNm.loadXML(objDs.saveXML());
+		objDsNm.set_name(dsNm);
+	}
+	
+	objToCmb.set_innerdataset(dsNm);
+	objToCmb.set_codecolumn(code);
+	objToCmb.set_datacolumn(data);
+	objToCmb.set_index(0);
+	
+	objDsNm.filter(colNm+"=='"+objFrVal+"' || " + colNm+"=='전체' || " + colNm+"=='선택'" );	
+}
+
+/******************************************************************************
+* 함 수 명 : gfn_filterDsGrid
+* 함수설명 : 그리드 콤보 변경시 연계콤보 처리 함수
+* 작성자   : 최용현
+* 입    력 : 1. grid object            (연계콤보처리 그리드)
+              2. 필터링 기준 컬럼명  (Master column name)
+              2. 바인딩 기준 컬럼명  (Detail innerdatset column name)
+              3. 바인딩 기준 dataset  (Detail binding dataset)
+              4. 바인딩 cell index     (Detail binding cell index)
+* 결    과 	: 
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.06.06     최용현         최초생성
+* 2015.06.06     최용현         주석 수정
+ *****************************************************************************/ 
+this.gfn_filterDsGrid = function(objGrd, colNm, colNm2, objDs, colIdx, name)
+{	
+	var grdDs = objGrd.binddataset;
+	
+	var filterDs;
+	var filterDsNm;
+	if(this.gfn_isNull(name)){
+		filterDs = this.objects["ds_temp2"];
+		filterDsNm = "ds_temp2";
+	}else{
+		filterDs = this.objects[name];
+		filterDsNm = name;
+	}
+
+	//대상grd object, 기준grd column id, 대상 grd column id
+	if(!this.isValidObject(filterDs)) {
+		var filterDs = new Dataset;
+		filterDs.loadXML(objDs.saveXML());
+		filterDs.set_name(filterDsNm);
+		this.addChild(filterDsNm, filterDs);
+	} else {		
+		filterDs.loadXML(objDs.saveXML());
+		filterDs.set_name(filterDsNm);	
+	}
+	
+	filterDs.filter(colNm2+"=='"+eval("this."+grdDs).getColumn(eval("this."+grdDs).rowposition,colNm)+"'");	
+	objGrd.setCellProperty("body", colIdx,"combodataset","expr:currow=="+eval("this."+grdDs).rowposition+"?'"+filterDsNm+"':'"+objDs.name+"'");
+ }
+
+/******************************************************************************
+* 함 수 명 : gfn_filterDatasetCombo
+* 함수설명 : 콤보 컴포넌트 필터처리
+* 작성자   : 최용현
+* 입    력 : 1. grid object            (필터링처리 그리드)
+              2. 바인딩 기준 dataset  (Detail binding dataset)
+              3. filter 조건문		(ex : useYn='1')
+* 결    과 	: 
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.06.06     최용현         최초생성
+* 2015.06.06     최용현         주석 수정
+ *****************************************************************************/ 
+this.gfn_filterDatasetCombo = function(objCmb, objDs, filterExpr)
+{	
+	//대상grd object, 기준grd column id, 대상 grd column id
+	if(!this.isValidObject(this.ds_temp2)) {
+		var ds_temp2 = new Dataset;
+		ds_temp2.loadXML(objDs.saveXML());
+		ds_temp2.set_name("ds_temp2");
+		this.addChild("ds_temp2", ds_temp2);
+	} else {
+		this.ds_temp2.loadXML(objDs.saveXML());
+		this.ds_temp2.set_name("ds_temp2");	
+	}
+	this.ds_temp2.filter(filterExpr);
+	objCmb.set_innerdataset(this.ds_temp2);	
+} 
+
+/******************************************************************************
+* 함 수 명 : gfn_filterDatasetGrid
+* 함수설명 : 그리드 콤보 필터처리
+* 작성자   : 최용현
+* 입    력 : 1. grid object            (필터링처리 그리드)
+              2. 바인딩 기준 dataset  (Detail binding dataset)
+              3. 바인딩 기준 column index
+              4. filter 조건문		(ex : useYn='1')
+* 결    과 	: 
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.06.06     최용현         최초생성
+* 2015.06.06     최용현         주석 수정
+ *****************************************************************************/ 
+this.gfn_filterDatasetGrid = function(objGrd, objDs, colIdx, filterExpr)
+{	
+	var grdDs = objGrd.binddataset;
+
+	//대상grd object, 기준grd column id, 대상 grd column id
+	if(!this.isValidObject(this.ds_temp2)) {
+		var ds_temp2 = new Dataset;
+		ds_temp2.loadXML(objDs.saveXML());
+		ds_temp2.set_name("ds_temp2");
+		this.addChild("ds_temp2", ds_temp2);
+	} else {
+		this.ds_temp2.loadXML(objDs.saveXML());
+		this.ds_temp2.set_name("ds_temp2");	
+	}
+	
+	this.ds_temp2.filter(filterExpr);
+	
+	objGrd.setCellProperty("body", colIdx,"combodataset","expr:currow=="+eval("this."+grdDs).rowposition+"?'ds_temp2':'"+objDs.name+"'");
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_openClipReport
+ * 함수설명 	: gfn_openClipReport 호출한다. (popup type)
+ * 입    력 	: 1.callType = dataset넘기는방식과/파라미터넘기는방식(레포트내sql호출)
+                  2.crfName = 레포트파일명 
+                  3.crfParams = 파라미터 array형태 
+                  4.crfDbName = 오브젝트형태로 예) this.obj
+ * 결    과 	: gfn_openClipReport 호출
+ *********************************************************************/
+ this.gfn_openClipReport = function(callType,crfName,crfParams,crfDbName){ 
+	var strCallType = this.gfn_getNullToEmpty(callType);
+	var strCrfName = this.gfn_getNullToEmpty(crfName);
+	var strCrfParams = this.gfn_getNullToEmpty(crfParams);
+	var strCrfDbName = this.gfn_getNullToEmpty(crfDbName);
+	var strFormYn    = "N"; // 폼에서 출력되는지 팝업인지 확인여부
+	var strCrfRole = "";//(사용자권한(일반,관리자)글로벌 변수 추가되면 변경할것)
+	
+	//strCrfParams += "gv_userId:라병수|gv_menuId:1010; // 기존파라미터에 사용자ID(NAME),MENUID 더해주기
+	
+	var popupId = "comReportView";
+	var argumentsList = new Array();
+	var popupUrl = "com::comReportView.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var popupWidth = 1000;
+	var popupHeight = 700;
+	var obj = this;
+	
+	argumentsList['callType']   = strCallType;
+	argumentsList['crfName']   = strCrfName;
+	argumentsList['crfParams']   = strCrfParams;
+	argumentsList['crfDbName']   = strCrfDbName;
+	argumentsList['crfFormYn']   = strFormYn; 
+	argumentsList['crfRole']   = strCrfRole;
+	
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, popupWidth, popupHeight, obj);
+ }
+
+/*********************************************************************
+ * 함 수 명 	: gfn_openClipReportForm
+ * 함수설명 	: gfn_openClipReport 호출한다. (form type)
+ * 입    력 	: 1.callType = dataset넘기는방식과/파라미터넘기는방식(레포트내sql호출)
+                  2.crfName = 레포트파일명 
+                  3.crfParams = 파라미터 array형태 
+                  4.crfDbName = 오브젝트형태로 예) this.obj
+ * 결    과 	: gfn_openClipReport 호출
+ *********************************************************************/
+ this.gfn_openClipReportForm = function(callType,crfName,crfParams,crfDbName){ 
+	this.div_report.set_url("");
+	var strCallType = this.gfn_getNullToEmpty(callType);
+	var strCrfName = this.gfn_getNullToEmpty(crfName);
+	var strCrfParams = this.gfn_getNullToEmpty(crfParams);
+	var strCrfDbName = this.gfn_getNullToEmpty(crfDbName);
+	var strFormYn    = "Y"; // 폼에서 출력되는지 팝업인지 확인여부
+	var strCrfRole = "";//(사용자권한(일반,관리자)글로벌 변수 추가되면 변경할것)
+	
+	//strCrfParams += "gv_userId:라병수|gv_menuId:1010; // 기존파라미터에 사용자ID(NAME),MENUID 더해주기
+	
+	this.fv_argumentsList['callType']   = strCallType;
+	this.fv_argumentsList['crfName']   = strCrfName;
+	this.fv_argumentsList['crfParams']   = strCrfParams;
+	this.fv_argumentsList['crfDbName']   = strCrfDbName;
+	this.fv_argumentsList['crfFormYn']   = strFormYn;
+	this.fv_argumentsList['crfRole']   = strCrfRole;
+	
+	this.div_report.set_url("component::comReportViewForm.xfdl");
+
+ }
+//2015.07.10 10:39 소스복원
+// /*********************************************************************
+//  * 함 수 명 	: gfn_openClipReport
+//  * 함수설명 	: gfn_openClipReport 호출한다. (popup type)
+//  * 입    력 	: 1.callType = dataset넘기는방식과/파라미터넘기는방식(레포트내sql호출)
+//                   2.crfName = 레포트파일명 
+//                   3.crfParams = 파라미터 array형태 
+//                   4.crfDbName = 오브젝트형태로 예) this.obj
+//  * 결    과 	: gfn_openClipReport 호출
+//  *********************************************************************/
+//  this.gfn_openClipReport = function(callType,crfName,crfParams,crfDbName){ 
+// 	var strCallType = this.gfn_getNullToEmpty(callType);
+// 	var strCrfName = this.gfn_getNullToEmpty(crfName);
+// 	var strCrfParams = this.gfn_getNullToEmpty(crfParams);
+// 	var strCrfDbName = this.gfn_getNullToEmpty(crfDbName);
+// 	var strFormYn    = "N"; // 폼에서 출력되는지 팝업인지 확인여부
+// 	var strCrfRole = "";//(사용자권한(일반,관리자)글로벌 변수 추가되면 변경할것)
+// 	
+// 	//strCrfParams += "gv_userId:라병수|gv_menuId:1010; // 기존파라미터에 사용자ID(NAME),MENUID 더해주기
+// 	
+// 	var popupId = "comReportView";
+// 	var argumentsList = new Array();
+// 	var popupUrl = "com::comReportView.xfdl";
+// 	var popupCallback = "fn_popCallBack";
+// 	var obj = this;
+// 	
+// 	argumentsList['callType']   = strCallType;
+// 	argumentsList['crfName']   = strCrfName;
+// 	argumentsList['crfParams']   = strCrfParams;
+// 	argumentsList['crfDbName']   = strCrfDbName;
+// 	argumentsList['crfFormYn']   = strFormYn; 
+// 	argumentsList['crfRole']   = strCrfRole;
+// 	
+// 	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, obj);
+//  }
+// 
+// /*********************************************************************
+//  * 함 수 명 	: gfn_openClipReportForm
+//  * 함수설명 	: gfn_openClipReport 호출한다. (form type)
+//  * 입    력 	: 1.callType = dataset넘기는방식과/파라미터넘기는방식(레포트내sql호출)
+//                   2.crfName = 레포트파일명 
+//                   3.crfParams = 파라미터 array형태 
+//                   4.crfDbName = 오브젝트형태로 예) this.obj
+//                   5.임베디드 될 division object
+//  * 결    과 	: gfn_openClipReport 호출
+//  *********************************************************************/
+//  this.gfn_openClipReportForm = function(callType,crfName,crfParams,crfDbName, objDiv){ 
+// 	objDiv.set_url("");
+// 	var strCallType = this.gfn_getNullToEmpty(callType);
+// 	var strCrfName = this.gfn_getNullToEmpty(crfName);
+// 	var strCrfParams = this.gfn_getNullToEmpty(crfParams);
+// 	var strCrfDbName = this.gfn_getNullToEmpty(crfDbName);
+// 	var strFormYn    = "Y"; // 폼에서 출력되는지 팝업인지 확인여부
+// 	var strCrfRole = "";//(사용자권한(일반,관리자)글로벌 변수 추가되면 변경할것)
+// 	
+// 	//strCrfParams += "gv_userId:라병수|gv_menuId:1010; // 기존파라미터에 사용자ID(NAME),MENUID 더해주기
+// 	
+// 	this.fv_argumentsList['callType']   = strCallType;
+// 	this.fv_argumentsList['crfName']   = strCrfName;
+// 	this.fv_argumentsList['crfParams']   = strCrfParams;
+// 	this.fv_argumentsList['crfDbName']   = strCrfDbName;
+// 	this.fv_argumentsList['crfFormYn']   = strFormYn;
+// 	this.fv_argumentsList['crfRole']   = strCrfRole;
+// 	
+// 	objDiv.set_url("component::comReportViewForm.xfdl");
+// 
+//  }
+
+/******************************************************************************
+* 함 수 명 : gfn_excelUp
+* 함수설명 : excel을 grid에 import 한다.
+* 작성자   : 최용현
+* 입    력 : 1. import할 대상 grid
+              2. excelupload 후 호출할 callback 함수
+              3. import될 body 위치(default : A2)
+              4. 데이터가 바인딩 될 행 index (ex : x index부터 시작) (사용안할 예정)
+              5. 업로드 될 sheet명 (사용안할 예정 무조건 1번째 시트 고정)
+* 결    과 	: excel import
+*****************************************************************************/ 
+this.gfn_excelUp = function(objGrd, strCallback, bodyCell, vGrdColPos, sheetNm)
+{	
+	if(this.isValidObject("waitCursorDiv")){
+		var rtn = this.removeChild("waitCursorDiv");
+		 rtn.destroy();
+		 rtn = null;
+	 }
+	this.objWaitCursorDiv = new Div("waitCursorDiv", "absolute", 519,  392, 70, 70, null, null);
+	this.addChild("waitCursorDiv", this.objWaitCursorDiv);
+	this.objWaitCursorDiv.set_url("commMain::waitCursor.xfdl");
+	this.objWaitCursorDiv.show(); 
+	
+	this.fv_excelGrid = objGrd;
+	if(!this.gfn_isNull(strCallback)){
+		this.fv_excelUserCallback = strCallback;
+	}else{
+		this.fv_excelUserCallback = "";
+	}
+	
+	if(this.gfn_isNull(sheetNm)){
+		sheetNm = "Sheet1";
+	}
+	
+	if(this.gfn_isNull(bodyCell)){
+		bodyCell = "A2";
+	}
+	
+	if(this.gfn_isNull(vGrdColPos)){
+		fv_grdColPos = 3;
+	} else {
+		fv_grdColPos = vGrdColPos;
+	}
+
+	this.importObj = new nexacro.ExcelImportObject("Import00",this);	
+	//this.importObj.set_importtype(nexacro.ImportTypes.EXCEL);
+	this.importObj.addEventHandler("onsuccess", this.gfn_excelUpSuccess, this);
+	this.importObj.addEventHandler("onerror", this.gfn_excelUpError, this);	
+	this.url =  application.gv_svrUrl+"XExportImport";
+	/*this.url =  "txComUrl::com/XExportImport";*/
+	this.importObj.set_importurl(this.url);
+	
+	if(!this.isValidObject("ds_excel")){
+		var ds_excel= new Dataset;
+		ds_excel.set_name("ds_excel");
+		this.addChild("ds_excel", ds_excel);
+	}
+
+	//this.importObj.importData("", "[command=getsheetdata;output=outDs;body="+sheetNm+"!"+bodyCell+";]", "[ds_excel=outDs]");
+	this.importObj.importData("", "[Command=getsheetlist;Output=outDs][Output=output1;body=!"+bodyCell+":]", "[ds_excel=output1]","");
+
+	//this.importObj.importData("", "[command=getsheetdata;output=outDs;body=Sheet1!"+bodyCell+";]", "[ds_excel=outDs]");
+	//this.importObj.importData("", "[command=getsheetdata;output=outDs;body=Sheet1!A2;]", "[ds_excel=outDs]");
+}
+
+/******************************************************************************
+* 함 수 명 : gfn_excelUpSuccess
+* 함수설명 : excel import 성공 후 콜백 함수
+* 작성자   : 최용현
+* 입    력 : 
+* 결    과 	: excel import
+*****************************************************************************/ 
+this.gfn_excelUpSuccess = function()
+{	
+	this.importObj.destroy();
+	this.importObj = null;
+	
+	var rtn = this.removeChild("waitCursorDiv"); 
+	rtn.destroy();
+	rtn= null;
+	
+	var bindDs = this.fv_excelGrid.binddataset;
+
+	for(var i=0; i<this.ds_excel.getColCount(); i++){
+		var bindNm = this.fv_excelGrid.getCellProperty("Body", i+fv_grdColPos, "text");
+		
+		if(!this.gfn_isNull(this.fv_excelGrid.getCellProperty("Body", i+fv_grdColPos, "text"))){
+			var colNm = this.fv_excelGrid.getCellProperty("Body", i+fv_grdColPos, "text").substr(5);
+		}
+		
+		this.ds_excel.updateColID(i, colNm);
+	}
+
+	eval("this."+bindDs+".loadXML(this.ds_excel.saveXML())");
+	
+	if(!this.gfn_isNull(this.fv_excelUserCallback)){
+		eval("this." + this.fv_excelUserCallback + "()");
+	} else {
+		eval("this.fn_excelUpCallback()");
+	}
+}
+
+/******************************************************************************
+* 함 수 명 : gfn_excelUpError
+* 함수설명 : excel import 실패 후 콜백 함수
+* 작성자   : 최용현
+* 입    력 : 
+* 결    과 	: 실패 메시지
+*****************************************************************************/ 
+this.gfn_excelUpError = function()
+{
+	this.importObj.destroy();
+	this.importObj = null;
+
+	var rtn = this.removeChild("waitCursorDiv"); 
+	rtn.destroy();
+	rtn= null;
+	
+	this.alert("엑셀 업로드에 실패하였습니다.");
+}
+
+/******************************************************************************
+* 함 수 명 : gfn_preChkDataset
+* 함수설명 : 미저장 데이터 유무를 체크한다.
+* 작성자   : 최용현
+* 입    력 : dataset
+* 결    과 	: boolean
+*****************************************************************************/ 
+this.gfn_preChkDataset = function(objDs)
+{
+	for(var i=0; i<objDs.getRowCount(); i++){
+		if(objDs.getRowType(i) != 1){
+			var msg  = "저장하지 않은 데이터가 존재합니다. 계속 진행 하시겠습니까?";
+			
+			var result = confirm(msg);
+			if(result){		
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return true;
+		}
+	}
+	return true;
+}
+
+/******************************************************************************
+* 함 수 명 : gfn_selectDeptCdCmb
+* 함수설명 : 조직 코드를 조회한다.
+* 작성자   : 최용현
+* 입    력 : 1. bind dataset 
+              2. dept level
+              3. 상위 조직 코드
+* 결    과 	: bind dataset
+*****************************************************************************/ 
+this.gfn_selectDeptCdCmb= function(objDs, gubun, allGb, useYn)
+{
+	var level = 0;
+	var upDeptCd = 0;
+	
+	if(gubun == "CAMPUS"){
+		level = 3;
+		upDeptCd = 21000;
+	}else if(gubun == "MAJOR"){
+		level = 4;
+		upDeptCd = 21000;
+		if(!this.gfn_isNull(allGb)){
+			if(allGb != "T"){
+				allGb = "S"
+			}
+		}
+	}else if(gubun == "DEPT"){
+		level = 3;
+		upDeptCd = 11000;
+	}else if(gubun == "OFFICE"){
+		level = 4;
+		upDeptCd = 11000;
+		if(!this.gfn_isNull(allGb)){
+			if(allGb != "T"){
+				allGb = "S"
+			}
+		}
+	}else if(gubun == "TEAM"){
+		level = 5;
+		upDeptCd = 11000;
+		if(!this.gfn_isNull(allGb)){
+			if(allGb != "T"){
+				allGb = "S"
+			}
+		}
+	}else if(gubun == "HS"){
+		level = "";
+		upDeptCd = 21000;
+		if(!this.gfn_isNull(allGb)){
+			if(allGb != "T"){
+				allGb = "S"
+			}
+		}
+	}else if(gubun == "HJ"){
+		level = "";
+		upDeptCd = 11000;
+		if(!this.gfn_isNull(allGb)){
+			if(allGb != "T"){
+				allGb = "S"
+			}
+		}
+	}else{
+		level = "";
+		upDeptCd = "";
+		if(!this.gfn_isNull(allGb)){
+			if(allGb != "T"){
+				allGb = "S"
+			}
+		}
+	}
+	var strArg  = "pv_level="     + nexacro.wrapQuote(level);
+	    strArg += " pv_upDeptCd=" + nexacro.wrapQuote(upDeptCd);
+	    strArg += " pv_allGb=" + nexacro.wrapQuote(allGb);
+	if(this.gfn_getNullToEmpty(useYn) == '')
+	{
+		strArg += " pv_useYn='1'";
+	}else if(this.gfn_getNullToEmpty(useYn) == 'ALL'){
+		
+	}else{
+		strArg += " pv_useYn="+nexacro.wrapQuote(useYn);
+	}
+
+	this.gfn_transaction("DEPT",
+						 "txComUrl::com/selectComDeptCmb.do",
+						 "",
+						 objDs+"=resultList",
+						 strArg,
+						 "",
+						 false);
+}
+
+/******************************************************************************
+* 함 수 명 : gfn_searchParent
+* 함수설명 : function의 부모 찾기
+* 작성자   : 김동근
+* 입    력 : 검색할 function
+* 결    과 	: function 부모 위치
+*****************************************************************************/ 
+this.gfn_searchParent = function(functionName) {
+	var idx = 1;
+	var parentStr = "parent";
+	while(idx < 20)
+	{		
+		if(  eval("this." + parentStr) ) {
+			if( this.gfn_isNull(eval("this." + parentStr)[functionName])==false ) {
+				break;
+			} else {
+				if( eval("this.parent." + parentStr) ) {
+					parentStr = "parent." + parentStr;
+				} else {
+					break;
+				}
+			}
+		} else {
+			break;
+		}
+		
+		idx++;
+	}
+	
+	return parentStr;
+}
+
+/*********************************************************************
+ * 함 수 명 : gfn_between
+ * 함수설명 : 두 값을 비교한다.
+ * 작성자   : 이수현
+ * 입    력 : 1. 시작값
+              2. 종료값
+ * 결    과 	: boolean
+ *********************************************************************/
+this.gfn_between = function(fr, to)
+{
+	if(!this.gfn_isNull(to)){
+		var chkDt = Eco.date.getDiffDay(fr.toString(), to.toString());
+		if(chkDt < 0) {
+			return false;
+		}
+	}
+	
+	return true;
+}
+
+/*********************************************************************
+ * 함 수 명 : gfn_getDatasetCount
+ * 함수설명 : dataset의 row를 count한다.
+ * 작성자   : 최용현
+ * 입    력 : 1. daset
+              2. bind 될 component
+ * 결    과 	: component bind
+ *********************************************************************/
+this.gfn_getDatasetCount = function(objDs, objSta)
+{
+	var rowCnt = objDs.getRowCount();
+	if(this.gfn_getNullToEmpty(objSta) != ''){
+		objSta.set_text("<b v='true'>총 ["+rowCnt+"] 건</b>");
+	}
+	var findRow = application.gds_countData.findRowExpr("progId=='"+application.gds_open.getColumn(application.gds_open.rowposition, "menuId")+"'&&dsNm=='"+objDs.name+"'");
+	
+	if(findRow == -1){
+		var addRow = application.gds_countData.addRow();
+		application.gds_countData.setColumn(addRow, "progId", application.gds_open.getColumn(application.gds_open.rowposition, "menuId"));
+		application.gds_countData.setColumn(addRow, "dsNm", objDs.name);
+		if(this.gfn_getNullToEmpty(objSta) != ''){
+			application.gds_countData.setColumn(addRow, "staNm", objSta.name);
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 : gfn_dragSplitter
+ * 함수설명 : splitter를 사용하기 위한 drag event에서 호출
+ * 작성자   : 최용현
+ * 입    력 : 1. DragEventInfo
+              ※ 좌우 스플리터는 spl_leftRight가 들어가야하고 상하 스플리터는 spl_upDown이 id에 들어가야한다.
+ * 결    과 	: 전역 변수 세팅
+ *********************************************************************/
+this.gfn_dragSplitter = function(e)
+{
+	if(e.fromreferenceobject.id.indexOf("spl_leftRight") >= 0){
+		this.fv_splId = "splLeft";
+	}else if(e.fromreferenceobject.id.indexOf("spl_upDown") >= 0){
+		this.fv_splId = "splUp"
+	}else{
+		this.fv_splId = "";
+	}
+
+	return true;
+}
+
+/*********************************************************************
+ * 함 수 명 : gfn_dropSplitter
+ * 함수설명 : splitter를 사용하기 위한 drop event에서 호출
+ * 작성자   : 최용현
+ * 입    력 : 1. DragEventInfo
+              2. 좌우 스플리터 obj
+              3. 상하 스플리터 obj
+              4. 좌/상 obj 배열
+              5. 우/하 obj 배열
+ * 결    과 	: component redraw
+ * 화면에 상하 좌우 splitter가 각각 1개 이상씩 들어갈 경우 공통에 문의해주세요.
+ *********************************************************************/
+this.gfn_dropSplitter = function(e, splObj, splUpObj, arrObj, arrObj2)
+{
+	if(this.fv_splId == "splLeft"){
+		arrObj[0].set_width(e.clientX-10);
+		splObj.set_left(e.clientX);
+		splObj.set_width(10);
+		arrObj2[0].set_left(e.clientX+14);
+	}else if(this.fv_splId == "splUp")	{
+		if(e.canvasY > 90){
+			if(splObj != ""){
+				if(e.canvasY <= parseInt(splObj.top)+parseInt(splObj.height)){
+					splObj.set_visible(false);
+				}else{
+					splObj.set_visible(true);
+				}
+			}
+			for(i=0; i<arrObj.length; i++){
+				arrObj[i].set_height(e.canvasY-arrObj[i].top-4);
+			}
+			splUpObj.set_top(e.canvasY);
+			splUpObj.set_height(10);
+			for(i=0; i<arrObj2.length; i++){
+				arrObj2[i].set_top(e.canvasY+14);
+			}
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 : gfn_getCurProgInfo
+ * 함수설명 : 현재 열려있는 화면의 MenuId/ProgId/year/termCd/scheduleCd를 조회한다.
+ * 작성자   : 최용현
+ * 입    력 : menu/prog 구분
+ * 결    과 : menuId/progId
+ *********************************************************************/
+this.gfn_getCurProgInfo = function(colGb)
+{
+	var resultNm = "";
+	if(colGb == "menu"){
+		resultNm = application.gds_open.getColumn(application.gds_open.rowposition, "parentId");
+	}else if(colGb == "prog"){
+		resultNm = application.gds_open.getColumn(application.gds_open.rowposition, "menuId");
+	}else if(colGb == "year"){
+		resultNm = application.gds_open.getColumn(application.gds_open.rowposition, "year");
+	}else if(colGb == "termCd"){
+		resultNm = application.gds_open.getColumn(application.gds_open.rowposition, "termCd");
+	}else if(colGb == "scheduleCd"){
+		resultNm = application.gds_open.getColumn(application.gds_open.rowposition, "scheduleCd");
+	}
+	
+	return resultNm;
+	
+}
+
+/*********************************************************************
+ * 함 수 명 : gfn_isManager
+ * 함수설명 : 접속한 사용자가 관리자인지 구분한다.
+ * 작성자   : 최용현
+ * 입    력 : 
+ * 결    과 : 관리자 true / false
+ *********************************************************************/
+this.gfn_isManager = function()
+{
+	var managerFlag = application.gds_open.getColumn(application.gds_open.rowposition, "managerFlag");
+	
+	if(managerFlag == 1){
+		return true;	
+	}else{
+		return false;
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 : gfn_bussRegNoChk
+ * 함수설명 : 사업자등록번호 또는 주민등록번호의 형식을 확인한다.
+ * 작 성 자 : 이수현
+ * 입    력 : 1. 등록번호
+              2. 번호 구분
+ * 결    과 : boolean
+ *********************************************************************/
+this.gfn_bussRegNoChk = function(regNo, regFg)
+{
+	var regFgNm = regFg.toUpperCase();
+	
+	if(regFgNm == "JUMIN"){
+		var juminNo = regNo.replace(/-/g, "");
+		
+		if(juminNo.length != 13){
+			return false;
+		}
+		
+		var chkRule = "234567892345";	//주민등록번호 체크 형식
+		var sumMod1 = 0;
+		
+		var nationDiv = 0;
+		var birthYear = "";
+		
+		//외국인일경우
+		if(regNo.substring(6, 7) == 5 || regNo.substring(6, 7) == 6 || regNo.substring(6, 7) == 7 || regNo.substring(6, 7) == 8){
+			var sum = 0;
+			var odd = 0;
+			
+			var buf = new Array();
+			
+			for(var i = 0; i < 13; i++){
+                buf[i]  =  juminNo.charAt(i);
+			}
+			trace(buf[0])
+			odd  =  buf[7]  *  10  +  buf[8];
+
+			if  (odd  %  2  !=  0)  {
+					return  false;
+			}
+
+			if  ((buf[11]  !=  6)  &&  (buf[11]  !=  7)  &&  (buf[11]  !=  8) &&  (buf[11]  !=  9))  {
+					return  false;
+			}
+
+			var multipliers  = new Array(2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5);
+
+			for  (var  i  =  0;  i  <  12;  i++)  {
+					sum  +=  (buf[i]  *=  multipliers[i]);
+			}
+
+			sum  =  11  -  (sum  %  11);
+
+			if  (sum  >=  10){
+					sum  -=  10;
+			}
+			sum  +=  2;
+
+			if  (sum  >=  10){
+					sum  -=  10;
+			}
+			
+			if  (sum  !=  buf[12])  {
+					return  false;
+			}
+			
+
+			return  true;
+		}else{
+			//한국인
+			for(i = 0; i < 13; i++) {
+				sumMod1 = nexacro.toNumber(sumMod1) + (nexacro.toNumber(juminNo.substr(i, 1)) * nexacro.toNumber(chkRule.substr(i, 1)));
+			}
+
+			var sumMod2 = sumMod1 % 11;
+			var sumMod3 = 11 - sumMod2;
+			
+			sumMod3 = sumMod3 % 10;
+			
+			if(juminNo.substring(12) == sumMod3){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		//주민번호체크 끝
+	} else if(regFg == "BUSS"){
+		var rep_bussRegNo = regNo.replace(/-/g, "");
+		
+		if(rep_bussRegNo.substr(0, 3) == "000") {
+			return false;
+		}
+		
+		var chkRule = "137137135";	// 사업자번호 체크 형식
+		var sumMod1 = 0;
+		for(i = 0; i < 7; i++) {
+			sumMod1 = nexacro.toNumber(sumMod1) + (nexacro.toNumber(rep_bussRegNo.substr(i, 1)) * nexacro.toNumber(chkRule.substr(i, 1)));
+		}
+		var sumMod2 = sumMod1 % 10;
+		var sumMod3 = (nexacro.toNumber(rep_bussRegNo.substr(7, 1)) * chkRule.substr(7, 1)) % 10;
+		var sumMod4 = nexacro.toNumber(rep_bussRegNo.substr(8, 1)) * chkRule.substr(8, 1);
+		var sumMod5 = Math.round(nexacro.toNumber(sumMod4) / 10 - 0.5);
+		var sumMod6 = nexacro.toNumber(sumMod4) - (nexacro.toNumber(sumMod5) * 10);
+		var sumMod7 = (10 - ((nexacro.toNumber(sumMod2) + nexacro.toNumber(sumMod3) + nexacro.toNumber(sumMod5) + nexacro.toNumber(sumMod6)) % 10)) % 10;
+		
+		if(nexacro.toNumber(rep_bussRegNo.substr(9, 1)) != nexacro.toNumber(sumMod7)) {
+			return false;
+		}
+		return true;
+	
+	}
+}
+
+
+
+
+
+
+/*********************************************************************
+ * 함 수 명 : gfn_multiLang
+ * 함수설명 : 화면을 다국어 처리한다.
+ * 작성자   : 최용현
+ * 입    력 : 
+ * 결    과 : 
+ *********************************************************************/
+this.gfn_multiLang = function(langFg)
+{
+	if(application.gv_lagnFg == "kor" && application.gds_menu.getColumn(application.gds_menu.rowposition, "영문여부") == "0"){
+		return false;
+	}else {
+		var component = this.components;
+		var multiLangFg = "";
+		var colNm = "";
+		
+		for(var i=0 ; i<component.length ; i++){
+			if(!this.gfn_isNull(component[i].text)){
+				multiLangFg = application.gds_multiLang.findRow("korNm", component[i].text.trim());
+
+				if(multiLangFg > 0){
+					//언어따라 다국어 처리를 한다. 언어가 추가 될 경우 else if로 추가해 줘야된다.
+					if(langFg == "eng"){
+						component[i].set_text(application.gds_multiLang.getColumn(multiLangFg, "engNm"));
+					}
+				}
+			}
+			
+			if(component[i] == "[object Div]"){
+				var divComp = component[i].components;
+				
+				for(var j=0; j<divComp.length; j++){
+					if(!this.gfn_isNull(divComp[j].text)){
+						multiLangFg = application.gds_multiLang.findRow("korNm", divComp[j].text.trim());
+					
+						if(multiLangFg > 0){
+							//언어따라 다국어 처리를 한다. 언어가 추가 될 경우 else if로 추가해 줘야된다.
+							if(langFg == "eng"){
+								divComp[j].set_text(application.gds_multiLang.getColumn(multiLangFg, "engNm"));
+							}
+						}
+					}
+				}
+			}
+
+			//grid의 헤더 처리
+			if(component[i] == "[object Grid]"){
+				for(var k=0; k<component[i].getCellCount("Head"); k++){
+					colNm = component[i].getCellProperty("Head", k, "text");
+
+					multiLangFg = application.gds_multiLang.findRow("korNm", colNm.trim());
+					
+					if(multiLangFg > 0){
+						//언어따라 다국어 처리를 한다. 언어가 추가 될 경우 else if로 추가해 줘야된다.
+						if(langFg == "eng"){
+							component[i].setCellProperty( "Head", k, "text", application.gds_multiLang.getColumn(multiLangFg, "engNm"));
+						}
+					}
+				}
+			}
+			
+			if(component[i] == "[object Tab]"){
+				for(var l=0; l<component[i].tabpages.length; l++){
+					if(!this.gfn_isNull(component[i].tabpages[l].text)){
+						multiLangFg = application.gds_multiLang.findRow("korNm", component[i].tabpages[l].text.trim());
+
+						if(multiLangFg > 0){
+							//언어따라 다국어 처리를 한다. 언어가 추가 될 경우 else if로 추가해 줘야된다.
+							if(langFg == "eng"){
+								component[i].tabpages[l].set_text(application.gds_multiLang.getColumn(multiLangFg, "engNm"));
+							}
+						}
+					}
+					
+					var tabComp = component[i].tabpages[l].components;
+					
+					for(var m=0; m<tabComp.length; m++){
+						if(tabComp[m] == "[object Div]"){
+							var tabDivComp = tabComp[m].components;
+							
+							for(var n=0; n<tabDivComp.length; n++){					
+								if(!this.gfn_isNull(tabDivComp[n].text)){
+									multiLangFg = application.gds_multiLang.findRow("korNm", tabDivComp[n].text.trim());
+								
+									if(multiLangFg > 0){
+										//언어따라 다국어 처리를 한다. 언어가 추가 될 경우 else if로 추가해 줘야된다.
+										if(langFg == "eng"){
+											tabDivComp[n].set_text(application.gds_multiLang.getColumn(multiLangFg, "engNm"));
+										}
+									}
+								}
+							}
+						}
+					}					
+				}			
+			}
+		}
+	}
+}
+/*********************************************************************
+ * 함 수 명 	: gfn_searchFileDownloadPop
+ * 함수설명 	: gfn_searchFileDownloadPop 호출한다. (popup type)
+ * 입    력 	: 1.mstNo 파일 마스터넘버
+ * 결    과 	: gfn_searchFileDownloadPop 호출
+ *********************************************************************/
+this.gfn_searchFileDownloadPop = function(mstNo){ 
+
+	var popupId = "comSingleDownload";
+	var argumentsList = new Array();
+	var popupUrl = "component::comSingleDownloadPop.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var obj = this;
+	//alert("  +++ popup +++> "+mstNo);
+	argumentsList['fileMstNo']   = mstNo;
+	
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, obj);
+ }
+ 
+ /*********************************************************************
+ * 함 수 명 	: gfn_searchFileDownloadForm
+ * 함수설명 	: gfn_searchFileDownloadForm 호출한다. (Form type)
+ * 입    력 	: 1.mstNo 파일 마스터넘버
+ *                2.웹브라우저가 임베디드된 오브젝트(this.div명.div명)
+ * 결    과 	: gfn_searchFileDownloadForm 호출
+ *********************************************************************/
+this.gfn_searchFileDownloadForm = function(mstNo, obj){
+		
+	var intMstNo = this.gfn_getNullToEmpty(mstNo);
+	
+	this.fv_argumentsList['mstNo']   = intMstNo;
+	obj.set_url("component::comSingleDownloadForm.xfdl");
+ 
+ }
+ 
+ /*********************************************************************
+ * 함 수 명 	: gfn_searchFileUploadPop
+ * 함수설명 	: gfn_searchFileUploadPop 호출한다. (popup type)
+ * 입    력 	: 1.mstNo 파일 마스터넘버
+                  2.fileCnt 최대 선택 파일 개수
+ * 결    과 	: gfn_searchFileUploadPop 호출
+ *********************************************************************/
+this.gfn_searchFileUploadPop = function(mstNo, callback, fileCnt){ 
+	//
+	var intMstNo = this.gfn_nvl(mstNo,0);
+	var fileCnt = this.gfn_nvl(fileCnt,"multi");
+
+	var popupId = "comSingleUpload";
+	var argumentsList = new Array();
+	var popupUrl = "component::comSingleUploadPop.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var obj = this;
+	
+	argumentsList['mstNo']    = intMstNo;
+	argumentsList['fileCnt']  = fileCnt;
+	argumentsList['callback'] = callback;
+
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, obj);
+ }
+ 
+ /*********************************************************************
+ * 함 수 명 	: gfn_searchFileUploadForm
+ * 함수설명 	: gfn_searchFileUploadForm 호출한다. (Form type)
+ * 입    력 	: 1.mstNo 파일 마스터넘버
+ *                2.웹브라우저가 임베디드된 오브젝트(this.div명.div명)
+ * 결    과 	: gfn_searchFileUploadForm 호출
+ *********************************************************************/
+this.gfn_searchFileUploadForm = function(mstNo,obj){
+	var intMstNo = this.gfn_nvl(mstNo, "0");
+
+	this.fv_argumentsList['mstNo']   = intMstNo;
+	obj.set_url("component::comSingleUploadForm.xfdl");
+ 
+}
+ 
+/*********************************************************************
+ * 함 수 명 	: gfn_totalCstmrPopupOpen
+ * 함수설명 	: gfn_totalCstmrPopupOpen 호출한다.
+ * 입    력 	: 1.popupId
+				  2.argumentsList
+					argumentsList['member']   = 검색내용;
+					argumentsList['multiChk']   = "N";(중복선택 여부 Y ,N)
+ *            	  3.obj
+ *            	  4.callback function명
+ * 결    과 	: gfn_searchFileUploadForm 호출
+ *********************************************************************/
+this.gfn_totalCstmrPopupOpen = function(popupId, argumentsList, obj, popupCallback) {
+	//var argumentsList = new Array();
+	// var popupWidth = 920;
+	// var popupHeight = 420;
+
+	this.gfn_popupOpen(popupId, argumentsList, "ctc01::ctc01001_p02.xfdl", popupCallback, obj);
+}
+
+ /*********************************************************************
+ * 함 수 명 	: gfn_loadWebEditor
+ * 함수설명 	: 웹에디터로 작성된 미리보기화면을 호출한다.
+ * 입    력 	: 1.webEditor가 임베디드 된 div object(ex : this.div_webEditor)
+				  2.load할 데이터(ex : this.ds_webEditor.getColumn(this.ds_webEditor.rowposition, "content"))
+				  3.callback ID
+				  4.fileMasterNo				  
+ * 결    과 	: webEditor에 저장 된 데이터 로드
+ *********************************************************************/
+this.gfn_loadWebEditor = function(objDiv, content, callbackId, fileMasterNo)
+{ 	
+	objDiv.fn_contentLoad(content, callbackId, fileMasterNo);
+}
+
+ /*********************************************************************
+ * 함 수 명 	: gfn_previewWebEditor
+ * 함수설명 	: 웹에디터로 작성된 미리보기화면을 호출한다.
+ * 입    력 	: 1. 미리보기 할 내용
+                  2. 미리보기 팝업 url
+ * 결    과 	: webEditorPreview 팝업 호출
+ *********************************************************************/
+this.gfn_previewWebEditor = function(content, url)
+{
+	if ( Eco.isEmpty(content) )
+	{
+		alert("미리보기 내용이 없습니다.");
+		return;
+	}
+	
+	var child = new ChildFrame();
+	child.init("preview", "absolute", 0, 0, 800, 630);
+	if(this.gfn_isNull(url)){
+		child.set_formurl("webEditor::RichTextEditorPreviewSample.xfdl");
+	}else{
+		child.set_formurl(url);
+	}
+	child.set_openalign("center middle");
+	
+	var arg = {
+		'content': content
+	}
+	child.showModal(this.getOwnerFrame(), arg); 
+}
+
+ /*********************************************************************
+ * 함 수 명 	: gfn_previewWebEditorFile
+ * 함수설명 	: 웹에디터로 작성된 미리보기화면을 호출한다.(파일첨부포함)
+ * 입    력 	: 1.미리보기 할 내용
+                  2.파일마스터번호
+                  3.미리보기 팝업url
+ * 결    과 	: webEditorPreview 팝업 호출
+ *********************************************************************/
+this.gfn_previewWebEditorFile = function(content, fileMasterNo, url)
+{
+	if ( Eco.isEmpty(content) )
+	{
+		alert("미리보기 내용이 없습니다.");
+		return;
+	}
+	
+	var child = new ChildFrame();
+	child.init("preview", "absolute", 0, 0, 800, 630);
+	if(this.gfn_isNull(url)){
+		child.set_formurl("webEditor::RichTextEditorPreviewFile.xfdl");
+	}else{
+		child.set_formurl(url);
+	}
+	child.set_openalign("center middle");
+	
+	var arg = {
+		'content': content,
+		'fileMasterNo' : fileMasterNo
+	}
+
+	child.showModal(this.getOwnerFrame(), arg); 
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_previewWebEditorForm
+ * 함수설명 	: 웹에디터로 작성된 미리보기화면을 화면에 임베디드한다.
+ * 입    력 	: 1.임베디드 될 div object
+                  2.미리보기 할 내용
+                  3.파일마스터번호
+ * 결    과 	: webEditorPreview 폼 임베디드
+ *********************************************************************/
+this.gfn_previewWebEditorForm = function(objDiv, content, fileMasterNo)
+{
+	if ( Eco.isEmpty(content) )
+	{
+		//alert("미리보기 내용이 없습니다.");
+		return;
+	}
+	
+	objDiv.setContent(content, fileMasterNo);
+}
+
+/**********************************************************************************
+ * 함수명     : gfn_TransNull
+ * 설명       : NULL 일 경우 예약된 문자열로 리턴한다.
+ * argument    : sValue1 (문자열)
+ * argument    : sValue2 (Null 일때 사용할 문자열)
+ * return Type : String
+ **********************************************************************************/
+this.gfn_transNull = function(sValue1, sValue2)
+{
+	if( this.gfn_isNull(sValue1) )
+	{
+		return sValue2;
+	}
+	return sValue1;
+}
+
+/**********************************************************************************
+ * 함수명     : gfn_smsCheck
+ * 설명       : 데이터셋에서 체크된 데이터들만 SMS용 데이터셋을 만들어 리턴
+ * argument    : objDataSet (대상 데이터셋)
+ * argument    : strColIds (생성될 헤더컬럼명)
+ * argument    : strColNms (대상 컬럼)
+ * argument    : checkValue (체크, 전체 구분)
+ * return Type : Dataset
+ **********************************************************************************/
+this.gfn_smsCheck = function(objDataSet, strColIds, strColNms, checkValue)
+{
+	var objDs = new Dataset;
+	
+	var nColCnt = this.gfn_cntStr(strColIds);
+	
+	for(var i =0;i < nColCnt; i++){
+		objDs.addColumn( strColIds.split("$")[i], "string", 120 );		
+	}
+	
+ 	for(var i = 0;i < objDataSet.rowcount; i++){
+ 		if(objDataSet.getColumn(i, 'chk') == '1' && checkValue == 'CHECK'){
+				objDs.addRow();
+			for(var j =0;j < nColCnt; j++){				
+				objDs.setColumn(objDs.rowposition, strColIds.split("$")[j], objDataSet.getColumn(i, strColNms.split("$")[j]));
+			}
+ 		}else if(checkValue == 'ALL'){
+				objDs.addRow();
+			for(var j =0;j < nColCnt; j++){				
+				objDs.setColumn(objDs.rowposition, strColIds.split("$")[j], objDataSet.getColumn(i, strColNms.split("$")[j]));
+			}
+ 		}
+ 	}
+	return objDs;
+}
+
+/**********************************************************************************
+ * 함수명     : gfn_smsPopCall
+ * 설명       : sms 팝업 호출
+ * argument    : objDataSet (대상 데이터셋)
+ * argument    : strColIds (생성될 헤더컬럼명)
+ * argument    : strColNms (대상 컬럼)
+ * argument    : checkValue (체크, 전체 구분)
+ * return Type : Dataset
+ **********************************************************************************/
+this.gfn_smsPopCall = function(objDataSet, strColIds, strColNms, checkValue, nmIdx, mobileIdx)
+{
+	var popupId = "smsSendPop";
+	var argumentsList = new Array();
+	var popupUrl = "component::smsSendPop.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var popupWidth = 790;
+	var popupHeight = 463;
+	var obj = this;
+	
+	//해당 변수는 필수로 넘겨야 됩니다.
+	argumentsList['smsList'] = this.gfn_smsCheck(objDataSet, strColIds, strColNms, checkValue);
+	argumentsList['mobileIdx']   = mobileIdx;			//휴대폰번호 컬럼 index
+	argumentsList['nmIdx'] = nmIdx;					//성명 컬럼 index
+	
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, popupWidth, popupHeight, obj);
+}
+
+/**********************************************************************************
+ * 함수명     : gfn_smsPopCall
+ * 설명       : sms 팝업 호출
+ * argument    : objDataSet (대상 데이터셋)
+ * argument    : strColIds (생성될 헤더컬럼명)
+ * argument    : strColNms (대상 컬럼)
+ * argument    : checkValue (체크, 전체 구분)
+ * return Type : Dataset
+ **********************************************************************************/
+this.gfn_smsEmailPopCall = function(objDataSet, strColIds, strColNms, checkValue, nmIdx, mobileIdx, emailIdx)
+{
+	var popupId = "smsEmailSendPop";
+	var argumentsList = new Array();
+	var popupUrl = "component::sendMessageTabPop.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var popupWidth = 790;
+	var popupHeight = 463;
+	var obj = this;
+	
+	//해당 변수는 필수로 넘겨야 됩니다.
+	argumentsList['smsList'] = this.gfn_smsCheck(objDataSet, strColIds, strColNms, checkValue);
+	argumentsList['emailList']     = this.gfn_smsCheck(objDataSet, strColIds, strColNms, checkValue);
+	argumentsList['mobileIdx']   = mobileIdx;			//휴대폰번호 컬럼 index
+	argumentsList['memberNoIdx'] = nmIdx;					//성명 컬럼 index
+	argumentsList['emailIdx'] = emailIdx;					//이메일 컬럼 index
+	
+	
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, popupWidth, popupHeight, obj);
+}
+
+/**********************************************************************************
+ * 함수명     : gfn_getUserInfo
+ * 설명       : 로그인 사용자 정보 조회
+ * argument    : columnId
+ * return Type : Data
+ **********************************************************************************/
+this.gfn_getUserInfo = function(columnId)
+{
+	return application.gds_user.getColumn(application.gds_user.rowposition, columnId);
+}
+
+/**********************************************************************************
+ * 함수명     : gfn_getUserInfo
+ * 설명       : dataset이 바인드된 grid를 return
+ * argument    : objDataSet
+ * return Type : grid.id
+ **********************************************************************************/
+this.gfn_getBindComponent = function(objDataSet)
+{
+	var component = this.all;	
+	var objGrd = "";
+	
+	for(var i=0 ; i<component.length ; i++){		
+		if(component[i] == "[object Grid]"){
+			if(component[i].binddataset == objDataSet.name){
+				objGrd = component[i];
+			}
+		}
+	}
+	return objGrd;
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_getMaxDate
+ * 함수설명 	: 해당 테이블의 해당 컬럼의 최근 날짜를 조회한다.
+ * 입    력 	: 1.table 이름
+                  2.column 이름
+                  3.return type (ex : YYYYMM)
+ * 결    과 	: 해당 테이블의 최근 날짜
+ *********************************************************************/
+this.gfn_getMaxDate = function(tableNm, columnNm, strType)
+{
+	var strArg =  "strTalbeNm=" 	+ nexacro.wrapQuote(tableNm);
+		strArg += " strColumnNm=" 	+ nexacro.wrapQuote(columnNm);
+		strArg += " strType=" 		+ nexacro.wrapQuote(this.gfn_nvl(strType,""));
+
+	this.gfn_transaction("MAXDATE",
+						 "txComUrl::com/selectMaxDate.do",
+						 "",
+						 "gds_currentDate=resultList",
+						 strArg,
+						 "",
+						 false);
+						 
+	return  application.gds_currentDate.getColumn(0,"maxDate");
+}
+
+
+/******************************************************************************
+* 함 수 명 	: fn_compareDate
+* 함수설명 	: 날짜비교함수
+******************************************************************************/
+this.gfn_compareDate = function (fromDate, toDate,alertMsg) {
+
+	if(this.gfn_Length(fromDate) != 8 ||this.gfn_Length(toDate) != 8) {
+		this.gfn_message("A", "날짜형식이 잘못되었습니다.");
+		return false;
+	}
+    var fromYyyy = this.gfn_ToString(fromDate).substring(0,4);
+    var fromMm = this.gfn_ToString(fromDate).substring(4,6);
+    var fromDd = this.gfn_ToString(fromDate).substring(6,8);
+    var dFromDate = new Date(fromYyyy, fromMm, fromDd); 
+	
+    var toYyyy = this.gfn_ToString(toDate).substring(0,4);
+    var toMm = this.gfn_ToString(toDate).substring(4,6);
+    var toDd = this.gfn_ToString(toDate).substring(6,8);
+    var dToDate = new Date(toYyyy, toMm, toDd);   
+
+   //시작일이 종료일보다 클 수 없도록
+    if( dFromDate.getTime() > dToDate.getTime() ){
+	this.gfn_message("A", alertMsg);
+    return false;
+    }
+    return true;
+}
+
+
+/******************************************************************************
+* 함 수 명 	: gfn_compareTime
+* 함수설명 	: 시간비교
+******************************************************************************/
+this.gfn_compareTime = function (fromDt, fromTm, toDt, toTm, alertMsg) {
+	if(this.gfn_Length(fromTm) != 4 ||this.gfn_Length(toTm) != 4) {
+		this.gfn_message("A", "시간형식이  잘못되었습니다.");
+		return false;
+	}
+	if(fromDt == toDt) {
+		var dFromTm = new Date("1900","01", "01",this.gfn_ToString(fromTm).substring(0,2),this.gfn_ToString(fromTm).substring(2,4) );
+		var dToTm = new Date("1900","01", "01",this.gfn_ToString(toTm).substring(0,2), this.gfn_ToString(toTm).substring(2,4));
+		if(dFromTm.getTime() > dToTm.getTime()) {
+			this.gfn_message("A", alertMsg);
+			return false;
+		}
+	}
+	return true;
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_elecReg
+ * 함수설명 	: 전자결재를 신청한다.
+ * 입    력 	: 1.callback fn명
+                  2.전자결제문서ds
+ * 결    과 	: 
+ *********************************************************************/
+this.gfn_elecReg = function(callBackNm, dsObj)
+{
+	var popupId = "comElecPop";
+	var argumentsList = new Array();
+	var popupUrl = "component::comElecPop.xfdl";
+	var popupCallback = "fn_elecCallBack";
+	var popupWidth = 790;
+	var popupHeight = 463;
+	var obj = this;
+	
+	//해당 파라미터의 명칭은 그대로 유지해주세요.
+	argumentsList['callBackNm'] = callBackNm;
+	argumentsList['ds_elec'] = dsObj;
+	
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, popupWidth, popupHeight, obj);
+}
+
+
+/**********************************************************************************
+ * 함수명     : gfn_emailPopCall
+ * 설명       : sms 팝업 호출
+ * argument    : objDataSet (대상 데이터셋)
+ * argument    : strColIds (생성될 헤더컬럼명)
+ * argument    : strColNms (대상 컬럼)
+ * argument    : checkValue (체크, 전체 구분)
+ * return Type : Dataset
+ **********************************************************************************/
+this.gfn_emailPopCall = function(objDataSet, strColIds, strColNms, checkValue, emailIdx, fileMasterNo)
+{
+	var popupId = "emailSendPop";
+	var argumentsList = new Array();
+	var popupUrl = "component::emailSendPop.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var popupWidth = 790;
+	var popupHeight = 463;
+	var obj = this;
+	
+	//해당 변수는 필수로 넘겨야 됩니다.
+	argumentsList['emailList']     = this.gfn_smsCheck(objDataSet, strColIds, strColNms, checkValue);					//Email전송 대상자 list(dataset)
+	argumentsList['emailIdx']   = emailIdx;									//Email주소 컬럼 index
+	argumentsList['emailContent']   = "";				//Email 내용
+	argumentsList['emailTitle']   = "";						//Email 제목
+	argumentsList['fileMasterNo'] = this.gfn_nvl(fileMasterNo, "");								//첨부파일이 있을 경우 첨부파일마스터번호 없으면 ""
+		
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, popupWidth, popupHeight, obj);
+}
+/**********************************************************************************
+ * 함수명     : gfn_emailPopCall2
+ * 설명       : sms 팝업 호출
+ * argument    : objDataSet (대상 데이터셋)
+ * argument    : strColIds (생성될 헤더컬럼명)
+ * argument    : strColNms (대상 컬럼)
+ * argument    : checkValue (체크, 전체 구분)
+ * return Type : Dataset
+ **********************************************************************************/
+this.gfn_emailPopCall2 = function(objDataSet, strColIds, strColNms, checkValue, emailIdx, emailContent, emailTitle, fileMasterNo)
+{
+	var popupId = "emailSendPop";
+	var argumentsList = new Array();
+	var popupUrl = "component::emailSendPop.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var popupWidth = 790;
+	var popupHeight = 463;
+	var obj = this;
+	
+	//해당 변수는 필수로 넘겨야 됩니다.
+	argumentsList['emailList']     = this.gfn_smsCheck(objDataSet, strColIds, strColNms, checkValue);					//Email전송 대상자 list(dataset)
+	argumentsList['emailIdx']   = emailIdx;									//Email주소 컬럼 index
+	argumentsList['emailContent']   = this.gfn_nvl(emailContent, "");;				//Email 내용
+	argumentsList['emailTitle']   = this.gfn_nvl(emailTitle, "");;						//Email 제목
+	argumentsList['fileMasterNo'] = this.gfn_nvl(fileMasterNo, "");								//첨부파일이 있을 경우 첨부파일마스터번호 없으면 ""
+		
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, popupWidth, popupHeight, obj);
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_openClipReportExport
+ * 함수설명 	: 레포트를 조회하지 않고 다운받는다
+ * 입    력 	: 1.crfType = export할 확장자 예) EXCEL, HWP, JPG, PDF
+                  2.crfName = 업무명/레포트명 
+                  3.crfParams = 파라미터 array형태 
+                  4.crfFileName = 다운받을 레포트명
+                  5.crfDiv = 호출할 Div명(전체경로)
+ * 결    과 	: 레포트 다운로드
+ *********************************************************************/
+this.gfn_openClipReportExport = function(crfType, crfName, crfParams, crfFileName, crfDiv)
+{
+	eval("this." + crfDiv + ".set_url(" + '' + ")");
+	var strCrfType = this.gfn_getNullToEmpty(crfType); 			// export할 확장자 예) EXCEL, HWP, JPG, PDF
+	var strCrfName = this.gfn_getNullToEmpty(crfName);			//  업무명/레포트명
+	var strCrfParams = this.gfn_getNullToEmpty(crfParams);		// 파라미터 //예) 키:값|키:값|키:값
+	var strCrfFileName = this.gfn_getNullToEmpty(crfFileName);	// // 다운받을 레포트명
+	
+	this.fv_argumentsList['crfType']   = strCrfType;
+	this.fv_argumentsList['crfName']   = strCrfName;
+	this.fv_argumentsList['crfParams']   = strCrfParams;
+	this.fv_argumentsList['crfFileName']   = strCrfFileName;
+	
+	eval("this." + crfDiv + ".set_url(" + "'component::comReportExportForm.xfdl'" + ")");
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_isEmail
+ * 함수설명 	: 이메일 유효성체크를 한다.
+ * 입    력 	: 1.email 주소
+ * 결    과 	: boolean
+ *********************************************************************/
+this.gfn_isEmail = function(email)
+{
+	if(this.gfn_isNull(email)){
+		this.gfn_message("A", "이메일을 입력해 주세요.");
+		return false;
+	}
+
+	var match = email.match(/^(\".*\"|[A-Za-z0-9_-]([A-Za-z0-9_-]|[\+\.])*)@(\[\d{1,3}(\.\d{1,3}){3}]|[A-Za-z0-9][A-Za-z0-9_-]*(\.[A-Za-z0-9][A-Za-z0-9_-]*)+)$/);
+	
+	if(this.gfn_isNull(match)){
+		this.gfn_message("A", "올바르지 않은 이메일 형식입니다.");
+		return false;
+	}else{
+		return true;
+	}
+}
+
+/**
+ * @class 팝업 오픈 실행 함수
+ * @param sPopupId		( Popup Form의 ID )
+ * @param sUrl 		( Popup Form  URL )
+ * @param oArg 		( Popup Form으로 전달될 Argument )
+ * @param sOption 	( Popup Form Left Position )
+ * @param sPopupCallback 		( Popup Form Top Position )
+ * @return Boolean
+ */  
+this.gfn_openPopup = function (sPopupId, sUrl, oArg, sOption, sPopupCallback)
+{
+	var nLeft = -1;
+	var nTop = -1;
+	var nWidth = 1;
+	var nHeight = 1;
+	var bShowTitle = true;	
+	var bShowStatus = false;	
+	var bModeless = false;
+	var bLayered = true;
+	var nOpacity = 100;
+	var bAutoSize = false;
+	var bResizable = false;
+	//var sPopupCallback = (this.gfn_isNull(sPopupCallback)) ? "fn_popupAfter" : sPopupCallback;
+	var sTitleText = "";
+	
+	//var bShowonTaskbar = true;
+	
+	var aVal = sOption.split(",");	
+	for (var i=0; i<aVal.length; i++){
+		var aVal2 = aVal[i].trim().split("=");
+		switch (aVal2[0]){
+			case "top":				
+				nTop = parseInt(aVal2[1]);
+				break;
+			case "left":
+				nLeft = parseInt(aVal2[1]);
+				break;
+			case "width":
+				nWidth = parseInt(aVal2[1]);
+				break;
+			case "height":
+				nHeight = parseInt(aVal2[1]);
+				break;
+			case "title":
+				bShowTitle = aVal2[1];
+				break;	
+			case "titletext":
+				sTitleText = aVal2[1];
+				break;							
+			case "status":
+				bShowStatus = aVal2[1];
+				break;		
+			case "modeless":
+				bModeless = aVal2[1];
+				break;
+			case "layered":
+				bLayered = aVal2[1];
+				break;
+			case "opacity":
+				nOpacity = aVal2[1];
+				break;
+			case "autosize":
+				bAutoSize = aVal2[1];
+				break;
+			case "resizable":
+				bResizable = aVal2[1];
+				break;
+// 			case "showontaskbar":				
+// 				bShowonTaskbar = aVal2[1];
+// 				break;
+		}
+	}	
+	
+	if (bShowTitle == "true"){
+		nHeight+=29;
+	}
+	//trace("nHeight : " + nHeight);	
+	var sOpenalign = "";
+	//sTitleText = (this.gfn_isNull(sTitleText)) ? sPopupId : sTitleText;
+	sTitleText = sPopupId;
+
+	if (nLeft == -1 && nTop == -1){
+		sOpenalign = "center middle";
+        nLeft   = (application.mainframe.width/2) - Math.round(nWidth/2);
+	    nTop    = (application.mainframe.height/2) - Math.round(nHeight/2);
+	}
+	
+	var objParentFrame = this.getOwnerFrame();
+
+    if (bModeless == "true"){
+        var sOpenStyle = "showtitlebar=true showstatusbar=false autosize=false resizable=true";
+        application.open(sPopupId,sUrl,objParentFrame,oArg,sOpenStyle,nLeft, nTop, nWidth, nHeight,this);
+    } else {
+		newChild = new nexacro.ChildFrame;
+		newChild.init(sPopupId,"absolute",nLeft, nTop, nWidth, nHeight, null, null, sUrl);
+		
+		newChild.set_dragmovetype("all");
+		newChild.set_showtitlebar(bShowTitle);
+		newChild.set_autosize(bAutoSize);
+		newChild.set_resizable(bResizable);
+		newChild.set_titletext(sTitleText);
+		newChild.set_showstatusbar(bShowStatus);
+		newChild.set_openalign(sOpenalign);
+		newChild.set_layered(bLayered);
+		newChild.style.set_border("3 solid #00387f");
+		newChild.style.set_bordertype("normal 0 0");
+		newChild.style.set_background("white");
+		newChild.style.set_opacity(nOpacity);
+		
+		newChild.showModal(objParentFrame, oArg, this,sPopupCallback,true);
+    }
+}
+
+/******************************************************************************
+ * Function명 : gfn_LastDate
+ * 설명       : 해당월의 마지막 날짜를 yyyyMMdd형태로 구하기
+ * Params     : sDate : yyyyMMdd형태의 날짜 ( 예 : "20121122" )
+ * Return     :
+ *              	- 성공 = yyyyMMdd형태의 마지막 날짜 ( 예 : "20121130" )
+ *					- 실패 = ""
+ ******************************************************************************/
+this.gfn_LastDate = function (sDate)
+{
+	if (this.gfn_isNull(sDate)) 
+	{
+		return "";
+	}
+
+	var nLastDate = this.gfn_LastDateNum(sDate);
+
+	return sDate.substr(0, 6) + nLastDate.toString();
+}
+/******************************************************************************
+ * Function명 : gfn_LastDateNum
+ * 설명       : 해당월의 마지막 날짜를 숫자로 구하기
+ * Params     : sDate : yyyyMMdd형태의 날짜 ( 예 : "20121122" )
+ * Return     :
+ *              	- 성공 = 마지막 날짜 숫자값 ( 예 : 30 )
+ *					- 실패 = -1
+ ******************************************************************************/
+this.gfn_LastDateNum = function (sDate)
+{
+	var nMonth,nLastDate;
+
+	if (this.gfn_isNull(sDate)) 
+	{
+		return -1;
+	}
+
+	nMonth = parseInt(sDate.substr(4, 2), 10);
+	if (nMonth == 1 || nMonth == 3 || nMonth == 5 || nMonth == 7 || nMonth == 8 || nMonth == 10 || nMonth == 12) 
+	{
+		nLastDate = 31;
+	}
+	else if (nMonth == 2) 
+	{
+		if (this.gfn_IsLeapYear(sDate) == true) 
+		{
+			nLastDate = 29;
+		}
+		else 
+		{
+			nLastDate = 28;
+		}
+	}
+	else 
+	{
+		nLastDate = 30;
+	}
+
+	return nLastDate;
+}
+
+this.gfn_IsLeapYear = function (sDate)
+{
+	var ret;
+	var nY;
+
+	if (this.gfn_isNull(sDate)) 
+	{
+		return false;
+	}
+
+	nY = parseInt(sDate.substring(0, 4), 10);
+
+	if ((nY % 4) == 0) 
+	{
+		if ((nY % 100) != 0 || (nY % 400) == 0) 
+		{
+			ret = true;
+		}
+		else 
+		{
+			ret = false;
+		}
+	}
+	else 
+	{
+		ret = false;
+	}
+
+	return ret;
+}]]></Script>

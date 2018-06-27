@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="admi01010_p24" classname="Component_Guide" inheritanceid="" position="absolute" scrollbars="none" left="0" top="0" width="790" height="522" titletext="법인카드승인내역팝업" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Grid id="grd_admiPopupList" taborder="23" useinputpanel="false" autofittype="none" nodatatext="No Data" position="absolute" left="15" top="45" height="415" width="760" binddataset="ds_admiPopupList" oncelldblclick="grd_admiPopupList_oncelldblclick">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="30" band="left"/>
+                <Column size="63"/>
+                <Column size="127"/>
+                <Column size="183"/>
+                <Column size="77"/>
+                <Column size="79"/>
+                <Column size="80"/>
+                <Column size="100"/>
+                <Column size="88"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="구분"/>
+                <Cell col="2" text="카드번호"/>
+                <Cell col="3" text="가맹점명"/>
+                <Cell col="4" text="승인일자"/>
+                <Cell col="5" text="승인금액"/>
+                <Cell col="6" text="정산금액"/>
+                <Cell col="7" text="정산잔액"/>
+                <Cell col="8" text="승인번호"/>
+              </Band>
+              <Band id="body">
+                <Cell text="expr:currow+1"/>
+                <Cell col="1" style="align:center;" text="bind:cardEnpnm"/>
+                <Cell col="2" displaytype="normal" style="align:center;" text="bind:cdno" mask="####-####-####-####"/>
+                <Cell col="3" displaytype="normal" style="align:left;" text="bind:mcNm"/>
+                <Cell col="4" displaytype="date" edittype="none" style="align:center;" text="bind:apvlDt" calendardisplaynulltype="none"/>
+                <Cell col="5" displaytype="number" style="align:right;" text="bind:apvlAmtDom" mask="###,###,###,###"/>
+                <Cell col="6" displaytype="number" style="align:right;" text="bind:calcAmt" mask="###,###,###,###"/>
+                <Cell col="7" displaytype="number" style="align:right;" text="bind:calcRemainAmt" mask="###,###,###,###"/>
+                <Cell col="8" displaytype="normal" style="align:center;" text="bind:aprno"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static00" taborder="26" text="법인카드승인내역" cssclass="sta_WF_Title" left="15" top="9" width="202" height="29"/>
+        <Static id="Static34" taborder="27" text="h45" cssclass="tipGuide" visible="false" left="214" top="0" width="74" height="45"/>
+        <Static id="Static02" taborder="28" text="w15" cssclass="tipGuide" visible="false" left="0" top="6" width="15" height="503"/>
+        <Static id="Static06" taborder="29" text="w15" cssclass="tipGuide" visible="false" left="775" top="14" width="15" height="503"/>
+        <Static id="Static03" taborder="33" text="h10" cssclass="tipGuide" visible="false" left="741" top="0" width="34" height="10"/>
+        <Static id="Static04" taborder="35" text="h10" cssclass="tipGuide" visible="false" left="741" top="35" width="34" height="10"/>
+        <Static id="Static05" taborder="36" text="h15" cssclass="tipGuide" visible="false" right="15" bottom="43" width="727" height="15"/>
+        <Static id="Static22" taborder="39" text="h17" cssclass="tipGuide" visible="false" left="36" top="0" width="74" height="17"/>
+        <Static id="Static23" taborder="40" text="h14" cssclass="tipGuide" visible="false" left="36" top="31" width="74" height="14"/>
+        <Static id="bg" taborder="42" cssclass="sta_POP_bottomBg" left="15" top="479" width="760" height="41" positionstep="-1"/>
+        <Static id="Static01" taborder="38" text="10" cssclass="tipGuide" visible="false" right="15" bottom="2" width="136" height="10"/>
+        <Button id="btn_close" taborder="32" text="닫기" onclick="btn_close_onclick" cssclass="btn_POP_Common" left="715" top="489" width="60" height="21"/>
+        <Static id="Static28" taborder="37" text="10" cssclass="tipGuide" visible="false" right="15" bottom="33" width="136" height="10"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_admiPopupList"/>
+      <Dataset id="ds_dummy" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" onrowposchanged="ds_account_onrowposchanged"/>
+    </Objects>
+    <Bind/>
+    <Script type="xscript5.0"><![CDATA[/* ====================================================================
+ * 01. 업무구분	: 행정공통
+ * 02. 화면명		: admi01010_p25.xfdl
+ * 03. 화면설명	: 입금내역팝업 화면이다.
+ * 04. 작성일		: 2016.04.14
+ * 05. 작성자		: 김현수
+ * 06. 수정이력	: 
+ * ====================================================================
+ *     수정일     수정자   내용
+ * ====================================================================
+ *
+ * ==================================================================== */
+ 
+/* ====================================================================
+ * 1. 공통 라이브러리
+ * ==================================================================== */
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+/* ====================================================================
+ * 2. 변수 선언부
+ * ==================================================================== */
+var P_deptCd;   //부서코드
+var autoClose;  //자동종료옵션
+var autoSearch; //자동조회옵션
+
+/* ====================================================================
+ * 3. Event 처리 부분
+ * ==================================================================== */
+
+/******************************************************************************
+* 함 수 명 	: admi01010_p03_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.fn_postLoad();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{
+	P_deptCd = this.gfn_nvl(this.parent.deptCd, "");			//부서코드
+	this.fn_search();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preSearch
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preSearch = function()
+{
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_search = function()
+{
+	if(this.fn_preSearch()){
+		var strArg = " deptCd=" + nexacro.wrapQuote(this.gfn_nvl(P_deptCd,''));	//부서코드
+			
+		this.gfn_transaction("SEARCH",
+							 "txAdmUrl::com/admi/ac01/selectNoBillCardList.do",
+							 "",
+							 "ds_admiPopupList=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+
+this.fn_postSearch = function()
+{
+	if(this.ds_admiPopupList.rowcount == 0) {
+		this.gfn_message("A", "입금내역이 없습니다.");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_close_onclick
+ * 함수설명 	: 화면 종료
+ *********************************************************************/
+this.btn_close_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.close("close");
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		} else if(trId=="SEARCH"){
+			this.fn_postSearch();
+		}
+	}
+}
+this.grd_admiPopupList_oncelldblclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	this.close();
+}
+]]></Script>
+  </Form>
+</FDL>

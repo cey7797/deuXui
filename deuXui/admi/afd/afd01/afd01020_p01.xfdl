@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd01020_p01" classname="ctc01001_p01" left="0" top="0" width="730" height="420" titletext="예우목록팝업" cssclass="popup_bg" onload="afd01020_p01_onload">
+    <Layouts>
+      <Layout>
+        <Static id="bg" taborder="55" cssclass="sta_POP_bottomBg" left="15" top="379" width="700" height="41" positionstep="-1"/>
+        <Static id="Static28" taborder="6" text="w&#13;&#10;15" visible="false" top="115" height="177" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;" left="0" width="15"/>
+        <Grid id="grd_comAfd02" taborder="23" useinputpanel="false" autofittype="col" nodatatext="No Data" left="15" top="77" right="15" binddataset="ds_comAfd02" height="288">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="40"/>
+                <Column size="106"/>
+                <Column size="544"/>
+              </Columns>
+              <Rows>
+                <Row size="26" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell displaytype="checkbox" edittype="checkbox"/>
+                <Cell col="1" text="예우코드"/>
+                <Cell col="2" text="예우명"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="checkbox" edittype="checkbox" text="bind:chk"/>
+                <Cell col="1" displaytype="normal" text="bind:comCd"/>
+                <Cell col="2" style="align:left;" text="bind:comCdNm"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static76" taborder="24" text="목록" cssclass="page_stitle" left="2.05%" top="53" right="80.27%" height="20" onclick="Static76_onclick"/>
+        <Static id="Static01" taborder="46" text="w&#13;&#10;15" visible="false" left="769" top="43" width="20" height="177" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static02" taborder="47" text="예우목록팝업" cssclass="sta_WF_Title" left="15" top="9" width="170" height="29"/>
+        <Button id="btn_close" taborder="48" text="닫기" onclick="btn_close_onclick" cssclass="btn_POP_Common" left="655" top="389" width="60" height="21"/>
+        <Static id="Static05" taborder="49" text="h15" cssclass="tipGuide" visible="false" right="1" bottom="40" width="726" height="15"/>
+        <Static id="Static00" taborder="50" text="10" cssclass="tipGuide" visible="false" right="14" bottom="31" width="136" height="10"/>
+        <Static id="Static03" taborder="51" text="10" cssclass="tipGuide" visible="false" right="14" bottom="0" width="136" height="10"/>
+        <Button id="btn_confirm" taborder="52" text="확인" onclick="btn_save_onclick" cssclass="btn_POP_Common" left="590" top="389" width="60" height="21"/>
+        <Static id="Static06" taborder="53" text="w15" cssclass="tipGuide" visible="false" left="715" top="-2" width="15" height="421"/>
+        <Static id="Static07" taborder="54" text="w15" cssclass="tipGuide" visible="false" left="0" top="6" width="15" height="414"/>
+        <Static id="Static22" taborder="56" text="h17" cssclass="tipGuide" visible="false" left="36" top="0" width="74" height="17"/>
+        <Static id="Static23" taborder="57" text="h14" cssclass="tipGuide" visible="false" left="36" top="31" width="74" height="14"/>
+        <Static id="Static34" taborder="58" text="h45" cssclass="tipGuide" visible="false" left="198" top="0" width="74" height="45"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_dummy" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+      <Dataset id="ds_rtnVal" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+      <Dataset id="ds_comAfd02"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : ctc01001_p01.xfdl
+* 화면설명     : 통합고객조회팝업
+* 작성자       : 차현석
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.07.08     차현석          최초생성
+******************************************************************************/
+
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::lib_String.xjs";
+
+
+var multiChk = "Y"
+
+this.afd01020_p01_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.gfn_getAuth();
+	var essGrd = new Array();
+	essGrd[0] = this.grd_comAfd02; 
+	
+	this.gfn_essDataset(essGrd);
+	this.gfn_bindCmmnFunction(); 
+	
+	/**DataSet 이름 설정*/
+	var arrDataSet = new Array();
+	arrDataSet[0] = "ds_comAfd02";
+	
+	/**공통 그룹코드 설정*/
+	var arrGrpCd = new Array();
+	arrGrpCd[0] = "AFD02"; //예우정보코드
+
+	var arrUseYn = new Array();
+	arrUseYn[0] = "Y";
+	
+	/**Combo 출력시 첫번째 인덱스 문구 설정
+	* T : 전체
+	* S : 선택
+	* X : 사용안함
+	*/
+	var arrModeFg = new Array();
+	arrModeFg[0] = "X";
+	
+	/** 공통코드 조회시 where 절
+	* X : where 없음
+	*/
+	var arrWhere = new Array();
+	arrWhere[0] = "X";	
+	
+	var arrOrder = new Array();
+	arrOrder[0] = "SORT_SEQ";
+	/**1. combo 설정*/
+	this.gfn_comboLoadOrder(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere, arrOrder);
+
+}
+
+
+/******************************************************************************
+* 함 수 명 	: fn_callBack
+* 함수설명 	: 트랙젝션 콜백함수. 
+*****************************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg) {
+	if(errCd < 0 ) {
+		this.gfn_message("A", errMsg);
+	}
+	if("LOAD" == trId) {
+		this.btn_confirm.set_enable(true);
+		this.btn_close.set_enable(true);
+	}
+}
+
+
+/******************************************************************************
+* 함 수 명 	: btn_saveCstrmr_onclick
+* 함수설명 	: 예우목록저장함수
+*****************************************************************************/
+this.fn_save = function()
+{
+	
+	this.ds_rtnVal.copyData(this.ds_comAfd02);
+	this.ds_rtnVal.clearData();
+	var nCount = 0;
+	for(i=this.ds_comAfd02.getRowCount(); i>= 0; i--){
+		if(this.ds_comAfd02.getColumn(i,'chk') == '1'){
+			nCount ++;
+			break;
+		}
+	}
+	
+	if(nCount == 0){
+		this.close("close");
+		return false;
+	}
+	
+	nCount = 0;
+	for(i=0; i<this.ds_comAfd02.getRowCount(); i++){
+
+		if(this.ds_comAfd02.getColumn(i,'chk') == '1'){
+			//var addRow = this.gfn_addRow(this.ds_rtnVal);
+			var addRow = this.ds_rtnVal.addRow();
+			this.ds_rtnVal.copyRow(this.ds_rtnVal.rowposition, this.ds_comAfd02, i);
+			//this.ds_rtnVal.setColumn(this.ds_rtnVal.rowposition, "rowStatus", "2");
+			nCount ++;
+		}
+	}
+	
+	this.close(this.ds_rtnVal.saveXML());
+}
+
+this.btn_save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{ 
+	this.fn_save();
+}
+
+this.btn_close_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.close("close");
+}
+
+]]></Script>
+  </Form>
+</FDL>

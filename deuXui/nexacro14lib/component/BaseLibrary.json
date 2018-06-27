@@ -1,0 +1,22 @@
+﻿{
+	"name": "BaseLibrary",
+	"version": "13.0.0.0",
+	"description": "TOBESOFT XPLATFORM V13 Base Library",
+	"license": "",
+	"scripts": [
+		"BaseLibrary/Namespace.js",
+		"BaseLibrary/Base.js",
+		"BaseLibrary/array.js",
+		"BaseLibrary/date.js",
+		"BaseLibrary/number.js",
+		"BaseLibrary/string.js",
+		"BaseLibrary/object.js",
+		"BaseLibrary/Style.js",
+		"BaseLibrary/Logger.js",
+		"BaseLibrary/Color.js",
+		"BaseLibrary/XPComp.js",
+		"BaseLibrary/PositionSize.js",
+		"BaseLibrary/Json.js"
+	]
+}
+//@ sourceURL=BaseLibrary.json

@@ -1,0 +1,1886 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ComSQL">
+
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	
+	<select id="comDAO.selectComCd"  parameterClass="java.util.HashMap" resultClass="egovMap">
+
+			SELECT '0' AS CHK
+				  , '' AS ROW_STATUS
+			      , COM_CD_DIV
+			      , COM_CD
+			      , COM_CD_NM
+			      , COM_YAG
+			      , COM_ENG
+			      , COM_YAG_ENG
+			      , COM_CD_REF1
+			      , COM_CD_REF2
+			      , ISNULL(SORT_SEQ, 0) SORT_SEQ
+			      , MEMO
+			      , COM_SET_YN
+			      , UPMU_REF
+			      , CREATE_NO
+			      , CREATE_DT
+			      , ENTRY_NO
+			      , ENTRY_DT
+			      , USE_YN
+			      , COM_CD_REF3
+			      , COM_CD_REF4
+			      , COM_CD_REF5
+			      , COM_CD_REF6
+			      , COM_CD_REF7
+			      , COM_CD_REF8
+			      , COM_CD_REF9
+			      , COM_CD_REF10
+			      , COM_CD_REF11
+			      , COM_CD_REF12
+			      , COM_CD_REF13
+			      , COM_CD_REF14
+			      , COM_CD_REF15
+			      , COM_CD_REF16
+			      , COM_CD_REF17
+			      , COM_CD_REF18
+			      , COM_CD_REF19
+			  FROM COM_COD WITH(NOLOCK)
+			 WHERE 1=1
+			   AND COM_CD = '@'
+			 <isNotEmpty prepend="AND" property="pv_comCdDiv">
+			   COM_CD_DIV like #pv_comCdDiv# + '%' 
+			 </isNotEmpty>
+			 <isNotEmpty prepend="AND" property="pv_comCdNm">
+			   COM_CD_NM like '%'+ #pv_comCdNm# + '%' 
+			 </isNotEmpty>
+			 <isNotEmpty prepend="AND" property="pv_useYn">
+			   ISNULL(USE_YN, 0) = #pv_useYn# 
+			 </isNotEmpty>
+			 ORDER BY COM_CD_DIV, SORT_SEQ
+	</select>
+	
+	<insert id="comDAO.insertComCd" parameterClass="java.util.HashMap">
+		INSERT INTO COM_COD (
+					COM_CD_DIV
+				  , COM_CD
+				  , COM_CD_NM
+				  , USE_YN
+				  ) VALUES (
+				    #comCdDiv#
+				  , '@'
+				  , #comCdNm#
+				  , #useYn#
+				  )
+	</insert>
+	
+	<update id="comDAO.updateComCd" parameterClass="java.util.HashMap">
+		UPDATE COM_COD SET
+		       COM_CD_NM = #comCdNm#
+		      ,USE_YN    = #useYn#
+		 WHERE COM_CD_DIV = #comCdDiv#
+		   AND COM_CD = '@'
+	</update>
+	
+	<delete id="comDAO.deleteComCd" parameterClass="java.util.HashMap">
+		DELETE FROM COM_COD
+		  WHERE COM_CD_DIV = #comCdDiv#
+	</delete>
+	
+	<select id="comDAO.selectComCdSub"  parameterClass="java.util.HashMap" resultClass="egovMap">
+
+			SELECT '0' AS CHK
+				  , '' AS ROW_STATUS
+			      , COM_CD_DIV
+			      , COM_CD
+			      , COM_CD AS COM_CD_KEY
+			      , COM_CD_NM
+			      , COM_YAG
+			      , COM_ENG
+			      , COM_YAG_ENG
+			      , COM_CD_REF1
+			      , COM_CD_REF2
+			      , ISNULL(SORT_SEQ, 0) SORT_SEQ
+			      , MEMO
+			      , COM_SET_YN
+			      , UPMU_REF
+			      , CREATE_NO
+			      , CREATE_DT
+			      , ENTRY_NO
+			      , ENTRY_DT
+			      , USE_YN
+			      , COM_CD_REF3
+			      , COM_CD_REF4
+			      , COM_CD_REF5
+			      , COM_CD_REF6
+			      , COM_CD_REF7
+			      , COM_CD_REF8
+			      , COM_CD_REF9
+			      , COM_CD_REF10
+			      , COM_CD_REF11
+			      , COM_CD_REF12
+			      , COM_CD_REF13
+			      , COM_CD_REF14
+			      , COM_CD_REF15
+			      , COM_CD_REF16
+			      , COM_CD_REF17
+			      , COM_CD_REF18
+			      , COM_CD_REF19
+			  FROM COM_COD WITH(NOLOCK)
+			 WHERE 1=1
+			   AND COM_CD <![CDATA[<>]]> '@'
+			   AND COM_CD_DIV = #pv_comCdDiv# 
+			 ORDER BY COM_CD, SORT_SEQ
+	</select>
+	
+	<insert id="comDAO.insertComCdSub" parameterClass="java.util.HashMap">
+		INSERT INTO COM_COD (
+					COM_CD_DIV
+				  , COM_CD
+				  , COM_CD_NM
+				  , SORT_SEQ
+				  , USE_YN
+				  , COM_YAG
+			      , COM_ENG
+			      , COM_YAG_ENG
+			      , COM_CD_REF1
+			      , COM_CD_REF2
+			      , COM_SET_YN
+			      , UPMU_REF
+			      , COM_CD_REF3
+			      , COM_CD_REF4
+			      , COM_CD_REF5
+			      , COM_CD_REF6
+			      , COM_CD_REF7
+			      , COM_CD_REF8
+			      , COM_CD_REF9
+			      , COM_CD_REF10
+				  ) VALUES (
+				    #comCdDiv#
+				  , #comCd#
+				  , #comCdNm#
+				  , CONVERT(INT, #sortSeq#)
+				  , #useYn#
+				  , #comYag#
+			      , #comEng#
+			      , #comYagEng#
+			      , #comCdRef1#
+			      , #comCdRef2#
+			      , #comSetYn#
+			      , #upmuRef#
+			      , #comCdRef3#
+			      , #comCdRef4#
+			      , #comCdRef5#
+			      , #comCdRef6#
+			      , #comCdRef7#
+			      , #comCdRef8#
+			      , #comCdRef9#
+			      , #comCdRef10#
+				  )
+	</insert>
+	
+	<update id="comDAO.updateComCdSub" parameterClass="java.util.HashMap">
+		UPDATE COM_COD
+		SET	   COM_CD       = #comCd#     
+			 , COM_CD_NM    = #comCdNm#
+		     , SORT_SEQ     = CONVERT(INT, #sortSeq#)
+		     , USE_YN       = #useYn#
+		     , COM_YAG      = #comYag#
+			 , COM_ENG      = #comEng#
+			 , COM_YAG_ENG  = #comYagEng#
+			 , COM_CD_REF1  = #comCdRef1#
+			 , COM_CD_REF2  = #comCdRef2#
+			 , COM_SET_YN   = #comSetYn#
+			 , UPMU_REF     = #upmuRef#
+			 , COM_CD_REF3  = #comCdRef3#
+			 , COM_CD_REF4  = #comCdRef4#
+			 , COM_CD_REF5  = #comCdRef5#
+			 , COM_CD_REF6  = #comCdRef6#
+			 , COM_CD_REF7  = #comCdRef7#
+			 , COM_CD_REF8  = #comCdRef8#
+			 , COM_CD_REF9  = #comCdRef9#
+			 , COM_CD_REF10 = #comCdRef10#
+		 WHERE COM_CD_DIV   = #comCdDiv#
+		   AND COM_CD       = #comCdKey#
+	</update>
+	
+	<delete id="comDAO.deleteComCdSub" parameterClass="java.util.HashMap">
+		DELETE FROM COM_COD
+		  WHERE COM_CD_DIV = #comCdDiv#
+		    AND COM_CD = #comCd# 
+	</delete>
+    
+    <select id="comDAO.selectComCdCombo" parameterClass="java.util.HashMap" resultClass="egovMap">
+    	<isEqual property="strType" compareValue="T">
+			SELECT '' AS CHK
+				  , '' AS ROW_STATUS
+			      , '' AS COM_CD_DIV
+			      , '' AS COM_CD
+			      , #dispStr# AS COM_CD_NM
+			      , #dispStr# AS COM_YAG
+			      , '' AS COM_ENG
+			      , #dispStr# AS COM_YAG_ENG
+			      , null AS COM_CD_REF1
+			      , null AS COM_CD_REF2
+			      , -100 AS SORT_SEQ
+			      , null AS MEMO
+			      , null AS COM_SET_YN
+			      , null AS UPMU_REF
+			      , null AS CREATE_NO
+			      , null AS CREATE_DT
+			      , null AS ENTRY_NO
+			      , null AS ENTRY_DT
+			      , null AS USE_YN
+			      , null AS COM_CD_REF3
+			      , null AS COM_CD_REF4
+			      , null AS COM_CD_REF5
+			      , null AS COM_CD_REF6
+			      , null AS COM_CD_REF7
+			      , null AS COM_CD_REF8
+			      , null AS COM_CD_REF9
+			      , null AS COM_CD_REF10
+			      , null AS COM_CD_REF11
+			      , null AS COM_CD_REF12
+			      , null AS COM_CD_REF13
+			      , null AS COM_CD_REF14
+			      , null AS COM_CD_REF15
+			      , null AS COM_CD_REF16
+			      , null AS COM_CD_REF17
+			      , null AS COM_CD_REF18
+			      , null AS COM_CD_REF19
+
+			 UNION ALL
+		</isEqual>
+		<isEqual property="strType" compareValue="S">
+			SELECT null AS CHK
+				  , null AS ROW_STATUS
+			      , null AS COM_CD_DIV
+			      , null AS COM_CD
+			      , #dispStr# AS COM_CD_NM
+			      , #dispStr# AS COM_YAG
+			      , null AS COM_ENG
+			      , #dispStr# AS COM_YAG_ENG
+			      , null AS COM_CD_REF1
+			      , null AS COM_CD_REF2
+			      , -100 AS SORT_SEQ
+			      , null AS MEMO
+			      , null AS COM_SET_YN
+			      , null AS UPMU_REF
+			      , null AS CREATE_NO
+			      , null AS CREATE_DT
+			      , null AS ENTRY_NO
+			      , null AS ENTRY_DT
+			      , null AS USE_YN
+			      , null AS COM_CD_REF3
+			      , null AS COM_CD_REF4
+			      , null AS COM_CD_REF5
+			      , null AS COM_CD_REF6
+			      , null AS COM_CD_REF7
+			      , null AS COM_CD_REF8
+			      , null AS COM_CD_REF9
+			      , null AS COM_CD_REF10
+			      , null AS COM_CD_REF11
+			      , null AS COM_CD_REF12
+			      , null AS COM_CD_REF13
+			      , null AS COM_CD_REF14
+			      , null AS COM_CD_REF15
+			      , null AS COM_CD_REF16
+			      , null AS COM_CD_REF17
+			      , null AS COM_CD_REF18
+			      , null AS COM_CD_REF19
+
+			 UNION ALL
+		</isEqual>
+
+			SELECT '' AS CHK
+				  , '' AS ROW_STATUS
+			      , COM_CD_DIV
+			      , COM_CD
+			      , COM_CD_NM
+			      , COM_YAG
+			      , COM_ENG
+			      , COM_YAG_ENG
+			      , COM_CD_REF1
+			      , COM_CD_REF2
+			      , ISNULL(SORT_SEQ, 0) SORT_SEQ
+			      , MEMO
+			      , COM_SET_YN
+			      , UPMU_REF
+			      , CREATE_NO
+			      , CREATE_DT
+			      , ENTRY_NO
+			      , ENTRY_DT
+			      , USE_YN
+			      , COM_CD_REF3
+			      , COM_CD_REF4
+			      , COM_CD_REF5
+			      , COM_CD_REF6
+			      , COM_CD_REF7
+			      , COM_CD_REF8
+			      , COM_CD_REF9
+			      , COM_CD_REF10
+			      , COM_CD_REF11
+			      , COM_CD_REF12
+			      , COM_CD_REF13
+			      , COM_CD_REF14
+			      , COM_CD_REF15
+			      , COM_CD_REF16
+			      , COM_CD_REF17
+			      , COM_CD_REF18
+			      , COM_CD_REF19
+			   FROM COM_COD WITH(NOLOCK)
+			  WHERE 
+
+			<iterate property="listGrpCd" open="(" close=")" conjunction="OR">
+				COM_CD_DIV = #listGrpCd[]#
+			</iterate>
+
+			<isNotEmpty property="strUseYn">
+				<isNotEqual property="strUseYn" compareValue="T">
+					AND ISNULL(USE_YN, '1') = CASE WHEN #strUseYn# = 'Y' THEN '1'
+					                               WHEN #strUseYn# = 'N' THEN '0'
+					                               ELSE #strUseYn# END 
+				</isNotEqual>
+			</isNotEmpty>
+
+			<isNotEqual property="strWhere" compareValue="X">
+				AND $strWhere$
+			</isNotEqual>
+			 	AND COM_CD != '@'
+			ORDER BY SORT_SEQ, COM_CD	
+    </select>
+    
+    <select id="comDAO.selectComCdComboOrder" parameterClass="java.util.HashMap" resultClass="egovMap">
+    	<isEqual property="strType" compareValue="T">
+			SELECT '' AS CHK
+				  , '' AS ROW_STATUS
+			      , '' AS COM_CD_DIV
+			      , '' AS COM_CD
+			      , #dispStr# AS COM_CD_NM
+			      , #dispStr# AS COM_YAG
+			      , '' AS COM_ENG
+			      , #dispStr# AS COM_YAG_ENG
+			      , null AS COM_CD_REF1
+			      , null AS COM_CD_REF2
+			      , -100 AS SORT_SEQ
+			      , null AS MEMO
+			      , null AS COM_SET_YN
+			      , null AS UPMU_REF
+			      , null AS CREATE_NO
+			      , null AS CREATE_DT
+			      , null AS ENTRY_NO
+			      , null AS ENTRY_DT
+			      , null AS USE_YN
+			      , null AS COM_CD_REF3
+			      , null AS COM_CD_REF4
+			      , null AS COM_CD_REF5
+			      , null AS COM_CD_REF6
+			      , null AS COM_CD_REF7
+			      , null AS COM_CD_REF8
+			      , null AS COM_CD_REF9
+			      , null AS COM_CD_REF10
+			      , null AS COM_CD_REF11
+			      , null AS COM_CD_REF12
+			      , null AS COM_CD_REF13
+			      , null AS COM_CD_REF14
+			      , null AS COM_CD_REF15
+			      , null AS COM_CD_REF16
+			      , null AS COM_CD_REF17
+			      , null AS COM_CD_REF18
+			      , null AS COM_CD_REF19
+
+			 UNION ALL
+		</isEqual>
+		<isEqual property="strType" compareValue="S">
+			SELECT null AS CHK
+				  , null AS ROW_STATUS
+			      , null AS COM_CD_DIV
+			      , null AS COM_CD
+			      , #dispStr# AS COM_CD_NM
+			      , #dispStr# AS COM_YAG
+			      , null AS COM_ENG
+			      , #dispStr# AS COM_YAG_ENG
+			      , null AS COM_CD_REF1
+			      , null AS COM_CD_REF2
+			      , -100 AS SORT_SEQ
+			      , null AS MEMO
+			      , null AS COM_SET_YN
+			      , null AS UPMU_REF
+			      , null AS CREATE_NO
+			      , null AS CREATE_DT
+			      , null AS ENTRY_NO
+			      , null AS ENTRY_DT
+			      , null AS USE_YN
+			      , null AS COM_CD_REF3
+			      , null AS COM_CD_REF4
+			      , null AS COM_CD_REF5
+			      , null AS COM_CD_REF6
+			      , null AS COM_CD_REF7
+			      , null AS COM_CD_REF8
+			      , null AS COM_CD_REF9
+			      , null AS COM_CD_REF10
+			      , null AS COM_CD_REF11
+			      , null AS COM_CD_REF12
+			      , null AS COM_CD_REF13
+			      , null AS COM_CD_REF14
+			      , null AS COM_CD_REF15
+			      , null AS COM_CD_REF16
+			      , null AS COM_CD_REF17
+			      , null AS COM_CD_REF18
+			      , null AS COM_CD_REF19
+
+			 UNION ALL
+		</isEqual>
+
+			SELECT '' AS CHK
+				  , '' AS ROW_STATUS
+			      , COM_CD_DIV
+			      , COM_CD
+			      , COM_CD_NM
+			      , COM_YAG
+			      , COM_ENG
+			      , COM_YAG_ENG
+			      , COM_CD_REF1
+			      , COM_CD_REF2
+			      , SORT_SEQ
+			      , MEMO
+			      , COM_SET_YN
+			      , UPMU_REF
+			      , CREATE_NO
+			      , CREATE_DT
+			      , ENTRY_NO
+			      , ENTRY_DT
+			      , USE_YN
+			      , COM_CD_REF3
+			      , COM_CD_REF4
+			      , COM_CD_REF5
+			      , COM_CD_REF6
+			      , COM_CD_REF7
+			      , COM_CD_REF8
+			      , COM_CD_REF9
+			      , COM_CD_REF10
+			      , COM_CD_REF11
+			      , COM_CD_REF12
+			      , COM_CD_REF13
+			      , COM_CD_REF14
+			      , COM_CD_REF15
+			      , COM_CD_REF16
+			      , COM_CD_REF17
+			      , COM_CD_REF18
+			      , COM_CD_REF19
+			   FROM COM_COD WITH(NOLOCK)
+			  WHERE 
+
+			<iterate property="listGrpCd" open="(" close=")" conjunction="OR">
+				COM_CD_DIV = #listGrpCd[]#
+			</iterate>
+
+			<isNotEmpty property="strUseYn">
+				<isNotEqual property="strUseYn" compareValue="T">
+					AND ISNULL(USE_YN, '1') = CASE WHEN #strUseYn# = 'Y' THEN '1'
+					                            WHEN #strUseYn# = 'N' THEN '0'
+					                            ELSE #strUseYn# END
+				</isNotEqual>
+			</isNotEmpty>
+
+			<isNotEqual property="strWhere" compareValue="X">
+				AND $strWhere$
+			</isNotEqual>
+			 	AND COM_CD != '@'
+			<isNotEqual property="strOrder" compareValue="X">
+			ORDER BY $strOrder$
+			</isNotEqual>
+			<isEqual property="strOrder" compareValue="X">
+			ORDER BY SORT_SEQ, COM_CD
+			</isEqual>			
+    </select>
+    
+    <select id="comDAO.selectZipPopUp"  parameterClass="java.util.HashMap" resultClass="egovMap">
+			SELECT ZIP
+			       ,SIDO_NM +' '+CASE WHEN SIGUNGU IS NULL OR SIGUNGU = '' THEN '' ELSE SIGUNGU END+' '+DORO_NM+CASE WHEN BLDG1 IS NULL OR BLDG1 = '' OR BLDG1 = 0 THEN '' ELSE ' '+BLDG1 END+CASE WHEN BLDG2 IS NULL OR BLDG2 = '' OR BLDG2 = 0 THEN '' ELSE '-'+BLDG2 END+CASE WHEN BLDG_NM IS NULL OR BLDG_NM = '' THEN '' ELSE ' '+BLDG_NM END AS ADDR
+			       ,SIDO_NM +' '+CASE WHEN SIGUNGU IS NULL OR SIGUNGU = '' THEN '' ELSE SIGUNGU END+' '+DORO_NM+CASE WHEN BLDG1 IS NULL OR BLDG1 = '' OR BLDG1 = 0 THEN '' ELSE ' '+BLDG1 END+CASE WHEN BLDG2 IS NULL OR BLDG2 = '' OR BLDG2 = 0 THEN '' ELSE '-'+BLDG2 END AS ADDR1
+			       ,CASE WHEN BLDG_NM IS NULL OR BLDG_NM = '' THEN '' ELSE ' '+BLDG_NM END AS ADDR2
+			       ,SIDO_NM
+			       ,SIGUNGU
+			       ,DORO_NM
+			       ,BLDG1
+			       ,BLDG2
+			       ,BLDG_NM
+			       ,CASE WHEN BUB_DONG_NM IS NULL OR BUB_DONG_NM = '' THEN '' ELSE BUB_DONG_NM END+CASE WHEN HANG_RI IS NULL OR HANG_RI = '' THEN '' ELSE HANG_RI END + CASE WHEN JI_NUM IS NULL OR JI_NUM = '' THEN '' ELSE ' '+JI_NUM END + CASE WHEN JI_NUM_BU IS NULL OR JI_NUM_BU = '' OR JI_NUM_BU = 0 THEN '' ELSE '-'+JI_NUM_BU END AS ADDR_JIBEUN
+			       ,BUB_DONG_NM
+			       ,HANG_RI
+			       ,JI_NUM
+       			   ,JI_NUM_BU
+			       ,OLD_ZIP
+			  FROM COM_ZIP_NEW WITH(NOLOCK)
+			 WHERE 1=1
+			  <isNotEmpty prepend="AND" property="pv_cityGb">
+			       SIDO_CODE = #pv_cityGb#
+			  </isNotEmpty>
+			  <isNotEmpty prepend="AND" property="pv_detail">
+			       (ZIP LIKE '%'+#pv_detail#+'%'
+			        OR SIDO_NM LIKE '%'+#pv_detail#+'%'
+			        OR SIGUNGU LIKE '%'+#pv_detail#+'%'
+			        OR DORO_NM LIKE '%'+#pv_detail#+'%'
+			        OR BLDG_NM LIKE '%'+#pv_detail#+'%'
+			        OR SIDO_NM +' '+CASE WHEN SIGUNGU IS NULL OR SIGUNGU = '' THEN '' ELSE SIGUNGU END+' '+DORO_NM+CASE WHEN BLDG1 IS NULL OR BLDG1 = '' OR BLDG1 = 0 THEN '' ELSE ' '+BLDG1 END+CASE WHEN BLDG2 IS NULL OR BLDG2 = '' OR BLDG2 = 0 THEN '' ELSE '-'+BLDG2 END +CASE WHEN BLDG_NM IS NULL OR BLDG_NM = '' THEN '' ELSE ' '+BLDG_NM END LIKE '%'+#pv_detail#+'%'
+			        OR CASE WHEN BUB_DONG_NM IS NULL OR BUB_DONG_NM = '' THEN '' ELSE BUB_DONG_NM END+ CASE WHEN HANG_RI IS NULL OR HANG_RI = '' THEN '' ELSE HANG_RI END + CASE WHEN JI_NUM IS NULL OR JI_NUM = '' THEN '' ELSE ' '+JI_NUM END+ CASE WHEN JI_NUM_BU IS NULL OR JI_NUM_BU = '' OR JI_NUM_BU = 0 THEN '' ELSE JI_NUM_BU END LIKE '%'+#pv_detail#+'%'
+			        OR BUB_DONG_NM LIKE '%'+#pv_detail#+'%'
+			        OR HANG_RI LIKE '%'+#pv_detail#+'%'
+			        OR BLDG_NM LIKE '%'+#pv_detail#+'%')
+			  </isNotEmpty>
+             ORDER BY SIDO_NM
+                     ,SIGUNGU
+                     ,DORO_NM
+                     ,CONVERT(INT, BLDG1)
+                     ,CONVERT(INT, BLDG2)
+	</select>
+	
+	<select id="comDAO.selectComCsi07" parameterClass="java.util.HashMap"  resultClass="egovMap"> 
+			select '0' as chk
+			     , '' as row_status
+			     , sys_id 
+			     , sys_nm
+			     , sys_nm_eng 
+			     , ISNULL(SORT_SEQ, 0) SORT_SEQ
+			     , create_no
+			     , create_dt as create_dt
+			     , entry_no
+			     , entry_dt as entry_dt
+			  from COM_SYS WITH(NOLOCK)
+			<isNotEmpty prepend="AND" property="strSysId" >
+     			   sys_id = #strSysId# 
+			</isNotEmpty>
+			 order by sort_seq
+	</select>
+	
+	<insert id="comDAO.insertComCsi07" parameterClass="java.util.HashMap">
+			insert into COM_SYS (
+					   sys_id, 
+					   sys_nm, 
+					   sort_seq, 
+					   create_no, 
+					   create_dt, 
+					   entry_no, 
+					   entry_dt,
+					   sys_nm_eng
+					)
+					values (
+					   #sysId#, 
+					   #sysNm#, 
+					   CONVERT(INT, #sortSeq#), 
+					   #createNo#, 
+					   GETDATE(), 
+					   #entryNo#, 
+					   GETDATE(),
+					   #sysNmEng#
+					 )
+	</insert>
+	<update id="comDAO.updateComCsi07" parameterClass="java.util.HashMap">
+			update COM_SYS
+			   set sys_nm     = #sysNm#
+			     , sort_seq   = CONVERT(INT, #sortSeq#)
+			     , entry_no   = #entryNo#
+			     , entry_dt   = GETDATE()
+			     , sys_nm_eng = #sysNmEng#
+			 where sys_id     = #sysId#
+	</update> 
+
+	<delete id="comDAO.deleteComCsi07" parameterClass="java.util.HashMap">
+			DELETE FROM COM_SYS
+			 WHERE SYS_ID = #sysId#
+	 </delete>
+	 
+	 <select id="comDAO.selectComCsi07Sub" parameterClass="java.util.HashMap"  resultClass="egovMap"> 
+			select '0' as chk
+			     , '' as row_status
+			     , sys_id 
+			     , sub_id 
+			     , sub_nm
+			     , sub_nm_eng 
+			     , isnull(sort_seq, 0) sort_seq
+			  from COM_SUB WITH(NOLOCK)
+			 where sys_id is not null
+			<isNotEmpty prepend="AND" property="strSysId" >
+     			   sys_id = #strSysId# 
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="strSubId" >
+				   sub_id = #strSubId# 
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="strSubNm" >
+				   sub_nm = #strSubNm# 
+			</isNotEmpty> 
+			 order by sort_seq
+	</select>
+	
+	<insert id="comDAO.insertComCsi07Sub" parameterClass="java.util.HashMap">
+		insert into COM_SUB (
+			       sys_id 
+			     , sub_id 
+			     , sub_nm 
+			     , sort_seq 
+			     , create_no 
+			     , create_dt 
+			     , entry_no 
+			     , entry_dt
+			     , sub_nm_eng
+			     ) 
+			values (
+			       #sysId# 
+			     , #subId# 
+			     , #subNm# 
+			     , CONVERT(INT, #sortSeq#)
+			     , #createNo# 
+			     , GETDATE()
+			     , #entryNo# 
+			     , GETDATE()
+			     , #subNmEng#
+			 )
+	</insert>
+	
+	<update id="comDAO.updateComCsi07Sub" parameterClass="java.util.HashMap">
+			update COM_SUB
+			   set sub_nm 	  = #subNm#
+			     , sort_seq   = CONVERT(INT, #sortSeq#)
+			     , entry_no   = #entryNo#
+			     , entry_dt   = GETDATE()
+			     , sub_nm_eng = #subNmEng#
+			 where sys_id     = #sysId#
+			   and sub_id     = #subId#
+	</update>  
+	
+	<delete id="comDAO.deleteComCsi07Sub" parameterClass="java.util.HashMap">
+			DELETE FROM COM_SUB
+			 WHERE SYS_ID = #sysId#
+			 <isNotEmpty prepend="AND" property="subId" >
+			       SUB_ID = #subId#
+			 </isNotEmpty>
+	 </delete>
+	 
+	 <select id="comDAO.selectComCsi08" parameterClass="java.util.HashMap"  resultClass="egovMap"> 
+			SELECT '0' AS CHK
+			     , '' AS ROW_STATUS
+			     , SYS_ID 
+				 , SUB_ID 
+				 , MENU_ID 
+			     , MENU_NM
+			     , MENU_NM_ENG 
+				 , ISNULL(SORT_SEQ, 0) SORT_SEQ
+				 , YEAR 
+				 , TERM_GB 
+			  FROM COM_MENU WITH(NOLOCK)
+			 WHERE 1 = 1
+			<isNotEmpty prepend="AND" property="strSysId" >
+				SYS_ID = #strSysId# 
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="strSubId" >
+				SUB_ID = #strSubId# 
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="strMenuId" >
+				MENU_ID = #strMenuId# 
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="strMenuNm" >
+				MENU_NM = #strMenuNm# 
+			</isNotEmpty>
+			ORDER BY  SORT_SEQ , MENU_ID ASC
+	</select>
+	
+	<insert id="comDAO.insertComCsi08" parameterClass="java.util.HashMap">
+		insert into COM_MENU (
+		   			sys_id
+		   	      , sub_id
+		   	      , menu_id
+		   	      , menu_nm
+		   	      , sort_seq
+		   	      , year
+		   	      , term_gb
+		   	      , create_no
+		   	      , create_dt
+		   	      , entry_no
+		   	      , entry_dt
+		   	      , menu_nm_eng
+		) values ( 
+		   			#sysId#
+		   		  , #subId#
+		   		  , #menuId#
+		   		  , #menuNm#
+		   		  , CONVERT(INT, #sortSeq#)
+		   		  , #year#
+		   		  , #termGb#
+		   		  , #createNo#
+		   		  , GETDATE()
+		   		  , #entryNo#
+		   		  , GETDATE()
+		   		  , #menuNmEng#
+		   		) 
+	</insert>
+	
+	<update  id="comDAO.updateComCsi08" parameterClass="java.util.HashMap">
+		update COM_MENU
+		   set sys_id      = #sysId#
+		     , sub_id      = #subId#
+		     , menu_id     = #menuId#
+		     , menu_nm 	   = #menuNm#
+		     , year 	   = #year#
+		     , term_gb     = #termGb#
+		     , sort_seq    = CONVERT(INT, #sortSeq#)
+		     , entry_no    = #entryNo#
+		     , entry_dt    = GETDATE()
+		     , menu_nm_eng = #menuNmEng#
+		 where sys_id      = #sysId#
+		   and sub_id      = #subId#
+		   and menu_id     = #menuId#
+	</update>  
+	
+	<delete id="comDAO.deleteComCsi08" parameterClass="java.util.HashMap">
+		delete from COM_MENU
+		 where sys_id  = #sysId#
+		   and sub_id  = #subId#
+		   and menu_id = #menuId#
+	</delete>
+	
+	<select id="comDAO.selectComCsi08Sub" parameterClass="java.util.HashMap"  resultClass="egovMap"> 
+	  SELECT '0' AS CHK
+		   , '' AS ROW_STATUS
+		   , PROG.SYS_ID 
+		   , PROG.SUB_ID 
+		   , PROG.MENU_ID 
+		   , PROG.PROG_ID 
+		   , PROG.PROG_NM 
+		   , PROG.PROG_NM_ENG
+		   , PROG.URL 
+		   , PROG.URL_ENG
+		   , PROG.TYPE_CD 
+		   , PROG.REPAIR_YN 
+		   , PROG.USE_FLAG 
+		   , PROG.MEMO 
+		   , PROG.DOMAIN
+		   , PROG.PORT
+		   , ISNULL(PROG.SORT_SEQ, 0) SORT_SEQ
+		   , PROG.URL_N
+		   , PROG.PERSON_INF_YN
+		   , PROG.ENG_YN
+		   , PROG.NOTICE_YN
+		FROM COM_SYS  SYS WITH(NOLOCK)
+		   , COM_SUB  SUB WITH(NOLOCK)
+		   , COM_MENU MENU WITH(NOLOCK)
+		   , COM_PROG PROG WITH(NOLOCK)
+	   WHERE SYS.SYS_ID   = SUB.SYS_ID
+		 AND SUB.SYS_ID   = MENU.SYS_ID
+		 AND SUB.SUB_ID   = MENU.SUB_ID
+		 AND MENU.SYS_ID  = PROG.SYS_ID
+		 AND MENU.SUB_ID  = PROG.SUB_ID
+		 AND MENU.MENU_ID = PROG.MENU_ID
+		<isNotEmpty prepend="AND" property="pv_sysId" >
+			 PROG.SYS_ID = #pv_sysId# 
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="pv_subId" >
+			PROG.SUB_ID = #pv_subId# 
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="pv_menuId" >
+			PROG.MENU_ID = #pv_menuId# 
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="strProgId" >
+			PROG.PROG_ID = #strProgId# 
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="strProgNm" >
+			PROG.PROG_NM = #strProgNm# 
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="strUrl" >
+			PROG.URL = #strUrl# 
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="strTypeCd" >
+			PROG.TYPE_CD = #strTypeCd# 
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="strRepairYn" >
+			PROG.REPAIR_YN = #strRepairYn# 
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="strUseFlag" >
+			PROG.USE_FLAG = #strUseFlag# 
+		</isNotEmpty>
+		ORDER BY SYS.SORT_SEQ, PROG.SORT_SEQ, MENU.SORT_SEQ
+	</select>
+	
+	<insert id="comDAO.insertComCsi08Sub" parameterClass="java.util.HashMap"> 
+			INSERT INTO COM_PROG (
+						  sys_id 
+						, sub_id 
+						, menu_id 
+						, prog_id 
+						, prog_nm 
+						, url
+						, url_eng 
+						, type_cd 
+						, repair_yn 
+						, use_flag 
+						, memo 
+						, sort_seq 
+						, create_no 
+						, create_dt 
+						, entry_no 
+						, entry_dt
+						, prog_nm_eng
+						, domain
+						, port
+						, url_n
+						, person_inf_yn
+						, eng_yn
+						, notice_yn
+					) VALUES (
+						  #sysId# 
+						, #subId# 
+						, #menuId# 
+						, #progId# 
+						, #progNm# 
+						, #url#
+						, #urlEng# 
+						, #typeCd# 
+						, #repairYn#
+						, '1' 
+						, #memo# 
+						, CONVERT(INT, #sortSeq#)
+						, #createNo# 
+						, GETDATE() 
+						, #entryNo# 
+						, GETDATE()
+						, #progNmEng#
+						, #domain#
+						, #port#
+						, #urlN#
+						, #personInfYn#
+						, #engYn#
+						, #noticeYn#
+					)
+	</insert>
+	
+	<update id="comDAO.updateComCsi08Sub" parameterClass="java.util.HashMap"> 
+			UPDATE COM_PROG
+			   SET prog_nm 	   = #progNm#
+				 , url 		   = #url#
+				 , url_eng	   = #urlEng#
+				 , type_cd 	   = #typeCd#
+				 , repair_yn   = #repairYn#
+				 , use_flag    = #useFlag#
+				 , memo        = #memo#
+				 , sort_seq    = CONVERT(INT, #sortSeq#)
+				 , entry_no    = #entryNo#
+				 , entry_dt    = GETDATE()
+				 , prog_nm_eng = #progNmEng#
+				 , domain      = #domain#
+				 , port        = #port#
+				 , url_n       = #urlN#
+				 , person_inf_yn = #personInfYn#
+				 , eng_yn	   = #engYn#
+				 , notice_yn   = #noticeYn#
+			 WHERE 1=1
+			 <isNotEmpty prepend="AND" property="sysId" >
+			 	SYS_ID = #sysId# 
+			 </isNotEmpty>
+			 <isNotEmpty prepend="AND" property="subId" >
+			 	SUB_ID = #subId# 
+			 </isNotEmpty>
+			 <isNotEmpty prepend="AND" property="menuId" >
+			 	MENU_ID = #menuId# 
+			 </isNotEmpty>
+			 <isNotEmpty prepend="AND" property="progId" >
+			 	PROG_ID = #progId# 
+			 </isNotEmpty>
+	</update>  
+	
+	<delete id="comDAO.deleteComCsi08Sub" parameterClass="java.util.HashMap"> 
+			DELETE FROM COM_PROG
+			 WHERE sys_id  = #sysId#
+			   AND sub_id  = #subId#
+			   AND menu_id = #menuId#
+			   AND prog_id = #progId#
+	 </delete>
+	
+	<select id="comDAO.selectRoleGroup" parameterClass="java.util.HashMap"  resultClass="egovMap"> 
+			SELECT '0' AS CHK
+		         , '' AS ROW_STATUS
+			     , A.ROLE_ID
+				 , A.ROLE_NM
+				 , A.ROLE_GB
+				 , A.CREATE_NO
+				 , A.ENTRY_NO
+				 , (SELECT COUNT(1)
+				      FROM COM_ROLE_USER WITH(NOLOCK)
+				     WHERE ROLE_ID = A.ROLE_ID
+				   ) AS CNT
+			  FROM COM_ROLE A WITH(NOLOCK)
+			 WHERE 1 = 1
+			   <isNotEmpty prepend="AND" property="pv_userGb" >
+			     A.ROLE_GB = #pv_userGb#
+			   </isNotEmpty> 
+			 ORDER BY A.ROLE_GB, A.ROLE_ID
+	</select>
+	
+	<select id="comDAO.selectRoleGroupCmb" parameterClass="java.util.HashMap"  resultClass="egovMap">
+			SELECT '' AS ROLE_ID
+			     , '전체' AS ROLE_NM
+			     , 0 AS SORT_SEQ
+			  
+			 UNION ALL
+			  
+			SELECT A.ROLE_ID
+				 , A.ROLE_NM
+				 , 1 AS SORT_SEQ
+			  FROM COM_ROLE A WITH(NOLOCK)
+			 WHERE 1 = 1
+			   <isNotEmpty prepend="AND" property="pv_userGb" >
+			     A.ROLE_GB = #pv_userGb#
+			   </isNotEmpty> 
+			 ORDER BY SORT_SEQ, ROLE_ID
+	</select>
+	
+	<insert id="comDAO.insertRoleGroup" parameterClass="java.util.HashMap" > 
+		   INSERT INTO COM_ROLE (
+					    role_id 
+					   ,role_nm 
+					   ,role_gb
+					   ,create_no 
+					   ,create_dt 
+					   ,entry_no 
+					   ,entry_dt
+			    )values(
+					    #roleId# 
+					   ,#roleNm# 
+					   ,#roleGb#
+					   ,#createNo# 
+					   ,GETDATE() 
+					   ,#entryNo# 
+					   ,GETDATE() )
+	</insert>
+	
+	<update id="comDAO.updateRoleGroup" parameterClass="java.util.HashMap" > 
+			UPDATE COM_ROLE
+			SET    ROLE_ID    = #roleId#
+			      ,ROLE_NM 	  = #roleNm#
+			      ,ROLE_GB    = #roleGb#
+			      ,ENTRY_NO   = #entryNo#
+			      ,ENTRY_DT   = GETDATE()
+			WHERE  ROLE_ID    = #roleId#
+	</update>  
+	<delete id="comDAO.deleteRoleGroup" parameterClass="java.util.HashMap" > 
+				DELETE COM_ROLE
+				WHERE  ROLE_ID    = #roleId#  
+	 </delete>
+	
+	
+	<select id="comDAO.selectRoleGroupUser" parameterClass="java.util.HashMap"  resultClass="egovMap"> 
+    	SELECT '0' AS CHK
+		      , '' AS ROW_STATUS
+		      , A.ROLE_ID
+			  , B.ROLE_NM
+			  , A.MEMBER_NO
+			  , NM
+			  , DEPT_CD
+			  , (SELECT dbo.F_COM_DEPT_NM(DEPT_CD, 'DEPT_NM_KOR')) AS DEPT_NM
+		  FROM COM_ROLE_USER A WITH(NOLOCK)
+		 	 , COM_ROLE B WITH(NOLOCK)
+		 	 , VW_USER_LIST C 
+		 WHERE A.ROLE_ID = B.ROLE_ID
+           AND A.MEMBER_NO = C.MEMBER_NO
+		   <isNotEmpty prepend="AND" property="strRoleId" >
+		       A.ROLE_ID = #strRoleId#
+		   </isNotEmpty> 
+	  ORDER BY A.MEMBER_NO, A.ROLE_ID
+	</select>
+	
+	<select id="comDAO.selectRoleGroupPgm" parameterClass="java.util.HashMap"  resultClass="egovMap"> 
+		SELECT  '0' AS CHK
+			   , '' AS ROW_STATUS
+		       ,B.SYS_NM +' ('+A.SYS_ID+')' AS SYS_NM 
+		       ,C.SUB_NM +' ('+A.SUB_ID+')' AS SUB_NM 
+		       ,COUNT(A.PROG_ID) AS UPDATE_FLAG
+		       ,A.SYS_ID
+		       ,A.SUB_ID
+		  FROM COM_ROLE_PROG A WITH(NOLOCK)
+		      ,COM_SYS B WITH(NOLOCK)
+		      ,COM_SUB C WITH(NOLOCK)
+		      ,COM_MENU D WITH(NOLOCK)
+		 WHERE A.SYS_ID   = B.SYS_ID
+		   AND A.SYS_ID   = C.SYS_ID
+		   AND A.SUB_ID   = C.SUB_ID
+		   AND A.SYS_ID   = D.SYS_ID
+		   AND A.SUB_ID   = D.SUB_ID
+		   AND A.MENU_ID  = D.MENU_ID
+		   <isNotEmpty prepend="AND" property="strRoleId" >
+		       A.ROLE_ID = #strRoleId#
+		   </isNotEmpty> 
+		 GROUP BY A.SYS_ID, A.SUB_ID, B.SYS_NM, C.SUB_NM,B.SORT_SEQ, C.SORT_SEQ
+		 ORDER BY B.SORT_SEQ, C.SORT_SEQ
+	</select>
+	
+	<select id="comDAO.selectRolePgm" parameterClass="java.util.HashMap"  resultClass="egovMap"> 
+			SELECT '0' AS CHK
+				 , '' AS ROW_STATUS
+		         , SYS_ID
+			     , SUB_ID
+			     , MENU_ID
+			     , PROG_ID
+			     , ROLE_ID
+			     , SYS_NM
+			     , SUB_NM
+			     , MENU_NM
+			     , PROG_NM
+			     , ROLE_NM
+			 FROM ( SELECT B.SYS_ID
+						 , C.SUB_ID
+						 , D.MENU_ID
+						 , E.PROG_ID
+						 , A.ROLE_ID
+						 , B.SYS_NM
+						 , C.SUB_NM
+						 , D.MENU_NM
+						 , E.PROG_NM
+						 , A.ROLE_NM
+					  FROM COM_ROLE A WITH(NOLOCK)
+						 , COM_SYS B WITH(NOLOCK)
+						 , COM_SUB C WITH(NOLOCK)
+						 , COM_MENU D WITH(NOLOCK)
+						 , COM_PROG E WITH(NOLOCK)
+					 WHERE B.SYS_ID = C.SYS_ID
+					   AND B.SYS_ID = D.SYS_ID
+					   AND B.SYS_ID = E.SYS_ID
+					   AND C.SUB_ID = D.SUB_ID
+					   AND C.SUB_ID = E.SUB_ID
+					   AND D.MENU_ID= E.MENU_ID
+					  <isNotEmpty prepend="AND" property="pv_sysId" >
+					       E.SYS_ID = #pv_sysId#
+					   </isNotEmpty>
+					   <isNotEmpty prepend="AND" property="pv_roleId" >
+					       A.ROLE_ID = #pv_roleId#
+					   </isNotEmpty>
+					   <isNotEmpty prepend="AND" property="pv_subId" >
+					       E.SUB_ID = #pv_subId#
+					   </isNotEmpty>
+					   <isNotEmpty prepend="AND" property="pv_menuId" >
+					       E.MENU_ID = #pv_menuId#
+					   </isNotEmpty> ) TA
+	          WHERE NOT EXISTS ( SELECT * FROM COM_ROLE_PROG TB WITH(NOLOCK)
+	                              WHERE 1=1
+	                              	    <isNotEmpty prepend="AND" property="pv_sysId" >
+									    TB.SYS_ID = #pv_sysId#
+									    </isNotEmpty>
+									    <isNotEmpty prepend="AND" property="pv_roleId" >
+									    TB.ROLE_ID = #pv_roleId#
+									    </isNotEmpty>
+									    <isNotEmpty prepend="AND" property="pv_subId" >
+									    TB.SUB_ID = #pv_subId#
+									    </isNotEmpty>
+									    <isNotEmpty prepend="AND" property="pv_menuId" >
+									    TB.MENU_ID = #pv_menuId#
+									    </isNotEmpty>
+	                                AND TA.SYS_ID = TB.SYS_ID
+	                                AND TA.SUB_ID = TB.SUB_ID
+	                                AND TA.MENU_ID = TB.MENU_ID
+	                                AND TA.PROG_ID = TB.PROG_ID
+	                                AND TA.ROLE_ID = TB.ROLE_ID )
+	</select>
+	
+	<select id="comDAO.selectRolePgmTree" parameterClass="java.util.HashMap"  resultClass="egovMap"> 
+		WITH TA AS
+		(  SELECT  SYS_ID
+								     , SUB_ID
+								     , MENU_ID
+								     , PROG_ID
+								     , ROLE_ID
+								     , SYS_NM
+								     , SUB_NM
+								     , MENU_NM
+								     , PROG_NM
+								     , ROLE_NM
+								 FROM ( SELECT B.SYS_ID
+											 , C.SUB_ID
+											 , D.MENU_ID
+											 , E.PROG_ID
+											 , A.ROLE_ID
+											 , B.SYS_NM
+											 , C.SUB_NM
+											 , D.MENU_NM
+											 , E.PROG_NM
+											 , A.ROLE_NM
+										  FROM COM_ROLE A WITH(NOLOCK)
+											 , COM_SYS B WITH(NOLOCK)
+											 , COM_SUB C WITH(NOLOCK)
+											 , COM_MENU D WITH(NOLOCK)
+											 , COM_PROG E WITH(NOLOCK)
+										 WHERE B.SYS_ID = C.SYS_ID
+										   AND B.SYS_ID = D.SYS_ID
+										   AND B.SYS_ID = E.SYS_ID
+										   AND C.SUB_ID = D.SUB_ID
+										   AND C.SUB_ID = E.SUB_ID
+										   AND D.MENU_ID= E.MENU_ID
+										  <isNotEmpty prepend="AND" property="pv_sysId" >
+										       E.SYS_ID = #pv_sysId#
+										   </isNotEmpty>
+										   <isNotEmpty prepend="AND" property="pv_roleId" >
+										       A.ROLE_ID = #pv_roleId#
+										   </isNotEmpty>
+										   <isNotEmpty prepend="AND" property="pv_subId" >
+										       E.SUB_ID = #pv_subId#
+										   </isNotEmpty>
+										   <isNotEmpty prepend="AND" property="pv_menuId" >
+										       E.MENU_ID = #pv_menuId#
+										   </isNotEmpty> ) TA
+						          WHERE NOT EXISTS ( SELECT * FROM COM_ROLE_PROG TB WITH(NOLOCK)
+						                              WHERE 1=1
+						                              	    <isNotEmpty prepend="AND" property="pv_sysId" >
+														    TB.SYS_ID = #pv_sysId#
+														    </isNotEmpty>
+														    <isNotEmpty prepend="AND" property="pv_roleId" >
+														    TB.ROLE_ID = #pv_roleId#
+														    </isNotEmpty>
+														    <isNotEmpty prepend="AND" property="pv_subId" >
+														    TB.SUB_ID = #pv_subId#
+														    </isNotEmpty>
+														    <isNotEmpty prepend="AND" property="pv_menuId" >
+														    TB.MENU_ID = #pv_menuId#
+														    </isNotEmpty>
+						                                AND TA.SYS_ID = TB.SYS_ID
+						                                AND TA.SUB_ID = TB.SUB_ID
+						                                AND TA.MENU_ID = TB.MENU_ID
+						                                AND TA.PROG_ID = TB.PROG_ID
+						                                AND TA.ROLE_ID = TB.ROLE_ID )
+		)
+		SELECT '0' AS CHK
+	       , '' AS ROW_STATUS
+		   , A.TREE_ID
+		   , A.TREE_NM
+		   , '' AS TREE_CHK
+     	   , A.TREE_LEVEL
+     	   , '' AS TREE_STATUS
+     	   , A.SYS_ID
+     	   , A.SUB_ID
+     	   , A.MENU_ID
+     	   , A.PROG_ID
+     	   , A.ROLE_ID
+     	   , A.TREE_SEQ
+		    FROM
+		         (
+				  SELECT DISTINCT TA.SYS_ID AS TREE_ID
+				       , TA.SYS_NM AS TREE_NM
+				       , 1 AS TREE_LEVEL
+				       , 0 AS TREE_STATUS
+				       , '' AS UP_TREE_ID
+				       , TA.ROLE_ID AS ROLE_ID
+				       , TA.ROLE_NM AS ROLE_NM
+				       , '' AS SYS_ID
+				       , '' AS SUB_ID
+				       , '' AS MENU_ID
+				       , '' AS PROG_ID
+				       , TA.SYS_ID AS TREE_SEQ
+				    FROM TA
+
+				   UNION ALL
+
+				  SELECT DISTINCT TA.SUB_ID AS TREE_ID
+				       , TA.SUB_NM AS TREE_NM
+				       , 2 AS TREE_LEVEL
+				       , 0 AS TREE_STATUS
+				       , TA.SYS_ID AS UP_TREE_ID
+				       , TA.ROLE_ID AS ROLE_ID
+				       , TA.ROLE_NM AS ROLE_NM
+				       , '' AS SYS_ID
+				       , '' AS SUB_ID
+				       , '' AS MENU_ID
+				       , '' AS PROG_ID
+				       , TA.SYS_ID + TA.SUB_ID AS TREE_SEQ
+				    FROM TA
+
+				   UNION ALL
+
+				  SELECT DISTINCT TA.MENU_ID AS TREE_ID
+				       , TA.MENU_NM AS TREE_NM
+				       , 3 AS TREE_LEVEL
+				       , 0 AS TREE_STATUS
+				       , TA.SUB_ID AS UP_TREE_ID
+				       , TA.ROLE_ID AS ROLE_ID
+				       , TA.ROLE_NM AS ROLE_NM
+				       , '' AS SYS_ID
+				       , '' AS SUB_ID
+				       , '' AS MENU_ID
+				       , '' AS PROG_ID
+				       , TA.SYS_ID + TA.SUB_ID + TA.MENU_ID AS TREE_SEQ
+				    FROM TA
+
+				   UNION ALL
+
+				  SELECT DISTINCT TA.PROG_ID AS TREE_ID
+				       , TA.PROG_NM AS TREE_NM
+				       , 4 AS TREE_LEVEL
+				       , 0 AS TREE_STATUS
+				       , TA.MENU_ID AS UP_TREE_ID
+				       , TA.ROLE_ID AS ROLE_ID
+				       , TA.ROLE_NM AS ROLE_NM
+				       , TA.SYS_ID AS SYS_ID
+				       , TA.SUB_ID AS SUB_ID
+				       , TA.MENU_ID AS MENU_ID
+				       , TA.PROG_ID AS PROG_ID
+				       , TA.SYS_ID + TA.SUB_ID + TA.MENU_ID + TA.PROG_ID AS TREE_SEQ
+				    FROM TA
+				) A
+		ORDER BY TREE_SEQ
+	
+	</select>
+	
+	<select id="comDAO.selectRolePgmDet" parameterClass="java.util.HashMap"  resultClass="egovMap"> 
+		  SELECT '0' AS CHK
+			   , '' AS ROW_STATUS
+		       , A.SYS_ID
+		       , A.SUB_ID
+		       , A.MENU_ID
+		       , A.PROG_ID
+		       , A.ROLE_ID
+		       , A.UPDATE_FLAG
+		       , B.SYS_NM
+		       , C.SUB_NM
+		       , D.MENU_NM
+		       , E.PROG_NM
+		       , F.ROLE_NM
+			   , A.SELECT_FLAG
+			   , A.SAVE_FLAG
+			   , A.PRINT_FLAG
+			   , A.DOWNLOAD_FLAG
+			   , A.SEND_FLAG
+			   , A.PERSON_INFO_FLAG
+			   , A.MANAGER_FLAG
+			FROM COM_ROLE_PROG A WITH(NOLOCK) 
+				,COM_SYS B  WITH(NOLOCK)
+				,COM_SUB C  WITH(NOLOCK)
+				,COM_MENU D  WITH(NOLOCK)
+				,COM_PROG E  WITH(NOLOCK)
+				,COM_ROLE F WITH(NOLOCK)
+		  WHERE B.SYS_ID=C.SYS_ID
+			AND B.SYS_ID=D.SYS_ID
+			AND B.SYS_ID=E.SYS_ID
+			AND B.SYS_ID=A.SYS_ID
+			AND C.SUB_ID=D.SUB_ID
+			AND C.SUB_ID=E.SUB_ID
+			AND C.SUB_ID=A.SUB_ID
+			AND D.MENU_ID=E.MENU_ID
+			AND D.MENU_ID=A.MENU_ID
+			AND E.PROG_ID=A.PROG_ID
+			AND F.ROLE_ID=A.ROLE_ID
+			<isNotEmpty prepend="AND" property="pv_sysId" >
+		    A.SYS_ID = #pv_sysId#
+		    </isNotEmpty>
+		    <isNotEmpty prepend="AND" property="pv_roleId" >
+		    A.ROLE_ID = #pv_roleId#
+		    </isNotEmpty>
+		    <isNotEmpty prepend="AND" property="pv_subId" >
+		    C.SUB_ID = #pv_subId#
+		    </isNotEmpty>
+		    <isNotEmpty prepend="AND" property="pv_menuId" >
+		    D.MENU_ID = #pv_menuId#
+		    </isNotEmpty>
+		  ORDER BY B.SORT_SEQ, C.SORT_SEQ, D.SORT_SEQ,E.SORT_SEQ
+	</select>
+	
+	<select id="comDAO.selectRolePgmDetTree" parameterClass="java.util.HashMap"  resultClass="egovMap"> 
+		  WITH TA AS ( SELECT '0' AS CHK
+						   , '' AS ROW_STATUS
+					       , A.SYS_ID
+					       , A.SUB_ID
+					       , A.MENU_ID
+					       , A.PROG_ID
+					       , A.ROLE_ID
+					       , A.UPDATE_FLAG
+					       , B.SYS_NM
+					       , C.SUB_NM
+					       , D.MENU_NM
+					       , E.PROG_NM
+					       , F.ROLE_NM
+						   , A.SELECT_FLAG
+						   , A.SAVE_FLAG
+						   , A.PRINT_FLAG
+						   , A.DOWNLOAD_FLAG
+						   , A.SEND_FLAG
+						   , A.PERSON_INFO_FLAG
+						   , A.MANAGER_FLAG
+						FROM COM_ROLE_PROG A  WITH(NOLOCK)
+							,COM_SYS B  WITH(NOLOCK)
+							,COM_SUB C  WITH(NOLOCK)
+							,COM_MENU D  WITH(NOLOCK)
+							,COM_PROG E  WITH(NOLOCK)
+							,COM_ROLE F WITH(NOLOCK)
+					  WHERE B.SYS_ID=C.SYS_ID
+						AND B.SYS_ID=D.SYS_ID
+						AND B.SYS_ID=E.SYS_ID
+						AND B.SYS_ID=A.SYS_ID
+						AND C.SUB_ID=D.SUB_ID
+						AND C.SUB_ID=E.SUB_ID
+						AND C.SUB_ID=A.SUB_ID
+						AND D.MENU_ID=E.MENU_ID
+						AND D.MENU_ID=A.MENU_ID
+						AND E.PROG_ID=A.PROG_ID
+						AND F.ROLE_ID=A.ROLE_ID
+						<isNotEmpty prepend="AND" property="pv_sysId" >
+					    A.SYS_ID = #pv_sysId#
+					    </isNotEmpty>
+					    <isNotEmpty prepend="AND" property="pv_roleId" >
+					    A.ROLE_ID = #pv_roleId#
+					    </isNotEmpty>
+					    <isNotEmpty prepend="AND" property="pv_subId" >
+					    C.SUB_ID = #pv_subId#
+					    </isNotEmpty>
+					    <isNotEmpty prepend="AND" property="pv_menuId" >
+					    D.MENU_ID = #pv_menuId#
+					    </isNotEmpty>
+				  ) SELECT '0' AS CHK
+						 , '' AS ROW_STATUS
+				         , A.TREE_ID
+				         , A.UP_TREE_ID
+				         , A.TREE_NM
+				         , '' AS TREE_CHK
+				         , A.TREE_LEVEL
+				         , '' AS TREE_STATUS
+				         , A.SELECT_FLAG
+				         , A.SAVE_FLAG
+				         , A.PRINT_FLAG
+				         , A.DOWNLOAD_FLAG
+				         , A.SEND_FLAG
+				         , A.PERSON_INFO_FLAG
+				         , A.MANAGER_FLAG
+				         , A.SYS_ID
+	     	   			 , A.SUB_ID
+	     	             , A.MENU_ID
+	     	             , A.PROG_ID
+	     	             , A.ROLE_ID
+	     	             , A.TREE_SEQ
+				      FROM (
+				      		SELECT DISTINCT TA.SYS_ID AS TREE_ID
+					             , TA.SYS_NM AS TREE_NM
+					             , '' AS SELECT_FLAG
+					             , '' AS SAVE_FLAG
+					             , '' AS PRINT_FLAG
+					             , '' AS DOWNLOAD_FLAG
+					             , '' AS SEND_FLAG
+					             , '' AS PERSON_INFO_FLAG
+					             , '' AS MANAGER_FLAG
+					             , TA.ROLE_ID
+					             , TA.ROLE_NM
+					             , 1 AS TREE_LEVEL
+					             , 0 AS TREE_STATUS
+					             , '' AS UP_TREE_ID
+					             , '' AS SYS_ID
+					             , '' AS SUB_ID
+					             , '' AS MENU_ID
+					             , '' AS PROG_ID
+					             , TA.SYS_ID AS TREE_SEQ
+					          FROM TA
+					      
+					          UNION ALL
+					      
+					        SELECT DISTINCT TA.SUB_ID AS TREE_ID
+					             , TA.SUB_NM AS TREE_NM
+					             , '' AS SELECT_FLAG
+					             , '' AS SAVE_FLAG
+					             , '' AS PRINT_FLAG
+					             , '' AS DOWNLOAD_FLAG
+					             , '' AS SEND_FLAG
+					             , '' AS PERSON_INFO_FLAG
+					             , '' AS MANAGER_FLAG
+					             , TA.ROLE_ID
+					             , TA.ROLE_NM
+					             , 2 AS TREE_LEVEL
+					             , 0 AS TREE_STATUS
+					             , TA.SYS_ID AS UP_TREE_ID
+					             , '' AS SYS_ID
+					             , '' AS SUB_ID
+					             , '' AS MENU_ID
+					             , '' AS PROG_ID
+					             , TA.SYS_ID + TA.SUB_ID AS TREE_SEQ
+					          FROM TA
+					      
+					          UNION ALL
+					      
+					        SELECT DISTINCT TA.MENU_ID AS TREE_ID
+					             , TA.MENU_NM AS TREE_NM
+					             , '' AS SELECT_FLAG
+					             , '' AS SAVE_FLAG
+					             , '' AS PRINT_FLAG
+					             , '' AS DOWNLOAD_FLAG
+					             , '' AS SEND_FLAG
+					             , '' AS PERSON_INFO_FLAG
+					             , '' AS MANAGER_FLAG
+					             , TA.ROLE_ID
+					             , TA.ROLE_NM
+					             , 3 AS TREE_LEVEL
+					             , 0 AS TREE_STATUS
+					             , TA.SUB_ID AS UP_TREE_ID
+					             , '' AS SYS_ID
+					             , '' AS SUB_ID
+					             , '' AS MENU_ID
+					             , '' AS PROG_ID
+					             , TA.SYS_ID + TA.SUB_ID + TA.MENU_ID AS TREE_SEQ
+					          FROM TA
+					      
+					          UNION ALL
+					      
+					        SELECT DISTINCT TA.PROG_ID AS TREE_ID
+					             , TA.PROG_NM AS TREE_NM
+					             , TA.SELECT_FLAG
+					             , TA.SAVE_FLAG
+					             , TA.PRINT_FLAG
+					             , TA.DOWNLOAD_FLAG
+					             , TA.SEND_FLAG
+					             , TA.PERSON_INFO_FLAG
+					             , TA.MANAGER_FLAG
+					             , TA.ROLE_ID
+					             , TA.ROLE_NM
+					             , 4 AS TREE_LEVEL
+					             , 0 AS TREE_STATUS
+					             , TA.MENU_ID AS UP_TREE_ID
+					             , TA.SYS_ID AS SYS_ID
+					             , TA.SUB_ID AS SUB_ID
+					             , TA.MENU_ID AS MENU_ID
+					             , TA.PROG_ID AS PROG_ID
+					             , TA.SYS_ID + TA.SUB_ID + TA.MENU_ID + TA.PROG_ID AS TREE_SEQ
+					          FROM TA
+				      ) A
+				ORDER BY TREE_SEQ
+	</select>
+	
+	<insert id="comDAO.insertRolePgm" parameterClass="java.util.HashMap"> 
+			INSERT INTO COM_ROLE_PROG (
+			            SYS_ID
+			           ,SUB_ID
+			           ,MENU_ID
+			           ,PROG_ID
+			           ,ROLE_ID
+			           ,UPDATE_FLAG
+			           ,CREATE_NO
+			           ,CREATE_DT
+			           ,ENTRY_NO
+			           ,ENTRY_DT
+			       )VALUES(
+			            #sysId#
+			           ,#subId#
+			           ,#menuId#
+			           ,#progId#
+			           ,#roleId#
+			           ,#updateFlag#
+			           ,#createNo#
+			           ,GETDATE()
+			           ,#entryNo#
+			           ,GETDATE()
+			           )
+	</insert>
+	
+	<update id="comDAO.updateRolePgm" parameterClass="java.util.HashMap"> 
+				UPDATE COM_ROLE_PROG
+				   SET SYS_ID         = #sysId#
+				     , SUB_ID         = #subId#
+				     , MENU_ID        = #menuId#
+				     , PROG_ID        = #progId#
+				     , ROLE_ID        = #roleId#
+				     , UPDATE_FLAG    = #updateFlag#
+				     , ENTRY_NO       = #entryNo#
+				     , ENTRY_DT       = GETDATE()
+				     , SELECT_FLAG    = #selectFlag#
+				     , SAVE_FLAG      = #saveFlag#
+				     , PRINT_FLAG     = #printFlag#
+				     , DOWNLOAD_FLAG  = #downloadFlag#
+				     , SEND_FLAG	  = #sendFlag#
+				     , PERSON_INFO_FLAG = #personInfoFlag#
+				     , MANAGER_FLAG   = #managerFlag# 
+				WHERE  SYS_ID         = #sysId#
+				  AND  SUB_ID         = #subId#
+				  AND  MENU_ID        = #menuId#
+				  AND  PROG_ID        = #progId#
+				  AND  ROLE_ID        = #roleId#
+	</update>  
+	
+	<update id="comDAO.updateRolePgmInst" parameterClass="java.util.HashMap"> 
+			INSERT INTO COM_ROLE_PROG (
+			            SYS_ID
+			           ,SUB_ID
+			           ,MENU_ID
+			           ,PROG_ID
+			           ,ROLE_ID
+			           ,UPDATE_FLAG
+			           ,CREATE_NO
+			           ,CREATE_DT
+			           ,ENTRY_NO
+			           ,ENTRY_DT
+				       ,SELECT_FLAG
+				       ,SAVE_FLAG
+				       ,PRINT_FLAG
+				       ,DOWNLOAD_FLAG
+				       ,SEND_FLAG	  
+				       ,PERSON_INFO_FLAG
+				       ,MANAGER_FLAG 
+			       )VALUES(
+			            #sysId#
+			           ,#subId#
+			           ,#menuId#
+			           ,#progId#
+			           ,#roleId#
+			           ,#updateFlag#
+			           ,#createNo#
+			           ,GETDATE()
+			           ,#entryNo#
+			           ,GETDATE()
+			           ,#selectFlag#  
+                       ,#saveFlag#    
+                       ,#printFlag#   
+                       ,#downloadFlag#
+                       ,#sendFlag#
+                       ,#personInfoFlag#
+                       ,#managerFlag#
+			           )
+	</update>  
+	
+	<update id="comDAO.updateRolePgmDel" parameterClass="java.util.HashMap"> 
+			
+		   DELETE 
+		     FROM COM_ROLE_PROG
+			WHERE  SYS_ID         = #sysId#
+			  AND  SUB_ID         = #subId#
+			  AND  MENU_ID        = #menuId#
+			  AND  PROG_ID        = #progId#
+			  AND  ROLE_ID        = #roleId#  
+	</update>  
+	
+	<delete id="comDAO.deleteRolePgm" parameterClass="java.util.HashMap"> 
+		   DELETE 
+		     FROM COM_ROLE_PROG
+			WHERE  SYS_ID         = #sysId#
+			  AND  SUB_ID         = #subId#
+			  AND  MENU_ID        = #menuId#
+			  AND  PROG_ID        = #progId#
+			  AND  ROLE_ID        = #roleId#   
+	 </delete>
+	
+	<select id="comDAO.selectUserPgm" parameterClass="java.util.HashMap"  resultClass="egovMap"> 
+	  /* comDAO.selectUserPgm */
+	  SELECT '0' AS CHK
+			, '' AS ROW_STATUS
+		    ,MEMBER_NO
+			,NM
+			,dbo.F_COM_DEPT_NM(DEPT_CD, 'DEPT_NM_KOR')  AS DEPT_NM
+			,USER_GB
+			,CREATE_NO
+			,ENTRY_NO
+		FROM VW_USER_LIST
+	   WHERE 1=1 
+	     <isNotEmpty property="pv_userGb" >
+	     AND USER_GB = #pv_userGb#
+	     </isNotEmpty>
+	     <isNotEmpty property="strNm" >
+	     AND ( MEMBER_NO LIKE '%' + #strNm# + '%'
+	     		OR NM LIKE '%' + #strNm# + '%' )
+	     </isNotEmpty>
+	   ORDER BY 1,2
+	</select>
+	
+	<update id="comDAO.updateUserPgmInst" parameterClass="java.util.HashMap"> 
+			INSERT INTO COM_ROLE_USER (
+			            ROLE_ID
+			          , MEMBER_NO
+			          , CREATE_NO
+			          , CREATE_DT
+			          , ENTRY_NO
+			          , ENTRY_DT
+			          ) values (
+			            #roleId#
+			          , #memberNo#
+			          , #createNo#
+			          , GETDATE()
+			          , #entryNo#
+			          , GETDATE() )
+	</update>
+	
+	<update id="comDAO.updateUserPgmDel" parameterClass="java.util.HashMap"> 
+			DELETE 
+			  FROM COM_ROLE_USER
+		 	 WHERE ROLE_ID   = #roleId#
+			   AND MEMBER_NO = #memberNo#
+	</update>
+	
+	<select id="comDAO.selectNonRegiPgm" parameterClass="java.util.HashMap"  resultClass="egovMap"> 
+		  /* comDAO.selectNonRegiPgm */
+		  SELECT '0' AS CHK
+				, '' AS ROW_STATUS
+		        ,A.ROLE_ID
+			    ,B.MEMBER_NO 
+			    ,B.NM 
+			    ,dbo.F_COM_DEPT_NM(C.DEPT_CD, 'DEPT_NM_KOR') AS DEPT_NM 
+			    ,A.ROLE_NM 
+			FROM COM_ROLE A WITH(NOLOCK) 
+				,VW_USER_LIST B
+				,VW_COMM_DEPT C  WITH(NOLOCK)
+		   WHERE B.MEMBER_NO = #pv_memberNo#
+			 AND B.DEPT_CD=C.DEPT_CD
+			 AND ISNULL(A.ROLE_GB,'*')<![CDATA[ <> ]]> '50'
+			 <isNotEmpty property="pv_nonRegiRoleId" >
+			 AND A.ROLE_ID LIKE '%' +#pv_nonRegiRoleId#+'%'
+			 </isNotEmpty>
+			 <isNotEmpty property="pv_roleId" >
+			 AND A.ROLE_ID = #pv_roleId#
+			 </isNotEmpty>
+		   EXCEPT
+		  SELECT '0' AS CHK
+				, '' AS ROW_STATUS
+		        ,A.ROLE_ID
+				,A.MEMBER_NO 
+				,C.NM
+				,dbo.F_COM_DEPT_NM(D.DEPT_CD, 'DEPT_NM_KOR') AS DEPT_NM
+				,B.ROLE_NM
+			FROM COM_ROLE_USER A WITH(NOLOCK)
+			   , COM_ROLE B WITH(NOLOCK)
+			   , VW_USER_LIST C
+			   , VW_COMM_DEPT D WITH(NOLOCK)
+		   WHERE A.ROLE_ID=B.ROLE_ID
+			 AND A.MEMBER_NO = #pv_memberNo#
+			 AND A.MEMBER_NO=C.MEMBER_NO
+			 AND C.DEPT_CD=D.DEPT_CD
+			 <isNotEmpty property="pv_roleId" >
+			 AND A.ROLE_ID = #pv_roleId#
+			 </isNotEmpty>
+	</select>
+	
+	<select id="comDAO.selectRegiPgm" parameterClass="java.util.HashMap"  resultClass="egovMap"> 
+		 /* comDAO.selectRegiPgm */
+		 SELECT '0' AS CHK
+			  , '' AS ROW_STATUS
+		      , A.ROLE_ID 
+			  , A.MEMBER_NO 
+			  , C.NM 
+			  , D.DEPT_NM_KOR AS DEPT_NM
+			  , B.ROLE_NM
+			  , '' AS ROLE_GB
+		   FROM COM_ROLE_USER A WITH(NOLOCK)
+		      , COM_ROLE B WITH(NOLOCK)
+		      , VW_USER_LIST C
+		      , VW_COMM_DEPT D WITH(NOLOCK)
+		  WHERE A.ROLE_ID=B.ROLE_ID
+			AND A.MEMBER_NO=C.MEMBER_NO
+			AND C.DEPT_CD=D.DEPT_CD
+			AND ISNULL(B.ROLE_GB,'*')<![CDATA[ <> ]]>'50'
+			AND A.MEMBER_NO = #pv_memberNo#
+			<isNotEmpty property="pv_roleId" >
+			AND A.ROLE_ID = #pv_roleId#
+			</isNotEmpty>
+			
+		  UNION ALL
+		  
+		  SELECT 'X' AS CHK
+		       , '' AS ROW_STATUS
+		       , A.ROLE_ID
+		       , C.MEMBER_NO
+		       , C.NM
+  			   , dbo.F_COM_DEPT_NM(D.DEPT_CD, 'DEPT_NM_KOR') AS DEPT_NM
+  			   , B.ROLE_NM
+  			   , '신분별' AS ROLE_GB
+			FROM COM_ROLE_USER_GB A WITH(NOLOCK),
+			     COM_ROLE B WITH(NOLOCK),
+			     VW_USER_LIST C,
+			     VW_COMM_DEPT D WITH(NOLOCK)
+		   WHERE A.ROLE_ID=B.ROLE_ID
+			 AND C.MEMBER_NO = #pv_memberNo#
+			 AND A.USER_GB=C.USER_GB
+			 AND C.DEPT_CD=D.DEPT_CD
+			 <isNotEmpty property="pv_roleId" >
+			 AND A.ROLE_ID = #pv_roleId#
+			 </isNotEmpty>
+	</select>
+        	        
+	<select id="comDAO.selectRankRegiPgm" parameterClass="java.util.HashMap"  resultClass="egovMap"> 
+			SELECT '0' AS CHK
+			   	  , '' AS ROW_STATUS
+		       	  ,A.ROLE_ID
+			      ,B.ROLE_NM
+			      ,A.USER_GB
+			      ,A.CREATE_NO
+			      ,A.ENTRY_NO
+			  FROM COM_ROLE_USER_GB A WITH(NOLOCK)
+			      ,COM_ROLE B WITH(NOLOCK)
+			 WHERE A.ROLE_ID  = B.ROLE_ID
+			   AND A.USER_GB  = #strUserGb#
+			
+		
+	 </select>
+	 
+	 <select id="comDAO.selectUnrankRegiPgm" parameterClass="java.util.HashMap"  resultClass="egovMap"> 
+	 		SELECT '0' AS CHK
+			      , '' AS ROW_STATUS
+		          ,A.ROLE_ID
+			      ,A.ROLE_NM
+			      ,#strUserGb# AS USER_GB 
+			      ,A.CREATE_NO
+			      ,A.ENTRY_NO
+			  FROM COM_ROLE A  WITH(NOLOCK)
+			EXCEPT
+			SELECT '0' AS CHK
+			      , '' AS ROW_STATUS
+		          ,A.ROLE_ID
+			      ,B.ROLE_NM
+			      ,A.USER_GB
+			      ,A.CREATE_NO
+			      ,A.ENTRY_NO
+			  FROM COM_ROLE_USER_GB A WITH(NOLOCK)
+			      ,COM_ROLE B WITH(NOLOCK)
+			 WHERE A.ROLE_ID = B.ROLE_ID
+			   AND A.USER_GB = #strUserGb#
+	 </select>
+	 
+	 <update id="comDAO.updateRankRegiPgm" parameterClass="java.util.HashMap"> 
+	 INSERT INTO COM_ROLE_USER_GB (
+			     role_id 
+			   , user_gb 
+			   , create_no 
+			   , create_dt 
+			   , entry_no 
+			   , entry_dt
+			) VALUES (
+				 #roleId# 
+			   , #userGb# 
+			   , #createNo# 
+			   , GETDATE() 
+			   , #entryNo# 
+			   , GETDATE()
+			)
+	</update>	
+	
+	<update id="comDAO.updateUnrankRegiPgm" parameterClass="java.util.HashMap"> 
+			DELETE 
+			  FROM COM_ROLE_USER_GB
+			 WHERE role_id = #roleId#
+			   AND user_gb = #userGb#
+	</update>	
+	 
+	 
+	 <select id="comDAO.selectUserGb" parameterClass="java.util.HashMap"  resultClass="egovMap"> 
+			 SELECT COM_CD_DIV
+				   ,COM_CD
+				   ,COM_CD_NM
+				   ,COM_ENG
+				   ,COM_YAG
+				   ,COM_YAG_ENG
+				   ,COM_CD_REF1 
+				   ,COM_CD_REF2 
+				   ,COM_CD_REF3 
+				   ,COM_CD_REF4 
+			 	   ,SORT_SEQ 
+			   FROM COM_COD WITH(NOLOCK)
+			  WHERE COM_CD <![CDATA[ <> ]]> '@'
+			    AND COM_CD_DIV = 'USER_GB' 
+				<isNotEmpty property="pv_userGb" >
+				AND COM_CD_REF1 = #pv_userGb# 
+			  	</isNotEmpty>
+			  ORDER BY SORT_SEQ
+	  </select>
+	  
+	<select id="comDAO.selectCurrentDate" parameterClass="java.util.HashMap"  resultClass="egovMap"> 
+        SELECT CASE WHEN CASE WHEN #strDateType# IS NULL OR #strDateType# = '' THEN 'YYYYMMDD' ELSE #strDateType# END = 'YYYYMMDD' THEN CONVERT(CHAR(10),GETDATE(),112)
+                    WHEN CASE WHEN #strDateType# IS NULL OR #strDateType# = '' THEN 'YYYYMMDD' ELSE #strDateType# END = 'YY' THEN SUBSTRING(CONVERT(CHAR(10),GETDATE(),112), 3,2)
+                    WHEN CASE WHEN #strDateType# IS NULL OR #strDateType# = '' THEN 'YYYYMMDD' ELSE #strDateType# END = 'YYYY' THEN SUBSTRING(CONVERT(CHAR(10),GETDATE(),112), 1,4)
+                    WHEN CASE WHEN #strDateType# IS NULL OR #strDateType# = '' THEN 'YYYYMMDD' ELSE #strDateType# END = 'YYYYMM' THEN SUBSTRING(CONVERT(CHAR(10),GETDATE(),112), 1,6)
+                    ELSE CONVERT(CHAR(10),GETDATE(),112) END  AS TO_DAY
+         
+	</select>
+	
+	<select id="comDAO.selectUserGroup" parameterClass="java.util.HashMap"  resultClass="egovMap">       
+			SELECT dbo.F_COM_CODE_NM('USER_GB',USER_GB,'KOR') AS user_gb
+			      ,dbo.F_COM_DEPT_NM(DEPT_CD, 'DEPT_NM_KOR') AS dept_nm
+			      ,MEMBER_NO AS member_no
+			      ,NM as member_nm
+ 			      ,'' AS PWD
+			 FROM VW_USER_LIST
+		    WHERE 1=1 
+		      <isNotEmpty property="pv_serGroup" >
+		      AND USER_GB = #pv_serGroup#
+		      </isNotEmpty>
+			  AND NM LIKE '%' + #pv_userNm# + '%' 
+			ORDER BY USER_GB , MEMBER_NO
+	</select>
+	
+	<!-- 파일업로드/파일업로드상세 -->
+	<!-- 파일업로드 -->
+	
+	<select id="comDAO.selectComFileMasterNo" parameterClass="java.util.HashMap"  resultClass="deu.com.vo.FileUpVO">
+			SELECT FILE_MST_SEQ.NEXTVAL
+	</select>
+	
+	<select id="comDAO.selectComFile" parameterClass="java.util.HashMap"  resultClass="egovMap">
+			SELECT A.FILE_MASTER_NO
+                  ,A.PROG_ID
+                  ,A.MENU_ID
+                  ,A.SUB_ID
+                  ,A.FILE_PATH
+                  ,B.FILE_SEQ
+                  ,B.ORG_FILE_NM
+                  ,B.RE_FILE_NM
+                  ,B.FILE_SIZE
+              FROM COM_FILE A WITH(NOLOCK)
+                  ,COM_FILE_SUB B WITH(NOLOCK)
+             WHERE A.FILE_MASTER_NO = B.FILE_MASTER_NO
+               AND A.FILE_MASTER_NO = '1'
+	</select>
+	
+	<insert id="comDAO.insertComFile" parameterClass="java.util.HashMap">
+			INSERT INTO COM_FILE(
+						FILE_MASTER_NO
+					   ,PROG_ID
+					   ,FILE_PATH
+					   ,MENU_ID
+					   ,SUB_ID
+					   ,CREATE_NO
+					   ,CREATE_DT
+						)VALUES(
+						FILE_MST_SEQ.NEXTVAL
+					   ,'2'				
+					   ,#uploadPath#
+					   ,'2'
+					   ,'2'
+					   ,'dev1'
+					   ,GETDATE()
+						)
+	</insert>
+	
+	<update id="comDAO.updateComFile" parameterClass="java.util.HashMap">
+	
+	</update>
+	
+	<delete id="comDAO.deleteComFile" parameterClass="java.util.HashMap">
+	
+	</delete>
+	
+	<!-- 파일업로드 -->
+	
+	<!-- 파일업로드상세 -->
+	
+	<select id="comDAO.selectComFileSub" parameterClass="java.util.HashMap"  resultClass="egovMap">
+	
+	</select>
+	
+	<insert id="comDAO.insertComFileSub" parameterClass="java.util.HashMap">
+			INSERT INTO COM_FILE_SUB(
+						FILE_MASTER_NO
+					   ,FILE_SEQ
+					   ,ORG_FILE_NM
+					   ,RE_FILE_NM
+					   ,FILE_SIZE
+					   ,CREATE_NO
+					   ,CREATE_DT
+						)VALUES(
+						#fileMasterNo#
+					   ,CONVERT(BIGINT, #fileSeq#)		
+					   ,#orgFileNm#
+					   ,#reFileNm#
+					   ,#fileSize#
+					   ,'dev1'
+					   ,GETDATE()
+						)
+	</insert>
+	
+	<update id="comDAO.updateComFileSub" parameterClass="java.util.HashMap">
+	
+	</update>
+	
+	<delete id="comDAO.deleteComFileSub" parameterClass="java.util.HashMap">
+	
+	</delete>
+    
+</sqlMap>

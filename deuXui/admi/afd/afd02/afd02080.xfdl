@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd02080" classname="bg01030" left="0" top="0" width="1038" height="855" titletext="계좌내역" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="0" left="0" top="0" right="14" height="39" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static05" taborder="11" text="계좌번호" onclick="div_search_Static00_onclick" cssclass="search" left="330" top="8" width="57" height="22"/>
+              <Calendar id="cal_FromDt" taborder="25" left="85" top="8" width="100" height="22" class="essential"/>
+              <Static id="Static01" taborder="26" text="~" left="191" top="11" width="12" height="18"/>
+              <Calendar id="cal_ToDt" taborder="27" left="205" top="8" width="100" height="22" class="essential"/>
+              <Static id="Static06" taborder="28" text="조회기간" cssclass="search" left="19" top="8" width="51" height="22" class="search_bul"/>
+              <Combo id="S_ACNT_UNT" taborder="29" codecolumn="codecolumn" datacolumn="datacolumn" onitemchanged="cmb_onitemchanged" enable="true" left="386" top="9" width="202" height="21" class="essential" index="0" value="0" text="전체">
+                <Dataset id="innerdataset">
+                  <ColumnInfo>
+                    <Column id="codecolumn" size="256"/>
+                    <Column id="datacolumn" size="256"/>
+                  </ColumnInfo>
+                  <Rows>
+                    <Row>
+                      <Col id="codecolumn">264010002619</Col>
+                      <Col id="datacolumn">부산1(264010002619)</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">264130000864</Col>
+                      <Col id="datacolumn">부산2(264130000864)</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">109010534115</Col>
+                      <Col id="datacolumn">국민은행(109010534115)</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">94901169681</Col>
+                      <Col id="datacolumn">농협(94901169681)</Col>
+                    </Row>
+                  </Rows>
+                </Dataset>
+              </Combo>
+              <Static id="Static02" taborder="30" text="w&#13;20" visible="false" left="305" top="8" width="20" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static76" taborder="1" text="계좌내역" cssclass="page_stitle" left="0" top="55" width="324" height="20"/>
+        <Grid id="grd_mainList" taborder="7" binddataset="ds_ac_bank_no" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="none" left="0" top="81" right="15" bottom="29">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="35" band="left"/>
+                <Column size="25" band="left"/>
+                <Column size="45" band="left"/>
+                <Column size="85"/>
+                <Column size="130"/>
+                <Column size="108"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="120"/>
+                <Column size="90"/>
+                <Column size="77"/>
+                <Column size="180"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox"/>
+                <Cell col="2" text="순번"/>
+                <Cell col="3" text="은행"/>
+                <Cell col="4" text="계좌번호"/>
+                <Cell col="5" text="일자"/>
+                <Cell col="6" text="입금액"/>
+                <Cell col="7" text="출금액"/>
+                <Cell col="8" text="잔액"/>
+                <Cell col="9" text="입출금시간"/>
+                <Cell col="10" text="적요"/>
+                <Cell col="11" text="내용"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="image" text="bind:rowStatus" expr="expr:rowStatus==2?&quot;URL('theme://images/ico_i.png')&quot;:rowStatus==4?&quot;URL('theme://images/ico_u.png')&quot;:rowStatus==8?&quot;URL('theme://images/ico_d.png')&quot;:&quot;&quot;"/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox" text="bind:chk"/>
+                <Cell col="2" displaytype="normal" edittype="none" text="expr:currow + 1"/>
+                <Cell col="3" text="bind:bnkcd"/>
+                <Cell col="4" style="align:center;" text="bind:acno"/>
+                <Cell col="5" displaytype="date" edittype="date" style="align:center;" text="bind:tdt"/>
+                <Cell col="6" displaytype="number" style="align:right;" text="bind:depsAmt" combodataset="ds_grid_dept" combocodecol="deptCd" combodatacol="deptNmKor"/>
+                <Cell col="7" displaytype="number" style="align:right;" text="bind:dfryAmt" combodataset="ds_cmb_acnt_div" combocodecol="comCd" combodatacol="comCdNm"/>
+                <Cell col="8" displaytype="number" style="align:right;" text="bind:aftrnBamt" combodataset="ds_cmb_acnt_knd" combocodecol="comCd" combodatacol="comCdNm"/>
+                <Cell col="9" displaytype="normal" edittype="none" style="align:center;" text="bind:trnsHr" calendardisplay="edit" calendardisplaynulltype="nulltext"/>
+                <Cell col="10" text="bind:synp"/>
+                <Cell col="11" displaytype="normal" edittype="none" style="align:center;" text="bind:trnsCntn" calendardisplaynulltype="nulltext"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static20" taborder="9" text="h15" visible="false" left="0" top="39" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static22" taborder="10" text="h5" visible="false" left="0" top="76" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static06" taborder="11" text="h5" visible="false" left="930" top="826" width="8.96%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_ac_bank_no" taborder="12" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" top="830" right="15" width="86" height="20" style="border:0 none #808080ff ;align:right middle;"/>
+        <Button id="btn_search00" taborder="17" text="조회" onclick="btn_search_onClick" cssclass="search" top="54" right="79" width="60" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R"/>
+        <Static id="Static21" taborder="25" text="w&#13;&#10;15" visible="false" top="25" right="0" width="15" height="827" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static04" taborder="26" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="0" top="0" width="20" height="39"/>
+        <Static id="Static16" taborder="27" text="H9" cssclass="tipGuide" visible="false" left="321" top="0" width="38" height="9"/>
+        <Static id="Static09" taborder="28" text="H9" cssclass="tipGuide" visible="false" left="321" top="30" width="38" height="9"/>
+        <Button id="btn_excel" taborder="29" text="엑셀" onclick="btn_excel_onclick" cssclass="btn_WF_commonPrint" top="54" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S" right="15"/>
+        <Static id="Static15" taborder="30" text="※ 실제 입금시간보다 한시간정도 차이가 날 수 있습니다." left="62" top="57" width="377" height="23" style="border:0 none #808080ff ;color:mediumblue;align:center;font:9 arial;"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_ac_bank_no" cancolumnchange="ds_ac_bank_no_cancolumnchange" onrowposchanged="ds_ac_bank_no_onrowposchanged"/>
+      <Dataset id="ds_dummy"/>
+      <Dataset id="ds_grid_bank_cd"/>
+    </Objects>
+    <Bind>
+      <BindItem id="item5" compid="edt_bizNm" propid="value" datasetid="ds_acntList" columnid="acntIncNm"/>
+      <BindItem id="item18" compid="Div01.cmb_pfmAcntUnt" propid="value" datasetid="ds_mainList" columnid="acntUnt"/>
+      <BindItem id="item19" compid="Div01.edt_pfmFincCd" propid="value" datasetid="ds_mainList" columnid="bankCd"/>
+      <BindItem id="item20" compid="Div01.edt_pfmUprBizCdNm" propid="value" datasetid="ds_mainList" columnid="uprBizCdNm"/>
+      <BindItem id="item21" compid="Div01.cmb_pfmAcntDiv" propid="value" datasetid="ds_mainList" columnid="acntDiv"/>
+      <BindItem id="item23" compid="Div01.cmb_pfmUsageCd" propid="value" datasetid="ds_mainList" columnid="usageCd"/>
+      <BindItem id="item24" compid="Div01.edt_pfmAcntNo" propid="value" datasetid="ds_mainList" columnid="acntNo"/>
+      <BindItem id="item25" compid="Div01.edt_pfmDeposr" propid="value" datasetid="ds_mainList" columnid="deposr"/>
+      <BindItem id="item28" compid="Div01.cmb_pfmacntUnt02" propid="value" datasetid="ds_mainList"/>
+      <BindItem id="item29" compid="Div01.edt_pfmRmk" propid="value" datasetid="ds_mainList" columnid="rmk"/>
+      <BindItem id="item30" compid="Div01.edt_pfmUprBizCdNm00" propid="value" datasetid="ds_mainList"/>
+      <BindItem id="item31" compid="Div01.edt_pfmUprBizCdNm04" propid="value" datasetid="ds_mainList"/>
+      <BindItem id="item32" compid="Div01.edt_pfmFincCd00" propid="value" datasetid="ds_mainList"/>
+      <BindItem id="item33" compid="Div01.edt_pfmUprBizCdNm07" propid="value" datasetid="ds_mainList" columnid="newAcntNo"/>
+      <BindItem id="item0" compid="Div01.CheckBox00" propid="value" datasetid="ds_mainList" columnid=""/>
+      <BindItem id="item1" compid="Div01.CheckBox_pfmAutoYn" propid="value" datasetid="ds_mainList" columnid="autoYn"/>
+      <BindItem id="item2" compid="Div01.CheckBox_pfmTermnYn" propid="value" datasetid="ds_mainList" columnid="termnYn"/>
+      <BindItem id="item3" compid="Div01.Calendar_pfmOpDt" propid="value" datasetid="ds_mainList" columnid="opDt"/>
+      <BindItem id="item4" compid="Div01.Calendar_pfmExpirDt" propid="value" datasetid="ds_mainList" columnid="expirDt"/>
+      <BindItem id="item6" compid="Div01.Calendar_pfmTermnDt" propid="value" datasetid="ds_mainList" columnid="termnDt"/>
+      <BindItem id="item7" compid="Div01.CheckBox_pfmUseYn" propid="value" datasetid="ds_mainList" columnid="useYn"/>
+      <BindItem id="item8" compid="Div01.cmb_pfmAcntKnd" propid="value" datasetid="ds_mainList" columnid="acntKnd"/>
+      <BindItem id="item9" compid="Div01.CheckBox01" propid="" datasetid="ds_pfmUseYn" columnid=""/>
+      <BindItem id="item10" compid="Div01.pfm_fstPayAmt" propid="value" datasetid="ds_aacBankaccount" columnid="fstPayAmt"/>
+      <BindItem id="item11" compid="Div01.msk_pfmIntRt" propid="value" datasetid="ds_mainList" columnid="intRt"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[
+/* ====================================================================
+ * 1. 공통 라이브러리
+ * ==================================================================== */
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+
+/******************************************************************************
+* 함 수 명 	: form_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	var arrDataSet = Array(1);
+		arrDataSet[0]  = "ds_grid_bank_cd";  		//은행코드 (grid)
+		
+	var arrGrpCd = Array(1);
+		arrGrpCd[0]  = "CS005"; 					//은행코드
+		
+	var arrUseYn =	Array(1);
+		arrUseYn[0]  =	"Y";
+
+	var arrModeFg =	Array(1);
+		arrModeFg[0]  =	"X";
+
+	var arrWhere =	Array(1);
+		arrWhere[0]  =	"X";
+
+		
+	/* 메소드명     : ComboLoad
+	 * 설명			 : 공통코드 테이블을 조회하여 콤보박스를 생성한다.
+	 * 메소드인수1  : DataSet명의 배열
+	 * 메소드인수2  : 그룹코드번호의 배열
+	 * 메소드인수3  : 캠퍼스구분 배열 ("T":전체, "C":공통만, "S":서울, "K":경주)
+	 * 메소드인수4  : 조건문의 배열 (1:사용, 0:사용안함)
+	 * 메소드인수5  : 전체공란 첨부여부 "T": 전체, "S":선택, "X" : 데이터시작
+	 * 메소드인수6  : WHERE절 내용 "X":없음
+	 */
+
+	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+
+	this.div_search.cal_FromDt.set_value(this.gfn_getCurrentDate("YYYYMMDD"));
+	this.div_search.cal_ToDt.set_value(this.gfn_getCurrentDate("YYYYMMDD"));
+	 
+	this.gfn_getDatasetCount(this.ds_ac_bank_no, this.sta_ac_bank_no);
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_search_onClick
+ * 함수설명 	: 조회버튼 클릭 이벤트
+ *********************************************************************/
+this.btn_search_onClick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();	
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 조회 함수
+ *********************************************************************/
+this.fn_search = function()
+{
+	var strArg = "acno=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.S_ACNT_UNT.value, ""));
+		strArg += " fromDt=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.cal_FromDt.value, "19000101"));
+		strArg += " toDt=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.cal_ToDt.value, "21001231"));
+		
+	this.gfn_transaction("SEARCH",
+						 "txAdmUrl::com/admi/afd/afd02/selectAFD02080.do",
+						 "",
+						 "ds_ac_bank_no=resultList",
+						 strArg,
+						 "fn_callBack"
+						 );
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_excel_onclick
+ * 함수설명 	: 엑셀 버튼클릭 이벤트
+ *********************************************************************/
+this.btn_excel_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var excelGrd = new Array();
+		excelGrd[0] = this.grd_mainList;
+		
+ 	this.gfn_excelDown(excelGrd, "계좌내역");
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0)
+	{
+		this.gfn_message("A", errMsg);
+ 	}
+ 	else
+ 	{
+		if(trId == "SEARCH")
+		{
+			this.gfn_getDatasetCount(this.ds_ac_bank_no, this.sta_ac_bank_no);
+ 		}
+ 	}
+}]]></Script>
+  </Form>
+</FDL>

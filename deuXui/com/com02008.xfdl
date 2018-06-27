@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\default_typedef.xml"/>
+  <Form id="com02008" classname="com02008" left="0" top="0" width="1038" height="855" titletext="사용자조회" onload="com02008_onload" onclose="com02008_onclose">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="0" left="0" top="0" width="100%" height="39" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static05" taborder="7" text="사용자 그룹" cssclass="search" left="23" top="9" width="8.09%" height="22" class="search_bul"/>
+              <Combo id="cmb_userGroup" taborder="8" innerdataset="ds_schUserGroup" codecolumn="comCd" datacolumn="comCdNm" onitemchanged="div_search_cmb_userGroup_onitemchanged" cssclass="essential" left="100" top="9" width="140" height="21"/>
+              <Static id="Static00" taborder="11" text="사용자명" cssclass="search" left="263" top="9" width="8.09%" height="22" class="search_bul"/>
+              <Edit id="edt_userNm" taborder="13" left="326" top="9" width="150" height="21" onkeyup="div_search_edt_userNm_onkeyup" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static33" taborder="14" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="0" top="2" width="20" height="39"/>
+              <Static id="Static14" taborder="15" text="W10" cssclass="tipGuide" visible="false" left="86" top="2" width="14" height="37"/>
+              <Static id="Static12" taborder="16" text="H9" cssclass="tipGuide" visible="false" left="117" top="0" width="30" height="9"/>
+              <Static id="Static11" taborder="17" text="H9" cssclass="tipGuide" visible="false" left="117" top="30" width="30" height="9"/>
+              <Static id="Static01" taborder="18" text="W10" cssclass="tipGuide" visible="false" left="312" top="2" width="14" height="37"/>
+              <Static id="Static02" taborder="19" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="240" top="2" width="20" height="39"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static14" taborder="1" text="h15" visible="false" left="0" top="50" width="98.75%" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_search" taborder="2" text="조회" onclick="btn_search_onclick" cssclass="search" top="65" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R"/>
+        <Static id="Static15" taborder="3" text="h5" visible="false" left="0" top="87" width="98.75%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static04" taborder="4" text="w&#13;&#10;15" visible="false" top="65" right="0" width="1.45%" height="790" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static76" taborder="5" text="사용자정보" cssclass="page_stitle" left="0" top="66" width="31.21%" height="20" style="background:URL('theme://images/icon/title_arrow.gif') left middle;"/>
+        <Grid id="grd_main" taborder="6" useinputpanel="false" left="0" top="92" width="98.55%" height="741" autofittype="col" autosizingtype="col" binddataset="ds_main">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="30" band="left"/>
+                <Column size="100"/>
+                <Column size="200"/>
+                <Column size="150"/>
+                <Column size="100"/>
+                <Column size="100"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="사용자분류"/>
+                <Cell col="2" text="소속"/>
+                <Cell col="3" text="학번/직번"/>
+                <Cell col="4" text="성명"/>
+                <Cell col="5" text="비밀번호"/>
+              </Band>
+              <Band id="body">
+                <Cell expr="expr:currow+1"/>
+                <Cell col="1" displaytype="normal" text="bind:userGb"/>
+                <Cell col="2" style="align:left;" text="bind:deptNm"/>
+                <Cell col="3" style="align:left;" text="bind:memberNo"/>
+                <Cell col="4" style="align:left;" text="bind:memberNm"/>
+                <Cell col="5" style="align:left;" text="bind:pwd"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static00" taborder="7" text="h5" visible="false" left="930" top="833" width="8.96%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_grdMain" taborder="8" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" top="834" width="86" height="20" style="border:0 none #808080ff ;align:right middle;" right="15"/>
+        <Static id="Static07" taborder="9" text="h5" visible="false" left="930" top="850" width="8.96%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_schUserGroup" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="comCd" type="STRING" size="256"/>
+          <Column id="comCdNm" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_main" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="userGb" type="STRING" size="256"/>
+          <Column id="deptNm" type="STRING" size="256"/>
+          <Column id="memberNo" type="STRING" size="256"/>
+          <Column id="memberNm" type="STRING" size="256"/>
+          <Column id="pwd" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_grdUserGb" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="comCd" type="STRING" size="256"/>
+          <Column id="comCdNm" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : com02008.xfdl
+* 화면설명     : 사용자조회리
+* 작성자       : 최용현
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.06.18     최용현         최초생성
+******************************************************************************/
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+this.com02008_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	var arrDataSet = Array(1);
+		arrDataSet[0]  = "ds_grdUserGb";  			//사용자구분
+		arrDataSet[1]  = "ds_schUserGroup";  		//사용자그룹
+	
+	// 조회조건으로	넘어갈 공통코드	정의.(화면대로 순서꼭 지켜주세요.)
+	
+	var arrGrpCd = Array(1);
+		arrGrpCd[0]  = "USER_GB"; //사용자구분
+		arrGrpCd[1]  = "USER_GROUP_GB"; //사용자그룹
+			
+	// 사용여부	지정할 아큐먼트를 넘긴다.
+	var arrUseYn =	Array(1);
+		arrUseYn[0]  =	"Y";
+		arrUseYn[1]  =	"Y";
+	
+	// T:전체,S:선택,X:없음 
+	var arrModeFg =	Array(1);  
+		arrModeFg[0]  =	"S";
+		arrModeFg[1]  =	"T";
+
+	// WHERE절 내용 "X":없음
+	var arrWhere =	Array(1);
+		arrWhere[0]  =	"X";//ABB_CD IN ('S','K')
+		arrWhere[1]  =	"com_cd <> '@'";//ABB_CD IN ('S','K')
+		
+	/* 메소드명     : ComboLoad
+	 * 설명         : 공통코드 테이블을 조회하여 콤보박스를 생성한다.
+	 * 메소드인수1  : DataSet명의 배열
+	 * 메소드인수2  : 그룹코드번호의 배열
+	 * 메소드인수3  : 캠퍼스구분 배열 ("T":전체, "C":공통만, "S":서울, "K":경주)
+	 * 메소드인수4  : 조건문의 배열 (1:사용, 0:사용안함)
+	 * 메소드인수5  : 전체공란 첨부여부 "T": 전체, "S":선택, "X" : 데이터시작
+	 * 메소드인수6  : WHERE절 내용 "X":없음
+	 */
+
+ 	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+}
+
+this.com02008_onclose = function(obj:Form, e:nexacro.CloseEventInfo)
+{
+	this.gfn_unload();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 로드 후 함수
+ *********************************************************************/
+ this.fn_postLoad = function(trId, errCd, errMsg)
+{
+	this.div_search.cmb_userGroup.set_index(0);
+	
+	this.gfn_bindCmmnFunction();
+}
+
+/*********************************************************************
+ * 함 수 명 	: btnFind_onclick()
+ * 함수설명 	: 조회 버튼 클릭 함수
+ *********************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_find();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preFind
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preFind = function()
+{
+	this.ds_main.clearData();
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_find
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_find = function()
+{
+	if(this.fn_preFind()){
+		var strArg = "pv_userGroup="  + nexacro.wrapQuote(this.gfn_nvl(this.div_search.cmb_userGroup.value,''));
+            strArg = "pv_userNm="  + nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_userNm.value,''));
+		this.gfn_transaction("FIND",
+							 "txComUrl::com/selectUserGroup.do",
+							 "",
+							 "ds_main=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		}else if(trId == "FIND"){
+			this.fn_postFind();
+		}
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postFind
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postFind = function()
+{
+	var rowCnt = this.ds_main.getRowCount();
+	this.sta_grdMain.set_text("<b v='true'>총 ["+rowCnt+"] 건</b>");
+}
+
+
+this.div_search_edt_userNm_onkeyup = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	if(e.keycode == 13){
+		this.fn_find();
+	}
+}
+]]></Script>
+  </Form>
+</FDL>

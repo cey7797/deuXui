@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="TopFrame" classname="TopFrame" left="0" top="0" width="1280" height="95" scrollbars="none">
+    <Layouts>
+      <Layout>
+        <Div id="div_logo" taborder="0" left="0" top="0" width="240" height="91" url="commMain::LogoFrame.xfdl" scrollbars="none"/>
+        <Div id="div_navi" taborder="1" left="242" top="0" height="23" url="commMain::NaviFrame.xfdl" right="0"/>
+        <Div id="div_menu1" taborder="2" left="242" top="23" height="37" right="0" url="commMain::MenuFrame1.xfdl"/>
+        <Div id="div_menu2" taborder="3" left="242" top="60" height="31" url="commMain::MenuFrame2.xfdl" right="0"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.0"><![CDATA[]]></Script>
+  </Form>
+</FDL>

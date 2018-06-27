@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Afd04SQL">
+
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias alias="hashMap" type="java.util.HashMap"/>
+	 
+    
+    <!--
+    #########################################################################################################################################
+    # 온라인약정(admi/afd/afd04/afd04010.xfdl)
+    #########################################################################################################################################
+    -->
+    
+	
+	<select id="Afd04SQL.retrieveMemberNo" parameterClass="hashMap" resultClass="String">
+	
+		/* Afd04SQL.retrieveMemberNo 회원번호를 조회(온라인약정 저장) */
+		SELECT MEMBER_NO 
+		  FROM AFD_MASTER
+		 WHERE 1 = 1
+ 		   AND SUBSTRING(JUMIN_NO, 1, 6) = SUBSTRING(#birthDt#, 3, 6)
+ 		    OR SUBSTRING(BIRTH_DT, 1, 6) = SUBSTRING(#birthDt#, 3, 6)
+ 		    
+	</select>
+	 
+	<select id="Afd04SQL.createAfdMemberNo" parameterClass="hashMap" resultClass="String">
+	
+		/* Afd04SQL.createAfdMemberNo 회원번호 생성(온라인약정 저장) */
+	 	SELECT dbo.FN_LPAD(CONVERT(VARCHAR, ISNULL(MAX(CONVERT(INT, MEMBER_NO)), 0) + 1), 6, '0') AS MEMBER_NO 
+	 	  FROM AFD_MASTER
+	 	 WHERE LEN(MEMBER_NO) = 6 AND SUBSTRING(MEMBER_NO,1,1) = '0'
+	 	  
+	</select>
+    
+	<insert id="Afd04SQL.saveOnlieCntrct" parameterClass="hashMap">
+	
+		/* Afd04SQL.saveOnlieCntrct 온라인약정 저장 */
+		
+		
+			BEGIN
+			
+				INSERT INTO AFD_ONLN_CNTRCT
+			            ( TMPR_ENGG_NO                        <!-- 가약정번호 -->
+			            , MEMBER_NO                           <!-- 회원번호 -->
+			            , TMPR_ENGG_DT                        <!-- 가약정일자 -->
+			            , PCPSKL_REL                          <!-- 본교와의 관계 -->
+			            , ENDW_CD                             <!-- 기금코드 -->
+			            , ENGG_AMT                            <!-- 약정금액 -->
+			            , RCPMNYER_NM                         <!-- 입금인 성명-->
+			            , MT_INSPY_AMT                        <!-- 월분납금액 -->
+			            , INSPY_MONTH_CNT                     <!-- 분납개월수 -->
+			            , PAYMTHD                             <!-- 납부방법 -->
+			            , FRST_INSPY_PREARNGE_DT              <!-- 최초납부예정일 -->
+			            , FPY_PREARNGE_DT                     <!-- 완납예정일 -->
+			            , PROC_GB                             <!-- 처리상태(AFD12) 1:약정승인, 2: 가약정, 3: 약정취소 -->
+			            , INSPY_MGN_NO                        <!-- 약정관리번호 -->
+	                    , ENGG_DIV                            <!-- 약정형태(추가컬럼20160420) -->
+	                    , USAGE_DIV                           <!-- 용도구분(추가컬럼20160420) -->
+	                    , USAGE_DEPT_NAME                     <!-- 지정학과명(추가컬럼20160420) -->
+	                    , ACCOUNTS_CNT                        <!-- 신청구좌(추가컬럼20160420) -->
+	                    , ACCOUNTS_AMT                        <!-- 신청금액(추가컬럼20160420) -->
+	                    , PAY_MONTH_CNT                       <!-- 납부개월수(추가컬럼20160420) -->
+	                    , PAY_DT                              <!-- 납부일자(추가컬럼20160420) -->
+	                    , BANKCD							  <!-- 은행(추가컬럼20160420) -->
+						, ACNO								  <!-- 계좌번호(추가컬럼20160420) -->
+						, DPWNM								  <!-- 예금주명(추가컬럼20160420) -->
+						, PAY_NO 							  <!-- 납부자번호(추가컬럼20160420) -->
+			            , CREATE_NO                           <!-- 생성자 -->
+			            , CREATE_DT                           <!-- 생성일시 -->
+			            , CREATE_IP                           <!-- 생성IP -->
+			            , ENGG_CHANGES_AMT                           <!-- 증감액 -->
+			            
+			            )
+			            VALUES
+			            ( 
+			              (SELECT dbo.FN_LPAD(ISNULL(MAX(TMPR_ENGG_NO  ), 0) +1,6,'0') FROM AFD_ONLN_CNTRCT)
+			            , #memberNo#
+			            , CONVERT(CHAR(10),GETDATE(),112)  /* 가약정일자_SYSDATE */
+			            , #pcpsklRel#
+			            , #endwCd#
+			            , CONVERT(BIGINT, #enggAmt#)         /* (약정총액)약정금액 */
+			            , #rcpmnyerNm#
+			            , CASE WHEN #paymthd2# = '1' THEN CONVERT(BIGINT, #mtInspyAmt1#)
+						       WHEN #paymthd3# = '1' THEN CONVERT(BIGINT, #mtInspyAmt2#)
+						       ELSE ''
+						  END         /* (월금액)월분납금액 */
+			            , CASE WHEN #paymthd2# = '1' THEN CONVERT(INT, #inspyMonthCnt1#)
+						       WHEN #paymthd3# = '1' THEN CONVERT(INT, #inspyMonthCnt2#)
+						       ELSE ''
+						  END         /* 분납개월수 */
+			            , CASE WHEN #paymthd1# = '1' THEN '1' 
+					           WHEN #paymthd2# = '1' THEN '2'
+					           WHEN #paymthd3# = '1' THEN '3'
+					           ELSE '0'
+					      END         /* (기탁방법)납부방법 */
+			            , CASE WHEN #paymthd1# = '1' THEN #frstInspyPrearngeDt1#
+						       WHEN #paymthd2# = '1' THEN #frstInspyPrearngeDt2#
+						       ELSE ''
+						  END         /* 최초납부예정일 */
+			            , #fpyPrearngeDt#
+			            ,'2'
+			            ,''
+			            
+   	                    , #enggDiv#         /* (기탁형태)약정형태 */
+   	                    ,      /* 일반기탁(무통장입금)
+   	                    		* usageDiv1 - 대학에일임
+   	                    		* usageDiv2 - 용도지정
+   	                    		* usageDiv21 - 일반
+   	                    		* usageDiv22 - 장학금
+   	                    		* usageDiv221 - 학부
+   	                    		* usageDiv222 - 대학원   
+   	                            */
+					      CASE WHEN #mentFormDiv# = '10' THEN CASE WHEN #usageDiv1# = '1' THEN '100' 
+					                                               WHEN #usageDiv2# = '1' THEN CASE WHEN #usageDiv21# = '1' THEN '210'
+					                                              								    WHEN #usageDiv22# = '1' THEN CASE WHEN #usageDiv221# = '1' THEN '221'
+					                                              								   								      WHEN #usageDiv222# = '1' THEN '222'
+					                                              								   								      ELSE '220'
+					                                              								   								 END 
+					                                              								    ELSE '200'
+					                                              						       END
+					                                               ELSE '000' 
+					                                          END
+					           /* 동의백년(자동이체)
+   	                    		* usageDiv1 - 무기한
+   	                    		* usageDiv2 - 기한
+   	                    		*/
+					           WHEN #mentFormDiv# = '20' THEN CASE WHEN #usageDiv1# = '1' THEN '100' 
+					                                               WHEN #usageDiv2# = '1' THEN '200' 
+					                                               ELSE '000' 
+					                                          END
+					           /* 후원의집
+   	                    		* usageDiv1 - 1구좌(5만원)
+   	                    		* usageDiv2 - 2구좌(10만원)
+   	                    		* usageDiv3 - 3구좌(15만원)
+   	                    		* usageDiv4 - 4구좌(14만원)
+   	                    		* usageDiv5 - 기타
+   	                    		*/
+					           WHEN #mentFormDiv# = '30' THEN CASE WHEN #usageDiv1# = '1' THEN '100' 
+					                                               WHEN #usageDiv2# = '1' THEN '200' 
+					                                               WHEN #usageDiv3# = '1' THEN '300' 
+					                                               WHEN #usageDiv4# = '1' THEN '400' 
+					                                               WHEN #usageDiv5# = '1' THEN '500' 
+					                                               ELSE '000' 
+					                                          END
+					           /* 교직원장학금 */
+					           WHEN #mentFormDiv# = '40' THEN '000'
+					           ELSE '000'
+					      END               /* 용도구분 */  
+			            , #usageDeptName#   /* 지정학과명 */
+   	                    , CONVERT(BIGINT, #accountsCnt#)    /* 신청구좌 */  
+   	                    , CONVERT(BIGINT, #accountsAmt#)     /* 신청금액 */  
+   	                    , CONVERT(BIGINT, #payMonthCnt#)     /* 납부개월수 */
+   	                    , #payDt#           /* 납부일자 */
+   	                    , #bankcd#          /* 은행코드 */
+   	                    , #acno#            /* 계좌번호 */
+   	                    , #dpwnm#           /* 예금주명 */
+   	                    , #payNo#           /* 납부자번호 */
+   	                    
+			            , #createNo#
+			            , GETDATE()
+			            , #createIp#
+			            , CONVERT(BIGINT, #enggChangesAmt#)
+			            ) ;
+			        
+		MERGE INTO AFD_MASTER A
+	    USING (
+	           SELECT #memberNo# AS MEMBER_NO
+	                , #wsJuminNo# AS JUMIN_NO
+	          ) B
+	       ON (
+	               A.MEMBER_NO = B.MEMBER_NO
+	           AND A.JUMIN_NO = B.JUMIN_NO
+	          )
+	         
+	        WHEN MATCHED THEN
+	        
+		        UPDATE
+		           SET MEMBER_GB = #memberGb# /* 회원구분 */
+		             , MEMBER_TYPE = #memberType# /* 회원유형 */
+		             , MEMBER_NM_KOR = #memberNmKor# /* 성명 */
+		             , SCHOOL_NM = #schoolNm# /* 대학(원) */
+		             , SCHOOL_DEPT_NM = #schoolDeptNm# /* 학부(과) */
+		             , BIRTH_DT = #birthDt# /* 생년월일 */
+		             , JUMIN_NO = #wsJuminNo#	
+		             , IN_YEAR = #inYear# /* 입학년도 */
+		             , OUT_YEAR = #outYear# /* 졸업년도 */
+		             , TEL_NO = #telNo# /* 전화번호 */
+		             , HP_NO = #hpNo# /* 핸드폰 */
+		             , E_MAIL = #eMail# /* 이메일 */
+		             , ZIP = #zip# /* 우편번호 */
+		             , ADDR1 = #addr1# /* 주소 */
+		             , ADDR2 = #addr2# /* 상세주소 */
+		             , MEMBER_RECOMMEND_NAME = #memberRecommendName# /* 추천인성명 */
+		             , MEMBER_RECOMMEND_DEPT = #memberRecommendDept# /* 추천인소속 */
+		             , JIGBEON = #jigbeon# /* 직번 */
+		             		             
+	        WHEN NOT MATCHED THEN
+	        
+		        INSERT 
+		             ( MEMBER_NO
+		             , JUMIN_NO 
+		             , PCPSKL_REL_DESC
+		             , PCPSKL_REL
+		             , NATION_DIV
+		             , ANNYMTY_YN     
+		             
+		             , MEMBER_GB /* 회원구분 */
+		             , MEMBER_TYPE /* 회원유형 */
+		             , MEMBER_NM_KOR /* 성명 */
+		             , SCHOOL_NM /* 대학(원) */
+		             , SCHOOL_DEPT_NM /* 학부(과) */
+		             , BIRTH_DT /* 생년월일 */
+		             , JUMIN_NO 
+		             , IN_YEAR /* 입학년도 */
+		             , OUT_YEAR /* 졸업년도 */
+		             , TEL_NO /* 전화번호 */
+		             , HP_NO /* 핸드폰 */
+		             , E_MAIL /* 이메일 */
+		             , ZIP /* 우편번호 */
+		             , ADDR1 /* 주소 */
+		             , ADDR2 /* 상세주소 */
+		             , MEMBER_RECOMMEND_NAME /* 추천인성명 */
+		             , MEMBER_RECOMMEND_DEPT /* 추천인소속 */
+                  	 , JIGBEON /* 직번 */
+		             
+			         , CREATE_NO                  <!-- 생성자 -->
+			         , CREATE_DT                  <!-- 생성일시 -->
+			         , CREATE_IP                  <!-- 생성IP -->
+		             )
+		             VALUES
+		             ( 
+		               #memberNo#
+		             , #wsJuminNo#
+		             , #pcpsklRelDesc#              <!-- 본교관계설명 -->
+		             , #pcpsklRel#                  <!-- 본교관계 -->
+		             , ISNULL(CONVERT(VARCHAR, #nationDiv#), '2')        <!-- 외국인여부 1:외국인  2:내국인 -->
+		             , ISNULL(CONVERT(VARCHAR, #annymtyYn#), '2')        <!-- 익명여부 1:익명  2:비익명-->                 
+		             
+		             , #memberGb#
+		             , #memberType#
+		             , #memberNmKor#
+		             , #schoolNm#
+		             , #schoolDeptNm#
+		             , #birthDt#
+		             , #wsJuminNo#			
+		             , #inYear#
+		             , #outYear#
+		             , #telNo#
+		             , #hpNo#
+		             , #eMail#
+		             , #zip#
+		             , #addr1#
+		             , #addr2#
+		             , #memberRecommendName#
+		             , #memberRecommendDept#
+		             , #jigbeon#
+		             
+		             , #createNo#                    <!-- 생성자 -->
+		             , GETDATE()                       <!-- 생성일자 -->
+		             , #createIp#                    <!-- 생성IP -->
+		             );   	
+		             	                     
+	   	END;
+   	
+	</insert>
+	
+    
+    <!--
+    #########################################################################################################################################
+    # 나의기부현황(admi/afd/afd04/afd04020.xfdl)
+    #########################################################################################################################################
+    -->
+	
+	 
+	<select id="Afd04SQL.retrieveEndw" parameterClass="hashMap" resultClass="egovMap">
+	
+		/* Afd04SQL.retrieveEndw 기금코드/명을 조회 */
+		SELECT A.ENDW_CD
+   			 , A.ENDW_NM
+ 		  FROM AFD_ENDOWMENT A
+ 		  
+    </select>
+	 
+	<select id="Afd04SQL.retrieveDonationStatus" parameterClass="hashMap" resultClass="egovMap">
+	
+		/* Afd04SQL.retrieveDonationStatus 나의 기부현황을 조회 */
+		SELECT '' AS CHK
+             , '' AS ROW_STATUS
+             , MAIN.YY
+			 , B.ENDW_CD
+		     , B.ENGG_DT
+		     , B.ENGG_AMT
+		     , COUNT(MAIN.RCPMNY_DT) RCPMNY_CNT
+		     , MAX(MAIN.RCPMNY_DT) RCPMNY_DT_TO
+		     , MIN(MAIN.RCPMNY_DT) RCPMNY_DT_FR
+		     , SUM(MAIN.AMT) PAYMENT_AMT
+		     , B.RL_PREARNGE_DT
+		     , CASE WHEN B.RL_PREARNGE_DT IS NULL OR B.RL_PREARNGE_DT = '' THEN 'N'
+             		ELSE 'Y'
+             	END PREARNGE_YN
+		     , ISNULL(B.MT_INSPY_AMT, '0') MT_INSPY_AMT
+		     , B.FPY_PREARNGE_DT
+		     , B.PAYMTHD
+		     , B.MEMBER_NO 
+		     , MAIN.RECEIPT_NO
+		  FROM (SELECT SUBSTRING(A.YYMM,1,4) AS YY ,
+		       		A.SPEN_DT AS RCPMNY_DT,
+		              A.ENGG_MM_AMT AS AMT,
+		              A.ENGG_MGN_NO ,
+		              A.SPEN_DT ,
+		              case when A.RECEIPT_NO IS null then '' else A.RECEIPT_NO END RECEIPT_NO, 
+		              A.REMARK,
+		              '급여공제' AS CONT
+		         FROM AFD_SAL_DEDUCT A
+		        WHERE 1=1
+		          AND A.ENGG_MM_AMT >0
+		          AND YYMM <![CDATA[ < ]]> '201601'
+		          UNION ALL
+		          SELECT SUBSTRING(A.YYMM,1,4) AS YY ,
+		       		A.SPEN_DT AS RCPMNY_DT,
+		              A.ENGG_MM_AMT AS AMT,
+		              A.ENGG_MGN_NO ,
+		              A.SPEN_DT ,
+		              case when A.RECEIPT_NO IS null then '' else A.RECEIPT_NO END RECEIPT_NO, 
+		              A.REMARK,
+		              '급여공제' AS CONT
+		         FROM AFD_SAL_DEDUCT A
+		        WHERE 1=1
+		          AND A.ENGG_MM_AMT >0
+		          AND YYMM >= '201601'
+		          AND SPEN_DT != ''
+		           UNION ALL
+		       SELECT SUBSTRING(A.YYMM,1,4) AS YY ,
+		       		A.WDRAW_DT AS RCPMNY_DT,
+		              A.WDRAW_AMT AS AMT,
+		              A.ENGG_MGN_NO ,
+		              A.WDRAW_DT AS SPEN_DT ,
+		              case when A.RECEIPT_NO IS null then '' else A.RECEIPT_NO END RECEIPT_NO, 
+		              '' REMARK,
+		              'CMS' AS CONT
+		         FROM AFD_CMS A
+		        WHERE 1=1
+		          AND A.WDRAW_AMT > 0
+		           UNION ALL
+		       SELECT SUBSTRING(A.RCPMNY_DT,1,4) AS YY ,
+		       		A.RCPMNY_DT AS RCPMNY_DT,
+		              A.PAYMENT_AMT AS AMT,
+		              A.ENGG_MGN_NO ,
+		              A.RCPMNY_DT AS SPEN_DT,
+		              case when A.RECEIPT_NO IS null then '' else A.RECEIPT_NO END RECEIPT_NO, 
+		              A.REMARK,
+		              '무통장입금' AS CONT
+		         FROM AFD_RCPMNY A
+		        WHERE 1=1
+		          AND A.PAYMENT_AMT >0
+		          AND CASE WHEN A.DEL_YN IS NULL OR A.DEL_YN = '' THEN '0' ELSE A.DEL_YN END ='0'
+		        ) MAIN,
+               AFD_CNTRCT B
+		 WHERE 1 = 1
+		   AND MAIN.ENGG_MGN_NO = B.ENGG_MGN_NO
+		   AND B.MEMBER_NO = #memberNo#
+		 GROUP BY MAIN.YY
+		 	 , B.MEMBER_NO
+		     , B.ENGG_MGN_NO
+		     , B.ENDW_CD
+		     , B.ENGG_DT
+		     , B.ENGG_AMT
+		     , B.RL_PREARNGE_DT 
+		     , B.RL_PREARNGE_DT
+		     , B.MT_INSPY_AMT
+		     , B.FPY_PREARNGE_DT
+		     , B.PAYMTHD
+		     , MAIN.RECEIPT_NO
+		   order by MAIN.YY DESC, B.ENDW_CD DESC
+	</select>
+	 
+	<select id="Afd04SQL.selectAFDMemberYn" parameterClass="hashMap" resultClass="egovMap">
+	
+		SELECT CHK_YN, MEMBER_NO
+		  FROM ((SELECT 'Y' AS CHK_YN
+				     , MEMBER_NO
+				  FROM AFD_MASTER
+				 WHERE MEMBER_NM_KOR = #param1#
+				   AND (   BIRTH_DT = SUBSTRING(#param2#, LEN(#param2#)-6,6) 
+				        OR BIRTH_DT = #param2#)
+				   AND HP_NO = REPLACE(#param3#,'-','')
+				 )  
+				 UNION ALL
+				(
+				SELECT CASE WHEN COUNT(1) > 0 THEN 'Y' ELSE 'N' END AS CHK_YN
+				     , '' AS MEMBER_NO
+				  FROM AFD_MASTER
+				 WHERE MEMBER_NM_KOR = #param1#
+				   AND (   BIRTH_DT = SUBSTRING(#param2#,LEN(#param2#)-6,6) 
+				        OR BIRTH_DT = #param2#)
+				   AND HP_NO = REPLACE(#param3#,'-','')
+		       )) TA
+		WHERE MEMBER_NO IS NOT NULL AND MEMBER_NO != ''
+		order by MEMBER_NO
+	</select>
+	 
+</sqlMap>

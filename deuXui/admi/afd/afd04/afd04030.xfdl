@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd04030" classname="cte02002" left="0" top="0" width="1033" height="855" titletext="온라인URL" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_url" taborder="0" left="0" top="0" width="1033" height="855"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_dummy"/>
+    </Objects>
+    <Bind/>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::lib_String.xjs";
+
+var hash = {};
+
+/******************************************************************************
+* 함 수 명 	: form_onload
+* 함수설명 	: 화면로드 이벤트
+******************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{	
+	this.fn_engg_loginPop();
+	//this.div_url.set_url("afd04::afd04030_d01.xfdl");
+}
+
+// /******************************************************************************
+// * 함 수 명 	: fn_engg_loginPop
+// * 함수설명 	: 기금로그인 팝업
+// ******************************************************************************/
+this.fn_engg_loginPop = function()
+{
+	var popupId = "afd04030_d01";
+	var argumentsList = new Array();
+	var popupUrl = "afd04::afd04030_d01.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var obj = this;
+	
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, /*popupWidth, popupHeight,*/ obj);
+}
+
+// /******************************************************************************
+// * 함 수 명 	: fn_engg_menuPop
+// * 함수설명 	: 기금메뉴선택 팝업
+// ******************************************************************************/
+this.fn_engg_menuPop = function()
+{
+	var popupId = "afd04030_d02";
+	var argumentsList = new Array();
+	var popupUrl = "afd04::afd04030_d02.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var obj = this;
+	
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, /*popupWidth, popupHeight,*/ obj);
+}
+
+// /******************************************************************************
+// * 함 수 명 	: fn_engg_progPop
+// * 함수설명 	: 프로그램 팝업
+// ******************************************************************************/
+this.fn_engg_progPop = function(progId)
+{
+	var popupId = progId;
+	var argumentsList = new Array();
+	var popupUrl = "afd04::" + progId + ".xfdl";
+	var popupCallback = "fn_popCallBack";
+	var obj = this;
+	
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, /*popupWidth, popupHeight,*/ obj);
+}
+
+// /******************************************************************************
+// * 함 수 명 	: fn_engg_menuPop
+// * 함수설명 	: 기금메뉴선택 팝업
+// ******************************************************************************/
+this.fn_engg_my_DonatePop = function()
+{
+	var popupId = "afd04020";
+	var popupUrl = "afd04::afd04020.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var obj = this;
+	
+	var argumentsList = new Array();
+		argumentsList['memberNo'] = this.ds_dummy.getColumn(0,"memberNo");
+	
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, /*popupWidth, popupHeight,*/ obj);
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_popCallBack
+* 함수설명 	: fn_popCallBack 함수
+******************************************************************************/
+this.fn_url_navigation = function(rtnVal) 
+{
+	this.now_url = this.div_url.url;
+
+	//기금로그인팝업
+	if(this.now_url == "afd04::afd04030_d01.xfdl") 
+	{
+		//성공
+		if(rtnVal == "success")
+		{
+			this.div_url.set_url("afd04::afd04030_d02.xfdl");
+		}
+	}
+	//기금메뉴선택팝업
+	else if(this.now_url == "afd04::afd04030_d02.xfdl") 
+	{
+		//온라인약정
+		if(rtnVal == "afd04010")
+		{
+			this.div_url.set_url("afd04::afd04010.xfdl");
+		}
+		//나의기부현황
+		else if(rtnVal == "afd04020")
+		{
+			this.div_url.set_url("afd04::afd04020.xfdl");
+		}
+	}
+}
+
+
+this.fn_popCallBack = function(strID, rtnVal) 
+{
+	//기금로그인팝업
+	if(strID == "afd04030_d01")
+	{
+		this.ds_dummy.loadXML(rtnVal);
+		
+		if(this.ds_dummy.getColumn(0,"chkYn") == "Y") 
+		{
+			this.fn_engg_my_DonatePop();
+		}
+	}
+	//기금메뉴선택팝업
+	else if(strID == "afd04030_d02")
+	{
+		//온라인약정
+		if(rtnVal == "afd04010")
+		{
+			this.fn_engg_progPop(rtnVal);
+		}
+		//나의기부현황
+		else if(rtnVal == "afd04020")
+		{
+			this.fn_engg_progPop(rtnVal);
+		}
+	}
+	//온라인약정
+	else if(strID == "afd04020")
+	{
+		
+	}	
+	//나의기부현황
+}
+
+]]></Script>
+  </Form>
+</FDL>

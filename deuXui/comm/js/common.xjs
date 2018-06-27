@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script type="xscript5.0"><![CDATA[/*********************************************************************
+ * 함 수 명 	: gfn_CheckTime
+ * 함수설명 	: 현재의 시간을 return 한다.
+ * 입    력 	: 없음 		  	  
+ * 결    과 	: 현재의 시간을 return 한다.
+ *********************************************************************/
+this.gfn_CheckTime = function()
+{
+	var objDate = new Date();
+	var strTime  = this.gfn_Right("0" + objDate.getHours(), 2);
+		strTime += this.gfn_Right("0" + objDate.getMinutes(), 2);
+		strTime += this.gfn_Right("0" + objDate.getSeconds(), 2);
+		strTime += this.gfn_Right("0" + objDate.getMilliseconds(), 3);
+		
+	return strTime;
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_Right
+ * 함수설명 	: 문자열의 오른쪽부분을 지정한 길이만큼 Return 한다.
+ * 입    력 	: strString	- 대상 문자열
+ *			  	  nSize		- 얻어올 크기. [Default Value = 0]
+ * 결    과 	: 오른쪽 부분이 얻어진 문자열.
+ *********************************************************************/
+this.gfn_Right = function(strString, nSize)
+{
+    var nStart 	= String(strString).length;
+    var nEnd 	= Number(nStart) - Number(nSize);   
+    var rtnVal 	= strString.substring(nStart, nEnd);
+
+    return rtnVal;
+}
+
+/*******************************************************************************
+ * 함 수 명 	: gfn_diffTime
+ * 함수설명 	: 두 시간간의 차이 계산
+ * 입    력 	: sStartTime(HHmmss형태의 From 시간) 	( 예 : "033025" )
+ *              : sEndTime(HHmmss형태의 To 시간) 		( 예 : "034025" )
+ *              : sType(구하고자하는 타입(시, 분, 초)) ( 예 : "HH" )
+ * 결    과 	: integer
+******************************************************************************/
+this.gfn_diffTime1 = function(sStartTime, sEndTime, sType)
+{
+	var nReturnValue;
+	var nFrom_HH = TOBE.toNumber(sStartTime.substring(0, 2));
+	var nFrom_mm = TOBE.toNumber(sStartTime.substring(2, 4));
+	var nFrom_ss = TOBE.toNumber(sStartTime.substring(4, 6));
+	
+	var nTo_HH   = TOBE.toNumber(sEndTime.substring(0, 2));
+	var nTo_mm   = TOBE.toNumber(sEndTime.substring(2, 4));
+	var nTo_ss   = TOBE.toNumber(sEndTime.substring(4, 6));
+	
+	var nFromTotal_ss = (nFrom_HH * 3600) + (nFrom_mm * 60) + nFrom_ss;
+	var nToTotal_ss   = (nTo_HH * 3600) + (nTo_mm * 60) + nTo_ss;
+	
+	trace(nFromTotal_ss);
+	trace(nToTotal_ss);
+	
+	if(sType == "HH")
+	{
+		return (Math.floor((nToTotal_ss - nFromTotal_ss) / 3600));
+	} else if(sType == "mm") {
+		return (Math.floor((nToTotal_ss - nFromTotal_ss) / 60));
+	} else if(sType == "ss") {
+		trace("!111111111111111111111111111111111");
+		//return (nToTotal_ss - nFromTotal_ss);
+		return (parseFloat(this.nToTotal_ss) - parseFloat(this.nFromTotal_ss)).toString().substr(0, 5);
+
+	}
+}
+
+this.gfn_diffTime = function(sStartTime, sEndTime, sType)
+{
+	var nReturnValue;
+	this.nFrom_HH = parseInt(sStartTime.substring(0, 2));
+	this.nFrom_mm = parseInt(sStartTime.substring(2, 4));
+	this.nFrom_ss = parseInt(sStartTime.substring(4, 6));
+	this.nFrom_ms = parseInt(sStartTime.substring(6, 9));
+	
+	this.nTo_HH = parseInt(sEndTime.substring(0, 2));
+	this.nTo_mm = parseInt(sEndTime.substring(2, 4));
+	this.nTo_ss = parseInt(sEndTime.substring(4, 6));
+	this.nTo_ms = parseInt(sEndTime.substring(6, 9));
+	this.nFromTotal_ss = (this.nFrom_HH * 3600) + (this.nFrom_mm * 60) + this.nFrom_ss+(this.nFrom_ms*0.001);
+	this.nToTotal_ss   = (this.nTo_HH * 3600) + (this.nTo_mm * 60) + this.nTo_ss+(this.nTo_ms*0.001);
+	
+	if(sType == "HH")
+	{
+		return (Math.floor((this.nToTotal_ss - this.nFromTotal_ss) / 3600000));
+	} else if(sType == "mm") {
+		return (Math.floor((this.nToTotal_ss - this.nFromTotal_ss) / 60000));
+	} else if(sType == "ss") {
+		
+		return (parseFloat(this.nToTotal_ss) - parseFloat(this.nFromTotal_ss)).toString().substr(0, 5);
+	}
+
+}]]></Script>

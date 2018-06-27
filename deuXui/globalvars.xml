@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<GlobalVariables>
+  <Dataset id="gds_sys" onrowposchanged="gds_sys_onrowposchanged">
+    <ColumnInfo>
+      <Column id="sysId" type="STRING" size="256"/>
+      <Column id="sysNm" type="STRING" size="256"/>
+      <Column id="sysLvl" type="STRING" size="256"/>
+    </ColumnInfo>
+  </Dataset>
+  <Dataset id="gds_subsys" onrowposchanged="gds_subsys_onrowposchanged" onload="gds_subsys_onload">
+    <ColumnInfo>
+      <Column id="sysId" type="STRING" size="256"/>
+      <Column id="subId" type="STRING" size="256"/>
+      <Column id="subNm" type="STRING" size="256"/>
+      <Column id="subLvl" type="STRING" size="256"/>
+    </ColumnInfo>
+  </Dataset>
+  <Dataset id="gds_menu">
+    <ColumnInfo>
+      <Column id="menuNm" type="STRING" size="256"/>
+      <Column id="menuLvl" type="STRING" size="256"/>
+      <Column id="menuSt" type="STRING" size="256"/>
+    </ColumnInfo>
+  </Dataset>
+  <Dataset id="gds_open" onrowposchanged="gds_open_onrowposchanged">
+    <ColumnInfo>
+      <Column id="sysId" type="STRING" size="256"/>
+      <Column id="sysNm" type="STRING" size="256"/>
+      <Column id="subId" type="STRING" size="256"/>
+      <Column id="subNm" type="STRING" size="256"/>
+      <Column id="menuId" type="STRING" size="256"/>
+      <Column id="menuNm" type="STRING" size="256"/>
+      <Column id="parentId" type="STRING" size="256"/>
+      <Column id="parentNm" type="STRING" size="256"/>
+      <Column id="year" type="STRING" size="256"/>
+      <Column id="termCd" type="STRING" size="256"/>
+      <Column id="scheduleCd" type="STRING" size="256"/>
+      <Column id="selectFlag" type="STRING" size="256"/>
+      <Column id="saveFlag" type="STRING" size="256"/>
+      <Column id="printFlag" type="STRING" size="256"/>
+      <Column id="downloadFlag" type="STRING" size="256"/>
+      <Column id="uploadFlag" type="STRING" size="256"/>
+      <Column id="sendFlag" type="STRING" size="256"/>
+      <Column id="personInfoFlag" type="STRING" size="256"/>
+      <Column id="managerFlag" type="STRING" size="256"/>
+    </ColumnInfo>
+  </Dataset>
+  <Dataset id="gds_currentDate">
+    <ColumnInfo>
+      <Column id="toDay" type="STRING" size="256"/>
+    </ColumnInfo>
+  </Dataset>
+  <Dataset id="gds_eventHandler">
+    <ColumnInfo>
+      <Column id="menuId" type="STRING" size="256"/>
+      <Column id="progId" type="STRING" size="256"/>
+      <Column id="objId" type="STRING" size="256"/>
+      <Column id="eventId" type="STRING" size="256"/>
+      <Column id="bindEventNm" type="STRING" size="256"/>
+    </ColumnInfo>
+  </Dataset>
+  <Dataset id="gds_essDataset">
+    <ColumnInfo>
+      <Column id="menuId" type="STRING" size="256"/>
+      <Column id="progId" type="STRING" size="256"/>
+      <Column id="dsNm" type="STRING" size="256"/>
+      <Column id="grdNm" type="STRING" size="256"/>
+    </ColumnInfo>
+  </Dataset>
+  <Variable id="gv_multiDsNm"/>
+  <Variable id="gv_multiColNm"/>
+  <Variable id="gv_multiPopNm"/>
+  <Dataset id="gds_multiLang">
+    <ColumnInfo>
+      <Column id="korNm" type="STRING" size="256"/>
+      <Column id="engNm" type="STRING" size="256"/>
+    </ColumnInfo>
+  </Dataset>
+  <Variable id="gv_langFg" initval="kr"/>
+  <Dataset id="gds_msg">
+    <ColumnInfo>
+      <Column id="msgId" type="STRING" size="256"/>
+      <Column id="msgKor" type="STRING" size="256"/>
+      <Column id="msgEng" type="STRING" size="256"/>
+    </ColumnInfo>
+  </Dataset>
+  <Dataset id="gds_user">
+    <ColumnInfo>
+      <Column id="memberNo" type="STRING" size="256"/>
+      <Column id="nm" type="STRING" size="256"/>
+      <Column id="userGb" type="STRING" size="256"/>
+      <Column id="userGbNmKor" type="STRING" size="256"/>
+      <Column id="userGbNmEng" type="STRING" size="256"/>
+      <Column id="deptCd" type="STRING" size="256"/>
+      <Column id="deptNmKor" type="STRING" size="256"/>
+      <Column id="deptNmEng" type="STRING" size="256"/>
+      <Column id="majorCd" type="STRING" size="256"/>
+      <Column id="majorNmKor" type="STRING" size="256"/>
+      <Column id="majorNmEng" type="STRING" size="256"/>
+      <Column id="useFlag" type="STRING" size="256"/>
+      <Column id="rePwdGb" type="STRING" size="256"/>
+      <Column id="userDutyCd" type="STRING" size="256"/>
+      <Column id="userAppointmentCd" type="STRING" size="256"/>
+      <Column id="userRoleId" type="STRING" size="256"/>
+      <Column id="loginFailCnt" type="STRING" size="256"/>
+      <Column id="sessId" type="STRING" size="256"/>
+      <Column id="ipAddr" type="STRING" size="256"/>
+    </ColumnInfo>
+  </Dataset>
+  <Dataset id="gds_favo" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+    <ColumnInfo>
+      <Column id="chk" type="STRING" size="256"/>
+      <Column id="rowStatus" type="STRING" size="256"/>
+      <Column id="menuId" type="STRING" size="256"/>
+      <Column id="menuLvl" type="STRING" size="256"/>
+      <Column id="menuNm" type="STRING" size="256"/>
+    </ColumnInfo>
+  </Dataset>
+  <Dataset id="gds_attachFileList">
+    <ColumnInfo>
+      <Column id="fileMstNo" type="INT" size="256"/>
+      <Column id="fileMasterNo" type="INT" size="256"/>
+    </ColumnInfo>
+  </Dataset>
+  <Variable id="gv_svrUrl" initval="http://localhost:7080/com/"/>
+  <Variable id="gv_initUrl" initval="http://localhost:7080/com/"/>
+  <Dataset id="gds_dummy"/>
+  <Dataset id="gds_countData">
+    <ColumnInfo>
+      <Column id="progId" type="STRING" size="256"/>
+      <Column id="dsNm" type="STRING" size="256"/>
+      <Column id="staNm" type="STRING" size="256"/>
+    </ColumnInfo>
+  </Dataset>
+  <Dataset id="gds_statParam"/>
+  <Variable id="gv_formurl"/>
+  <Variable id="gv_menuId"/>
+  <Variable id="gv_progId"/>
+  <Variable id="gv_formType"/>
+  <Variable id="gv_memberNo"/>
+  <Variable id="gv_f_flag"/>
+  <Variable id="gv_link_id"/>
+</GlobalVariables>

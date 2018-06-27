@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="bg02050_d01" classname="aac01001_001" left="0" top="0" width="500" height="753" titletext="자금예산서 총괄표" onload="bg02050_d01_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_printForm" taborder="37" text="div_printForm" left="-1" top="1" height="752" width="500">
+          <Layouts>
+            <Layout>
+              <Static id="Static14" taborder="0" cssclass="detail_bg" left="0" top="1" height="30" style="border:1 solid #c7c9ccff,0 none #808080ff;" right="0"/>
+              <Static id="Static05" taborder="1" text="회계연도" cssclass="detail_title" left="-1" top="1" width="100" height="30" style="align:left;"/>
+              <Spin id="spn_acntYy" taborder="2" value="0" max="9999" left="107" top="5" width="256" height="22" onspin="div_printForm_spn_acntYy_onspin"/>
+              <Static id="Static00" taborder="16" cssclass="detail_bg" left="0" top="30" right="0" height="30" style="border:1 solid #c7c9ccff,0 none #808080ff;"/>
+              <Combo id="cmb_acntUnt" taborder="15" enable="true" left="107" top="34" width="256" height="22" innerdataset="@ds_acntUntCmb" codecolumn="cd" datacolumn="nm"/>
+              <Static id="Static01" taborder="17" text="회계단위" cssclass="detail_title" left="-1" top="30" width="100" height="30" style="align:left;"/>
+              <Static id="Static02" taborder="19" cssclass="detail_bg" left="0" top="292" right="0" height="30" style="border:1 solid #c7c9ccff,0 none #808080ff;" visible="false"/>
+              <Static id="Static03" taborder="20" text="수지구분" cssclass="detail_title" left="-1" top="292" width="100" height="30" style="align:left;" visible="false"/>
+              <Static id="Static04" taborder="22" cssclass="detail_bg" left="0" top="59" right="0" height="30" style="border:1 solid #c7c9ccff,0 none #808080ff;"/>
+              <Static id="Static06" taborder="23" text="예산구분" cssclass="detail_title" left="-1" top="59" width="100" height="30" style="align:left;"/>
+              <Static id="Static07" taborder="25" cssclass="detail_bg" left="0" top="88" right="0" height="30" style="border:1 solid #c7c9ccff,0 none #808080ff;"/>
+              <Static id="Static08" taborder="26" text="조정차수" cssclass="detail_title" left="-1" top="88" width="100" height="30" style="align:left;"/>
+              <Combo id="cmb_balDiv" taborder="37" left="107" top="296" width="256" height="22" innerdataset="@ds_balDiv" codecolumn="comCd" datacolumn="comCdNm" visible="false"/>
+              <Combo id="cmb_budgCd" taborder="38" left="107" top="63" width="256" height="22" innerdataset="@ds_budgCd" codecolumn="comCd" datacolumn="comCdNm"/>
+              <Combo id="cmb_adjOrdCd" taborder="39" left="107" top="92" width="256" height="22" innerdataset="@ds_adjOrdCd" codecolumn="comCd" datacolumn="comCdNm"/>
+              <Static id="Static16" taborder="47" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="528" top="1" width="20" height="503"/>
+              <Button id="btn_print" taborder="46" text="출력" cssclass="print" top="157" right="1" width="60" height="22" tooltiptype="hover" tooltiptext="출력" userBtnAuth="P" onclick="div_printForm_btn_print_onclick"/>
+              <Static id="Static18" taborder="49" text="H10" cssclass="tipGuide" visible="false" left="-1" top="179" width="502" height="10"/>
+              <Static id="Static17" taborder="53" text="H10" cssclass="tipGuide" visible="false" left="-1" top="147" width="502" height="10"/>
+              <Static id="Static09" taborder="54" cssclass="detail_bg" left="0" top="117" right="0" height="30" style="border:1 solid #c7c9ccff,0 none #808080ff;"/>
+              <Static id="Static10" taborder="55" text="출력물순서" cssclass="detail_title" left="-1" top="117" width="100" height="30" style="align:left;"/>
+              <Edit id="edt_pageCnt" taborder="56" imemode="hangul" inputtype="number" maxlength="3" left="107" top="121" width="256" height="22" style="border:1 solid #ccccccff ;"/>
+            </Layout>
+          </Layouts>
+        </Div>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_printList">
+        <ColumnInfo>
+          <Column id="title" type="STRING" size="256"/>
+          <Column id="divUrl" type="STRING" size="256"/>
+          <Column id="clipFileNm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="title">자금예산서</Col>
+            <Col id="divUrl">bg02::bg02050_d01.xfdl</Col>
+            <Col id="clipFileNm">bg02050_r01</Col>
+          </Row>
+          <Row>
+            <Col id="title">응?</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_acntUntCmb"/>
+      <Dataset id="ds_acntYy" oncolumnchanged="ds_acntYy_oncolumnchanged"/>
+      <Dataset id="ds_balDiv"/>
+      <Dataset id="ds_adjOrdCd"/>
+      <Dataset id="ds_budgCd"/>
+    </Objects>
+    <Bind>
+      <BindItem id="item1" compid="Div00.cmb_pfmBudgCd" propid="value" datasetid="ds_bgFrmn" columnid="budgCd"/>
+      <BindItem id="item3" compid="Div00.Radio00" propid="value" datasetid="ds_bgFrmn" columnid="balDiv"/>
+      <BindItem id="item2" compid="Div00.cmb_pfmAcntUnt" propid="value" datasetid="ds_bgFrmn" columnid="acntUnt"/>
+      <BindItem id="item0" compid="Div00.spn_acntYy00" propid="value" datasetid="ds_bgFrmn" columnid="acntYy"/>
+      <BindItem id="item18" compid="div_searchForm.spn_acntYy" propid="value" datasetid="ds_bgBiz" columnid="begYy"/>
+      <BindItem id="item9" compid="div_searchForm.cmb_acntUnt" propid="value" datasetid="ds_bgBiz" columnid="acntUnt"/>
+      <BindItem id="item4" compid="div_searchForm.cmb_acntUnt00" propid="value" datasetid="ds_bgBiz" columnid="acntUnt"/>
+      <BindItem id="item5" compid="div_searchForm.cmb_acntUnt01" propid="value" datasetid="ds_bgBiz" columnid="acntUnt"/>
+      <BindItem id="item6" compid="div_searchForm.cmb_acntUnt02" propid="value" datasetid="ds_bgBiz" columnid="acntUnt"/>
+      <BindItem id="item7" compid="div_printForm.spn_acntYy" propid="value" datasetid="ds_acntYy" columnid="acntYy"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[// [프로젝트]	동의대학교 예산회계시스템 구축
+// [시스템명]	행정
+// [부시스템]	예산관리
+// [프로그램]	예산편성 > 예산편성관련통계 자금예산서 총괄표
+// [설명] 
+//	         
+// [작성자명]	라병수
+// [작성일자]	12월 30일
+//////////////////////////////////[수정이력]//////////////////////////////////
+// [수정일자] 
+// [수 정 자] 
+// [수정내용]
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+
+	
+/******************************************************************************
+* 함 수 명 	: bg02050_d01_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.bg02050_d01_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	
+	var arrDataSet = Array(3);
+		arrDataSet[0]  = "ds_adjOrdCd";  			// 조정차수
+		arrDataSet[1]  = "ds_budgCd"; 			    // 예산구분
+		arrDataSet[2]  = "ds_balDiv"; 				// 수지구분
+		
+	var arrGrpCd = Array(3);
+		arrGrpCd[0]  = "BG010"; 					//조정차수
+		arrGrpCd[1]  = "BG008"; 					//예산구분
+		arrGrpCd[2]  = "BG007"; 	   				//수지구분
+
+	// 사용여부	지정할 아큐먼트를 넘긴다.
+	var arrUseYn =	Array(3);
+		arrUseYn[0]  =	"Y";
+		arrUseYn[1]  =	"Y";
+		arrUseYn[2]  =	"Y";
+		
+	// T:전체,S:선택,X:없음 
+	var arrModeFg =	Array(3);
+		arrModeFg[0]  =	"X";
+		arrModeFg[1]  =	"X";
+		arrModeFg[2]  =	"X";
+		
+	// WHERE절 내용 "X":없음
+	var arrWhere =	Array(3);
+		arrWhere[0]  =	"X";//ABB_CD IN ('S','K')
+		arrWhere[1]  =	"X";//ABB_CD IN ('S','K')
+		arrWhere[2]  =	"X";//ABB_CD IN ('S','K')
+		
+	/* 메소드명     : ComboLoad
+	 * 설명         : 공통코드 테이블을 조회하여 콤보박스를 생성한다.
+	 * 메소드인수1  : DataSet명의 배열
+	 * 메소드인수2  : 그룹코드번호의 배열
+	 * 메소드인수3  : 캠퍼스구분 배열 ("T":전체, "C":공통만, "S":서울, "K":경주)
+	 * 메소드인수4  : 조건문의 배열 (1:사용, 0:사용안함)
+	 * 메소드인수5  : 전체공란 첨부여부 "T": 전체, "S":선택, "X" : 데이터시작
+	 * 메소드인수6  : WHERE절 내용 "X":없음
+	 */
+	
+ 	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+ 	
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{	
+	this.cfn_acntYy("ds_acntYy");
+	this.div_printForm.cmb_balDiv.set_index(1);
+	this.div_printForm.cmb_budgCd.set_index(0);
+	this.div_printForm.cmb_adjOrdCd.set_index(0);
+}
+
+/********************************************************************************
+ * 함 수 명 	: ds_acntYy_oncolumnchanged()
+ * 함수설명 	: 회계연도 변경후 회계단위호출 함수
+********************************************************************************/
+this.ds_acntYy_oncolumnchanged = function(obj:Dataset, e:nexacro.DSColChangeEventInfo)
+{
+	//return ds,회계연도,권한적용여부,사용여부,합산회계여부,프로그램ID
+	this.cfn_acntUntCombo("ds_acntUntCmb",e.newvalue,"1","","1","bg02050"); //회계단위콤보호출
+}
+
+/*********************************************************************
+ * 함 수 명 	: div_search_spn_acntYy_onspin
+ * 함수설명 	: 스핀 년도 변경시 이벤트
+ *********************************************************************/
+this.div_printForm_spn_acntYy_onspin = function(obj:Spin, e:nexacro.SpinEventInfo)
+{
+	//return ds,회계연도,권한적용여부,사용여부,합산회계여부,프로그램ID
+ 	this.cfn_acntUntCombo("ds_acntUntCmb",e.postvalue,"1","","1","bg02050"); //회계단위콤보호출
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postAcntYy
+ * 함수설명 	: 회계년도호출후 이벤트
+ *********************************************************************/
+this.fn_postAcntYy = function()
+{
+	//return ds,회계연도,권한적용여부,사용여부,합산회계여부,프로그램ID
+	this.cfn_acntUntCombo("ds_acntUntCmb",this.div_printForm.spn_acntYy.value,"1","","1","bg02050"); //회계단위콤보호출
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.gfn_message("A", errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		} else if(trId == "ACNTYY"){
+			this.fn_postAcntYy();
+		} else if(trId == "ACNTUNTCOMBO"){
+			this.div_printForm.cmb_acntUnt.set_index(0);
+			this.ds_acntUntCmb.filter("cd == 30");
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: div_printForm_btn_print_onclick
+ * 함수설명 	: 레포트 호출
+ *********************************************************************/
+this.div_printForm_btn_print_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var objParams = {acntYy:this.div_printForm.spn_acntYy.value
+	                ,acntUnt:this.div_printForm.cmb_acntUnt.value
+	                ,balDiv:"" //this.div_printForm.cmb_balDiv.value
+	                ,budgCd:this.div_printForm.cmb_budgCd.value
+	                ,budgNm:this.div_printForm.cmb_budgCd.text
+	                ,adjOrdCd:this.div_printForm.cmb_adjOrdCd.value
+	                ,pageCnt:this.div_printForm.edt_pageCnt.value
+	                };
+	this.parent.fn_print(objParams);
+}
+]]></Script>
+  </Form>
+</FDL>

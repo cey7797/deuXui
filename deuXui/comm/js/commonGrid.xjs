@@ -1,0 +1,2217 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script type="xscript5.0"><![CDATA[/******************************************************************************
+    gfn_bindCmmnFunction : 화면 로드시 공통 기능 함수를 바인딩 한다.
+    gfn_headclick : 그리드 헤더 클릭 이벤트
+    gfn_oncolumnchanged : 데이터셋 컬럼 변경 이벤트
+    gfn_checkAll : grid header 체크박스 클릭시 전체 체크박스 설정/해제
+    gfn_gridSort : grid header 클릭시 sort 처리
+******************************************************************************/
+include "commJs::commonUtils.xjs";
+this.fv_eventId = ""; //헤더클릭 이벤트
+this.fv_headFg = "0";
+ct_separator = "aaa";
+
+/*********************************************************************
+ * 함 수 명 	: gfn_bindCmmnFunction
+ * 함수설명 	: 화면 로드시 공통 기능 함수를 바인딩 한다.
+ * 입    력 	: 
+ * 결    과 	: 
+ *********************************************************************/
+this.gfn_bindCmmnFunction = function()
+{
+	application.set_usecontextmenu('none');
+	this.fv_loadYn = "0";
+	
+	var component = this.components;
+	var str = new Array();
+	var chkStr = new Array();
+	var num = 0;
+	var chkIdx = 0;
+	var all = this.all;
+
+	for(var i=0 ; i<component.length ; i++){		
+		if(component[i] == "[object Grid]"){
+			if(component[i].id.indexOf("grd_freezing") < 0 ){
+				eval("this."+component[i].id+".set_cellmovingtype('col')");
+				eval("this."+component[i].id+".set_cellsizingtype('col')");
+				eval("this."+component[i].id+".set_autoenter('select')");
+				
+				//headclick
+				str[num] = "this."+component[i].id+"_onheadclick(obj, e)";
+				chkStr[num] = "this."+component[i].id+"_onheadclick";
+				fv_eventId = chkStr[num];
+				//호출한 form에 event 존재유무 체크
+				chkIdx = component[i].findEventHandler("onheadclick", eval(chkStr[num]), this);
+				
+				if(chkIdx >= 0){
+					var addRow = application.gds_eventHandler.addRow();
+					application.gds_eventHandler.setColumn(addRow, "menuId", application.gds_open.getColumn(application.gds_open.rowposition, "parentId"));
+					application.gds_eventHandler.setColumn(addRow, "progId", application.gds_open.getColumn(application.gds_open.rowposition, "menuId"));
+					application.gds_eventHandler.setColumn(addRow, "objId", component[i].id);
+					application.gds_eventHandler.setColumn(addRow, "eventId", "onhaedclick");
+					application.gds_eventHandler.setColumn(addRow, "bindEventNm", str[num]);
+				}
+
+				component[i].setEventHandler("onheadclick", this.gfn_headclick, this);
+				
+				this.initGridFreezing(component[i]);
+		
+				num++;
+			}
+		}
+		if(component[i] == "[object Button]"){
+			if( component[i].id.indexOf("btn_search") < 0 || component[i].userBtnAuth != "R" ){
+				if( component[i].cssclass != "popupDetail"){
+					component[i].set_enable(true);
+				}else{
+					component[i].set_enable(true);
+				}
+			}
+		}
+		if(component[i] == "[object Div]"){
+			var divComp = component[i].components;
+			for(var j=0; j<divComp.length; j++){
+				if(divComp[j] == "[object Button]"){
+					if( divComp[j].id.indexOf("btn_search") < 0 || divComp[j].userBtnAuth != "R" ){
+						if(divComp[j].cssclass != "popupDetail"){
+							divComp[j].set_enable(false);
+						}
+					}
+				}
+				///
+				if(divComp[j] == "[object Grid]"){
+					if(divComp[j].id.indexOf("grd_freezing") < 0 ){
+						eval("this."+divComp[j].id+".set_cellmovingtype('col')");
+						eval("this."+divComp[j].id+".set_cellsizingtype('both')");
+						eval("this."+divComp[j].id+".set_autoenter('select')");
+						
+						//headclick
+						str[num] = "this."+divComp[j].id+"_onheadclick(obj, e)";
+						chkStr[num] = "this."+divComp[j].id+"_onheadclick";
+						fv_eventId = chkStr[num];
+						//호출한 form에 event 존재유무 체크
+						chkIdx = divComp[j].findEventHandler("onheadclick", eval(chkStr[num]), this);
+
+						if(chkIdx >= 0){
+							var addRow = application.gds_eventHandler.addRow();
+							application.gds_eventHandler.setColumn(addRow, "menuId", application.gds_open.getColumn(application.gds_open.rowposition, "parentId"));
+							application.gds_eventHandler.setColumn(addRow, "progId", application.gds_open.getColumn(application.gds_open.rowposition, "menuId"));
+							application.gds_eventHandler.setColumn(addRow, "objId", divComp[j].id);
+							application.gds_eventHandler.setColumn(addRow, "eventId", "onhaedclick");
+							application.gds_eventHandler.setColumn(addRow, "bindEventNm", str[num]);
+						}
+
+						divComp[j].setEventHandler("onheadclick", this.gfn_headclick, this);
+						
+						this.initGridFreezing(divComp[j]);
+				
+						num++;
+					}
+				}
+				///
+			}
+		}
+		if(component[i] == "[object Tab]"){
+			var tabComp = component[i].components;
+			for(var k=0; k<tabComp.length; k++){
+				if(tabComp[k] == "[object Button]"){
+					tabComp[k].set_enable(false);
+				}
+				
+				if(tabComp[k] == "[object Tabpage]"){
+					var pageComp = tabComp[k].components;
+
+					///
+					for(var l=0; l<pageComp.length; l++){
+						if(pageComp[l] == "[object Grid]"){
+							if(pageComp[l].id.indexOf("grd_freezing") < 0 ){
+								eval("this."+component[i].id+"."+tabComp[k].id+"."+pageComp[l].id+".set_cellmovingtype('col')");
+								eval("this."+component[i].id+"."+tabComp[k].id+"."+pageComp[l].id+".set_cellsizingtype('both')");
+								eval("this."+component[i].id+"."+tabComp[k].id+"."+pageComp[l].id+".set_autoenter('select')");
+								
+								//headclick
+								str[num] = "this."+component[i].id+"."+tabComp[k].id+"."+pageComp[l].id+"_onheadclick(obj, e)";
+								chkStr[num] = "this."+component[i].id+"."+tabComp[k].id+"."+pageComp[l].id+"_onheadclick";
+								fv_eventId = chkStr[num];
+								//호출한 form에 event 존재유무 체크
+								chkIdx = pageComp[l].findEventHandler("onheadclick", eval(chkStr[num]), this);
+
+								if(chkIdx >= 0){
+									var addRow = application.gds_eventHandler.addRow();
+									application.gds_eventHandler.setColumn(addRow, "menuId", application.gds_open.getColumn(application.gds_open.rowposition, "parentId"));
+									application.gds_eventHandler.setColumn(addRow, "progId", application.gds_open.getColumn(application.gds_open.rowposition, "menuId"));
+									application.gds_eventHandler.setColumn(addRow, "objId", pageComp[l].id);
+									application.gds_eventHandler.setColumn(addRow, "eventId", "onhaedclick");
+									application.gds_eventHandler.setColumn(addRow, "bindEventNm", str[num]);
+								}
+
+								pageComp[l].setEventHandler("onheadclick", this.gfn_headclick, this);
+								
+								this.initGridFreezing(pageComp[l]);
+						
+								num++;
+							}
+						}
+						
+						if(pageComp[l] == "[object Div]"){
+							var pageDivComp = pageComp[l].components;
+							
+							for(var m=0; m<pageDivComp.length; m++){
+								if(pageDivComp[m] == "[object Grid]"){
+									if(pageDivComp[m].id.indexOf("grd_freezing") < 0 ){
+										eval("this."+component[i].id+"."+tabComp[k].id+"."+pageComp[l].id+"."+pageDivComp[m].id+".set_cellmovingtype('col')");
+										eval("this."+component[i].id+"."+tabComp[k].id+"."+pageComp[l].id+"."+pageDivComp[m].id+".set_cellsizingtype('both')");
+										eval("this."+component[i].id+"."+tabComp[k].id+"."+pageComp[l].id+"."+pageDivComp[m].id+".set_autoenter('select')");
+
+										//headclick
+										str[num] = "this."+component[i].id+"."+tabComp[k].id+"."+pageComp[l].id+"."+pageDivComp[m].id+"_onheadclick(obj, e)";
+										chkStr[num] = "this."+component[i].id+"."+tabComp[k].id+"."+pageComp[l].id+"."+pageDivComp[m].id+"_onheadclick";
+										fv_eventId = chkStr[num];
+										//호출한 form에 event 존재유무 체크
+										
+										chkIdx = pageDivComp[m].findEventHandler("onheadclick", eval(chkStr[num]), this);
+
+										if(chkIdx >= 0){
+											var addRow = application.gds_eventHandler.addRow();
+											application.gds_eventHandler.setColumn(addRow, "menuId", application.gds_open.getColumn(application.gds_open.rowposition, "parentId"));
+											application.gds_eventHandler.setColumn(addRow, "progId", application.gds_open.getColumn(application.gds_open.rowposition, "menuId"));
+											application.gds_eventHandler.setColumn(addRow, "objId", pageDivComp[m].id);
+											application.gds_eventHandler.setColumn(addRow, "eventId", "onhaedclick");
+											application.gds_eventHandler.setColumn(addRow, "bindEventNm", str[num]);
+										}
+
+										pageDivComp[m].setEventHandler("onheadclick", this.gfn_headclick, this);
+										
+										this.initGridFreezing(pageDivComp[m]);
+								
+										num++;
+									}
+								}
+							}
+						}
+					}
+					///
+				}
+			}
+		}
+	}
+
+	//변수 초기화
+	/*num = 0;*/
+	
+	for(var i=0 ; i<all.length ; i++){		
+		if(all[i] == "[object Dataset]"){
+			if( all[i].id.indexOf("ds_freezing")< 0){
+				str[num] = "this."+all[i].id+"_oncolumnchanged(obj, e)";
+				chkStr[num] = "this."+all[i].id+"_oncolumnchanged";
+				fv_eventId = chkStr[num];
+				
+				//호출한 form에 event 존재유무 체크
+				chkIdx = all[i].findEventHandler("oncolumnchanged", eval(chkStr[num]), this);
+
+				if(chkIdx >= 0){
+					var addRow = application.gds_eventHandler.addRow();
+						application.gds_eventHandler.setColumn(addRow, "menuId", application.gds_open.getColumn(application.gds_open.rowposition, "parentId"));
+						application.gds_eventHandler.setColumn(addRow, "progId", application.gds_open.getColumn(application.gds_open.rowposition, "menuId"));
+						application.gds_eventHandler.setColumn(addRow, "objId", all[i].id);
+						application.gds_eventHandler.setColumn(addRow, "eventId", "onhaedclick");
+						application.gds_eventHandler.setColumn(addRow, "bindEventNm", str[num]);
+				}
+				
+				all[i].setEventHandler("oncolumnchanged", this.gfn_oncolumnchanged, this);
+				
+				num++;
+			}
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_headclick
+ * 함수설명 	: 그리드 헤더 클릭 이벤트
+ * 입    력 	: 
+ * 결    과 	: 
+ *********************************************************************/
+this.gfn_headclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	//공통제어
+	if(obj.getCellProperty("head", e.cell, "edittype") == "checkbox"){
+		this.gfn_checkAll(obj, e.cell);
+	}else{
+		this.gfn_gridSort(obj, e);
+	}
+	
+	var chkIdx = application.gds_eventHandler.findRowExpr("menuId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "parentId")+"'&& progId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "menuId")+"'&& objId=='"+obj.id+"'&& eventId'==onheadclick");
+
+	//호출한 form의 함수 호출
+	if(chkIdx >= 0){
+		eval(application.gds_eventHandler.getColumn(chkIdx, "bindEventNm"));
+	}
+}
+
+// /*********************************************************************
+//  * 함 수 명 	: gfn_oncolumnchanged
+//  * 함수설명 	: 데이터셋 컬럼 변경 이벤트
+//  * 입    력 	: 
+//  * 결    과 	: 
+//  *********************************************************************/
+// this.gfn_oncolumnchanged = function(obj:Dataset, e:nexacro.DSColChangeEventInfo)
+// {
+// 	//공통제어
+//  	if(e.columnid != 'chk' && obj.getColumn(obj.rowposition, "rowStatus") != 2 && obj.getColumn(obj.rowposition, "rowStatus") != 8){
+//  		if(e.columnid != 'chk' && obj.getColumn(obj.rowposition,"rowStatus") != "2"){
+// 			if(obj.getColumn(obj.rowposition,"rowStatus") != "2"){
+// 				obj.setColumn(e.row, "rowStatus", "4");
+// 			}
+// 		
+// 			var chkIdx = application.gds_eventHandler.findRowExpr("menuId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "parentId")+"'&& progId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "menuId")+"'&& objId=='"+obj.id+"'&& eventId'==onheadclick");
+// 
+// 			//호출한 form의 함수 호출
+// 			if(chkIdx >= 0){
+// 				eval(application.gds_eventHandler.getColumn(chkIdx, "bindEventNm"));
+// 			}
+// 		}
+// 	}else{
+// 		var chkIdx = application.gds_eventHandler.findRowExpr("menuId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "parentId")+"'&& progId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "menuId")+"'&& objId=='"+obj.id+"'&& eventId'==onheadclick");
+// 
+// 		//호출한 form의 함수 호출
+// 		if(chkIdx >= 0){
+// 			eval(application.gds_eventHandler.getColumn(chkIdx, "bindEventNm"));
+// 		}
+// 	}
+
+// ======================================20150706 15:54==================================================
+//    if(e.columnid != 'chk' && obj.getOrgColumn(obj.rowposition, e.col) == obj.getColumn(obj.rowposition, e.col)){
+// 		if(obj.getColumn(e.row, "chk") == "1"){
+// 			obj.setColumn(obj.rowposition, "rowStatus", "10");
+// 		}else{
+// 			if(obj.getColumn(e.row, "rowStatus") != "2"){
+// 				obj.setColumn(obj.rowposition, "rowStatus", "");
+// 			}
+// 		}
+// 	}else{
+// 		//공통제어
+// 		if(e.columnid != 'chk' && obj.getColumn(obj.rowposition, "rowStatus") != 2 && obj.getColumn(obj.rowposition, "rowStatus") != 8){
+// 			if(e.columnid != 'chk' && obj.getColumn(obj.rowposition,"rowStatus") != "2"){
+// 				if(obj.getColumn(obj.rowposition,"rowStatus") != 2 && e.columnid != "rowStatus"){
+// 					obj.setColumn(e.row, "rowStatus", "4");
+// 				}
+// 			
+// 				var chkIdx = application.gds_eventHandler.findRowExpr("menuId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "parentId")+"'&& progId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "menuId")+"'&& objId=='"+obj.id+"'&& eventId'==onheadclick");
+// 
+// 				//호출한 form의 함수 호출
+// 				if(chkIdx >= 0){
+// 					eval(application.gds_eventHandler.getColumn(chkIdx, "bindEventNm"));
+// 				}
+// 			}
+// 		}else if(e.columnid == 'chk' && (obj.getColumn(obj.rowposition, "rowStatus") != 2 && obj.getColumn(obj.rowposition, "rowStatus") != 4 && obj.getColumn(obj.rowposition, "rowStatus") != 8)){
+// 			if(obj.getColumn(e.row, "rowStatus") == "10"){
+// 				obj.setColumn(e.row, "rowStatus", "");
+// 			}else{
+// 				if(this.fv_headFg != "1"){
+// 					obj.setColumn(e.row, "rowStatus", "10");
+// 				}
+// 				this.fv_headFg = "0";			
+// 			}	
+// 		}
+// 	}
+// }
+
+/*********************************************************************
+ * 함 수 명 	: gfn_oncolumnchanged
+ * 함수설명 	: 데이터셋 컬럼 변경 이벤트
+ * 입    력 	: 
+ * 결    과 	: 
+ *********************************************************************/
+this.gfn_oncolumnchanged = function(obj:Dataset, e:nexacro.DSColChangeEventInfo)
+{
+	if(e.columnid == "rowStatus"){
+		return false;
+	}
+	
+	//초기 상태일 경우
+	if(e.columnid != "chk" && obj.getColumn(e.row, "rowStatus") != "2" && obj.getColumn(e.row, "rowStatus") != "4" && obj.getColumn(e.row, "rowStatus") != "8" && e.columnid != "rowStatus"){
+		obj.setColumn(e.row, "rowStatus", "4");
+		
+		var chkIdx = application.gds_eventHandler.findRowExpr("menuId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "parentId")+"'&& progId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "menuId")+"'&& objId=='"+obj.id+"'&& eventId'==onheadclick");
+
+		//호출한 form의 함수 호출
+		if(chkIdx >= 0){
+			eval(application.gds_eventHandler.getColumn(chkIdx, "bindEventNm"));
+		}
+	}else{
+	//추가, 수정, 삭제 상태일 경우
+		if(e.columnid != 'chk' && obj.getOrgColumn(obj.rowposition, e.col) == obj.getColumn(obj.rowposition, e.col)){
+			if(obj.getColumn(e.row, "chk") == "1"){
+				obj.setColumn(e.row, "rowStatus", "10");
+				
+// 				var chkIdx = application.gds_eventHandler.findRowExpr("menuId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "parentId")+"'&& progId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "menuId")+"'&& objId=='"+obj.id+"'&& eventId'==onheadclick");
+// 
+// 				//호출한 form의 함수 호출
+// 				if(chkIdx >= 0){
+// 					eval(application.gds_eventHandler.getColumn(chkIdx, "bindEventNm"));
+// 				}
+			}else{
+				if(obj.getColumn(e.row, "rowStatus") != "2"){
+					obj.setColumn(e.row, "rowStatus", "");
+					
+// 					var chkIdx = application.gds_eventHandler.findRowExpr("menuId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "parentId")+"'&& progId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "menuId")+"'&& objId=='"+obj.id+"'&& eventId'==onheadclick");
+// 
+// 					//호출한 form의 함수 호출
+// 					if(chkIdx >= 0){
+// 						eval(application.gds_eventHandler.getColumn(chkIdx, "bindEventNm"));
+// 					}
+				}
+			}
+		} 
+		//체크 컬럼이면서 추가, 수정, 삭제 상태가 아닐때 변경
+		if(e.columnid == "chk" && obj.getColumn(e.row, "rowStatus") != "2" && obj.getColumn(e.row, "rowStatus") != "4" && obj.getColumn(e.row, "rowStatus") != "8"){
+			if(obj.getColumn(e.row, "rowStatus") == "10"){
+				obj.setColumn(e.row, "rowStatus", "");
+				
+// 				var chkIdx = application.gds_eventHandler.findRowExpr("menuId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "parentId")+"'&& progId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "menuId")+"'&& objId=='"+obj.id+"'&& eventId'==onheadclick");
+// 
+// 				//호출한 form의 함수 호출
+// 				if(chkIdx >= 0){
+// 					eval(application.gds_eventHandler.getColumn(chkIdx, "bindEventNm"));
+// 				}
+			}else{
+				if(this.fv_headFg != "1"){
+					obj.setColumn(e.row, "rowStatus", "10");
+					
+// 					var chkIdx = application.gds_eventHandler.findRowExpr("menuId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "parentId")+"'&& progId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "menuId")+"'&& objId=='"+obj.id+"'&& eventId'==onheadclick");
+// 
+// 					//호출한 form의 함수 호출
+// 					if(chkIdx >= 0){
+// 						eval(application.gds_eventHandler.getColumn(chkIdx, "bindEventNm"));
+// 					}
+				}
+			}
+		}
+		var chkIdx = application.gds_eventHandler.findRowExpr("menuId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "parentId")+"'&& progId =='"+application.gds_open.getColumn(application.gds_open.rowposition, "menuId")+"'&& objId=='"+obj.id+"'&& eventId'==onheadclick");
+
+		//호출한 form의 함수 호출
+		if(chkIdx >= 0){
+			eval(application.gds_eventHandler.getColumn(chkIdx, "bindEventNm"));
+		}
+		this.fv_headFg = "0";
+	}
+}
+
+// 2. Grid Cell Copy & Past 테스트.
+this.gfn_gridOnkeydown = function (obj:Grid, e:KeyEventInfo)
+{
+	// Ctrl + C
+	if (e.ctrlKey && e.keycode == 67) 
+	{
+		this.gfn_clipboardCopy(obj);
+
+		// Ctrl + V
+	}
+	else if (e.ctrlKey && e.keycode == 86) 
+	{
+		this.gfn_clipboardPaste(obj);
+	}
+}
+
+this.gfn_clipboardCopy = function (objGrid)
+{
+	var orgDataset = objGrid.getBindDataset();
+
+	var strColID;
+	var strValue;
+
+	var strClipboard = "";
+
+	var nAreaStartRow;
+	var nAreaEndRow;
+	var nAreaStartCol;
+	var nAreaEndCol;
+
+	if (objGrid.selecttype == "area") 
+	{
+		nAreaStartRow = objGrid.selectstartrow;
+		nAreaEndRow = objGrid.selectendrow;
+		nAreaStartCol = objGrid.selectstartcol;
+		nAreaEndCol = objGrid.selectendcol;
+	}
+	else 
+	{
+		nAreaStartRow = objGrid.selectstartrow;
+		nAreaEndRow = objGrid.selectendrow;
+		nAreaStartCol = 0;
+		nAreaEndCol = objGrid.getCellCount("Body")-1;
+	}
+
+	for (var nRow = nAreaStartRow; nRow <= nAreaEndRow; nRow++) 
+	{
+		for (var nCell = nAreaStartCol; nCell < nAreaEndCol; nCell++) 
+		{
+			strColID = objGrid.getCellProperty("body", nCell, "text");
+			strValue = this.gfn_isEmpty(orgDataset.getColumn(nRow, strColID.substr(5)));
+			strClipboard = strClipboard + strValue + ct_separator;
+		}
+
+		strClipboard = strClipboard.substr(0, strClipboard.length - 1);
+		strClipboard = strClipboard + "\n";
+	}
+
+	strClipboard = strClipboard.substr(0, strClipboard.length - 1);
+	system.setClipboard("CF_TEXT", strClipboard);
+	application.gv_arrClipboard = strClipboard;
+
+	return;
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_checkAll
+ * 함수설명 	: grid header 체크박스 클릭시 전체 체크박스 설정/해제
+ * 입    력 	: objDataSet, e 		  	  
+ * 결    과 	: grid header 체크박스 클릭시 전체 체크박스 설정/해제
+ *********************************************************************/
+this.gfn_checkAll = function(obj, cellIdx)
+{
+	var bindDs = this.objects[obj.binddataset];
+
+	var gu1 = obj.getCellProperty("Head",cellIdx,"text");
+	var gu = obj.getCellProperty("Head",cellIdx,"text");
+	
+	if ( gu == 0 ){
+		obj.setCellProperty("Head",cellIdx,"text",1);
+		gu1 = 1;
+	}else{
+		obj.setCellProperty("Head",cellIdx,"text",0);
+		gu1 = 0;
+	}
+	
+	for( i=0; i<bindDs.getRowCount(); i++){
+		if(gu1 == 0){
+			this.fv_headFg = "1";
+			if(bindDs.getColumn(i, "rowStatus") != "2" && bindDs.getColumn(i, "rowStatus") != "4" && bindDs.getColumn(i, "rowStatus") != "8"){
+				bindDs.setColumn(i, "rowStatus", "");
+			}
+		}
+		bindDs.setColumn(i, "chk", gu1);		
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: gfn_gridSort
+ * 함수설명 	: grid header 클릭시 sort 처리
+ * 입    력 	: objDataSet, e 		  	  
+ * 결    과 	: grid sort
+ *********************************************************************/
+this.gfn_gridSort = function(obj, e)
+{
+	// 컬럼의 정렬방식을 'head'의 text에 "↑,↓"여부로 판단.
+	// 이미지로 대체 가능.
+	var strType = obj.getCellProperty("head", e.cell, "displaytype");
+	if (strType == "checkbox") 
+	{
+		return;
+	}
+
+	var bindDs = this.objects[obj.binddataset];
+	if (bindDs.rowcount == 0) 
+	{
+		return false;
+	}
+
+	var BodyColId = (obj.getCellProperty("body", e.col, "text")).toString().split(":");
+	
+	bindDs.set_enableevent(false);
+	for (var i = 0; i < obj.getCellCount("head"); i++) 
+	{
+		if (obj.getCellText(-1, i) == "undefined") 
+		{
+			continue;
+		}
+
+		var strHeadText = obj.getCellText(-1, i);
+
+		if (i == e.cell) 
+		{
+			if (strHeadText.substr(strHeadText.length - 1) == this.fv_constAscMark) 
+			{
+				obj.setCellProperty("head", i, "text", strHeadText.substr(0, strHeadText.length - 1) + this.fv_constDescMark);
+				bindDs.set_keystring(("S:-" + BodyColId[1]));
+			}
+			else if (strHeadText.substr(strHeadText.length - 1) == this.fv_constDescMark) 
+			{
+				obj.setCellProperty("head", i, "text", strHeadText.substr(0, strHeadText.length - 1) + this.fv_constAscMark);
+				bindDs.set_keystring(("S:+" + BodyColId[1]));
+			}
+			else 
+			{
+				obj.setCellProperty("head", i, "text", strHeadText + this.fv_constAscMark);
+				bindDs.set_keystring(("S:+" + BodyColId[1]));
+			}
+		}
+		else 
+		{
+			// 정렬표시 삭제
+			if (strHeadText.substr(strHeadText.length - 1) == this.fv_constAscMark || strHeadText.substr(strHeadText.length - 1) == this.fv_constDescMark) 
+			{
+				obj.setCellProperty("head", i, "text", strHeadText.substr(0, strHeadText.length - 1));
+			}
+		}
+	}
+	bindDs.set_enableevent(true);		
+}
+
+/******************************************************************************
+	2. 고정 기능 관련 function
+******************************************************************************/
+
+/**
+ * Grid right click 시 메뉴로 열, 행 고정하기 위한 초기 지정
+ * @param {Grid} grid 대상 Grid Component
+ */
+this.initGridFreezing = function(grid)
+{	
+	// 대상이 이미 초기화 되었는지 확인
+	if ( Eco.XComp.getUserProperty(grid, "initGridFreezing") )
+	{
+		return;
+	}
+	// scrollpixel == "all" 은 지원하지 않음.
+	grid.set_scrollpixel("none");
+	
+	// Dataset, PopupMenu 는 최상위 Form 에 유일하게 하나만 있으면 됨.
+	var form = Eco.XComp.getTopLevelForm(grid.parent);
+	var ds = Eco.XComp.getUserProperty(form, "GridFreezingMenuDataset");
+	if ( Eco.isEmpty(ds) )
+	{
+		// add popupmenu dataset
+		ds = new Dataset;
+		ds.set_name(Eco.getUniqueId("ds_freezing"));
+
+		form.addChild(ds.name, ds);
+		
+		ds.addColumn("id", "string");
+		ds.addColumn("level", "string");
+		ds.addColumn("caption", "string");
+		ds.addColumn("enable", "string");
+		
+		var row = ds.addRow();
+		ds.setColumn(row, "id", "col");
+		ds.setColumn(row, "level", "0");
+		ds.setColumn(row, "caption", "현재 열 고정");
+		ds.setColumn(row, "enable", "true");
+		
+		row = ds.addRow();
+		ds.setColumn(row, "id", "row");
+		ds.setColumn(row, "level", "0");
+		ds.setColumn(row, "caption", "현재 행 고정");
+		ds.setColumn(row, "enable", "true");	
+			
+		row = ds.addRow();
+		ds.setColumn(row, "id", "both");
+		ds.setColumn(row, "level", "0");
+		ds.setColumn(row, "caption", "현재 행,열 고정");
+		ds.setColumn(row, "enable", "true");
+			
+		row = ds.addRow();
+		ds.setColumn(row, "id", "cancel");
+		ds.setColumn(row, "level", "0");
+		ds.setColumn(row, "caption", "고정 취소");
+		ds.setColumn(row, "enable", "false");
+		
+// 		row = ds.addRow();
+// 		ds.setColumn(row, "id", "selectCell");
+// 		ds.setColumn(row, "level", "0");
+// 		ds.setColumn(row, "caption", "영역선택");
+// 		ds.setColumn(row, "enable", "true");
+		
+		// 재성성 방지
+		Eco.XComp.setUserProperty(form, "GridFreezingMenuDataset", ds);
+	}
+
+	var pmnu = Eco.XComp.getUserProperty(form, "GridFreezingPopupMenu");
+	if ( Eco.isEmpty(pmnu) )
+	{
+		// add popupmenu component
+		var name = Eco.getUniqueId("pmnu_");
+		
+		pmnu = new PopupMenu();
+		pmnu.init(name, "absolute", 0, 0, 68, 65);		
+		pmnu.addEventHandler("onmenuclick", this.gridFreezingOnMenuClickHandler, this);
+		form.addChild(pmnu.name, pmnu);	
+		pmnu.set_innerdataset(ds.name);
+		pmnu.set_idcolumn("id");
+		pmnu.set_levelcolumn("level");
+		pmnu.set_captioncolumn("caption");
+		pmnu.set_enablecolumn("enable");
+		pmnu.show();
+		
+		// 재성성 방지
+		Eco.XComp.setUserProperty(form, "GridFreezingPopupMenu", pmnu);
+	}
+
+	// add onrbuttondown handler
+	grid.addEventHandler("onrbuttondown", this.gridFreezingOnRButtonDownHandler, this);
+
+	// 사용자에 의해 컬럼 사이즈가 변경된 경우 함수 호출
+	this.setUserGridOnColResized(grid, this.gridFreezingOnColResized, this);
+	
+	// 사용자에 의해 셀이 이동된 경우 함수 호출
+	this.setUserGridOnCellMoved(grid, this.gridFreezingOnCellMoved, this);
+	
+	// add onsize handler - 사이즈 변경 시 셀고정 재배치
+	grid.addEventHandler("onsize", this.arrangeGridFreezing, this);
+
+	// add onmove handler - 위치 변경 시 셀고정 재배치
+	grid.addEventHandler("onmove", this.arrangeGridFreezing, this);
+	
+	// 행고정 표시 그리드에도 우클릭 이벤트 설정
+	var frozenRowGrid = this.getFrozenRowGrid(grid);
+	frozenRowGrid.addEventHandler("onrbuttondown", this.gridFreezingOnRButtonDownHandler2, this);	
+	
+	// 초기화 설정 완료 속성 지정 - 재설정 방지용
+	Eco.XComp.setUserProperty(grid, "initGridFreezing", true);	
+}
+
+/**
+ * onrbuttondown Event Handler
+ * @param {Grid} obj Event가 발생한 Grid Component
+ * @param {MouseEventInfo} e MouseEventInfo
+ */
+this.gridFreezingOnRButtonDownHandler = function(obj, e) 
+{
+	var row = e.row;
+	var cell = e.cell;
+		
+	// body
+	if ( row > -1 && cell > -1 )
+	{
+		this.setPopupMenu(obj, row, cell);
+		
+		this.showPopupMenu(obj, e);
+	}
+}
+
+/**
+ * onrbuttondown Event Handler
+ * @param {Grid} obj Event가 발생한 Grid Component
+ * @param {MouseEventInfo} e MouseEventInfo
+ */
+this.gridFreezingOnRButtonDownHandler2 = function(obj, e) 
+{
+	var row = e.row;
+	var cell = e.cell;
+		
+	// body
+	if ( row > -1 && cell > -1 )
+	{		
+		// 팝업 메뉴에 대한 설정은 원본 그리드로
+		var sourceGrid = Eco.XComp.getUserProperty(obj, "sourceGrid");
+		this.setPopupMenu(sourceGrid, row, cell);
+
+		// 팝업 메뉴 팝업 위치는 행고정 그리드를 기준으로..
+		this.showPopupMenu(obj, e);
+	}
+}
+
+/**
+ * 메뉴 활성화 및 정보 지정
+ * @param {Grid} obj Event가 발생한 Grid Component
+ * @param {MouseEventInfo} e MouseEventInfo
+ */
+this.setPopupMenu = function(grid, row, cell)
+{
+	var form = Eco.XComp.getTopLevelForm(grid.parent);
+	var pmnu = Eco.XComp.getUserProperty(form, "GridFreezingPopupMenu");
+	var ds = Eco.XComp.getUserProperty(form, "GridFreezingMenuDataset");
+		
+	// 팝업메뉴에 대상 그리드 참조 및 선택된 col, row 추가
+	var col = grid.getCellProperty("body", cell, "col");
+	var colspan = grid.getCellProperty("body", cell, "colspan");
+		
+	Eco.XComp.setUserProperty(pmnu, "grid", grid);	
+	Eco.XComp.setUserProperty(pmnu, "curCol", col + (colspan-1));
+	Eco.XComp.setUserProperty(pmnu, "curRow", row);
+	
+	// 고정 취소 메뉴 활성화
+	var pos = this.getGridFreezingPos(grid);
+	if ( pos[0] > -1 || pos[1] > -1 )
+	{
+		ds.setColumn(3, "enable", "true");
+	}
+	else
+	{
+		ds.setColumn(3, "enable", "false");
+	}	
+	
+	// 열 고정 가능 여부 판단
+	var enable = this.canGridFreezingColumn(grid, col);
+	enable = enable ? "true" : "false";
+	
+	ds.setColumn(0, "enable", enable);
+	ds.setColumn(2, "enable", enable);
+}
+
+/**
+ * 메뉴 팝업
+ * @param {Grid} grid 대상 Grid Component
+ * @param {MouseEventInfo} e MouseEventInfo
+ */
+this.showPopupMenu = function(grid, e)
+{
+	var form = Eco.XComp.getTopLevelForm(grid.parent);
+	var pmnu = Eco.XComp.getUserProperty(form, "GridFreezingPopupMenu");
+	var rect = grid.getCellRect(e.row, e.cell);
+	var xy = Eco.XComp.PositionSize.convertXY(application.mainframe, [rect.left, rect.bottom], grid);
+	var x = xy[0];
+	var y = xy[1];
+	
+	if ( isNaN(x) || isNaN(y) )
+	{
+		x = e.clientX;
+		y = e.clientY;
+	}
+	
+	pmnu.trackPopup(x, y);
+}
+
+/**
+ * onmenuclick Event Handler
+ * @param {PopupMenu} obj Event가 발생한 PopupMenu Component
+ * @param {MenuClickEventInfo} e MenuClickEventInfo
+ */
+this.gridFreezingOnMenuClickHandler = function(obj, e)
+{	
+	var selectId = e.id;
+	var grid = Eco.XComp.getUserProperty(obj, "grid");
+	
+	if ( selectId == "cancel" ) 
+	{
+		this.setGridFreezing(grid, -1, -1);
+	}
+	else
+	{
+		var col = Eco.XComp.getUserProperty(obj, "curCol");
+		var row = Eco.XComp.getUserProperty(obj, "curRow");
+		
+		if ( selectId == "col" )
+		{
+			row = -1;
+		}
+		else if ( selectId == "row" )
+		{
+			col = -1;
+		}
+		
+		this.setGridFreezing(grid, col, row);
+	}
+}
+
+/**
+ * 사용자에 의해 컬럼 사이즈가 변경될 때 호출되는 함수
+ * @param {Grid} obj Event가 발생한 Grid Component
+ * @param {object} info 변경 정보 값 {'col': 대상컬럼 index, 
+										'oldvalue':변경 전 값, 
+										'newvalue': 변경 후 값}
+ */
+this.gridFreezingOnColResized = function(obj, info)
+{
+	var col = info.col;
+	var size = info.newvalue;
+	
+	this.setGridFreezingColSize(obj, col, size);
+}
+
+/**
+ * 사용자에 의해 셀이 이동될 때 호출되는 함수
+ * @param {Grid} obj Event가 발생한 Grid Component
+ * @param {object} info 변경 정보 값 {'fromcol': 변경 전 col index,
+                                        'tocol': 변경 후 col index}
+ */
+this.gridFreezingOnCellMoved = function(obj, info)
+{
+	this.setGridFreezingMoving(obj, info.fromcol, info.tocol);
+}
+
+
+/******************************************************************************
+	3. 고정 core function
+******************************************************************************/
+
+// 고정된 셀의 background color (null or empty : 표시없음)
+this.GRID_FREEZING_BACKGROUND_COLOR = "snow";
+
+// 고정 라인을 표시할 style (null or empty : 표시없음)
+this.GRID_FREEZING_LINE_STYLE = "1px solid gray";
+
+/**
+ * 대상 그리드에 현재 고정 위치(col, row)를 반환
+ * @param {Grid} grid 대상 Grid Component
+ * @return {array} 고정 위치 배열 [열 고정 인덱스, 행 고정 인덱스]
+ */
+this.getGridFreezingPos = function(grid)
+{
+	var col = Eco.XComp.getUserProperty(grid, "freezingCol");
+	var row = Eco.XComp.getUserProperty(grid, "freezingRow");
+	
+	return [col, row];
+}
+
+/**
+ * 주어진 열(Column index)이 고정 가능한지 여부 반환
+ * @param {Grid} grid 대상 Grid Component
+ * @return {boolean} 열 고정 가능 여부
+ */
+this.canGridFreezingColumn = function(grid, col)
+{
+	// 선택한 col 에 해당하는 head 의 cell이 병합된 (colspan) 상태가
+	// 존재할 때 band = left 적용하면 format이 깨지므로 실행안되도록 막는다.
+	var headCnt = grid.getCellCount("head");
+	var hCol;
+	var hColspan;
+	var checkColspan1Cnt = 0;
+	var checkColspan2Cnt = 0;
+	var lastCol = false;
+	
+	for (var i=0; i<headCnt; i++)
+	{
+		hCol = grid.getCellProperty("head", i, "col");
+		hColspan = grid.getCellProperty("head", i, "colspan");
+		
+		if ( col >= hCol && col <= (hCol + hColspan -1) )
+		{
+			if ( hColspan > 1 )
+			{
+				checkColspan1Cnt += 1;
+				if ( col == (hCol + hColspan-1) )
+				{
+					lastCol = true;
+				}							
+			}
+			else
+			{
+				checkColspan2Cnt += 1;
+			}
+		}
+	}
+	
+	var enable = true;
+	if ( checkColspan1Cnt > 0 && checkColspan2Cnt > 0 )
+	{
+		if ( !lastCol ) 
+		{
+			enable = false;
+		}
+	}
+	
+	return enable;
+}
+
+/**
+ * 주어진 col, row 에 해당하는 cell 고정
+ * @param {Grid} grid 대상 Grid Component
+ * @param {number} freezingCol 열 고정 인덱스 (-1 : 미적용)
+ * @param {number} freezingRow 행 고정 인덱스 (-1 : 미적용)
+ */
+this.setGridFreezing = function(grid, freezingCol, freezingRow)
+{		
+	// 처리 중 드로잉, 이벤트 발생 중지
+	grid.set_enableredraw(false);
+	grid.set_enableevent(false);
+	
+	// 고정 초기화
+	this.clearGridFreezingColumn(grid);
+	this.clearGridFreezingRow(grid);
+
+	if ( freezingCol > -1 )
+	{
+		this.setGridFreezingColumn(grid, freezingCol);
+	}
+	
+	var frozenRowGrid = Eco.XComp.getUserProperty(grid, "frozenRowGrid");
+	
+	if ( freezingRow > -1 )
+	{
+		Eco.XComp.setUserProperty(frozenRowGrid, "prevStartFreezingRow", Eco.XComp.getUserProperty(frozenRowGrid, "startFreezingRow"));
+		this.setGridFreezingRow(grid, freezingRow);
+	}
+	else
+	{
+		Eco.XComp.setUserProperty(frozenRowGrid, "startFreezingRow", null);
+		Eco.XComp.setUserProperty(frozenRowGrid, "prevStartFreezingRow", null);
+	}
+
+	// 현재 고정 값 지정
+	Eco.XComp.setUserProperty(grid, "freezingCol", freezingCol);
+	Eco.XComp.setUserProperty(grid, "freezingRow", freezingRow);
+	
+	// 기능 처리 중 드로잉, 이벤트 발생 중지 해제	
+	grid.set_enableevent(true);
+	grid.set_enableredraw(true);
+}
+
+/**
+ * 열 고정 제거
+ * @param {Grid} grid 대상 Grid Component
+ */
+this.clearGridFreezingColumn = function(grid)
+{
+	// band
+	var freezingCol = Eco.XComp.getUserProperty(grid, "freezingCol");	
+	for (var i=freezingCol; i>=0; i--)
+	{
+		grid.setFormatColProperty(i, "band", "body");
+	}
+	
+	// background
+	var cacheGridFreezingColCellBg = Eco.XComp.getUserProperty(grid, "cacheGridFreezingColCellBg");
+	if ( !Eco.isEmpty(cacheGridFreezingColCellBg) )
+	{
+		var bg;
+		for (var i=0,len=cacheGridFreezingColCellBg.length; i<len; i++)
+		{
+			bg = cacheGridFreezingColCellBg[i];
+			grid.setCellProperty("body", bg.cell, "background", bg.background);
+			grid.setCellProperty("body", bg.cell, "background2", bg.background2);
+		}
+		
+		Eco.XComp.setUserProperty(grid, "cacheGridFreezingColCellBg", []);
+	}
+	
+	// line
+	var gridFreezingColLineComp = Eco.XComp.getUserProperty(grid, "gridFreezingColLineComp");
+	if ( !Eco.isEmpty(gridFreezingColLineComp) )
+	{
+		gridFreezingColLineComp.set_visible(false);
+		grid.set_cellmovingtype('col');
+		grid.set_cellsizingtype('both');
+	}
+}
+
+/**
+ * 행 고정 제거
+ * @param {Grid} grid 대상 Grid Component
+ */
+this.clearGridFreezingRow = function(grid)
+{
+	var frozenRowGrid = Eco.XComp.getUserProperty(grid, "frozenRowGrid");
+	if ( !Eco.isUndefined(frozenRowGrid) )
+	{
+		frozenRowGrid.set_visible(false);
+		
+		// band
+		var freezingCol = Eco.XComp.getUserProperty(grid, "freezingCol");	
+		for (var i=freezingCol; i>=0; i--)
+		{
+			grid.setFormatColProperty(i, "band", "body");
+		}
+		
+		// background comp
+		var frozenRowGridBg = Eco.XComp.getUserProperty(frozenRowGrid, "frozenRowGridBg");
+		frozenRowGridBg.set_visible(false);		
+		grid.set_cellmovingtype('col');
+		grid.set_cellsizingtype('both');
+	}
+}
+
+/**
+ * 열 고정
+ * @param {Grid} grid 대상 Grid Component
+ * @param {number} freezingCol 열 고정 인덱스
+ */
+this.setGridFreezingColumn = function(grid, freezingCol)
+{		
+	// 선택한 col index를 지정하면 이전 index 는 자동으로 지정됨
+	grid.setFormatColProperty(freezingCol, "band", "left");
+
+	// background
+	var bgColor = this.GRID_FREEZING_BACKGROUND_COLOR;
+	if ( !Eco.isEmpty(bgColor) )
+	{	
+		// 고정 취소시 원복할 background를 담고 있을 속성 추가
+		var cacheGridFreezingColCellBg = Eco.XComp.getUserProperty(grid, "cacheGridFreezingColCellBg");
+		if ( Eco.isUndefined(cacheGridFreezingColCellBg) )
+		{
+			cacheGridFreezingColCellBg = [];
+			Eco.XComp.setUserProperty(grid, "cacheGridFreezingColCellBg", cacheGridFreezingColCellBg);
+		}
+		
+		var cell, col, colspan, bg;
+		for (var i=0,len=grid.getCellCount("body"); i<len; i++)
+		{
+			col = grid.getCellProperty("body", i, "col");
+			colspan = grid.getCellProperty("body", i, "colspan");
+			
+			if ( (col + colspan -1) <= freezingCol )
+			{
+				cell = this.getGridCellObject(grid, "body", i);
+				bg = {
+					'col': col,
+					'cell': i,
+					'background': (cell.style.background ? cell.style.background._value : ""),
+					'background2': (cell.style.background2 ? cell.style.background2._value : "")
+				};
+				cacheGridFreezingColCellBg.push(bg);
+				
+				grid.setCellProperty("body", i, "background", bgColor);
+				grid.setCellProperty("body", i, "background2", bgColor);				
+			}
+		}
+	}
+	
+	// 열 고정 라인 표시를 위한 컴포넌트
+	var lineStyle = this.GRID_FREEZING_LINE_STYLE;
+	if ( !Eco.isEmpty(lineStyle) )
+	{
+		var comp = Eco.XComp.getUserProperty(grid, "gridFreezingColLineComp");
+		if ( Eco.isUndefined(comp) )
+		{
+			comp = new Static();
+			
+			var name = Eco.getUniqueId("gridFreezingColLine");
+			comp.init(name, "absolute", 0, 0, 1, 1);
+			comp.set_transparenthittest(true);
+			comp.style.set_bordertype("normal");
+			comp.style.set_border_left(lineStyle);			
+			comp.set_visible(false);
+			grid.parent.addChild(name, comp);
+			comp.bringToPrev(grid);
+			comp.show();
+			
+			Eco.XComp.setUserProperty(grid, "gridFreezingColLineComp", comp);
+		}
+		
+		this.arrangeGridFreezingColumn(grid, freezingCol);
+	}
+	
+	grid.set_cellmovingtype('none');
+	grid.set_cellsizingtype('none');
+}
+
+/**
+ * 행 고정
+ * @param {Grid} grid 대상 Grid Component
+ * @param {number} freezingRow 행 고정 인덱스
+ */
+this.setGridFreezingRow = function(grid, freezingRow)
+{
+	var frozenRowGrid = this.getFrozenRowGrid(grid);
+	
+	frozenRowGrid.set_enableevent(false);
+	frozenRowGrid.set_binddataset("");
+
+	// 원본 데이터 복사
+	var frozenRowDs = Eco.XComp.getUserProperty(frozenRowGrid, "bindDataset");
+	var sourceDs = Eco.XComp.lookup(grid.parent, grid.binddataset);	
+	frozenRowDs.set_enableevent(false);
+	frozenRowDs.assign(sourceDs);
+	frozenRowDs.set_enableevent(true);
+	
+	// 원본 그리드 속성을 행고정 그리드에 복사
+	this.copyGridFreezingProps(grid, frozenRowGrid);	
+
+	// 고정 시작행 지정
+	var startFreezingRow = Eco.XComp.getUserProperty(frozenRowGrid, "startFreezingRow");
+	if ( Eco.isEmpty(startFreezingRow) )
+	{
+		startFreezingRow = 0;
+		if ( grid.vscrollbar && grid.vscrollbar.visible )
+		{		
+			startFreezingRow = grid.vscrollbar.pos;			
+			if ( grid.vscrollbar.pos == grid.vscrollbar.max )
+			{
+				startFreezingRow -= 1;
+			}
+			if ( freezingRow < startFreezingRow )
+			{
+				startFreezingRow = grid.vscrollbar.pos;
+			}
+		}
+	}
+	else
+	{
+		if ( grid.vscrollbar && grid.vscrollbar.visible )
+		{
+			if ( startFreezingRow != grid.vscrollbar.pos )
+			{
+				startFreezingRow = grid.vscrollbar.pos;
+			}
+		}
+	}
+	
+	// 이미 행고정 상태에서 행고정된 영역 내에서 다시 행고정 할 경우
+	var prevStartFreezingRow = Eco.XComp.getUserProperty(frozenRowGrid, "prevStartFreezingRow");
+	if ( !Eco.isEmpty(prevStartFreezingRow) )
+	{
+		if ( Eco.XComp.getUserProperty(grid, "freezingRow") >= freezingRow )
+		{
+			startFreezingRow = prevStartFreezingRow;
+		}
+	}
+
+	Eco.XComp.setUserProperty(frozenRowGrid, "startFreezingRow", startFreezingRow);
+		
+	// 행고정 그리드에 대상 그리드의 포맷 지정
+	frozenRowGrid.set_formats("<Formats>" + grid.getCurFormatString() + "</Formats>");
+		
+	// 행고정 그리드 head, summ 제거
+	var cnt = frozenRowGrid.getFormatRowCount();
+	var band;
+	for (var i=(cnt-1); i>=0; i--)
+	{
+		band = frozenRowGrid.getFormatRowProperty(i, "band");
+		if ( band == "head" )
+		{
+			frozenRowGrid.deleteContentsRow(-1, 0);
+		}
+		else if ( band == "summ" )
+		{
+			frozenRowGrid.deleteContentsRow(-2, 0);
+		}
+	}
+	
+	// 행고정 그리드 배경색 지정
+	var bgColor = this.GRID_FREEZING_BACKGROUND_COLOR;
+	if ( !Eco.isEmpty(bgColor) )
+	{	
+		for (var i=0,len=frozenRowGrid.getCellCount("body"); i<len; i++)
+		{
+			frozenRowGrid.setCellProperty("body", i, "background", bgColor);
+			frozenRowGrid.setCellProperty("body", i, "background2", bgColor);
+		}
+	}
+	
+	// 컬럼 사이즈를 변경했으면 format 값 사이즈와 다르므로 맞춘다.
+	var colCnt = grid.getFormatColCount();
+
+	for(var i=0; i<colCnt; i++)
+	{
+		//frozenRowGrid.setFormatColProperty(i, "size", grid.getFormatColSize(i) );
+		frozenRowGrid.setFormatColProperty(i, "size", grid.getRealColSize(i) );
+	}
+	
+	// 포커스를 잃으면 cell pos 가 달라지므로 미리 값 확보
+	var curCellPos = grid.getCellPos();
+
+	// 그리드 시작 위치 지정 ( 스크롤 조정 후 스크롤 제거)	
+	frozenRowGrid.set_scrollbars("autoboth");
+
+	// 데이터셋 바인딩
+	frozenRowGrid.set_binddataset(frozenRowDs.name);	
+	frozenRowDs.set_enableevent(false);
+	frozenRowDs.set_rowposition(freezingRow);
+	frozenRowDs.set_enableevent(true);
+	grid.set_cellmovingtype('none');
+	grid.set_cellsizingtype('none');
+	// 행고정 그리드 배치
+	this.arrangeGridFreezingRow(grid, freezingRow);	
+	
+	if ( frozenRowGrid.hscrollbar )
+	{
+		frozenRowGrid.hscrollbar.set_pos(frozenRowGrid.hscrollbar.max);
+		frozenRowGrid.hscrollbar.set_pos(grid.hscrollbar.pos);
+	}	
+		
+	if ( frozenRowGrid.vscrollbar )
+	{
+		frozenRowGrid.vscrollbar.set_pos(frozenRowGrid.vscrollbar.max);
+		frozenRowGrid.vscrollbar.set_pos(startFreezingRow);
+	}
+	
+	frozenRowGrid.set_scrollbars("none");	
+		
+ 	frozenRowGrid.setFocus();
+ 	frozenRowGrid.setCellPos(curCellPos);
+ 	frozenRowGrid.set_enableevent(true);
+}
+
+/**
+ * 행 고정 표시 그리드 반환
+ * @param {Grid} grid 대상 Grid Component
+ * @return {Grid} 행 고정 그리드
+ */
+this.getFrozenRowGrid = function(grid)
+{
+	// 행 고정용 그리드 추가 및 반환
+	var frozenRowGrid = Eco.XComp.getUserProperty(grid, "frozenRowGrid");	
+	
+	if ( Eco.isEmpty(frozenRowGrid) )
+	{
+		var form = grid.parent;
+		
+		// 행 고정용 그리드 생성
+		var name = Eco.getUniqueId("grd_freezing");
+		frozenRowGrid = new Grid();
+		frozenRowGrid.init(name, "absolute", 0, 0, 1, 1);
+		frozenRowGrid.set_visible(false);
+		frozenRowGrid.set_scrollbars("none");
+		frozenRowGrid.set_wheelscrollrow(0);	
+		form.addChild(name, frozenRowGrid);
+		frozenRowGrid.show();
+
+		// col line 표시용 Static 보다 아래로
+		var lineComp = Eco.XComp.getUserProperty(grid, "gridFreezingColLineComp");
+		if ( !Eco.isEmpty(lineComp) )
+		{
+			frozenRowGrid.moveToNext(lineComp);
+		}		
+		
+		// 행 고정 그리드용 데이터셋 추가
+		var ds = new Dataset;
+		ds.set_name(Eco.getUniqueId("ds_freezing"));
+		form.addChild(ds.name, ds);		
+
+		// 참조 속성 추가
+		Eco.XComp.setUserProperty(grid, "frozenRowGrid", frozenRowGrid);
+		Eco.XComp.setUserProperty(frozenRowGrid, "bindDataset", ds);
+		Eco.XComp.setUserProperty(frozenRowGrid, "sourceGrid", grid);
+								
+		Eco.XComp.setUserProperty(ds, "frozenRowGrid", frozenRowGrid);
+		Eco.XComp.setUserProperty(ds, "sourceGrid", grid);
+		Eco.XComp.setUserProperty(ds, "sourceDataset", Eco.XComp.lookup(form, grid.binddataset));
+
+		// 행고정 그리드 데이터 행 이동 컨트롤
+		ds.addEventHandler("canrowposchange", function(obj, e){
+			
+			if ( e.oldrow > e.newrow )
+			{
+				// 고정 시작 행 보다 위로 가지 않도록 막기
+				var frozenRowGrid = Eco.XComp.getUserProperty(obj, "frozenRowGrid");
+				var startFreezingRow = Eco.XComp.getUserProperty(frozenRowGrid, "startFreezingRow");
+				if ( e.newrow < startFreezingRow )
+				{
+					return false;
+				}
+			}
+			else
+			{
+				// 고정 행 보다 아래로 갈 경우 원본 그리드의 항목이 보이도록 
+				// 처리하고 더 이상 내려가지 않도록 막는다.
+				if ( e.oldrow < e.newrow )
+				{					
+					var sourceGrid = Eco.XComp.getUserProperty(obj, "sourceGrid");
+					var freezingRow = Eco.XComp.getUserProperty(sourceGrid, "freezingRow");
+					
+					if ( e.newrow > freezingRow )
+					{
+						var sourceDataset = Eco.XComp.getUserProperty(obj, "sourceDataset");
+						sourceDataset.set_rowposition(e.newrow);
+						if ( sourceGrid.vscrollbar )
+						{
+							var frozenRowGrid = Eco.XComp.getUserProperty(obj, "frozenRowGrid");
+							var startFreezingRow = Eco.XComp.getUserProperty(frozenRowGrid, "startFreezingRow");
+							var cnt = freezingRow - startFreezingRow + 1;						
+							var pos = sourceDataset.rowposition - cnt;
+							sourceGrid.vscrollbar.set_pos(pos);
+						}
+						
+						sourceGrid.setCellPos(frozenRowGrid.getCellPos());
+						sourceGrid.setFocus();
+
+						return false;
+					}
+				}
+			}
+			
+		}, this);
+		
+		// 데이터 변경시 원본 데이터 변경
+		ds.addEventHandler("onvaluechanged", function(obj, e){
+			if ( e.col > -1 && e.row > -1 )
+			{
+				var sourceDataset = Eco.XComp.getUserProperty(obj, "sourceDataset");
+				sourceDataset.setColumn(e.row, e.col, e.newvalue);
+			}
+		}, this);
+				
+		var sourceDataset = Eco.XComp.lookup(grid.parent, grid.binddataset);
+		Eco.XComp.setUserProperty(sourceDataset, "grid", grid);
+		
+		// 고정 그리드에 의해 대상 그리드 행이 가려진 경우 숨겨진 행을 보이도록 처리
+		sourceDataset.addEventHandler("onrowposchanged", function(obj,e) {			
+			if ( e.oldrow > e.newrow )
+			{
+				var grid = Eco.XComp.getUserProperty(obj, "grid");
+				var frozenRowGrid = Eco.XComp.getUserProperty(grid, "frozenRowGrid");
+				if ( frozenRowGrid && frozenRowGrid.visible )
+				{
+					if ( grid.vscrollbar && grid.vscrollbar.visible )
+					{
+						var freezingRow = Eco.XComp.getUserProperty(grid, "freezingRow");
+						var startFreezingRow = Eco.XComp.getUserProperty(frozenRowGrid, "startFreezingRow");
+						var cnt = freezingRow - startFreezingRow + 1;
+
+						if ( e.newrow - cnt < grid.vscrollbar.pos )
+						{
+							grid.vscrollbar.set_pos(grid.vscrollbar.pos-1);
+						}
+					}
+				}
+			}
+		}, this);
+				
+		// 행고정 그리드에 휠스크롤 발생 시 원본 그리드 vscrollbar 조정
+		frozenRowGrid.addEventHandler("onmousewheel", function(obj, e) {
+			var sourceGrid = Eco.XComp.getUserProperty(obj, "sourceGrid");
+			var pos;
+			if ( e.amount < 0 )
+			{
+				// down
+				pos = sourceGrid.vscrollbar.pos + sourceGrid.wheelscrollrow;
+			}
+			else
+			{
+				// up
+				pos = sourceGrid.vscrollbar.pos - sourceGrid.wheelscrollrow;
+			}
+			sourceGrid.vscrollbar.set_pos(pos);
+		}, this);		
+								
+		// 행고정 그리드의 선택 영역이 변경된 경우 대상 그리드와 가로 스크롤 포지션을 맞춘다.
+		frozenRowGrid.addEventHandler("onselectchanged", function(obj, e) {
+			if ( e.cell > -1 )
+			{
+				if ( Eco.XComp.getUserProperty(obj, "skip_onselectchanged") ) return;
+				
+				var sourceGrid = Eco.XComp.getUserProperty(obj, "sourceGrid");
+				if ( sourceGrid && sourceGrid.visible ) 
+				{
+					// 행고정 그리드의 스크롤바를 없애기 때문에 hscroll 변경을 못함.
+					// 대상 그리드의 cell pos 를 변경하여 대상 그리드의 
+					// onhscroll 을 발생시켜 행고정 그리드의 스크롤 조정
+					// (set_enableevent 를 사용하면 안됨)
+					Eco.XComp.setUserProperty(sourceGrid, "skip_onselectchanged", true);
+					
+					// 행고정 후 원보 그리드의 세로스크롤을 이동한 경우 setCellPos 를 실행하면
+					// 스크롤이 최초 위치로 이동하므로 다시 원래대로 맞춘다.
+					var vScrollPos;
+					if ( sourceGrid.vscrollbar )
+					{
+						vScrollPos = sourceGrid.vscrollbar.pos;
+					}
+					
+					sourceGrid.setCellPos(obj.getCellPos());
+					
+					if ( Eco.isNumber(vScrollPos) )
+					{
+						sourceGrid.vscrollbar.set_pos(vScrollPos);
+					}
+					
+					Eco.XComp.setUserProperty(sourceGrid, "skip_onselectchanged", false);
+				}
+			}
+		}, this);
+		
+		// 방향키, 셀클릭 등으로 행고정 그리드 영역에 갈 경우 포커스 이동			
+		grid.addEventHandler("onselectchanged", function(obj, e) {
+			if ( e.cell > -1 )
+			{
+				if ( Eco.XComp.getUserProperty(obj, "skip_onselectchanged") ) return;
+				
+				var frozenRowGrid = Eco.XComp.getUserProperty(obj, "frozenRowGrid");
+				if ( frozenRowGrid && frozenRowGrid.visible ) 
+				{
+					var topForm = Eco.XComp.getTopLevelForm(obj.parent);
+					var focused = topForm.getFocus();
+					if ( focused && ( focused.name == obj.name ) )
+					{
+						var freezingRow = Eco.XComp.getUserProperty(obj, "freezingRow");
+						if ( e.row <= freezingRow )
+						{
+							var ds = Eco.XComp.getUserProperty(frozenRowGrid, "bindDataset");
+							ds.set_rowposition(freezingRow);
+							frozenRowGrid.setFocus();
+						}
+					}
+					
+					Eco.XComp.setUserProperty(frozenRowGrid, "skip_onselectchanged", true);
+					frozenRowGrid.setCellPos(obj.currentcell);
+					Eco.XComp.setUserProperty(frozenRowGrid, "skip_onselectchanged", false);
+				}
+			}
+		}, this);
+		
+		// 행고정 그리드에 가로스크롤 발생 시 원본 그리드의 가로스크롤 조정
+		frozenRowGrid.addEventHandler("onhscroll", function(obj, e) {
+			var sourceGrid = Eco.XComp.getUserProperty(obj, "sourceGrid");
+			if ( sourceGrid && sourceGrid.visible ) 
+			{
+				sourceGrid.set_enableevent(false);
+				sourceGrid.hscrollbar.set_pos(e.pos);
+				sourceGrid.set_enableevent(true);
+			}
+		}, this);
+		
+		// 원본 그리드에 가로스크롤 발생 시 행고정 그리드의 가로스크롤 조정
+		grid.addEventHandler("onhscroll", function(obj, e) {
+			var frozenRowGrid = Eco.XComp.getUserProperty(obj, "frozenRowGrid");
+			if ( frozenRowGrid && frozenRowGrid.visible ) 
+			{
+				frozenRowGrid.set_scrollbars("autoboth");
+				frozenRowGrid.set_enableevent(false);
+				frozenRowGrid.hscrollbar.set_pos(e.pos);
+				frozenRowGrid.set_enableevent(true);
+				frozenRowGrid.set_scrollbars("none");	
+			}
+		}, this);
+		
+		// 원본 그리드에 세로스크롤 발생 시 행고정 시작지점까지만 스크롤 가능하게
+		grid.addEventHandler("onvscroll", function(obj, e) {
+			var frozenRowGrid = Eco.XComp.getUserProperty(obj, "frozenRowGrid");
+			if ( frozenRowGrid && frozenRowGrid.visible )
+			{
+				var startFreezingRow = Eco.XComp.getUserProperty(frozenRowGrid, "startFreezingRow");
+				if ( e.pos < startFreezingRow )
+				{
+					obj.vscrollbar.set_pos(startFreezingRow);
+				}
+			}
+		}, this);		
+							
+		// 행고정 그리드 선택 시 선택 반전
+		frozenRowGrid.addEventHandler("onsetfocus", function(obj, e) {
+			obj.set_useselcolor(true);
+			var sourceGrid = Eco.XComp.getUserProperty(obj, "sourceGrid");
+			sourceGrid.set_useselcolor(false);
+		}, this);
+		
+		// 원본 그리드 선택 시 선택 반전
+		grid.addEventHandler("onsetfocus", function(obj, e) {			
+			var frozenRowGrid = Eco.XComp.getUserProperty(obj, "frozenRowGrid");
+			if ( frozenRowGrid )
+			{
+				obj.set_useselcolor(true);
+				frozenRowGrid.set_useselcolor(false);
+			}
+		}, this);
+		
+		// 행 고정용 그리드와 원본 그리드 사이에 백그라운드용 컴포는터 생성
+		// 행 고정용 그리드가 입력 상태가 될 때 transparent 되어 원본 그리드가 보이는 것을 방지
+		name = Eco.getUniqueId("sta_freezing");
+		
+		var frozenRowGridBg = new Static();
+		frozenRowGridBg.init(name, "absolute", 0, 0, 1, 1);
+		frozenRowGridBg.set_visible(false);
+
+		var bgColor = this.GRID_FREEZING_BACKGROUND_COLOR;
+		bgColor = Eco.isEmpty(bgColor) ? "#ffffff" : bgColor;
+		
+		frozenRowGridBg.style.set_background(bgColor);
+		frozenRowGridBg.style.set_border("0px none #ffffff");
+		form.addChild(name, frozenRowGridBg);		
+		frozenRowGridBg.show();
+		//frozenRowGridBg.moveToNext(frozenRowGrid);
+		
+		Eco.XComp.setUserProperty(frozenRowGrid, "frozenRowGridBg", frozenRowGridBg);
+	}
+	
+	return frozenRowGrid;
+}
+
+
+/**
+ * 원본 그리드의 속성을 행고정 그리드에 적용
+ * @param {Grid} grid 원본 Grid Component
+ * @param {Grid} frozenRowGrid 행고정 Grid Component
+ */
+this.copyGridFreezingProps = function(grid, frozenRowGrid)
+{
+	// 대상 속성 목록 ( 원본 그리드의 속성중 고정 처리에 영향이 없는 속성만 적용 )
+	var copyProps = ["cssclass", "taborder", "tabstop", "readonly", "autoenter", 
+					 "autoupdatetype", "selecttype", "autofittype", "autosizingtype", 
+					 "autosizebandtype", "selectchangetype", "useselcolor", "suppresslevel",
+	                 "cellclickbound", "selectscrollmode", "tooltiptext"];
+	
+	var prop, val;
+	for (var i=0,len=copyProps.length; i<len; i++)
+	{
+		prop = copyProps[i];
+		
+		if ( Eco.isFunction(frozenRowGrid["set_"+prop]) )
+		{
+			val = grid[prop];
+			
+			if ( Eco.isPrimitive(val) )
+			{
+				frozenRowGrid["set_"+prop](val);
+			}
+			else
+			{
+				// 위에 선언된 속성에는 없는 것으로 확인 (속성 추가 시 확인 필요)
+			}
+		}
+	}
+	
+	// style 지정
+	var style = Eco.XComp.Style.getCurrentStyle(grid);
+	
+	Eco.XComp.Style.setStyle(frozenRowGrid, style);
+	
+	// border
+	frozenRowGrid.style.set_bordertype("normal");
+	frozenRowGrid.style.set_border("0px none #ffffffff");
+	if ( !Eco.isEmpty(this.GRID_FREEZING_LINE_STYLE) )
+	{
+		frozenRowGrid.style.set_border_bottom(this.GRID_FREEZING_LINE_STYLE);
+	}
+}
+
+/**
+ * 열 고정 표시 위치 조정
+ * @param {Grid} grid 대상 Grid Component
+ * @param {number} freezingCol 열 고정 인덱스
+ */
+this.arrangeGridFreezingColumn = function(grid, freezingCol)
+{
+	var lineComp = Eco.XComp.getUserProperty(grid, "gridFreezingColLineComp");		
+	if ( !Eco.isEmpty(lineComp) )
+	{
+		var right = 0;
+		for (var i=0,len=grid.getFormatColCount(); i<len; i++)
+		{
+			if ( i <= freezingCol )
+			{
+				right += grid.getRealColSize(i);
+			}
+		}
+		
+		// 그리드 영역안에 고정열이 보여질 때 라인 표시
+		if ( right > 0 && right < grid.getOffsetRight() )
+		{			
+			var borderWidth = Eco.XComp.Style.getBorderWidth(lineComp);			
+			var lineWidth = borderWidth[0];
+
+			var l = grid.getOffsetLeft() + right;
+			var t = grid.getOffsetTop();
+			var w = lineWidth;
+			if(this.gfn_isNull(grid.hscrollbar)){
+				var h = grid.getOffsetHeight();
+			}else{
+				var h = grid.getOffsetHeight() - grid.hscrollbar.getOffsetHeight();
+			}
+			
+			lineComp.move(l, t, w, h);
+			lineComp.set_visible(true);
+		}
+		else
+		{
+			lineComp.set_visible(false);
+		}
+	}
+}
+
+/**
+ * 행고정 그리드 위치 조정
+ * @param {Grid} grid 대상 Grid Component
+ * @param {number} freezingRow 행 고정 인덱스
+ */
+this.arrangeGridFreezingRow = function(grid, freezingRow)
+{
+	var frozenRowGrid = Eco.XComp.getUserProperty(grid, "frozenRowGrid");
+	if ( !Eco.isEmpty(frozenRowGrid) )
+	{
+		// 행고정 시작 row
+		var startFreezingRow = Eco.XComp.getUserProperty(frozenRowGrid, "startFreezingRow");
+		
+		// body row size
+		var bodyRowSize = 0;
+		for (var i=startFreezingRow; i<=freezingRow; i++)
+		{
+			bodyRowSize += grid.getRealRowSize(i);
+		}
+		
+		var headRowSize = grid.getRealRowFullSize("head");
+		
+		var l = grid.getOffsetLeft();	
+		var t = grid.getOffsetTop() + headRowSize;		
+		var w = grid.getOffsetWidth();
+		var h = bodyRowSize;
+				
+		if ( grid.vscrollbar )
+		{
+			w -= grid.vscrollbar.getOffsetWidth();
+		}
+
+		var borderWidth = Eco.XComp.Style.getBorderWidth(grid);		
+		if ( !Eco.isEmpty(borderWidth) )
+		{
+			l += borderWidth[0];
+			t += borderWidth[1];
+			w -= borderWidth[0] + borderWidth[2];
+		}
+		
+		frozenRowGrid.move(l, t, w, h);	
+		frozenRowGrid.set_visible(true);
+				
+		var frozenRowGridBg = Eco.XComp.getUserProperty(frozenRowGrid, "frozenRowGridBg");
+		frozenRowGridBg.move(l, t, w, h);
+		frozenRowGridBg.set_visible(true);
+		frozenRowGridBg.moveToNext(frozenRowGrid);
+	}
+}
+
+/**
+ * 대상 그리드에 적용된 행,열 고정 표시를 재배치
+ * @param {Grid} grid 대상 Grid Component
+ */
+this.arrangeGridFreezing = function(grid)
+{
+	var freezingCol = Eco.XComp.getUserProperty(grid, "freezingCol");	
+	if ( freezingCol > -1 )
+	{	
+		this.arrangeGridFreezingColumn(grid, freezingCol);
+	}
+	
+	var freezingRow = Eco.XComp.getUserProperty(grid, "freezingRow");	
+	if ( freezingRow > -1 )
+	{	
+		this.arrangeGridFreezingRow(grid, freezingRow);
+	}
+}
+
+/**
+ * 대상 그리드의 컬럼 사이즈 변경이 필요한 경우 이 함수를 통해 호출
+ * @param {Grid} grid 대상 Grid Component
+ * @param {number} col 대상 Grid 컬럼 index
+ * @param {number} size 변경 사이즈
+ */
+this.setGridFreezingColSize = function(grid, col, size)
+{
+	// 포맷 사이즈를 변경하지 않으면 밴드 조정시 
+	// 원래 포맷사이즈가 지정되어 사용자가 변경한 사이즈가 변한다.
+	grid.setFormatColProperty(col, "size", size);
+	
+	var frozenRowGrid = Eco.XComp.getUserProperty(grid, "frozenRowGrid");
+	if ( frozenRowGrid && frozenRowGrid.visible )
+	{
+		frozenRowGrid.setFormatColProperty(col, "size", size);
+	}
+}
+
+/**
+ * 대상 그리드의 셀을 이동 시킬 경우 이 함수를 통해 호출
+ * @param {Grid} grid 대상 Grid Component
+ * @param {number} oldcol 변경 전 컬럼 index
+ * @param {number} newcol 변경 후 컬럼 index
+ */
+this.setGridFreezingMoving = function(grid, fromcol, tocol)
+{
+	var freezingCol = Eco.XComp.getUserProperty(grid, "freezingCol");
+	var freezingRow = Eco.XComp.getUserProperty(grid, "freezingRow");
+	
+	if ( fromcol <= freezingCol && tocol > freezingCol )
+	{
+		// 고정 칼럼을 비고정 칼럼으로 이동할 경우
+		freezingCol = freezingCol - 1;
+		
+		// bg 복원
+		var cacheGridFreezingColCellBg = Eco.XComp.getUserProperty(grid, "cacheGridFreezingColCellBg");
+		if ( !Eco.isEmpty(cacheGridFreezingColCellBg) )
+		{
+			var bg;
+			var col;
+			var cellCount = grid.getCellCount("body");
+			for (var i=0,len=cacheGridFreezingColCellBg.length; i<len; i++)
+			{
+				bg = cacheGridFreezingColCellBg[i];
+				if ( bg.col == fromcol )
+				{
+					// 이동된 col 에 해당하는 bg를 원복시키자.
+					for (var c=0; c<cellCount; c++)
+					{							
+						col = grid.getCellProperty("body", c, "col");
+						if ( col == tocol )
+						{
+							grid.setCellProperty("body", c, "background", bg.background);
+							grid.setCellProperty("body", c, "background2", bg.background2);									
+						}
+					}
+				}						
+			}
+		}
+	}
+	else if ( fromcol > freezingCol && tocol <= freezingCol )
+	{
+		// 비고정 칼럼을 고정 칼럼으로 이동할 경우
+		freezingCol = freezingCol + 1;
+	}
+	
+	if ( freezingCol > -1 || freezingRow > -1 )
+	{
+		this.setGridFreezing(grid, freezingCol, freezingRow);
+		
+		// 셀 무빙이 발생한 루틴안에 그리드의 포맷을 변경하면
+		// 내부 속성 참조 오류로 인해 에러가 발생한다.
+		// 포맷이 바뀔 때 드로잉을 다시 하므로 그리드 내부 작업을 해제한다.
+		grid._recreate_contents_proc = [];		
+	}
+}
+
+/******************************************************************************
+	4. Grid Utility function
+******************************************************************************/
+
+/**
+ * Cell object 를 반환 (Grid 내부 속성이므로 get 용도로만 사용)
+ * @param {Grid} grid 대상 Grid Component
+ * @param {string} band 얻고자 하는 cell 의 band (head/body/summ);
+ * @param {number} index 얻고자 하는 cell 의 index
+ * @return {object} cell object
+ */
+this.getGridCellObject = function(grid, band, index)
+{
+	// 내부속성을 통해 얻어온다.
+	var refCell;
+	var format = grid._curFormat;
+	if (format)
+	{
+		if ( band == "head" )
+		{
+			refCell = format._headcells[index];
+		}
+		else if ( band == "body" )
+		{
+			refCell = format._bodycells[index];
+		}
+		else if ( band == "summ" || band == "summary" )
+		{
+			refCell = format._summcells[index];
+		}
+	}
+	
+	return refCell;
+}
+
+/**
+ * column resize 가 완료되었을 때 주어진 함수를 호출한다.<br>
+ * (Column resize 이벤트가 없으므로 내부속성을 이용하여 확인한다.)
+ * @param {Grid} grid 대상 Grid Component
+ * @param {function} func resize가 발생했을 때 호출할 함수 (호출시 넘겨줄 인자 object는 {col, oldvalue, newvalue} )
+ * @param {scope=} scope 함수 내부에서 this 로 사용할 scope (인자 값이 없다면 grid parent)
+ */
+this.setUserGridOnColResized = function(grid, func, scope)
+{	
+	// check grid argument
+	if ( Eco.isEmpty(grid) || Eco.XComp.typeOf(grid) != "Grid" )
+	{
+		var msg = {
+			'message': "1'st argument must be a Grid Component",
+			'stack' : true
+		};
+		Eco.Logger.error(msg);
+	}
+	
+	// check func argument
+	if ( Eco.isEmpty(func) || !Eco.isFunction(func) )
+	{
+		var msg = {
+			'message': "2'nd argument must be a Function",
+			'stack' : true
+		};
+		Eco.Logger.error(msg);
+	}
+	
+	// check scope argument
+	if ( Eco.isEmpty(scope) )
+	{
+		scope = grid.parent;
+	}
+	
+	grid.__setUserGridOnColResizedFunc = {"func":func, "scope":scope};
+	
+	grid._applyColSizing = this.overriding_Grid_applyColSizing;
+	
+	// 본 함수가 호출되기 전에 resize element 가 생성되어 있을 경우 
+	// resizer 콜백함수로 Grid._applyColSizing 가 지정되어 있으므로 변경한다.	
+	if ( grid._resizer_elem )
+	{
+		grid._resizer_elem._setCallbackFn(this.overriding_Grid_applyColSizing);
+	}
+}
+
+/**
+ * Grid 컴포넌트의 내부 메소드인 _applyColSizing 를 재정의한 함수.
+ */
+this.overriding_Grid_applyColSizing = function(movepos, idx)
+{	
+	// this ==> Grid
+	var col = this.getCellProperty("head", idx, "col");
+	var colspan = this.getCellProperty("head", idx, "colspan");
+	
+	col = col + colspan - 1;
+	
+	var oldvalue = this.getRealColSize(col);
+	
+	// Grid prototype 의 메소드를 호출하여 원래 기능을 수행한다.
+	nexacro.Grid.prototype._applyColSizing.call(this, movepos, idx);
+
+	var newvalue = this.getRealColSize(col);
+
+	var funcInfo = this.__setUserGridOnColResizedFunc;
+	var func = funcInfo.func;
+	var scope = funcInfo.scope;
+	
+	var colSizeInfo = {'col': col, 
+					    'oldvalue': oldvalue,
+					    'newvalue': newvalue};
+	
+	func.call(scope, this, colSizeInfo);
+}
+
+/**
+ * cell move 가 발생할 때 주어진 함수를 호출한다.<br>
+ * (cell moving 이벤트가 없으므로 내부속성을 이용하여 확인한다.)
+ * @param {Grid} grid 대상 Grid Component
+ * @param {function} func moving이 발생했을 때 호출할 함수 (호출시 넘겨줄 인자 object는 {fromcol, fromidx, tocol} )
+ * @param {scope=} scope 함수 내부에서 this 로 사용할 scope (인자 값이 없다면 grid parent)
+ */
+this.setUserGridOnCellMoved = function(grid, func, scope)
+{
+	// check grid argument
+	if ( Eco.isEmpty(grid) || Eco.XComp.typeOf(grid) != "Grid" )
+	{
+		var msg = {
+			'message': "1'st argument must be a Grid Component",
+			'stack' : true
+		};
+		Eco.Logger.error(msg);
+	}
+	
+	// check func argument
+	if ( Eco.isEmpty(func) || !Eco.isFunction(func) )
+	{
+		var msg = {
+			'message': "2'nd argument must be a Function",
+			'stack' : true
+		};
+		Eco.Logger.error(msg);
+	}
+	
+	// check scope argument
+	if ( Eco.isEmpty(scope) )
+	{
+		scope = grid.parent;
+	}
+	
+	grid.__setUserGridOnCellMovedFunc = {"func":func, "scope":scope};
+	
+	grid.on_fire_user_ondrop = this.overriding_Grid_on_fire_user_ondrop;
+}
+
+/**
+ * Grid 컴포넌트의 내부 메소드인 on_fire_user_ondrop 를 재정의한 함수.
+ */
+this.overriding_Grid_on_fire_user_ondrop = function (src_comp, src_refer_comp, dragdata, userdata, button, alt_key, ctrl_key, shift_key, screenX, screenY, canvasX, canvasY, clientX, clientY, from_comp, from_refer_comp)
+{        
+	// this ==> Grid
+	var movingInfo = null;
+	if ( this.cellmovingtype == "col" )	
+	{
+		var cellobj = from_refer_comp;
+		cellobj = this._findCellObj(cellobj);
+		
+		var movingcell = this._movingcell;
+		
+		if (movingcell && movingcell._is_alive && movingcell != cellobj && cellobj._rowidx == -1)
+		{
+			var fromcol = movingcell._refobj._col;
+			var fromidx = movingcell._refobj._cellidx;
+			var tocol = cellobj._refobj._col;
+			
+			movingInfo = {
+				"fromcol": fromcol,
+				"tocol": tocol
+			};
+		}
+	}
+
+	// Grid prototype 의 메소드를 호출하여 원래 기능을 수행한다.
+	nexacro.Grid.prototype.on_fire_user_ondrop.call(this, src_comp, src_refer_comp, dragdata, userdata, button, alt_key, ctrl_key, shift_key, screenX, screenY, canvasX, canvasY, clientX, clientY, from_comp, from_refer_comp);
+
+	if ( movingInfo )
+	{
+		var funcInfo = this.__setUserGridOnCellMovedFunc;
+		var func = funcInfo.func;
+		var scope = funcInfo.scope;
+		
+		func.call(scope, this, movingInfo);
+	}
+}
+
+// [2014, 8, 29, 1 버전] 기준 Grid getCurFormatString() 에 문제가 있다.
+// 그리드 내부에서 사용하는 프로토타입을 재정의함. (아래 문제 해결 시 제거)
+// - <Column> tag 에 band 정보가 없다.
+// - subcell 이 포함된 format 일 경우 잘못된 tag 를 반환한다.
+if ( !application._overridng_GridFormat_updateFormatStr )
+{
+	nexacro.GridFormat.prototype._updateFormatStr = function ()
+	{
+		var hr = 0;
+		var i = 0;
+		var nColCount = 0;
+		var nPvtCount = 0;
+		var _cols = this._cols;
+		var _headrows = this._headrows;
+		var _bodyrows = this._bodyrows;
+		var _summrows = this._summrows;
+		var _headcells = this._headcells;
+		var _bodycells = this._bodycells;
+		var _summcells = this._summcells;
+		var _headband = this._headband;
+		var _bodyband = this._bodyband;
+		var _summband = this._summband;
+
+		if (_cols && _cols.length)
+			nColCount = _cols.length;
+
+		var strContents;
+
+		if (nColCount > 0)
+		{
+			strContents = "<Format id=\"" + this.id + "\">\n";
+			strContents += "<Columns>\n";
+			{
+				for (i = 0; i < nColCount; i++)
+				{
+					if ( _cols[i]._area == "body" )
+					{
+						strContents += "<Column size=\"" + _cols[i].size + "\"/>\n";
+					}
+					else
+					{
+						strContents += "<Column size=\"" + _cols[i].size + "\" band=\"" + _cols[i]._area + "\"/>\n";
+					}
+				}
+			}
+			strContents += "</Columns>\n";
+			strContents += "<Rows>\n";
+			{
+				if (_headrows)
+				{
+					var _headrowsLen = _headrows.length;
+					for (var i = 0; i < _headrowsLen; i++)
+					{
+						strContents += "<Row band=\"head\" size=\"" + _headrows[i].size + "\"/>\n";
+					}
+				}
+				if (_bodyrows)
+				{
+					var _bodyrowsLen = _bodyrows.length;
+					for (var i = 0; i < _bodyrowsLen; i++)
+					{
+						strContents += "<Row band=\"body\" size=\"" + _bodyrows[i].size + "\"/>\n";
+					}
+				}
+				if (_summrows)
+				{
+					var _summrowsLen = _summrows.length;
+					for (var i = 0; i < _summrowsLen; i++)
+					{
+						strContents += "<Row band=\"summ\" size=\"" + _summrows[i].size + "\"/>\n";
+					}
+				}
+			}
+			strContents += "</Rows>\n";
+
+			function _makeCellstr(cells, isSubCell)
+			{
+				var cellsLen = cells.length;
+				for (var i = 0; i < cellsLen; i++)
+				{
+					if ( isSubCell ) strContents += "	";
+					strContents += "<Cell col=\"" + cells[i]._col;
+					strContents += "\" row=\"" + cells[i]._row;
+
+					if (cells[i]._colspan > 1)
+						strContents += "\" colspan=\"" + cells[i]._colspan;
+					if (cells[i]._rowspan > 1)
+						strContents += "\" rowspan=\"" + cells[i]._rowspan;
+					if (cells[i].displaytype._value && cells[i].displaytype._value.length)
+						strContents += "\" displaytype=\"" + cells[i].displaytype._value;
+					if (cells[i].edittype._value && cells[i].edittype._value.length && cells[i].edittype._value != "none")
+						strContents += "\" edittype=\"" + cells[i].edittype._value;
+					if (cells[i].text._value && cells[i].text._value.length)
+						strContents += "\" text=\"" + cells[i].text._value;
+					if (cells[i].style._value && cells[i].style._value.length)
+						strContents += "\" style=\"" + cells[i].style._value.replace(/\"/g, "&quot;");
+					if (cells[i].tooltiptext._value && cells[i].tooltiptext._value.length)
+						strContents += "\" tooltiptext=\"" + cells[i].tooltiptext._value;
+					if (cells[i].tooltiptype && cells[i].tooltiptype.length && cells[i].tooltiptype != "none")
+						strContents += "\" tooltiptype=\"" + cells[i].tooltiptype;
+					if (cells[i].displayexpdec._value >= 0)
+						strContents += "\" displayexpdec=\"" + cells[i].displayexpdec._value;
+					if (cells[i].locale._value && cells[i].locale._value.length)
+						strContents += "\" locale=\"" + cells[i].locale._value;
+					if (cells[i].mask._value && cells[i].mask._value.length)
+						strContents += "\" mask=\"" + cells[i].mask._value;
+					if (cells[i].maskchar && cells[i].maskchar.length && cells[i].maskchar != "_")
+						strContents += "\" maskchar=\"" + cells[i].maskchar;
+					if (cells[i].suppress._value != 0)
+						strContents += "\" suppress=\"" + cells[i].suppress._value;
+					if (cells[i].suppressalign && cells[i].suppressalign.length && cells[i].suppressalign != "first")
+						strContents += "\" suppressalign=\"" + cells[i].suppressalign;
+					if (cells[i].suppressedit == true)
+						strContents += "\" suppressedit=\"" + cells[i].suppressedit;
+					if (cells[i].wordwrap != false)
+						strContents += "\" wordwrap=\"" + cells[i].wordwrap._value;
+					if (cells[i].expr._value && cells[i].expr._value.length)
+						strContents += "\" expr=\"" + cells[i].expr._value;
+					if (cells[i].subsumtext._value && cells[i].subsumtext._value.length)
+						strContents += "\" subsumtext=\"" + cells[i].subsumtext._value;
+					if (cells[i].calendardisplay._value && cells[i].calendardisplay._value.length && cells[i].calendardisplay._value != "edit")
+						strContents += "\" calendardisplay=\"" + cells[i].calendardisplay._value;
+					if (cells[i].calendardisplaynulltext._value && cells[i].calendardisplaynulltext._value.length)
+						strContents += "\" calendardisplaynulltext=\"" + cells[i].calendardisplaynulltext._value;
+					if (cells[i].calendardisplaynulltype._value && cells[i].calendardisplaynulltype._value.length && cells[i].calendardisplaynulltype._value != "default")
+						strContents += "\" calendardisplaynulltype=\"" + cells[i].calendardisplaynulltype._value;
+					if (cells[i].combodataset._value && cells[i].combodataset._value.length)
+						strContents += "\" combodataset=\"" + cells[i].combodataset._value;
+					if (cells[i].combocodecol._value && cells[i].combocodecol._value.length)
+						strContents += "\" combocodecol=\"" + cells[i].combocodecol._value;
+					if (cells[i].combodatacol._value && cells[i].combodatacol._value.length)
+						strContents += "\" combodatacol=\"" + cells[i].combodatacol._value;
+					if (cells[i].combodisplay._value && cells[i].combodisplay._value.length && cells[i].combodisplay._value != "edit")
+						strContents += "\" combodisplay=\"" + cells[i].combodisplay._value;
+					if (cells[i].combodisplaynulltext._value && cells[i].combodisplaynulltext._value.length)
+						strContents += "\" combodisplaynulltext=\"" + cells[i].combodisplaynulltext._value;
+					if (cells[i].combodisplaynulltype._value && cells[i].combodisplaynulltype._value.length && cells[i].combodisplaynulltype._value != "none")
+						strContents += "\" combodisplaynulltype=\"" + cells[i].combodisplaynulltype._value;
+					if (cells[i].combodisplayrowcount._value >= 0 && cells[i].combodisplayrowcount._value != 5)
+						strContents += "\" combodisplayrowcount=\"" + cells[i].combodisplayrowcount._value;
+					if (cells[i].editacceptsenter._value == true)
+						strContents += "\" editacceptsenter=\"" + cells[i].editacceptsenter._value;
+					if (cells[i].editacceptstab._value == true)
+						strContents += "\" editacceptstab=\"" + cells[i].editacceptstab._value;
+					if (cells[i].editautoselect._value == true)
+						strContents += "\" editautoselect=\"" + cells[i].editautoselect._value;
+					if (cells[i].editautoskip._value == true)
+						strContents += "\" editautoskip=\"" + cells[i].editautoskip._value;
+					if (cells[i].editclipmode._value && cells[i].editclipmode._value.length && cells[i].editclipmode._value != "includespace")
+						strContents += "\" editclipmode=\"" + cells[i].editclipmode._value;
+					if (cells[i].editdisplay._value && cells[i].editdisplay._value.length && cells[i].editdisplay._value != "edit")
+						strContents += "\" editdisplay=\"" + cells[i].editdisplay._value;
+					if (cells[i].editfilter._value && cells[i].editfilter._value.length && cells[i].editfilter._value != "none")
+						strContents += "\" editfilter=\"" + cells[i].editfilter._value;
+					if (cells[i].editimemode._value && cells[i].editimemode._value.length && cells[i].editimemode._value != "none")
+						strContents += "\" editimemode=\"" + cells[i].editimemode._value;
+					if (cells[i].editlimit._value >= 0)
+						strContents += "\" editlimit=\"" + cells[i].editlimit._value;
+					if (cells[i].editlimitbymask._value && cells[i].editlimitbymask._value.length && cells[i].editlimitbymask._value != "decimal")
+						strContents += "\" editlimitbymask=\"" + cells[i].editlimitbymask._value;
+					if (cells[i].editscrollbar._value && cells[i].editscrollbar._value.length && cells[i].editscrollbar._value != "none")
+						strContents += "\" editscrollbar=\"" + cells[i].editscrollbar._value;
+					if (cells[i].edittrimtype._value && cells[i].edittrimtype._value.length && cells[i].edittrimtype._value != "none")
+						strContents += "\" edittrimtype=\"" + cells[i].edittrimtype._value;
+					if (cells[i].edituseime._value && cells[i].edituseime._value.length && cells[i].edituseime._value != "global")
+						strContents += "\" edituseime=\"" + cells[i].edituseime._value;
+					if (cells[i].treecheck._value && cells[i].treecheck._value.length)
+						strContents += "\" treecheck=\"" + cells[i].treecheck._value;
+					if (cells[i].treecollapseimage._value && cells[i].treecollapseimage._value.length)
+						strContents += "\" treecollapseimage=\"" + cells[i].treecollapseimage._value;
+					if (cells[i].treeexpandimage._value && cells[i].treeexpandimage._value.length)
+						strContents += "\" treeexpandimage=\"" + cells[i].treeexpandimage._value;
+					if (cells[i].treeitemimage._value && cells[i].treeitemimage._value.length)
+						strContents += "\" treeitemimage=\"" + cells[i].treeitemimage._value;
+					if (cells[i].treelevel._value && cells[i].treelevel._value.length)
+						strContents += "\" treelevel=\"" + cells[i].treelevel._value;
+					if (cells[i].treestartlevel._value > 0)
+						strContents += "\" treestartlevel=\"" + cells[i].treestartlevel._value;
+					if (cells[i].treestate._value && cells[i].treestate._value.length)
+						strContents += "\" treestate=\"" + cells[i].treestate._value;
+					if (cells[i].expandchar._value && cells[i].expandchar._value.length)
+						strContents += "\" expandchar=\"" + cells[i].expandchar._value;
+					if (cells[i].expandimage._value && cells[i].expandimage._value.length)
+						strContents += "\" expandimage=\"" + cells[i].expandimage._value;
+					if (cells[i].expandshow._value && cells[i].expandshow._value.length && cells[i].expandshow._value != "hide")
+						strContents += "\" expandshow=\"" + cells[i].expandshow._value;
+					if (cells[i].expandsize >= 0 && cells[i].expandsize != cells[i]._default_expandsize)
+						strContents += "\" expandsize=\"" + cells[i].expandsize._value;
+					if (cells[i].autosizecol && cells[i].autosizecol.length && cells[i].autosizecol != "default")
+						strContents += "\" autosizecol=\"" + cells[i].autosizecol;
+					if (cells[i].autosizerow && cells[i].autosizerow.length && cells[i].autosizerow != "default")
+						strContents += "\" autosizerow=\"" + cells[i].autosizerow;
+                    if (cells[i].celltype._value && cells[i].celltype._value.length && cells[i].celltype._value != "none")
+                        strContents += "\" celltype=\"" + cells[i].celltype._value;
+                    if (cells[i].cssclass && cells[i].cssclass.length)
+                        strContents += "\" cssclass=\"" + cells[i].cssclass;
+					
+					var subcells = cells[i]._subcells;
+					var subcellsLen = subcells.length;
+
+					//for (var j = 0; j < subcellsLen; j++)
+					if (subcellsLen > 0)
+					{
+						strContents += "	";
+						strContents += "\">\n";
+						_makeCellstr(subcells, true);
+						strContents += "</Cell>\n";
+					}
+					else
+					{
+						strContents += "\"/>\n";
+					}
+				}
+			}
+
+			if (_headrows)
+			{
+				strContents += "<Band id=\"head";
+				if (_headband.style._value.length)
+					strContents += "\" style=\"" + _headband.style._value.replace(/\"/g, "&quot;");
+				if (_headband.tooltiptext._value.length)
+					strContents += "\" tooltiptext=\"" + _headband.tooltiptext._value;
+				if (_headband.tooltiptype.length && _headband.tooltiptype != "none")
+					strContents += "\" tooltiptype=\"" + _headband.tooltiptype;
+				if (_headband.cellwordwrap._value != false)
+					strContents += "\" cellwordwrap=\"" + _headband.cellwordwrap._value;
+				strContents += "\">\n";
+				_makeCellstr(_headcells);
+				strContents += "</Band>\n";
+			}
+			if (_bodyrows)
+			{
+				strContents += "<Band id=\"body";
+				if (_bodyband.style._value.length)
+					strContents += "\" style=\"" + _bodyband.style._value.replace(/\"/g, "&quot;");
+				if (_bodyband.tooltiptext._value.length)
+					strContents += "\" tooltiptext=\"" + _bodyband.tooltiptext._value;
+				if (_bodyband.tooltiptype.length && _bodyband.tooltiptype != "none")
+					strContents += "\" tooltiptype=\"" + _bodyband.tooltiptype;
+				if (_bodyband.cellwordwrap._value != false)
+					strContents += "\" cellwordwrap=\"" + _bodyband.cellwordwrap._value;
+				strContents += "\">\n";
+				_makeCellstr(_bodycells);
+				strContents += "</Band>\n";
+			}
+			if (_summrows)
+			{
+				strContents += "<Band id=\"body";
+				if (_summband.style._value.length)
+					strContents += "\" style=\"" + _summband.style._value.replace(/\"/g, "&quot;");
+				if (_summband.tooltiptext._value.length)
+					strContents += "\" tooltiptext=\"" + _summband.tooltiptext._value;
+				if (_summband.tooltiptype.length && _summband.tooltiptype != "none")
+					strContents += "\" tooltiptype=\"" + _summband.tooltiptype;
+				if (_summband.cellwordwrap._value != false)
+					strContents += "\" cellwordwrap=\"" + _summband.cellwordwrap._value;
+				strContents += "\">\n";
+				_makeCellstr(_summcells);
+				strContents += "</Band>\n";
+			}
+			strContents += "</Format>\n";
+		}
+		else
+		{
+			strContents = "<Format id=\"" + this.id + "\">\n";
+		}
+
+		// load contents
+		var contentsElem = nexacro._parseXMLDocument(strContents);
+		var format_elem = contentsElem.getElementsByTagName("Format");
+
+		if (format_elem)
+			this._formatElem = format_elem[0];
+
+		return strContents;
+	};
+	
+	application._overridng_GridFormat_updateFormatStr = true;
+}]]></Script>

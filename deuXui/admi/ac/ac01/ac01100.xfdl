@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="ac01030" classname="ac01030" left="0" top="0" width="1038" height="855" titletext="결산대체사용부서관리" onload="ac01030_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="0" left="0" top="0" right="15" height="39" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static09" taborder="0" text="w&#13;&#10;15" visible="false" left="1" top="11" width="15" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static04" taborder="1" text="w&#13;&#10;15" visible="false" top="10" right="0" width="15" height="814" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static20" taborder="2" text="h15" visible="false" left="0" top="39" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_save" taborder="3" text="저장" onclick="btn_save_onclick" cssclass="save" top="54" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S" tabstop="false"/>
+        <Button id="btn_del" taborder="4" text="삭제" onclick="btn_del_onclick" cssclass="del" top="54" right="77" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" userBtnAuth="S" tabstop="false"/>
+        <Button id="btn_search" taborder="6" text="조회" cssclass="search" top="54" right="201" width="60" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R" onclick="btn_search_onclick" tabstop="false"/>
+        <Static id="Static76" taborder="7" text="결산대체 사용부서 목록" cssclass="page_stitle" left="0" top="55" width="180" height="20"/>
+        <Static id="Static00" taborder="8" text="h5" visible="false" left="0" top="76" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Grid id="grd_main" taborder="9" useinputpanel="false" left="0" top="81" right="15" autoenter="select" autofittype="none" binddataset="ds_main" onexpandup="grd_main_onexpandup" bottom="32">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="35" band="left"/>
+                <Column size="20" band="left"/>
+                <Column size="30" band="left"/>
+                <Column size="144"/>
+                <Column size="189"/>
+                <Column size="170"/>
+              </Columns>
+              <Rows>
+                <Row size="24" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox"/>
+                <Cell col="2" text="순번"/>
+                <Cell col="3" text="상위부서명"/>
+                <Cell col="4" text="부서코드"/>
+                <Cell col="5" text="부서명"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="image" text="bind:rowStatus" expr="expr:rowStatus==2?&quot;URL('theme://images/ico_i.png')&quot;:rowStatus==4?&quot;URL('theme://images/ico_u.png')&quot;:rowStatus==8?&quot;URL('theme://images/ico_d.png')&quot;:&quot;&quot;"/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox" text="bind:chk"/>
+                <Cell col="2" text="expr:currow+1"/>
+                <Cell col="3" displaytype="normal" edittype="none" style="align:left;" text="bind:upDeptNm"/>
+                <Cell col="4" edittype="none" style="align:center;" text="bind:deptCd" expandshow="hide" expandimage="URL('theme://images\ico_expand.png')"/>
+                <Cell col="5" edittype="none" style="align:left;" text="bind:deptNm" expandshow="expr:rowStatus==2?&quot;show&quot;:&quot;hide&quot;" expandimage="URL('theme://images\ico_expand.png')"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static06" taborder="22" text="h5" visible="false" left="930" top="827" width="8.96%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_grdDet" taborder="23" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" right="15" width="86" height="20" style="border:0 none #808080ff ;align:right middle;" bottom="6"/>
+        <Static id="Static07" taborder="24" text="h5" visible="false" left="930" top="845" width="8.96%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_new" taborder="25" text="추가" cssclass="new" top="54" right="139" width="60" height="22" tooltiptype="hover" tooltiptext="추가" userBtnAuth="S" onclick="btn_new_onclick" tabstop="false"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_main" useclientlayout="false" updatecontrol="true">
+        <ColumnInfo>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="cardNo" type="STRING" size="256"/>
+          <Column id="cardNoKey" type="STRING" size="256"/>
+          <Column id="cardDiv" type="STRING" size="256"/>
+          <Column id="cardPublishDt" type="STRING" size="256"/>
+          <Column id="valiDt" type="STRING" size="256"/>
+          <Column id="cardAlias" type="STRING" size="256"/>
+          <Column id="cardAcntNo" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_dummy"/>
+      <Dataset id="ds_cardAcntNo"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[// [프로젝트]	동의대학교 예산회계시스템 구축
+// [시스템명]	회계
+// [부시스템]	회계관리
+// [프로그램]	법인카드관리
+// [설명] 
+//	         
+// [작성자명]	라병수
+// [작성일자]	2016.05.20
+//////////////////////////////////[수정이력]//////////////////////////////////
+// [수정일자] 
+// [수 정 자] 
+// [수정내용]
+
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+include "commJs::lib_Util.xjs";
+
+this.ac01030_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.fn_postLoad();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{
+	this.gfn_bindCmmnFunction();
+
+	this.fn_search();
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_search_onClick
+ * 함수설명 	: 조회버튼 클릭 이벤트
+********************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preSearch
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preSearch = function()
+{
+ 	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_search = function()
+{
+	if(this.fn_preSearch()){
+
+		this.gfn_transaction("SEARCH",
+							 "txAdmUrl::com/admi/ac01/selectAc01100MainList.do",
+							 "",
+							 "ds_main=resultList",
+							 "",
+							 "fn_callBack");
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postSearch
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearch = function()
+{
+	this.gfn_getDatasetCount(this.ds_main, this.sta_grdMain);
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_new_onclick
+ * 함수설명 	: Row를 추가한다.
+********************************************************************************/
+this.btn_new_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+ 	var addRow = this.gfn_addRow(this.ds_main);
+}
+
+this.fn_preDel = function()
+{
+	return true;
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_del_onclick
+ * 함수설명 	: 선택한 Data를 삭제한다.
+ *********************************************************************/
+this.btn_del_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.fn_preDel()){
+		this.gfn_deleteRow(this.ds_main, "this.fn_save()");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_save_onclick
+ * 함수설명 	: 저장버튼 클릭 event
+ *********************************************************************/
+this.btn_save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{	
+	this.fn_save();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_preSave
+ * 함수설명 	: DataSet을 저장 전 처리 함수.
+ *********************************************************************/
+this.fn_preSave = function()
+{
+	if(!this.gfn_isUpdate(this.ds_main)){
+		this.gfn_message("A", "변경된 데이터가 없습니다.");
+		return false;
+	}
+
+	/*
+	 * 필수값 입력 체크
+	 */
+	var colNm = "deptCd";
+	var korNm = "부서코드";
+	var cmpNm = "$";
+	
+	var result = this.gfn_chkEssItem("ds_main", colNm, korNm, cmpNm);
+	if (result[0] != "success") {
+		this.gfn_message("A", result[0]);
+		this.ds_main.set_rowposition(result[1]);
+		
+		if(result[3] != ""){
+			this.objects[result[3]].setFocus();
+		}
+		return false;	
+	}
+	
+	//데이터 중복 체크
+	if(!this.gfn_chkValidation("ds_main", "deptCd", "부서코드")){
+		return false;
+	}
+	
+	return true;
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_save
+ * 함수설명 	: DataSet을 저장한다.
+ *********************************************************************/
+this.fn_save = function()
+{
+	if(this.fn_preSave()){
+	
+		this.gfn_transaction("SAVE",
+							 "txAdmUrl::com/admi/ac01/saveAc01100MainList.do",
+							 "resultList=ds_main:u",
+							 "",
+							 "",
+							 "fn_callBack");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSave
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postSave = function()
+{
+	this.gfn_message("A", "저장이 완료되었습니다.");
+	this.fn_search();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.gfn_message("A", errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		} else if(trId == "SEARCH"){
+			this.fn_postSearch();
+		} else if(trId == "SAVE"){
+			this.fn_postSave();
+		}
+	}
+}
+
+this.grd_main_onexpandup = function(obj:Grid, e:nexacro.GridMouseEventInfo)
+{
+		var strArg = {jojikCdNm:""
+					 ,autoSearch:true
+					 ,autoClose:false}
+		this.cfn_deptPopup(strArg,"fn_bgDeptMainPopCallback");
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_bgDeptPopCallback
+ * 함수설명 	: 부서 팝업 리턴
+ *********************************************************************/
+this.fn_bgDeptMainPopCallback = function (strID, rtnVal)
+{
+	if(rtnVal == "close" || rtnVal == "undefined" || this.gfn_isNull(rtnVal)) {
+		return;
+	}
+	
+	this.ds_dummy.clear();
+	this.ds_dummy.loadXML(rtnVal);
+	
+	if(!this.gfn_isNull(this.ds_dummy)){
+		this.ds_main.setColumn(this.ds_main.rowposition, 'deptCd', this.ds_dummy.getColumn(0, "deptCd"));
+		this.ds_main.setColumn(this.ds_main.rowposition, 'deptNm', this.ds_dummy.getColumn(0, "deptNmKor"));
+		this.ds_main.setColumn(this.ds_main.rowposition, 'upDeptNm', this.ds_dummy.getColumn(0, "upDeptNm"));
+	} 
+
+}
+
+]]></Script>
+  </Form>
+</FDL>

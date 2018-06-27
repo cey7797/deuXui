@@ -1,0 +1,329 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="LogInPop" classname="LogIn" left="0" top="0" width="1280" height="1024" titletext="로그인영역" onload="LogIn_onload">
+    <Layouts>
+      <Layout>
+        <Div id="divBg" taborder="1" left="0%" top="398" right="0%" height="294" cssclass="loginBody" style="background:transparent URL('theme://images\login\login_bg.png') repeat-x;"/>
+        <Div id="div_wrap" taborder="2" left="20%" top="228" height="504" width="944">
+          <Layouts>
+            <Layout>
+              <Div id="div_phoneLogin" taborder="7" left="106" top="274" width="293" height="77" scrollbars="none" visible="false">
+                <Layouts>
+                  <Layout>
+                    <Edit id="edt_id" taborder="11" autoselect="true" left="52" top="21" height="25" tooltiptext="ID를 입력하세요" width="158" onkeyup="div_wrap_div_phoneLogin_edt_id_onkeyup"/>
+                    <ImageViewer id="ImageViewer01" taborder="12" left="13" top="29" height="10" style="background:transparent URL('theme://images\login\txt_id.png');border:0 none #e5e5e5ff ;" width="32"/>
+                    <Button id="btn_login" taborder="13" onclick="btn_phoneLogin_onclick" left="213" top="0" height="74" style="background:transparent URL('theme://images\login\btn_login.png');border:0 none #999999ff ;cursor:hand;" width="80"/>
+                  </Layout>
+                </Layouts>
+              </Div>
+              <ImageViewer id="ivLogo" taborder="0" image="URL('theme://images\login\txt_login.png')" cssclass="logo" left="-36" top="27" height="141" style="background:transparent;border:1 none #e5e5e5ff ;" width="504"/>
+              <Radio id="rdo_loginFg" taborder="1" left="94" top="178" height="24" innerdataset="@ds_auth" codecolumn="cd" datacolumn="nm" direction="horizontal" index="0" value="id" width="193" columncount="2" style="buttonalign:right middle;buttonsize:15;align:right middle;" onitemchanged="div_wrap_rdo_loginFg_onitemchanged" visible="false"/>
+              <Radio id="rdo_langFg" taborder="2" index="0" innerdataset="@ds_lang" codecolumn="cd" datacolumn="nm" value="ko" direction="horizontal" left="407" top="178" height="24" width="157" columncount="2" style="buttonalign:right middle;buttonsize:15;color:#444444ff;align:right middle;" onitemchanged="divWrap_rdo_lang_onitemchanged" visible="false"/>
+              <Div id="div_idLogin" taborder="3" left="106" top="274" height="77" width="293" scrollbars="none">
+                <Layouts>
+                  <Layout>
+                    <Edit id="edt_id" taborder="0" left="52" top="1" height="25" autoselect="true" tooltiptext="ID를 입력하세요" width="158" onkeyup="div_wrap_div_idLogin_edt_pw_onkeyup" imemode="alpha"/>
+                    <Edit id="edt_pw" taborder="1" left="52" top="36" height="25" password="true" autoselect="true" tooltiptype="default" tooltiptext="PW를 입력하세요" onkeyup="div_wrap_div_idLogin_edt_pw_onkeyup" width="158"/>
+                    <ImageViewer id="ImageViewer01" taborder="3" left="13" top="9" height="10" style="background:transparent URL('theme://images\login\txt_id.png');border:0 none #e5e5e5ff ;" width="32"/>
+                    <ImageViewer id="ImageViewer02" taborder="4" left="13" top="44" height="10" style="background:transparent URL('theme://images\login\txt_pw.png');border:0 none #e5e5e5ff ;" width="32"/>
+                    <Button id="btn_login" taborder="5" left="213" top="0" height="74" style="background:transparent URL('theme://images\login\btn_login.png');border:0 none #999999ff ;cursor:hand;" onclick="btn_login_onclick" width="80"/>
+                  </Layout>
+                </Layouts>
+              </Div>
+              <Div id="div_info_kr" taborder="4" left="403" top="271" height="91" width="541" style="border:0 none #808080ff ;">
+                <Layouts>
+                  <Layout>
+                    <Static id="Static00" taborder="0" text="아이디는 학번 또는 교번이며, 모든 DONG-EUl 사이트에서 동일하게 적용됩니다." left="3.09%" top="4" right="1.74%" height="12" cssclass="login_info" style="color:#ffffffff;"/>
+                    <Static id="Static01" taborder="1" text="아이디 또는 비밀번호를 잊어버리신 경우" left="3.09%" top="21" right="1.74%" height="12" style="color:#ffffffff;"/>
+                    <Static id="Static02" taborder="2" text="DONG-EUl 포탈(http://portal.deu.ac.kr)의 아이디 또는 비밀번호 찾기 기능을 이용해 주세요." left="3.09%" top="38" right="1.74%" height="12" style="color:#ffffffff;"/>
+                    <Static id="Static03" taborder="3" text="동의대포탈에 접속하시면 동의대에서 제공하는 서비스를 이용하실 수 있습니다." left="3.09%" top="55" right="1.74%" height="12" style="color:#e5b700ff;"/>
+                    <Static id="Static04" taborder="4" text="기타 IT서비스 이용관련 문의사항이 있으신 분은 관리자(051-890-1114 )에게 문의해주세요." left="3.09%" top="72" right="1.74%" height="12" style="color:#ffffffff;"/>
+                    <Static id="Static05" taborder="5" left="6" top="4" height="76" style="background:#4da19fff;" width="1"/>
+                  </Layout>
+                </Layouts>
+              </Div>
+              <Div id="div_footer" taborder="5" left="127" top="444" height="46" width="766">
+                <Layouts>
+                  <Layout>
+                    <Static id="Static00" taborder="0" text="(48475) 부산광역시 남구 자성로 152, 1519(문현동,한일오피스텔) 도울정보기술 TEL: 051-645-0456 Fax:051-646-0453" left="2" top="5" height="13" width="744" style="color:#707070ff;"/>
+                    <Static id="Static01" taborder="1" text="Copyright 2012 university of science and technology. all right reserved." left="0.27%" top="30" right="2.66%" height="13" style="color:#707070ff;" visible="false"/>
+                  </Layout>
+                </Layouts>
+              </Div>
+              <Div id="div_info_en" taborder="6" left="403" top="271" height="93" style="border:0 none #808080ff ;" visible="false" width="537">
+                <Layouts>
+                  <Layout>
+                    <Static id="Static00" taborder="6" text="ID is student number or employee number. The same applies in all DONG-EUL sites." cssclass="login_info" left="3.14%" top="4" right="1.66%" height="12" style="color:#ffffffff;"/>
+                    <Static id="Static01" taborder="7" text="If you have forgotten your username or password" left="16" top="21" height="12" style="color:#ffffffff;" width="511"/>
+                    <Static id="Static02" taborder="8" text="Forgot User name or Password , please use the DONG-EUL Site (http://portal.deu.ac.kr)" left="3.14%" top="38" right="1.66%" height="12" style="color:#ffffffff;"/>
+                    <Static id="Static03" taborder="9" text="If you access the portal DONG-EUL available the services provided by the DONG-EUL." left="3.14%" top="55" right="1.66%" height="12" style="color:#e5b700ff;"/>
+                    <Static id="Static04" taborder="10" text="If you have any other IT services -related inquiries , please contact the administrator minute ( 051-890-1114  ) ." left="3.23%" top="72" right="1.71%" height="21" style="color:#ffffffff;align:left top;"/>
+                    <Static id="Static05" taborder="11" left="6" top="4" height="76" style="background:#4da19fff;" width="1"/>
+                  </Layout>
+                </Layouts>
+              </Div>
+            </Layout>
+          </Layouts>
+        </Div>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_auth" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="cd" type="STRING" size="256"/>
+          <Column id="nm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="cd">id</Col>
+            <Col id="nm">ID 로그인</Col>
+          </Row>
+          <Row>
+            <Col id="cd">phone</Col>
+            <Col id="nm">핸드폰 로그인</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_lang" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="cd" type="STRING" size="256"/>
+          <Column id="nm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="cd">ko</Col>
+            <Col id="nm">KOREAN</Col>
+          </Row>
+          <Row>
+            <Col id="cd">en</Col>
+            <Col id="nm">ENGLISH</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_Init" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="cd" type="STRING" size="256"/>
+          <Column id="nm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="cd">id</Col>
+            <Col id="nm">ID 로그인</Col>
+          </Row>
+          <Row>
+            <Col id="cd">phone</Col>
+            <Col id="nm">핸드폰 로그인</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : LogIn.xfdl
+* 화면설명     : 로그인
+* 작성자       : 최용현
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.07.08     최용현         최초생성
+* 2015.07.08     최용현         주석 수정
+******************************************************************************/
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+this.apVFrameSet 	  = application.mainframe.VFrameSet;
+this.apTopFrame 	  = application.mainframe.VFrameSet.TopFrame;
+this.apMiddleFrameSet = application.mainframe.VFrameSet.MiddleFrameSet;
+this.apLeftFrame      = application.mainframe.VFrameSet.MiddleFrameSet.LeftFrame;
+this.apBizFrameSet 	  = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet;
+this.apMDIFrame 	  = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MDIFrame;
+this.apMainFrameSet   = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet;
+this.apWorkFrame 	  = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.WorkFrame;
+this.gds_user         = application.gds_user;
+/******************************************************************************
+* 함 수 명 	: LogIn_onload
+* 함수설명 	: 폼변수 호출, 화면 로드 후 함수
+*****************************************************************************/
+this.LogIn_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.apVFrameSet.set_separatesize("0, *");
+	this.apMiddleFrameSet.set_separatesize("0, *");
+	this.apBizFrameSet.set_separatesize("0, *");
+
+	this.div_wrap.div_idLogin.edt_id.set_value(application.gv_memberNo);
+	this.btn_login_onclick();
+// 	this.gfn_transaction("INIT",
+// 						 "txComUrl::com/comm/doInit.do",
+// 						 "",
+// 						 "gds_user=resultList",
+// 						 "",
+// 						 "fn_callBack"); 
+}
+
+/******************************************************************************
+* 함 수 명 	: LogIn_onload
+* 함수설명 	: 폼변수 호출, 화면 로드 후 함수
+*****************************************************************************/
+this.btn_login_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_login();
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_preLogin
+* 함수설명 	: 로그인 전 처리 함수
+*****************************************************************************/
+this.fn_preLogin = function()
+{
+	if ( this.div_wrap.div_idLogin.edt_id.value == null || this.div_wrap.div_idLogin.edt_id.value == "") {
+		this.gfn_message("A", "아이디를 입력하세요.");
+		this.div_wrap.div_idLogin.edt_id.setFocus();
+		return false;
+	}
+
+// 	if ( this.div_wrap.div_idLogin.edt_pw.value == null || this.div_wrap.div_idLogin.edt_pw.value == "") {	
+// 		this.gfn_message("A", "패스워드를 입력하세요.");
+// 		this.div_wrap.div_idLogin.edt_pw.setFocus();
+// 		return false;
+// 	}
+	
+	return true;
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_login
+* 함수설명 	: 로그인 함수
+*****************************************************************************/
+this.fn_login = function()
+{
+	if(this.fn_preLogin()){
+		var strArg = "strUserId="  + nexacro.wrapQuote(this.div_wrap.div_idLogin.edt_id.value);
+		//	strArg += " strPwd=" + nexacro.wrapQuote(this.div_wrap.div_idLogin.edt_pw.value);
+			strArg += " strLoginGb=" 	+ nexacro.wrapQuote("ID");
+		
+		this.gfn_transaction("LOGIN",
+							 "txComUrl::com/comm/doGetLoginPop.do",
+							 "",
+							 "gds_user=resultList",
+							 strArg,
+							 "fn_callBack"); 
+	}
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_postLogin
+* 함수설명 	: 로그인 후 처리 함수
+*****************************************************************************/
+this.fn_postLogin = function()
+{
+	if(this.gds_user.getRowCount() > 0){
+		this.fn_searchSys();
+	}
+	this.apWorkFrame.set_url("ac02::ac02010_p01_purc.xfdl");
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_searchSys
+* 함수설명 	: sys메뉴 조회
+*****************************************************************************/
+this.fn_searchSys = function()
+{
+	var strArg = "memberNo=" + nexacro.wrapQuote(this.gds_user.getColumn(this.gds_user.rowposition, "memberNo"));
+	
+	this.gfn_transaction("SYS",
+					 "txComUrl::com/comm/selectSysMenu.do",
+					 "",
+					 "gds_sys=resultList",
+					 strArg,
+					 "fn_callBack");
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_postSearchSys
+* 함수설명 	: sys메뉴 후 함수
+*****************************************************************************/
+this.fn_postSearchSys = function()
+{
+	if(this.gds_user.getRowCount() > 0 ){
+// 		this.apVFrameSet.set_separatesize("47, *");
+// 		this.apMiddleFrameSet.set_separatesize("200, *");
+// 		this.apBizFrameSet.set_separatesize("33, *");
+		this.apWorkFrame.set_formurl("ac02::ac02010_p01_purc.xfdl");//mainpage 화면 추가해야된다.
+		var userInfo = " "+this.gds_user.getColumn(0, "nm") + " / " + this.gds_user.getColumn(0, "deptNmKor")
+		//this.apTopFrame.form.div_navi.btn_userInfo.set_text(userInfo);
+		application.apTopFrame.form.fn_setTopMenu();		//대메뉴동적생성
+		application.apTopFrame.form.fn_searchIncAcntNoCnt();		//입금내역확인
+		application.apTopFrame.form.fn_setTimer();		//입금내역확인 타이머 설정
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId == "INIT"){
+			this.fn_postLogin();
+		}else if(trId == "LOGIN"){
+			this.fn_postLogin();
+		}else if(trId == "SYS"){
+			this.fn_postSearchSys();
+		}
+	}
+}
+
+this.divWrap_rdo_lang_onitemchanged = function(obj:Radio, e:nexacro.ItemChangeEventInfo)
+{
+	if ( e.postvalue == "en" ) {
+		this.div_wrap.div_info_kr.set_visible(false);
+		this.div_wrap.div_info_en.set_visible(true);
+		application.gv_langFg = "en";
+	} else {
+		this.div_wrap.div_info_en.set_visible(false);
+		this.div_wrap.div_info_kr.set_visible(true);
+		application.gv_langFg = "kr";
+	}
+}
+this.div_wrap_div_idLogin_edt_pw_onkeyup = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	if(e.keycode == 13){
+		this.btn_login_onclick();
+	}
+}
+
+this.div_wrap_rdo_loginFg_onitemchanged = function(obj:Radio, e:nexacro.ItemChangeEventInfo)
+{
+	if(obj.value == "id"){
+		this.div_wrap.div_idLogin.set_visible(true);
+		this.div_wrap.div_phoneLogin.set_visible(false);
+	}else{
+		this.div_wrap.div_idLogin.set_visible(false);
+		this.div_wrap.div_phoneLogin.set_visible(true);
+	}
+}
+
+this.btn_phoneLogin_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var popupId = "mobileLoginPop";
+	var argumentsList = new Array();
+	var popupUrl = "commMain::mobileLoginPop.xfdl";
+	var popupCallback = "fn_popCallBackUser";
+	var obj = this;
+	
+	argumentsList['memberNo']   = this.div_wrap.div_phoneLogin.edt_id.value;
+	
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, obj);
+}
+
+this.div_wrap_div_phoneLogin_edt_id_onkeyup = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	if(e.keycode == 13){
+		this.btn_phoneLogin_onclick();
+	}
+}
+]]></Script>
+  </Form>
+</FDL>

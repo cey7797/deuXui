@@ -1,0 +1,28 @@
+﻿{
+	"name": "GraphicLibrary",
+	"version": "1.0.0.0",
+	"description": "Graphic Library for nexacro platform",
+	"license": "",
+	"scripts": [
+		"Graphic/Class/ClassUtils.js",
+		"Graphic/Class/MathUtil.js",
+		"Graphic/Class/Matrix.js",
+		"Graphic/Class/Point.js",
+		"Graphic/Class/Rectangle.js",
+		"Graphic/Class/RectsManager.js",
+		"Graphic/Class/Size.js",
+		"Graphic/Graphic.js",
+		"Graphic/Element.js",
+		"Graphic/ContainerGroup.js",
+		"Graphic/Css.js",
+		"Graphic/Path.js",
+		"Graphic/QuadTree.js",
+		"Graphic/Shapes.js",
+		"Graphic/ViewPort.js",
+		"Graphic/excanvas/excanvas.js"
+	],
+	"objInfo": [
+		"Graphic.info"
+	]
+}
+//@ sourceURL=Graphic.json

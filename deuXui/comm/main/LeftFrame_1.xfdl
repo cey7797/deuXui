@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="LeftFrame" classname="LeftFrame" left="0" top="0" width="242" height="888" scrollbars="autoboth">
+    <Layouts>
+      <Layout>
+        <Tab id="tab_menuLv3" taborder="1" left="6" top="0" width="220" tabindex="0" cssclass="menuLv3" canchange="tab_menuLv3_canchange" dragscrolltype="both" height="855">
+          <Tabpages>
+            <Tabpage id="tpg_menu" text="MENU" scrollbars="none">
+              <Layouts>
+                <Layout>
+                  <Div id="div_userInfo" taborder="1" left="3" width="200" style="border:0 none #808080ff ;" url="commMain::UserInfo.xfdl" height="87" top="733"/>
+                  <Grid id="grd_menuLv3" taborder="0" binddataset="gds_menu" useinputpanel="false" treeuseline="false" treeusecheckbox="false" treeinitstatus="collapse,all" treeuseexpandkey="false" oncellclick="grd_menu_oncellclick" left="3" top="5" autofittype="col" style="treeitemimage:URL('theme://images/icon/ico_treeitem.png');treelinetype:0 dotted #a5b6b6ff ;border:0 none #808080ff ;" treeusebutton="noclick" scrollbars="autoboth" width="215" cssclass="menu" height="726">
+                    <Formats>
+                      <Format id="default">
+                        <Columns>
+                          <Column size="212"/>
+                        </Columns>
+                        <Rows>
+                          <Row size="26"/>
+                        </Rows>
+                        <Band id="body">
+                          <Cell displaytype="tree" edittype="tree" style="background:#ffffffff;background2:#ffffffff;color:#333333ff;color2:#333333ff;selectcolor:#333333ff;" text="bind:menuNm" treelevel="bind:menuLvl" treestate="bind:menuSt"/>
+                        </Band>
+                      </Format>
+                    </Formats>
+                  </Grid>
+                </Layout>
+              </Layouts>
+            </Tabpage>
+            <Tabpage id="tpg_my" text="MY MENU" scrollbars="none">
+              <Layouts>
+                <Layout>
+                  <Button id="btn_new" taborder="0" text="  추가" cssclass="new" left="151" top="3" width="64" height="22" tooltiptype="hover" tooltiptext="추가" userBtnAuth="S" onclick="tab_menuLv3_tpg_my_btn_new_onclick"/>
+                  <Grid id="grd_favo" taborder="1" binddataset="gds_favo" useinputpanel="false" autofittype="col" treeusebutton="noclick" treeuseline="false" treeusecheckbox="false" treeinitstatus="expand,all" left="3" top="25" style="treeitemimage:URL('theme://images/icon/ico_treeitem.png');treelinetype:0 dotted #a5b6b6ff ;treeitemmargin:0 0 0 0;border:0 none #808080ff ;" oncellclick="tab_menuLv3_tpg_my_grd_favo_oncellclick" width="215" cssclass="menu" height="706">
+                    <Formats>
+                      <Format id="default">
+                        <Columns>
+                          <Column size="212"/>
+                        </Columns>
+                        <Rows>
+                          <Row size="26"/>
+                        </Rows>
+                        <Band id="body">
+                          <Cell displaytype="tree" edittype="tree" style="background:#ffffffff;background2:#ffffffff;color:#333333ff;color2:#333333ff;selectcolor:#333333ff;" text="bind:menuNm" treestartlevel="1" treelevel="bind:menuLvl" treestate="bind:menuSt"/>
+                        </Band>
+                      </Format>
+                    </Formats>
+                  </Grid>
+                  <Div id="div_userInfo" taborder="2" left="3" width="200" height="87" url="commMain::UserInfo.xfdl" top="733"/>
+                </Layout>
+              </Layouts>
+            </Tabpage>
+          </Tabpages>
+        </Tab>
+        <Edit id="edt_openId" taborder="2" left="6" top="862" width="220" height="20" readonly="true" visible="false"/>
+      </Layout>
+    </Layouts>
+    <Objects/>
+    <Bind>
+      <BindItem id="item0" compid="edt_openId" propid="value" datasetid="gds_open" columnid="menuId"/>
+      <BindItem id="item1" compid="tab_menuLv3.tpg_menu.div_userInfo" propid="visible" datasetid="gds_user" columnid="loginip"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : LeftFrame.xfdl
+* 화면설명     : 프로그램 메뉴
+* 작성자       : 최용현
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.07.10     최용현         최초생성
+* 2015.07.10     최용현         주석 수정
+******************************************************************************/
+include "commJs::commonUtils.xjs";
+
+this.apVFrameSet 	  = application.mainframe.VFrameSet;
+this.apTopFrame 	  = application.mainframe.VFrameSet.TopFrame;
+this.apMiddleFrameSet = application.mainframe.VFrameSet.MiddleFrameSet;
+this.apLeftFrame      = application.mainframe.VFrameSet.MiddleFrameSet.LeftFrame;
+this.apBizFrameSet 	  = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet;
+this.apMDIFrame 	  = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MDIFrame;
+this.apMainFrameSet   = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet;
+this.apWorkFrame 	  = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.WorkFrame;
+this.gds_menu         = application.gds_menu;
+this.gds_open         = application.gds_open;
+this.gds_user         = application.gds_user;
+this.gds_favo		  = application.gds_favo;
+/******************************************************************************
+* 함 수 명 	: grd_menu_oncellclick
+* 함수설명 	: 프로그램 목록 클릭 이벤트
+*****************************************************************************/
+this.grd_menu_oncellclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	if(this.gds_menu.getColumn(this.gds_menu.rowposition, "menuLvl") == 1){
+		var menuUrl    = this.gds_menu.getColumn(this.gds_menu.rowposition, "url");
+		var sysId     = this.gds_menu.getColumn(this.gds_menu.rowposition, "sysId");
+		var sysNm     = this.gds_menu.getColumn(this.gds_menu.rowposition, "sysNm");
+		var subId     = this.gds_menu.getColumn(this.gds_menu.rowposition, "subId");
+		var subNm     = this.gds_menu.getColumn(this.gds_menu.rowposition, "subNm");
+		var menuId     = this.gds_menu.getColumn(this.gds_menu.rowposition, "menuId");
+		var menuNm     = this.gds_menu.getColumn(this.gds_menu.rowposition, "menuNm");
+		var parentId   = this.gds_menu.getColumn(this.gds_menu.rowposition, "parentId");
+		var parentNm   = this.gds_menu.getColumn(this.gds_menu.rowposition, "parentNm");
+		var year       = this.gds_menu.getColumn(this.gds_menu.rowposition, "year");
+		var termCd     = this.gds_menu.getColumn(this.gds_menu.rowposition, "termCd");
+		var scheduleCd = this.gds_menu.getColumn(this.gds_menu.rowposition, "scheduleCd");
+		var selectFlag = this.gds_menu.getColumn(this.gds_menu.rowposition, "selectFlag");
+		var saveFlag = this.gds_menu.getColumn(this.gds_menu.rowposition, "saveFlag");
+		var printFlag = this.gds_menu.getColumn(this.gds_menu.rowposition, "printFlag");
+		var downloadFlag = this.gds_menu.getColumn(this.gds_menu.rowposition, "downloadFlag");
+		var uploadFlag = this.gds_menu.getColumn(this.gds_menu.rowposition, "uploadFlag");
+		var sendFlag = this.gds_menu.getColumn(this.gds_menu.rowposition, "sendFlag");
+		var personInfoFlag = this.gds_menu.getColumn(this.gds_menu.rowposition, "personInfoFlag");
+		var managerFlag = this.gds_menu.getColumn(this.gds_menu.rowposition, "managerFlag");		
+		var tabCnt     = this.apMDIFrame.form.workTab.getTabpageCount();
+		var tabIndex   = this.apMDIFrame.form.workTab.getIndex();
+		var uniqueId   = "ChildFrame_"+ menuId;
+		
+		if(this.gds_open.findRow("menuId", menuId)<0){
+			if(tabCnt > 9){
+				this.alert("화면은 한번에 10개까지만 열 수 있습니다.");
+				return false;
+			}
+			//MDI Tab버튼 추가
+			this.apMDIFrame.form.workTab.insertTabpage("tab"+parentId+menuId,tabCnt, "", menuNm);
+			var addRow = application.gds_open.addRow();
+			
+			this.gds_open.setColumn(addRow, 'sysId', sysId);
+			this.gds_open.setColumn(addRow, 'sysNm', sysNm);
+			this.gds_open.setColumn(addRow, 'subId', subId);
+			this.gds_open.setColumn(addRow, 'subNm', subNm);
+			this.gds_open.setColumn(addRow, 'menuId', menuId);
+			this.gds_open.setColumn(addRow, 'menuNm', menuNm);
+			this.gds_open.setColumn(addRow, 'parentId', parentId);
+			this.gds_open.setColumn(addRow, 'parentNm', parentNm);
+			this.gds_open.setColumn(addRow, 'year', year);
+			this.gds_open.setColumn(addRow, 'termCd', termCd);
+			this.gds_open.setColumn(addRow, 'scheduleCd', scheduleCd);
+			this.gds_open.setColumn(addRow, 'selectFlag', selectFlag);
+			this.gds_open.setColumn(addRow, 'saveFlag', saveFlag);
+			this.gds_open.setColumn(addRow, 'printFlag', printFlag);
+			this.gds_open.setColumn(addRow, 'downloadFlag', downloadFlag);
+			this.gds_open.setColumn(addRow, 'uploadFlag', uploadFlag);
+			this.gds_open.setColumn(addRow, 'sendFlag', sendFlag);
+			this.gds_open.setColumn(addRow, 'personInfoFlag', personInfoFlag);
+			this.gds_open.setColumn(addRow, 'managerFlag', managerFlag);
+
+			var objNewForm = new ChildFrame();
+			objNewForm.init(uniqueId, "absolute", 0, 0, null, null, 0, 45, menuUrl);
+			this.apMainFrameSet.addChild(uniqueId, objNewForm);
+			var cmd = "application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet."+uniqueId+".set_showtitlebar(false)";
+			eval(cmd);
+			
+			objNewForm.show();			
+		} else{
+			if(this.gds_open.findRowExpr("menuId =='"+menuId+"'&& parentId =='"+parentId+"'")<0){
+				if(tabCnt > 9){
+					this.alert("화면은 한번에 10개까지만 열 수 있습니다.");
+					return false;
+				}
+				//MDI Tab버튼 추가
+				this.apMDIFrame.form.workTab.insertTabpage("tab"+parentId+menuId,tabCnt, "", menuNm);
+				var addRow = application.gds_open.addRow();
+				this.gds_open.setColumn(addRow, 'sysId', sysId);
+				this.gds_open.setColumn(addRow, 'sysNm', sysNm);
+				this.gds_open.setColumn(addRow, 'subId', subId);
+				this.gds_open.setColumn(addRow, 'subNm', subNm);
+				this.gds_open.setColumn(addRow, 'menuId', menuId);
+				this.gds_open.setColumn(addRow, 'menuNm', menuNm);
+				this.gds_open.setColumn(addRow, 'parentId', parentId);
+				this.gds_open.setColumn(addRow, 'parentNm', parentNm);
+				this.gds_open.setColumn(addRow, 'year', year);
+				this.gds_open.setColumn(addRow, 'termCd', termCd);
+				this.gds_open.setColumn(addRow, 'scheduleCd', scheduleCd);
+				this.gds_open.setColumn(addRow, 'selectFlag', selectFlag);
+				this.gds_open.setColumn(addRow, 'saveFlag', saveFlag);
+				this.gds_open.setColumn(addRow, 'printFlag', printFlag);
+				this.gds_open.setColumn(addRow, 'downloadFlag', downloadFlag);
+				this.gds_open.setColumn(addRow, 'uploadFlag', uploadFlag);
+				this.gds_open.setColumn(addRow, 'sendFlag', sendFlag);
+				this.gds_open.setColumn(addRow, 'personInfoFlag', personInfoFlag);
+				this.gds_open.setColumn(addRow, 'managerFlag', managerFlag);
+
+				var objNewForm = new ChildFrame();
+
+				objNewForm.init(uniqueId, "absolute", 0, 0, null, null, 0, 45, menuUrl);
+		
+				this.apMainFrameSet.addChild(uniqueId, objNewForm);
+				var cmd = "application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet."+uniqueId+".set_showtitlebar(false)";
+				eval(cmd);
+								
+				objNewForm.show();
+			}else{
+				//선택된 메뉴 활성화
+				var nRow = application.gds_open.findRowExpr("menuId =='"+menuId+"'&& parentId =='"+parentId+"'");
+				this.apMDIFrame.form.workTab.set_tabindex(application.gds_open.findRowExpr("menuId =='"+menuId+"'&& parentId =='"+parentId+"'"));
+				var cmd = "application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet."+uniqueId+".setFocus()";
+
+				eval(cmd);
+			}
+			
+		}
+		
+	} else{
+		if ( this.tab_menuLv3.tpg_menu.grd_menuLv3.getTreeStatus(this.tab_menuLv3.tpg_menu.grd_menuLv3.getTreeRow(this.gds_menu.rowposition)) == 0 ) {
+			this.tab_menuLv3.tpg_menu.grd_menuLv3.setTreeStatus(this.tab_menuLv3.tpg_menu.grd_menuLv3.getTreeRow(this.gds_menu.rowposition), true);
+		} else {
+			this.tab_menuLv3.tpg_menu.grd_menuLv3.setTreeStatus(this.tab_menuLv3.tpg_menu.grd_menuLv3.getTreeRow(this.gds_menu.rowposition), false);
+		}
+	}
+}
+
+this.tab_menuLv3_tpg_my_btn_new_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var userId = this.gds_user.getColumn(this.gds_user, "memberNo");
+
+	var popupId = "com02001_p02";
+	var argumentsList = new Array();
+	var popupUrl = "com::com02001_p02.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var obj = this;
+	
+	argumentsList['memberNo'] = userId;
+	
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, "850", "487", obj);
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_searchFavo
+* 함수설명 	: 나의메뉴 조회 함수
+*****************************************************************************/
+this.tab_menuLv3_canchange = function(obj:Tab, e:nexacro.TabIndexChangeEventInfo)
+{
+	var strArg  = "memberNo="  + nexacro.wrapQuote(this.gds_user.getColumn(0, "memberNo"));
+	    strArg += " gv_langFg=" + nexacro.wrapQuote(application.gv_langFg);
+	this.transaction("",
+					 "txComUrl::com/comm/selectTreeFavo.do",
+					 "",
+					 "gds_favo=resultList",
+					 strArg,
+					 "");
+}
+
+this.tab_menuLv3_tpg_my_grd_favo_oncellclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	if(this.gds_favo.getColumn(this.gds_favo.rowposition, "menuLvl") == 4){
+		var menuUrl    = this.gds_favo.getColumn(this.gds_favo.rowposition, "url");
+		var sysId     = this.gds_favo.getColumn(this.gds_favo.rowposition, "sysId");
+		var sysNm     = this.gds_favo.getColumn(this.gds_favo.rowposition, "sysNm");
+		var subId     = this.gds_favo.getColumn(this.gds_favo.rowposition, "subId");
+		var subNm     = this.gds_favo.getColumn(this.gds_favo.rowposition, "subNm");
+		var menuId     = this.gds_favo.getColumn(this.gds_favo.rowposition, "menuId");
+		var menuNm     = this.gds_favo.getColumn(this.gds_favo.rowposition, "menuNm");
+		var parentId   = this.gds_favo.getColumn(this.gds_favo.rowposition, "parentId");
+		var parentNm   = this.gds_favo.getColumn(this.gds_favo.rowposition, "parentNm");
+		var year       = this.gds_favo.getColumn(this.gds_favo.rowposition, "year");
+		var termCd     = this.gds_favo.getColumn(this.gds_favo.rowposition, "termCd");
+		var scheduleCd = this.gds_favo.getColumn(this.gds_favo.rowposition, "scheduleCd");		
+		var selectFlag = this.gds_menu.getColumn(this.gds_menu.rowposition, "selectFlag");
+		var saveFlag = this.gds_menu.getColumn(this.gds_menu.rowposition, "saveFlag");
+		var printFlag = this.gds_menu.getColumn(this.gds_menu.rowposition, "printFlag");
+		var downloadFlag = this.gds_menu.getColumn(this.gds_menu.rowposition, "downloadFlag");
+		var uploadFlag = this.gds_menu.getColumn(this.gds_menu.rowposition, "uploadFlag");
+		var sendFlag = this.gds_menu.getColumn(this.gds_menu.rowposition, "sendFlag");
+		var personInfoFlag = this.gds_menu.getColumn(this.gds_menu.rowposition, "personInfoFlag");
+		var managerFlag = this.gds_menu.getColumn(this.gds_menu.rowposition, "managerFlag");
+		var tabCnt     = this.apMDIFrame.form.workTab.getTabpageCount();
+		var tabIndex   = this.apMDIFrame.form.workTab.getIndex();
+		var uniqueId   = "ChildFrame_"+ menuId;
+		
+		if(this.gds_open.findRow("menuId", menuId)<0){
+			if(tabCnt > 9){
+				this.alert("화면은 한번에 10개까지만 열 수 있습니다.");
+				return false;
+			}
+			//MDI Tab버튼 추가
+			this.apMDIFrame.form.workTab.insertTabpage("tab"+parentId+menuId,tabCnt, "", menuNm);
+			var addRow = application.gds_open.addRow();
+			
+			this.gds_open.setColumn(addRow, 'sysId', sysId);
+			this.gds_open.setColumn(addRow, 'sysNm', sysNm);
+			this.gds_open.setColumn(addRow, 'subId', subId);
+			this.gds_open.setColumn(addRow, 'subNm', subNm);
+			this.gds_open.setColumn(addRow, 'menuId', menuId);
+			this.gds_open.setColumn(addRow, 'menuNm', menuNm);
+			this.gds_open.setColumn(addRow, 'parentId', parentId);
+			this.gds_open.setColumn(addRow, 'parentNm', parentNm);
+			this.gds_open.setColumn(addRow, 'year', year);
+			this.gds_open.setColumn(addRow, 'termCd', termCd);
+			this.gds_open.setColumn(addRow, 'scheduleCd', scheduleCd);
+			this.gds_open.setColumn(addRow, 'selectFlag', selectFlag);
+			this.gds_open.setColumn(addRow, 'saveFlag', saveFlag);
+			this.gds_open.setColumn(addRow, 'printFlag', printFlag);
+			this.gds_open.setColumn(addRow, 'downloadFlag', downloadFlag);
+			this.gds_open.setColumn(addRow, 'uploadFlag', uploadFlag);
+			this.gds_open.setColumn(addRow, 'sendFlag', sendFlag);
+			this.gds_open.setColumn(addRow, 'personInfoFlag', personInfoFlag);
+			this.gds_open.setColumn(addRow, 'managerFlag', managerFlag);
+
+			var objNewForm = new ChildFrame();
+			objNewForm.init(uniqueId, "absolute", 0, 0, null, null, 0, 45, menuUrl);
+			this.apMainFrameSet.addChild(uniqueId, objNewForm);
+			var cmd = "application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet."+uniqueId+".set_showtitlebar(false)";
+			eval(cmd);
+			
+			objNewForm.show();
+		} else{
+			if(this.gds_open.findRowExpr("menuId =='"+menuId+"'&& parentId =='"+parentId+"'")<0){
+				if(tabCnt > 9){
+					this.alert("화면은 한번에 10개까지만 열 수 있습니다.");
+					return false;
+				}
+				//MDI Tab버튼 추가
+				this.apMDIFrame.form.workTab.insertTabpage("tab"+parentId+menuId,tabCnt, "", menuNm);
+				var addRow = application.gds_open.addRow();
+				this.gds_open.setColumn(addRow, 'sysId', sysId);
+				this.gds_open.setColumn(addRow, 'sysNm', sysNm);
+				this.gds_open.setColumn(addRow, 'subId', subId);
+				this.gds_open.setColumn(addRow, 'subNm', subNm);
+				this.gds_open.setColumn(addRow, 'menuId', menuId);
+				this.gds_open.setColumn(addRow, 'menuNm', menuNm);
+				this.gds_open.setColumn(addRow, 'parentId', parentId);
+				this.gds_open.setColumn(addRow, 'parentNm', parentNm);
+				this.gds_open.setColumn(addRow, 'year', year);
+				this.gds_open.setColumn(addRow, 'termCd', termCd);
+				this.gds_open.setColumn(addRow, 'scheduleCd', scheduleCd);
+				this.gds_open.setColumn(addRow, 'selectFlag', selectFlag);
+				this.gds_open.setColumn(addRow, 'saveFlag', saveFlag);
+				this.gds_open.setColumn(addRow, 'printFlag', printFlag);
+				this.gds_open.setColumn(addRow, 'downloadFlag', downloadFlag);
+				this.gds_open.setColumn(addRow, 'uploadFlag', uploadFlag);
+				this.gds_open.setColumn(addRow, 'sendFlag', sendFlag);
+				this.gds_open.setColumn(addRow, 'personInfoFlag', personInfoFlag);
+				this.gds_open.setColumn(addRow, 'managerFlag', managerFlag);
+				
+				var objNewForm = new ChildFrame();
+
+				objNewForm.init(uniqueId, "absolute", 0, 0, null, null, 0, 45, menuUrl);
+		
+				this.apMainFrameSet.addChild(uniqueId, objNewForm);
+				var cmd = "application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet."+uniqueId+".set_showtitlebar(false)";
+				eval(cmd);
+				
+				objNewForm.show();
+			}else{
+				//선택된 메뉴 활성화
+				var nRow = application.gds_open.findRowExpr("menuId =='"+menuId+"'&& parentId =='"+parentId+"'");
+				this.apMDIFrame.form.workTab.set_tabindex(application.gds_open.findRowExpr("menuId =='"+menuId+"'&& parentId =='"+parentId+"'"));
+				var cmd = "application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet."+uniqueId+".setFocus()";
+				
+				eval(cmd);
+			}
+			
+		}
+		
+	}else{
+		if ( this.tab_menuLv3.tpg_my.grd_favo.getTreeStatus(this.tab_menuLv3.tpg_my.grd_favo.getTreeRow(this.gds_favo.rowposition)) == 0 ) {
+			this.tab_menuLv3.tpg_my.grd_favo.setTreeStatus(this.tab_menuLv3.tpg_my.grd_favo.getTreeRow(this.gds_favo.rowposition), true);
+		} else {
+			this.tab_menuLv3.tpg_my.grd_favo.setTreeStatus(this.tab_menuLv3.tpg_my.grd_favo.getTreeRow(this.gds_favo.rowposition), false);
+		}
+	}
+}
+]]></Script>
+  </Form>
+</FDL>

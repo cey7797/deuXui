@@ -1,0 +1,1750 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="bg03010_p03" classname="bg02030_1" left="0" top="0" width="1100" height="575" titletext="신규예산변경신청등록_계정내역(전용)" onload="bg03010_p03_onload">
+    <Layouts>
+      <Layout>
+        <ImageViewer id="ImageViewer00" taborder="28" left="-1" top="0" width="1100" height="39"/>
+        <Grid id="grd_main" taborder="0" binddataset="ds_bgChg" useinputpanel="false" autofittype="col" autosizingtype="none" left="15" top="80" height="450" width="1069" onkeyup="grd_main_onkeyup" onexpandup="grd_main_onexpandup" autoenter="select" selecttype="row">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="30" band="left"/>
+                <Column size="20" band="left"/>
+                <Column size="30" band="left"/>
+                <Column size="80"/>
+                <Column size="120"/>
+                <Column size="80"/>
+                <Column size="150"/>
+                <Column size="150"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="110"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell displaytype="normal"/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox"/>
+                <Cell col="2" text="순번"/>
+                <Cell col="3" text="수지구분"/>
+                <Cell col="4" text="부서"/>
+                <Cell col="5" text="계정코드"/>
+                <Cell col="6" text="계정명"/>
+                <Cell col="7" text="사업명"/>
+                <Cell col="8" text="총예산액"/>
+                <Cell col="9" text="집행액"/>
+                <Cell col="10" text="잔액"/>
+                <Cell col="11" text="예산신청액"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="image" text="bind:rowStatus" expr="expr:rowStatus==2?&quot;URL('theme://images/ico_i.png')&quot;:rowStatus==4?&quot;URL('theme://images/ico_u.png')&quot;:rowStatus==8?&quot;URL('theme://images/ico_d.png')&quot;:&quot;&quot;"/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox" text="bind:chk"/>
+                <Cell col="2" text="expr:currow + 1"/>
+                <Cell col="3" displaytype="combo" edittype="expr:rowStatus == 2 ? 'combo':'none'" style="selectcolor: ;" text="bind:balDiv" combodataset="ds_balDiv" combocodecol="comCd" combodatacol="comCdNm"/>
+                <Cell col="4" edittype="expr:rowStatus == '2' ? 'normal':'none'" style="selectcolor: ;" text="bind:budgOrgNm" editautoselect="true" expandshow="expr:rowStatus == '2'? 'show':'hide'" expandimage="URL('theme://images\ico_expand.png')"/>
+                <Cell col="5" edittype="none" style="selectcolor: ;" text="bind:acntCd"/>
+                <Cell col="6" edittype="expr:rowStatus == '2' ? 'normal':'none'" style="align:left;selectcolor: ;" text="bind:acntNm" editautoselect="true" expandshow="expr:rowStatus == '2'? 'show':'hide'" expandimage="URL('theme://images\ico_expand.png')"/>
+                <Cell col="7" edittype="expr:rowStatus == '2' ? 'normal':'none'" style="align:left;selectcolor: ;" text="bind:bizNm" editautoselect="true" expandshow="expr:rowStatus == '2'? 'show':'hide'" expandimage="URL('theme://images\ico_expand.png')"/>
+                <Cell col="8" displaytype="number" style="align:right;selectcolor: ;" text="bind:totalBudgAmt"/>
+                <Cell col="9" displaytype="number" style="align:right;selectcolor: ;" text="bind:execAmt"/>
+                <Cell col="10" displaytype="number" style="align:right;selectcolor: ;" text="bind:balnAmt"/>
+                <Cell col="11" displaytype="number" edittype="normal" editfilter="number" style="align:right;selectcolor: ;" text="bind:budgAmt" editimemode="hangul" editautoselect="true" editdisplay="display"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2"/>
+                <Cell col="3"/>
+                <Cell col="4"/>
+                <Cell col="5"/>
+                <Cell col="6" style="align:right;" text="합계"/>
+                <Cell col="7"/>
+                <Cell col="8" displaytype="number" style="align:right;" text="expr:dataset.getSum(&quot;totalBudgAmt&quot;)"/>
+                <Cell col="9" displaytype="number" text="expr:dataset.getSum(&quot;execAmt&quot;)"/>
+                <Cell col="10" displaytype="number" text="expr:dataset.getSum(&quot;balnAmt&quot;)"/>
+                <Cell col="11" displaytype="number" style="align:right;" text="expr:dataset.getSum(&quot;budgAmt&quot;)"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static00" taborder="4" text="계정내역팝업" cssclass="popup_title" enable="false" left="26" top="0" width="118" height="37"/>
+        <Static id="Static28" taborder="5" text="w&#13;&#10;15" visible="false" left="0" top="0" width="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;" bottom="148"/>
+        <Static id="Static01" taborder="9" text="w&#13;&#10;15" visible="false" left="1084" top="0" width="15" height="506" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static03" taborder="13" text="h15" visible="false" left="0" top="558" width="1035" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_new" taborder="14" text="추가" onclick="btn_new_onclick" cssclass="new" top="49" right="140" width="60" height="22" tooltiptype="hover" tooltiptext="추가" userBtnAuth="S"/>
+        <Button id="btn_del" taborder="15" text="삭제" cssclass="del" top="49" right="78" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" userBtnAuth="S" onclick="btn_del_onclick"/>
+        <Static id="Static04" taborder="17" text="h10" visible="false" left="15" top="39" width="1069" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static05" taborder="18" text="h10" visible="false" left="15" top="71" width="1069" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_grdMain" taborder="24" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" top="538" right="16" width="86" height="20" style="border:0 none #808080ff ;align:right middle;"/>
+        <Static id="Static09" taborder="26" text="h10" visible="false" left="15" top="530" width="1020" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static76" taborder="29" text="계정기본목록" cssclass="page_stitle" left="15" top="56" width="324" height="20"/>
+        <Button id="btn_save" taborder="36" text="저장" onclick="btn_save_onclick" cssclass="save" top="49" right="16" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S"/>
+        <Button id="btn_refresh" taborder="41" cssclass="btn_WF_commonReset" top="9" right="16" width="39" height="22" tooltiptype="hover" tooltiptext="처리" userBtnAuth="S" onclick="btn_refresh_onclick"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_bgChg" canrowposchange="ds_bgChg_canrowposchange" oncolumnchanged="ds_bgChg_oncolumnchanged" useclientlayout="true">
+        <ColumnInfo>
+          <Column id="acntUnt" type="STRING" size="256"/>
+          <Column id="acntYy" type="STRING" size="256"/>
+          <Column id="balDiv" type="STRING" size="256"/>
+          <Column id="keyBalDiv" type="STRING" size="256"/>
+          <Column id="budgOrgId" type="STRING" size="256"/>
+          <Column id="keyBudgOrgId" type="STRING" size="256"/>
+          <Column id="budgOrgNm" type="STRING" size="256"/>
+          <Column id="keyAcntCd" type="STRING" size="256"/>
+          <Column id="acntNm" type="STRING" size="256"/>
+          <Column id="mokNm" type="STRING" size="256"/>
+          <Column id="chgSeq" type="STRING" size="256"/>
+          <Column id="bizCd" type="STRING" size="256"/>
+          <Column id="keyBizCd" type="STRING" size="256"/>
+          <Column id="bizNm" type="STRING" size="256"/>
+          <Column id="acntCd" type="STRING" size="256"/>
+          <Column id="adjOrdCd" type="STRING" size="256"/>
+          <Column id="budgAmt" type="BIGDECIMAL" size="256"/>
+          <Column id="budgCfmDt" type="STRING" size="256"/>
+          <Column id="budgCd" type="STRING" size="256"/>
+          <Column id="budgAmtSum" type="BIGDECIMAL" size="256"/>
+          <Column id="calcBssCnt" type="STRING" size="256"/>
+          <Column id="monthBudgAmt" type="STRING" size="256"/>
+          <Column id="totalBudgAmt" type="BIGDECIMAL" size="256"/>
+          <Column id="execAmt" type="BIGDECIMAL" size="256"/>
+          <Column id="balnAmt" type="BIGDECIMAL" size="256"/>
+          <Column id="chgDiv" type="STRING" size="256"/>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="aplyOrgId" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_bgChgDet" oncolumnchanged="ds_bgChgDet_oncolumnchanged" onrowposchanged="ds_bgChgDet_onrowposchanged">
+        <ColumnInfo>
+          <Column id="acntUnt" type="STRING" size="256"/>
+          <Column id="acntYy" type="STRING" size="256"/>
+          <Column id="budgCd" type="STRING" size="256"/>
+          <Column id="balDiv" type="STRING" size="256"/>
+          <Column id="adjOrdCd" type="STRING" size="256"/>
+          <Column id="budgOrgId" type="STRING" size="256"/>
+          <Column id="acntCd" type="STRING" size="256"/>
+          <Column id="keyAcntCd" type="STRING" size="256"/>
+          <Column id="bizCd" type="STRING" size="256"/>
+          <Column id="itmSeq" type="INT" size="256"/>
+          <Column id="itmNm" type="STRING" size="256"/>
+          <Column id="calcBss" type="STRING" size="256"/>
+          <Column id="budgAmt" type="STRING" size="256"/>
+          <Column id="seq" type="INT" size="256"/>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="newBizYn" type="STRING" size="256"/>
+          <Column id="chgSeq" type="STRING" size="256"/>
+          <Column id="budgOrgNm" type="STRING" size="256"/>
+          <Column id="bizNm" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_bgChgSched">
+        <ColumnInfo>
+          <Column id="acntUnt" type="STRING" size="256"/>
+          <Column id="acntYy" type="STRING" size="256"/>
+          <Column id="chgSeq" type="STRING" size="256"/>
+          <Column id="adjOrdCd" type="STRING" size="256"/>
+          <Column id="budgOrgId" type="STRING" size="256"/>
+          <Column id="keyBudgOrgId" type="STRING" size="256"/>
+          <Column id="acntCd" type="STRING" size="256"/>
+          <Column id="keyAcntCd" type="STRING" size="256"/>
+          <Column id="bizCd" type="STRING" size="256"/>
+          <Column id="keyBizCd" type="STRING" size="256"/>
+          <Column id="budgYymm" type="STRING" size="256"/>
+          <Column id="budgAmt" type="STRING" size="256"/>
+          <Column id="balDiv" type="STRING" size="256"/>
+          <Column id="keyBalDiv" type="STRING" size="256"/>
+          <Column id="seq" type="STRING" size="0"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="budgOrgNm" type="STRING" size="256"/>
+          <Column id="bizNm" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_dummy"/>
+      <Dataset id="ds_acntItmSeqCd" useclientlayout="false">
+        <ColumnInfo>
+          <Column id="nm" type="STRING" size="256"/>
+          <Column id="cd" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_saveGb">
+        <ColumnInfo>
+          <Column id="cd" type="STRING" size="256"/>
+          <Column id="nm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="cd">1</Col>
+            <Col id="nm">3월저장</Col>
+          </Row>
+          <Row>
+            <Col id="cd">2</Col>
+            <Col id="nm">균등분할</Col>
+          </Row>
+          <Row>
+            <Col id="cd">3</Col>
+            <Col id="nm">초기화</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_bgChgCopy" onrowposchanged="ds_bgFrmn_onrowposchanged" canrowposchange="ds_bgFrmn_canrowposchange" oncolumnchanged="ds_bgFrmn_oncolumnchanged">
+        <ColumnInfo>
+          <Column id="acntUnt" type="STRING" size="256"/>
+          <Column id="acntYy" type="STRING" size="256"/>
+          <Column id="chgSeq" type="STRING" size="256"/>
+          <Column id="balDiv" type="STRING" size="256"/>
+          <Column id="keyBalDiv" type="STRING" size="256"/>
+          <Column id="adjOrdCd" type="STRING" size="256"/>
+          <Column id="budgOrgId" type="STRING" size="256"/>
+          <Column id="keyBudgOrgId" type="STRING" size="256"/>
+          <Column id="acntCd" type="STRING" size="256"/>
+          <Column id="keyAcntCd" type="STRING" size="256"/>
+          <Column id="bizCd" type="STRING" size="256"/>
+          <Column id="keyBizCd" type="STRING" size="256"/>
+          <Column id="seq" type="STRING" size="256"/>
+          <Column id="itmNm" type="STRING" size="256"/>
+          <Column id="itmSeq" type="STRING" size="256"/>
+          <Column id="calcBss" type="STRING" size="256"/>
+          <Column id="budgAmt" type="STRING" size="256"/>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="budgOrgNm" type="STRING" size="256"/>
+          <Column id="aplyOrgId" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_key" onrowposchanged="ds_bgFrmn_onrowposchanged" canrowposchange="ds_bgFrmn_canrowposchange" oncolumnchanged="ds_bgFrmn_oncolumnchanged">
+        <ColumnInfo>
+          <Column id="acntUnt" type="STRING" size="256"/>
+          <Column id="acntYy" type="STRING" size="256"/>
+          <Column id="budgCd" type="STRING" size="256"/>
+          <Column id="adjOrdCd" type="STRING" size="256"/>
+          <Column id="budgOrgId" type="STRING" size="256"/>
+          <Column id="acntCd" type="STRING" size="256"/>
+          <Column id="keyAcntCd" type="STRING" size="256"/>
+          <Column id="acntNm" type="STRING" size="256"/>
+          <Column id="mokNm" type="STRING" size="256"/>
+          <Column id="bizCd" type="STRING" size="256"/>
+          <Column id="bizNm" type="STRING" size="256"/>
+          <Column id="budgAmt" type="BIGDECIMAL" size="256"/>
+          <Column id="budgCfmDt" type="STRING" size="256"/>
+          <Column id="balDiv" type="STRING" size="256"/>
+          <Column id="calcBssCnt" type="STRING" size="256"/>
+          <Column id="monthBudgAmt" type="BIGDECIMAL" size="256"/>
+          <Column id="preYearBudgAmt" type="BIGDECIMAL" size="256"/>
+          <Column id="acntPop" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="chk" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_bgChgDetCopy" oncolumnchanged="ds_bgFrmnDet_oncolumnchanged" onrowposchanged="ds_bgFrmnDet_onrowposchanged">
+        <ColumnInfo>
+          <Column id="acntUnt" type="STRING" size="256"/>
+          <Column id="acntYy" type="STRING" size="256"/>
+          <Column id="budgCd" type="STRING" size="256"/>
+          <Column id="balDiv" type="STRING" size="256"/>
+          <Column id="adjOrdCd" type="STRING" size="256"/>
+          <Column id="budgOrgId" type="STRING" size="256"/>
+          <Column id="acntCd" type="STRING" size="256"/>
+          <Column id="keyAcntCd" type="STRING" size="256"/>
+          <Column id="bizCd" type="STRING" size="256"/>
+          <Column id="itmSeq" type="INT" size="256"/>
+          <Column id="itmNm" type="STRING" size="256"/>
+          <Column id="calcBss" type="STRING" size="256"/>
+          <Column id="budgAmt" type="STRING" size="256"/>
+          <Column id="seq" type="INT" size="256"/>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="newBizYn" type="STRING" size="256"/>
+          <Column id="chgSeq" type="STRING" size="256"/>
+          <Column id="budgOrgNm" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_balDiv"/>
+      <Dataset id="ds_staCd"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[// [프로젝트]	동의대학교 예산회계시스템 구축
+// [시스템명]	행정
+// [부시스템]	예산관리
+// [프로그램]	예산변경신청등록(팝업)
+// [설명] 
+//	         
+// [작성자명]	라병수
+// [작성일자]	2016.01.19
+//////////////////////////////////[수정이력]//////////////////////////////////
+// [수정일자] 
+// [수 정 자] 
+// [수정내용]
+
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+
+var selectRowKeyMain;
+var selectRowKeyDet;
+var selectRowKeySub;
+
+var strAcntYy;		//회계년도
+var strAcntUnt;		//회계단위
+var strAplyOrgId;	//신청부서
+var strAplyOrgNm;	//신청부서명
+var strBizCd;		//사업코드
+var strBizNm;		//사업명
+var strAdjOrdCd;	//조정차수
+var strPgmId;		//프로그램ID
+var strSchedChk;	//일정체크여부
+var strStaCd;		//상태코드
+var strChgSeq;      //변경신청순번
+var strChgDiv;      //변경구분
+var strManagerYn;		//예산관리자여부
+
+this.bg03010_p03_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	var arrDataSet = Array(1); 
+		arrDataSet[0]  = "ds_balDiv";  	        // 수지구분
+		arrDataSet[1]  = "ds_staCd";  	        // 상태구분
+	
+	// 조회조건으로	넘어갈 공통코드	정의.(화면대로 순서꼭 지켜주세요.)
+	
+	var arrGrpCd = Array(1);
+		arrGrpCd[0]  = "BG007"; 					//공통코드구분
+		arrGrpCd[1]  = "BG009"; 					//공통코드구분
+			
+	// 사용여부	지정할 아큐먼트를 넘긴다.
+	var arrUseYn =	Array(1);
+		arrUseYn[0]  =	"Y";
+		arrUseYn[1]  =	"Y";
+	
+	// T:전체,S:선택,X:없음 
+	var arrModeFg =	Array(1);
+		arrModeFg[0]  =	"X";
+		arrModeFg[1]  =	"X";
+	
+	// WHERE절 내용 "X":없음
+	var arrWhere =	Array(1);
+		arrWhere[0]  =	"X";//ABB_CD IN ('S','K')
+		arrWhere[1]  =	"X";//ABB_CD IN ('S','K')
+		
+	/* 메소드명     : ComboLoad
+	 * 설명         : 공통코드 테이블을 조회하여 콤보박스를 생성한다.
+	 * 메소드인수1  : DataSet명의 배열
+	 * 메소드인수2  : 그룹코드번호의 배열
+	 * 메소드인수3  : 캠퍼스구분 배열 ("T":전체, "C":공통만, "S":서울, "K":경주)
+	 * 메소드인수4  : 조건문의 배열 (1:사용, 0:사용안함)
+	 * 메소드인수5  : 전체공란 첨부여부 "T": 전체, "S":선택, "X" : 데이터시작
+	 * 메소드인수6  : WHERE절 내용 "X":없음
+	 */
+
+	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{	
+
+	var essGrd = new Array(0);
+		essGrd[0] = this.grd_main;
+// 		essGrd[1] = this.grd_det;
+// 		essGrd[2] = this.grd_sub;		
+
+	this.gfn_essDataset(essGrd);
+	this.gfn_bindCmmnFunction();
+	
+	strAcntYy = this.parent.acntYy;
+	strAcntUnt = this.parent.acntUnt;
+	strAplyOrgId = this.parent.aplyOrgId;
+	strAplyOrgNm = this.parent.aplyOrgNm;
+	strBizCd = this.parent.bizCd;
+	strBizNm = this.parent.bizNm;
+	strAdjOrdCd = this.parent.adjOrdCd;
+	strPgmId = this.parent.pgmId;
+	strSchedChk = this.parent.schedChk;
+	strStaCd = this.parent.staCd;
+	strChgSeq = this.parent.chgSeq;
+	strChgDiv = this.parent.chgDiv;
+	strManagerYn = this.parent.managerYn;
+	
+	if(strAcntUnt == null || strAcntUnt == ""){
+		this.gfn_message("A", "회계단위값이 셋팅되지 않아 화면을 종료합니다.");
+		this.close();
+	}
+	this.fn_search();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preFind
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preSearch = function()
+{
+	return true;
+}
+
+
+/********************************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 조회함수
+********************************************************************************/
+this.fn_search = function(){
+	//alert("A");
+		var strArg  = "acntYy="  + nexacro.wrapQuote(this.gfn_getNullToEmpty(strAcntYy));
+		    strArg  += "acntUnt="  + nexacro.wrapQuote(this.gfn_getNullToEmpty(strAcntUnt));
+		    strArg  += "aplyOrgId="  + nexacro.wrapQuote(this.gfn_getNullToEmpty(strAplyOrgId));
+		    strArg  += "chgSeq="  + nexacro.wrapQuote(this.gfn_getNullToEmpty(strChgSeq));
+		    strArg  += "adjOrdCd="  + nexacro.wrapQuote(this.gfn_getNullToEmpty(strAdjOrdCd));
+		    strArg  += "chgDiv="  + nexacro.wrapQuote(this.gfn_getNullToEmpty(strChgDiv));
+
+		this.gfn_transaction("MAIN",
+							 "txComUrl::com/admi/selectBgChgList.do",
+							 "",
+							 "ds_bgChg=resultList",
+							 strArg,
+							 "fn_callBack"
+							 ,false);
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_refresh_onclick
+ * 함수설명 	: 조회함수
+********************************************************************************/
+this.btn_refresh_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.reload();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postFind
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearch = function()
+{
+	this.fn_setPositionChg();
+	this.gfn_getDatasetCount(this.ds_bgChg, this.sta_grdMain);
+	this.fn_btnCont();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postSearchDet
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearchDet = function()
+{
+	//alert("B1");
+	this.fn_setPositionChgDet();
+	this.gfn_getDatasetCount(this.ds_bgChgDet, this.sta_grdDet);
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postSearchSub
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearchSub = function()
+{
+	this.fn_setPositionChgSub();
+	this.gfn_getDatasetCount(this.ds_bgChgSched, this.sta_grdSub);
+}
+
+ /********************************************************************************
+ * 함 수 명 	: ds_bgChg_canrowposchange
+ * 함수설명 	: 그리드로우 클릭 되기전에 필수체크, 그리드 클릭할때마다 디테일그리드 조회
+ ********************************************************************************/
+this.ds_bgChg_canrowposchange = function(obj:Dataset, e:nexacro.DSRowPosChangeEventInfo)
+{
+	if(this.ds_bgChg.rowcount > 0){
+		if(this.ds_bgChg.getColumn(e.oldrow,"acntCd")== "000000" || this.ds_bgChg.getColumn(e.oldrow,"acntCd")== "" ){
+			this.gfn_message("A", "세목을 반드시 입력하셔야 합니다.1");
+			return false;
+		}else if(this.ds_bgChg.getColumn(e.oldrow,"bizCd")== "000000" || this.ds_bgChg.getColumn(e.oldrow,"bizCd")== "" ){
+			this.gfn_message("A", "사업명을 반드시 입력하셔야 합니다.");
+			return false;
+		}else if(this.ds_bgChg.getColumn(e.oldrow,"budgOrgId")== "000000" || this.ds_bgChg.getColumn(e.oldrow,"budgOrgId")== "" ){
+			this.gfn_message("A", "부서명을 반드시 입력하셔야 합니다.");
+			return false;
+		}
+	}
+// 	if(this.fn_chgChk()>0){
+// 		var strMsg = "수정된 데이터가 있습니다. 저장하시겠습니까?";
+// 		if(!this.gfn_message("C",strMsg )) {
+// 			return false;
+// 		}else{
+// 			this.fn_saveAcctAll(e.oldrow,0);
+// 		}
+// 	}
+	
+}
+
+
+/********************************************************************************
+ * 함 수 명 	: ds_bgChg_onrowposchanged
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.ds_bgChgDet_onrowposchanged = function(obj:Dataset, e:nexacro.DSRowPosChangeEventInfo)
+{
+	this.fn_searchSub();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		}else if(trId=="MAIN"){
+			this.fn_postSearch();
+		}else if(trId=="DET"){
+			this.fn_postSearchDet();
+		}else if(trId=="SUB"){
+			this.fn_postSearchSub();
+		}else if(trId=="SAVEBGCHG"){
+			this.fn_postSaveBgChg();
+		}else if(trId=="SAVEBGCHGCHG"){
+			this.fn_postSaveBgChgChg();
+		}else if(trId=="SAVEBGCHGDEL"){
+			this.fn_postSaveBgChgDel();
+		}else if(trId=="SAVEBGCHGDETDEL"){
+			this.fn_postSaveBgChgDetDel();
+		}else if(trId = "REMOVE"){
+			this.fn_saveRemove();
+		}
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preNewBtn
+ * 함수설명 	: 추가 전 처리 함수
+********************************************************************************/
+this.fn_preNewBtn = function(){
+	
+	if(this.ds_bgChg.rowcount > 0 ){
+		if ( this.ds_bgChg.getCaseCount("acntCd=='' || acntCd==null || acntCd=='000000' ") > 0 ) {
+				this.gfn_message("A", "세목 입력 후 신규행을 추가할 수 있습니다.");
+				return false;
+		} else if ( this.ds_bgChg.getCaseCount("bizCd=='' || bizCd==null || bizCd=='000000' ") > 0 ) {
+				this.gfn_message("A", "사업명 입력 후 신규행을 추가할 수 있습니다.");
+				return false;
+		} else if ( this.ds_bgChg.getCaseCount("budgOrgId=='' || budgOrgId==null || budgOrgId=='000000' ") > 0 ) {
+				this.gfn_message("A", "부서명 입력 후 신규행을 추가할 수 있습니다.");
+				return false;
+		} 
+		return true;
+	}
+	return true;
+	
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_new_onclick
+ * 함수설명 	: Row를 추가한다.
+********************************************************************************/
+this.btn_new_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.fn_preNewBtn()){
+		var addRow = this.ds_bgChg.addRow();
+		this.ds_bgChg.setColumn(addRow,"rowStatus",2);
+		this.ds_bgChg.setColumn(addRow,"acntUnt",strAcntUnt);
+		this.ds_bgChg.setColumn(addRow,"acntYy",strAcntYy); 
+		this.ds_bgChg.setColumn(addRow,"aplyOrgId",strAplyOrgId);
+		this.ds_bgChg.setColumn(addRow,"budgOrgId",strAplyOrgId);
+		this.ds_bgChg.setColumn(addRow,"budgOrgNm",strAplyOrgNm);
+		this.ds_bgChg.setColumn(addRow,"chgSeq",strChgSeq);
+		if(nexacro.toNumber(this.ds_bgChg.getRowCount()) > 1){
+			this.ds_bgChg.setColumn(addRow,"balDiv",this.ds_bgChg.getColumn(addRow-1,"balDiv"));	
+			this.grd_main.setCellProperty("body",3,"edittype","none");
+		} else {
+			this.grd_main.setCellProperty("body",3,"edittype","expr:rowStatus == 2 ? 'combo':'none'");
+		}
+		this.ds_bgChg.setColumn(addRow,"adjOrdCd",strAdjOrdCd);
+	//	this.ds_bgChg.setColumn(addRow,"bizCd","000000");
+		//this.ds_bgChg.setColumn(addRow,"bizNm",strBizNm);
+	//	this.ds_bgChg.setColumn(addRow,"acntCd","000000");
+		
+		if(nexacro.toNumber(this.ds_bgChg.rowcount) > 1 ){
+			this.grd_main.setCellPos(4);
+			this.grd_main.setFocus();
+		}else{
+			this.grd_main.setCellPos(3);
+			this.grd_main.setFocus();
+		}
+		
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preDelBtn
+ * 함수설명 	: 삭제 전 처리 함수
+********************************************************************************/
+this.fn_preDelBtn = function(){
+	if ( this.ds_bgChg.getCaseCount("chk=='1'") == 0 ) {
+		this.gfn_message("A", "선택된 항목이 없습니다.");
+		return;
+	}
+	
+	if(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"rowStatus")!=2){
+		//strMsg = "계정내역 삭제 시 예산계정상세와 예산변경계획내역 전체가 삭제됩니다. \n";
+		var strMsg = "삭제하시겠습니까?";
+		if(!this.gfn_message("C", strMsg )) {
+			return "0";
+		}
+	}else if(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"rowStatus") == 2){
+		this.ds_bgChg.deleteRow(this.ds_bgChg.rowposition);
+		return "0";
+	}
+	return "1";
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_del_onclick
+ * 함수설명 	: 선택한 Data를 삭제한다.
+ *********************************************************************/
+this.btn_del_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.fn_preDelBtn() == "1" ){	
+		for( var i=0; i < this.ds_bgChg.rowcount; i++){
+			if(this.ds_bgChg.getColumn(i,"chk") == "1"){
+				var nRow = this.ds_bgChgCopy.addRow();
+				this.ds_bgChgCopy.copyRow(nRow,this.ds_bgChg,i);
+				
+			}
+		}	
+		this.fn_saveBgChgDel();
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preNewDetBtn
+ * 함수설명 	: 추가 전 처리 함수
+********************************************************************************/
+this.fn_preNewDetBtn = function(){
+	
+	if ( this.ds_bgChg.rowcount == 0 ) {
+		this.gfn_message("A", "계정내역 추가후 입력할 수 있습니다.");
+/*		this.btn_newDet.set_enable(false);*/
+		return false;
+	}else if(this.ds_bgChg.getCaseCount("rowStatus > 1") > 0){
+		this.gfn_message("A", "계정기본목록에 입력중인 데이타가 있습니다.");
+		return false;
+	}else if(this.ds_bgChgDet.getCaseCount("rowStatus == 2") > 0){
+		this.gfn_message("A", "계정상세목록에 입력중인 데이타가 있습니다.");
+		return false;
+	} else {
+		return true;
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_newDet_onclick
+ * 함수설명 	: Row를 추가한다.
+********************************************************************************/
+this.btn_newDet_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.fn_preNewDetBtn()){
+		this.cfn_acntItmSeqCombo("ds_acntItmSeqCd",strAcntUnt,strAcntYy,this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"acntCd"),strBalDiv);
+		var addRow = this.ds_bgChgDet.addRow();
+		//예산계정상세 ds_budgAcctDet 데이터셋에 기본정보셋팅
+		
+		this.ds_bgChgDet.setColumn(addRow,"acntUnt",strAcntUnt);
+		this.ds_bgChgDet.setColumn(addRow,"acntYy",strAcntYy);
+		this.ds_bgChgDet.setColumn(addRow,"budgOrgId",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"budgOrgId"));
+		this.ds_bgChgDet.setColumn(addRow,"chgSeq",strChgSeq);
+		this.ds_bgChgDet.setColumn(addRow,"balDiv",strBalDiv);
+		this.ds_bgChgDet.setColumn(addRow,"adjOrdCd",strAdjOrdCd);
+		this.ds_bgChgDet.setColumn(addRow,"bizCd",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"bizCd"));
+		this.ds_bgChgDet.setColumn(addRow,"acntCd",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"acntCd"));
+		this.ds_bgChgDet.setColumn(addRow,"rowStatus",2);		
+		
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_preDelDetBtn
+ * 함수설명 	: 선택한 Data를 삭제한다. 전처리
+ *********************************************************************/
+this.btn_preDelDetBtn = function(obj:Button,  e:nexacro.ClickEventInfo){
+	for(i=0; i <=this.ds_bgChgDet.rowcount; i++){
+		if(this.ds_bgChgDet.getColumn(i,"rowStatus") == 2 ){ 
+			this.ds_bgChgDet.deleteRow(i);
+			return "0";
+		}	
+	}	
+	return "1";
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_delDet_onclick
+ * 함수설명 	: 선택한 Data를 삭제한다.
+ *********************************************************************/
+this.btn_delDet_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+
+	var amt = nexacro.toNumber(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"budgAmt")) - nexacro.toNumber(this.ds_bgChgDet.getColumn(this.ds_bgChgDet.rowposition,"budgAmt"));
+	if(this.btn_preDelDetBtn() == "1"){
+
+		if(this.ds_bgChgDet.getColumn(this.ds_bgChgDet.rowposition, "budgAmt") != "" ||
+		   this.ds_bgChgDet.getColumn(this.ds_bgChgDet.rowposition, "budgAmt") != null ||
+		   this.ds_bgChgDet.getColumn(this.ds_bgChgDet.rowposition, "budgAmt") != 0 
+		 ) {
+			for(i=0; i <= this.ds_bgChgDet.rowcount; i++){
+				if(this.ds_bgChgDet.getColumn(i,"chk") == "1"){	
+					this.ds_bgChgDet.setColumn(i,"rowStatus",8);
+					this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, "budgAmt",nexacro.toNumber(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"budgAmt")) - nexacro.toNumber(this.ds_bgChgDet.getColumn(i,"budgAmt"))); 
+				}
+			}
+			for(i=0; i <= 11; i++){
+				this.ds_bgChgSched.setColumn(i,"rowStatus",8);
+			}
+
+			this.fn_saveBgChgDet("ds_bgChgDet");
+		}	
+	}else{
+
+		if(this.ds_bgChgDet.getColumn(this.ds_bgChgDet.rowposition, "budgAmt") != "" ||
+		   this.ds_bgChgDet.getColumn(this.ds_bgChgDet.rowposition, "budgAmt") != null ||
+		   this.ds_bgChgDet.getColumn(this.ds_bgChgDet.rowposition, "budgAmt") != 0 
+		 ) {
+			for(i=0; i <= this.ds_bgChgDet.rowcount; i++){
+				if(this.ds_bgChgDet.getColumn(i,"chk") == "1"){	
+					this.ds_bgChgDet.setColumn(i,"rowStatus",8);
+					this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, "budgAmt",nexacro.toNumber(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"budgAmt")) - nexacro.toNumber(this.ds_bgChgDet.getColumn(i,"budgAmt"))); 
+				}
+			}
+			for(i=0; i <= 11; i++){
+				this.ds_bgChgSched.setColumn(i,"rowStatus",8);
+			}				
+
+			this.fn_saveBgChgDet("ds_bgChgDet");
+		}
+	}
+
+}
+/*********************************************************************
+ * 함 수 명 	: btn_save_onclick
+ * 함수설명 	: 선택한 Data를 저장한다.
+ *********************************************************************/
+this.btn_save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(!this.gfn_chkValidation("ds_bgChg","balDiv$bizCd$budgOrgId$acntCd","수지구분,사업코드,예산부서,계정과목")){
+		return false;
+	}
+	
+	if(this.ds_bgChg.getCaseCount(this.ds_bgChg.getCaseCount("acntCd=='' || acntCd==null ") > 0 )){
+		var strMsg = "계정과목이 입력되지 않은 행이 존재합니다. ";
+		this.gfn_message("A", strMsg);
+		return false;
+	}else if(this.ds_bgChg.getCaseCount(this.ds_bgChg.getCaseCount("bizCd=='' || bizCd==null ") > 0 )){
+		var strMsg = "사업명이 입력되지 않은 행이 존재합니다. ";
+		this.gfn_message("A", strMsg);
+		return false;
+	}else if(this.ds_bgChg.getCaseCount(this.ds_bgChg.getCaseCount("budgOrgId=='' || budgOrgId==null ") > 0 )){
+		var strMsg = "부서명이 입력되지 않은 행이 존재합니다. ";
+		this.gfn_message("A", strMsg);
+		return false;
+	}else if(this.ds_bgChg.getCaseCount(this.ds_bgChg.getCaseCount("budgAmt=='' || budgAmt==null ") > 0 )){
+		var strMsg = "예산신청액이 입력되지 않은 행이 존재합니다. ";
+		this.gfn_message("A", strMsg);
+		return false;
+	}else{
+		if(nexacro.toNumber(this.ds_bgChg.getSum("budgAmt")) != 0  ){
+			alert("예산신청액의 총합계가 0원일때만 저장이 가능합니다");
+			return false;
+		}else{
+			//일괄저장 / 일괄삭제 / 계정코드일괄변경을 위해 유지
+			this.fn_saveAcctAll(this.ds_bgChg.rowposition,1); //저장
+		}
+		
+		
+
+	}
+
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_preSave
+ * 함수설명 	: DataSet을 저장 전 처리 함수.
+ *********************************************************************/
+this.fn_preSave = function()
+{
+
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_saveBgChg
+ * 함수설명 	: DataSet을 저장한다.
+ *********************************************************************/
+this.fn_saveBgChg = function()
+{
+	selectRowKeyMain = this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"acntCd");
+	
+	this.gfn_transaction("SAVEBGCHG",
+						 "txAdmUrl::com/admi/saveBgChgNewList.do",
+						 "resultList1=ds_bgChg:u",
+						 "",
+						 "",
+						 "fn_callBack");
+// 	this.gfn_transaction("SAVEBGCHG",
+// 						 "txAdmUrl::com/admi/saveBgChgList.do",
+// 						 "resultList1=ds_bgChg:u resultList2=ds_bgChgDet:u resultList3=ds_bgChgSched:u",
+// 						 "",
+// 						 "",
+// 						 "fn_callBack");
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSaveBgChg
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postSaveBgChg = function()
+{
+
+	this.gfn_message("A", "저장이 완료되었습니다.");
+	this.fn_search();
+	
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_saveDet_onclick
+ * 함수설명 	: 선택한 Data를 저장한다.
+ *********************************************************************/
+this.btn_saveDet_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	for(i=this.ds_bgChgDet.rowcount-1; i>=0; i--){
+		if(this.ds_bgChgDet.getColumn(i,"rowStatus") == 2){
+			if((this.ds_bgChgDet.getColumn(i,"itmSeq") == null || this.ds_bgChgDet.getColumn(i,"itmSeq") == "") &&
+			   (this.ds_bgChgDet.getColumn(i,"itmNm") == null || this.ds_bgChgDet.getColumn(i,"itmNm") == "") &&
+			   (this.ds_bgChgDet.getColumn(i,"calcBss") == null || this.ds_bgChgDet.getColumn(i,"calcBss") == "") &&
+			   (this.ds_bgChgDet.getColumn(i,"budgAmt") == null || this.ds_bgChgDet.getColumn(i,"budgAmt") == "")){
+			this.ds_bgChgDet.deleteRow(i);
+			}
+		}
+	}
+	this.fn_saveBgChgDet("ds_bgChgDet");
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_preSaveDet
+ * 함수설명 	: DataSet을 저장 전 처리 함수.
+ *********************************************************************/
+this.fn_preSaveDet = function()
+{
+	if(!this.gfn_isUpdate(this.ds_bgChgDet) ){
+		this.gfn_message("A", "변경된 데이터가 없습니다.");
+		return false;
+	}
+	if(this.ds_bgChgDet.getColumn(this.ds_bgChgDet.rowposition , "itmSeq" ) == null || this.ds_bgChgDet.getColumn(this.ds_bgChgDet.rowposition , "itmSeq" ) == "" ){
+		this.gfn_message("A", "[세세목]은 필수입력값입니다..");
+		return false;
+	}
+	return true;
+	
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_saveBgChgDet
+ * 함수설명 	: DataSet을 저장한다.
+ *********************************************************************/
+this.fn_saveBgChgDet = function(objDs)
+{
+	if(this.fn_preSaveDet()){
+		
+		selectRowKeyMain = this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"acntCd");
+		selectRowKeyDet = this.ds_bgChgDet.getColumn(this.ds_bgChgDet.rowposition,"seq");
+		
+		if(this.ds_bgChgDet.getColumn(this.ds_bgChgDet.rowposition,"rowStatus") == 2 ){
+			this.fn_chgSchedAddRow();
+		}
+		
+		this.gfn_transaction("SAVEBGCHGDET",
+							 "txAdmUrl::com/admi/saveBgChgDetList.do", 
+							 "resultList1="+objDs+":u resultList2=ds_bgChg:u resultList3=ds_bgChgSched:u resultList4=ds_bgChgSched:u",
+							 "",
+							 "",
+							 "fn_callBack");
+	}						 
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSaveBgChgDet
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postSaveBgChgDet = function()
+{
+	this.gfn_message("A", "저장이 완료되었습니다.");
+ 	this.fn_search();
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_saveSub_onclick
+ * 함수설명 	: 선택한 Data를 저장한다.
+ *********************************************************************/
+this.btn_saveSub_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_saveBgChgSub();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_preSaveSub
+ * 함수설명 	: DataSet을 저장 전 처리 함수.
+ *********************************************************************/
+this.fn_preSaveSub = function()
+{
+	if(!this.gfn_isUpdate(this.ds_bgChgSched) ){
+		this.gfn_message("A", "변경된 데이터가 없습니다.");
+		return false;
+
+	}
+
+	return true;
+	
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_saveBgChgSub
+ * 함수설명 	: DataSet을 저장한다.
+ *********************************************************************/
+this.fn_saveBgChgSub = function()
+{
+	if(this.fn_preSaveSub()){
+		selectRowKeyMain = this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"acntCd");
+		selectRowKeyDet = this.ds_bgChgDet.getColumn(this.ds_bgChgDet.rowposition,"seq");
+		selectRowKeySub = this.ds_bgChgSched.getColumn(this.ds_bgChgSched.rowposition,"seq");
+		
+		this.gfn_transaction("SAVEBGCHGSUB",
+							 "txAdmUrl::com/admi/saveBgChgSchedList.do", 
+							 "resultList=ds_bgChgSched:u",
+							 "",
+							 "",
+							 "fn_callBack");
+	}						 
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSaveBgChgSub
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postSaveBgChgSub = function()
+{
+
+	this.gfn_message("A", "저장이 완료되었습니다.");
+	this.fn_search();
+}
+
+
+/*********************************************************************
+ * 함 수 명 	: fn_saveBgChgSchedRemove
+ * 함수설명 	: DataSet을 저장한다.
+ *********************************************************************/
+this.fn_saveBgChgSchedRemove = function()
+{
+	this.gfn_transaction("REMOVE",
+						 "txAdmUrl::com/admi/saveBgChgSchedRemove.do",
+						 "resultList1=ds_bgChgSched:u resultList2=ds_bgChgSched:u",
+						 "",
+						 "",
+						 "fn_callBack");					 
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSaveBgChgSchedRemove
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postSaveBgChgSchedRemove = function()
+{
+	this.fn_searchSub();
+	
+}
+/*********************************************************************
+ * 함 수 명 	: fn_saveBgChgChg
+ * 함수설명 	: DataSet을 저장한다.
+ *********************************************************************/
+this.fn_saveBgChgChg = function()
+{
+	this.gfn_transaction("SAVEBGCHGCHG",
+						 "txAdmUrl::com/admi/saveBgChgChgList.do",
+						 "resultList=ds_bgChg:u",
+						 "",
+						 "",
+						 "fn_callBack");
+	
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSaveBgChgChg
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postSaveBgChgChg = function()
+{
+
+	this.gfn_message("A", "저장이 완료되었습니다.");
+	this.fn_search();
+	
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_saveBgChgDel
+ * 함수설명 	: DataSet을 저장한다.
+ *********************************************************************/
+this.fn_saveBgChgDel = function()
+{
+	//if(this.fn_preSave()){
+		for(i=0; i<=this.ds_bgChgCopy.rowcount; i++){
+			this.ds_bgChgCopy.setColumn(i,"rowStatus",8);	
+		}
+		
+		this.gfn_transaction("SAVEBGCHGDEL",
+							 "txAdmUrl::com/admi/saveBgChgDelNewList.do", 
+							 "resultList=ds_bgChgCopy:u",
+							 "",
+							 "",
+							 "fn_callBack");
+// 		this.gfn_transaction("SAVEBGCHGDEL",
+// 							 "txAdmUrl::com/admi/saveBgChgDelList.do", 
+// 							 "resultList=ds_bgChgCopy:u",
+// 							 "",
+// 							 "",
+// 							 "fn_callBack");
+	//}
+	
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSaveBgChgDel
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postSaveBgChgDel = function()
+{
+
+	this.gfn_message("A", "저장이 완료되었습니다.");
+	this.fn_search();	
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_saveBgChgDetDel
+ * 함수설명 	: DataSet을 저장한다.
+ *********************************************************************/
+this.fn_saveBgChgDetDel = function()
+{
+	//if(this.fn_preSave()){
+		this.gfn_transaction("SAVEBGCHGDETDEL",
+							 "txAdmUrl::com/admi/saveBgChgDetDelList.do",
+							 "resultList1=ds_bgChg:u resultList2=ds_bgChgDet:u resultList3=ds_bgChgSched:u",
+							 "",
+							 "",
+							 "fn_callBack");
+	//}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSaveBgChgDetDel
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postSaveBgChgDetDel = function()
+{
+
+	this.gfn_message("A", "저장이 완료되었습니다.");
+	this.fn_search();
+	
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_chgChk
+ * 함수설명 	: 편성예산,상세,계획 데이터 변경여부 체크
+********************************************************************************/
+this.fn_chgChk = function(){
+	var chkCnt=0;
+	if(this.ds_bgChgDet.rowcount>0){
+		for(i=0;i<=this.ds_bgChgDet.rowcount;i++){
+			if(this.ds_bgChgDet.getColumn(i,"rowStatus")== 2||this.ds_bgChgDet.getColumn(i,"rowStatus")== 4||this.ds_bgChgDet.getColumn(i,"rowStatus")== 8){
+				chkCnt = chkCnt + 1;
+			}
+		}		
+	}
+	if(this.ds_bgChgSched.rowcount>0){	
+		for(i=0;i<=this.ds_bgChgSched.rowcount;i++){
+			if(this.ds_bgChgSched.getColumn(i,"rowStatus")== 2||this.ds_bgChgSched.getColumn(i,"rowStatus")== 4||this.ds_bgChgSched.getColumn(i,"rowStatus")== 8){
+				chkCnt = chkCnt + 1;
+			}
+		}
+	}	
+	return chkCnt;
+ }
+ 
+ /********************************************************************************
+ * 함 수 명 	: fn_chgSchedAddRow
+ * 함수설명 	: 신규버튼누를때 편성예산계획 기초데이터생성 
+ ********************************************************************************/
+this.fn_chgSchedAddRow = function(){
+
+	for(i=3; i<=14; i++){
+			var addRow = this.ds_bgChgSched.addRow();
+			
+			var strBudgYymm = "";
+			if ( i > 12 ) {
+				strBudgYymm = (parseInt(strAcntYy) + 1).toString() + (i - 12).toString().padLeft(2, "0");
+			} else {
+				strBudgYymm = strAcntYy + i.toString().padLeft(2, "0");
+			}
+			
+			this.ds_bgChgSched.setColumn(addRow,"budgYymm",strBudgYymm);
+			this.ds_bgChgSched.setColumn(addRow,"acntUnt",strAcntUnt);
+			this.ds_bgChgSched.setColumn(addRow,"acntYy",strAcntYy);
+			this.ds_bgChgSched.setColumn(addRow,"budgOrgId",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"budgOrgId"));
+			this.ds_bgChgSched.setColumn(addRow,"chgSeq",strChgSeq);
+			this.ds_bgChgSched.setColumn(addRow,"balDiv",strBalDiv);
+			this.ds_bgChgSched.setColumn(addRow,"adjOrdCd",strAdjOrdCd);
+			this.ds_bgChgSched.setColumn(addRow,"bizCd",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"bizCd"));
+			this.ds_bgChgSched.setColumn(addRow,"acntCd",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"acntCd"));
+			this.ds_bgChgSched.setColumn(addRow,"rowStatus",2);
+			this.ds_bgChgSched.updatecontrol= false;
+			this.ds_bgChgSched.setRowType(addRow,'i');
+			this.ds_bgChgSched.updatecontrol= true;
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_chgSchedAddRowRemove
+ * 함수설명 	: 변경예산계획 초기화버튼 기초데이터생성 
+ ********************************************************************************/
+this.fn_chgSchedAddRowRemove = function(){
+
+	for(i=3; i<=14; i++){
+			var addRow = this.ds_bgChgSched.addRow();
+			
+			var strBudgYymm = "";
+			if ( i > 12 ) {
+				strBudgYymm = (parseInt(strAcntYy) + 1).toString() + (i - 12).toString().padLeft(2, "0");
+			} else {
+				strBudgYymm = strAcntYy + i.toString().padLeft(2, "0");
+			}
+			
+			this.ds_bgChgSched.setColumn(addRow,"budgYymm",strBudgYymm);
+			this.ds_bgChgSched.setColumn(addRow,"acntUnt",strAcntUnt);
+			this.ds_bgChgSched.setColumn(addRow,"acntYy",strAcntYy);
+			this.ds_bgChgSched.setColumn(addRow,"budgOrgId",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"budgOrgId"));
+			this.ds_bgChgSched.setColumn(addRow,"budgCd",strBudgCd);
+			this.ds_bgChgSched.setColumn(addRow,"balDiv",strBalDiv);
+			this.ds_bgChgSched.setColumn(addRow,"adjOrdCd",strAdjOrdCd);
+			this.ds_bgChgSched.setColumn(addRow,"bizCd",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"bizCd"));
+			this.ds_bgChgSched.setColumn(addRow,"acntCd",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"acntCd"));
+			this.ds_bgChgSched.setColumn(addRow,"rowStatus",2);
+			this.ds_bgChgSched.setColumn(addRow,"seq",this.ds_bgChgDet.getColumn(this.ds_bgChgDet.rowposition,"seq"));
+			this.ds_bgChgSched.updatecontrol= false;
+			this.ds_bgChgSched.setRowType(addRow,'i');
+			this.ds_bgChgSched.updatecontrol= true;
+	}
+}
+
+
+ /********************************************************************************
+ * 함 수 명 	: fn_saveAcctAll
+ * 함수설명 	: 계정내역상세내역 저장시 체크,내용이없는 로우는 미리 지운뒤 저장하고, 계정내역기본에서 세목코드의 여부도 체크한다.
+ ********************************************************************************/
+this.fn_saveAcctAll = function(row,msgChk){
+	for(i=this.ds_bgChgDet.rowcount-1; i>=0; i--){
+		if(this.ds_bgChgDet.getColumn(i,"rowStatus") == 2){
+			if((this.ds_bgChgDet.getColumn(i,"itmSeq") == null || this.ds_bgChgDet.getColumn(i,"itmSeq") == "") &&
+			   (this.ds_bgChgDet.getColumn(i,"itmNm") == null || this.ds_bgChgDet.getColumn(i,"itmNm") == "") &&
+			   (this.ds_bgChgDet.getColumn(i,"calcBss") == null || this.ds_bgChgDet.getColumn(i,"calcBss") == "") &&
+			   (this.ds_bgChgDet.getColumn(i,"budgAmt") == null || this.ds_bgChgDet.getColumn(i,"budgAmt") == "")){
+			this.ds_bgChg.setColumn(row,"rowStatus",1);
+			this.ds_bgChgDet.deleteRow(i);
+			}
+		}
+	}
+	 
+	if(msgChk==1){
+		if(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"acntCd") == "" || this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"acntCd") == "000000" ){
+			var strMsg = "세목코드가 입력되지 않았습니다. 팝업에서 세목코드를 선택해주세요";
+			this.gfn_message("A",  strMsg);
+			//this.grd_main.setCellPos(6);
+			//this.grd_main.setFocus();
+			return false;
+		}else if(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"bizCd") == "" || this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"bizCd") == "000000" ){
+			var strMsg = "사업코드가 입력되지 않았습니다. 팝업에서 사업코드를 선택해주세요";
+			this.gfn_message("A",  strMsg);
+			//this.grd_main.setCellPos(6);
+			//this.grd_main.setFocus();
+			return false;
+		}else if(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"budgOrgId") == "" || this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"budgOrgId") == "000000" ){
+			var strMsg = "부서코드가 입력되지 않았습니다. 팝업에서 부서코드를 선택해주세요";
+			this.gfn_message("A",  strMsg);
+			//this.grd_main.setCellPos(6);
+			//this.grd_main.setFocus();
+			return false;
+		}else{
+			//if( ds_budgAcctBas.getColumn(ds_budgAcctBas.rowposition,"status") == 4 && ds_budgAcctBas.getColumn(ds_budgAcctBas.rowposition,"adjSequ") > 0 && ds_budgFrmtPl.getColumn(ds_budgFrmtPl.rowposition,"status") == 4 ){
+			if( this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"keyAcntCd") != this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"acntCd") &&
+			   this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"rowStatus")  == 4 ){
+				this.fn_saveBgChgChg(); //계정코드변경용으로만
+			}else{
+				this.fn_saveBgChg();
+			}	
+		}	
+	}else{
+		if(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"acntCd") == "" || this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"acntCd") == "000000"){
+			var strMsg = "세목코드가 입력되지 않았습니다. 팝업에서 세목코드를 선택해주세요";
+			this.gfn_message("A",  strMsg);
+		//	tab.tpg2.grdMain.setCellPos(6);
+		//	tab.tpg2.grdMain.setFocus();
+			return false;
+		}else if(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"bizCd") == "" || this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"bizCd") == "000000" ){
+			var strMsg = "사업코드가 입력되지 않았습니다. 팝업에서 사업코드를 선택해주세요";
+			this.gfn_message("A",  strMsg);
+			//this.grd_main.setCellPos(6);
+			//this.grd_main.setFocus();
+			return false;
+		}else if(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"budgOrgId") == "" || this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"budgOrgId") == "000000" ){
+			var strMsg = "부서코드가 입력되지 않았습니다. 팝업에서 부서코드를 선택해주세요";
+			this.gfn_message("A",  strMsg);
+			//this.grd_main.setCellPos(6);
+			//this.grd_main.setFocus();
+			return false;
+		}else{
+			//if(ds_budgAcctBas.getColumn(ds_budgAcctBas.rowposition,"status") == 4 && ds_budgAcctBas.getColumn(ds_budgAcctBas.rowposition,"adjSequ") > 0 && ds_budgFrmtPl.getColumn(ds_budgFrmtPl.rowposition,"status") == 4){
+			if( this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"keyAcntCd") != this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"acntCd") &&
+			   this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"rowStatus")  == 4 ){
+				this.fn_saveBgChgChg();
+			}else{
+				this.fn_saveBgChg();
+			}	
+		}	
+	}	
+}
+
+
+ /********************************************************************************
+ * 함 수 명 	: ds_bgChg_oncolumnchanged
+ * 함수설명 	: 예산계정기본 테이블의 계정항목코드에 따라 하위데이터셋 셋팅/계정항목코드를 팝업으로 입력후에 재변경할때 그에따라 하위데이터셋 재설정
+ ********************************************************************************/
+this.ds_bgChg_oncolumnchanged = function(obj:Dataset, e:nexacro.DSColChangeEventInfo)
+{
+	if(e.columnid == "acntCd"){
+		if(this.ds_bgChg.getColumn(e.row,"acntCd") != null || this.ds_bgChg.getColumn(e.row,"acntCd") != "" ){
+			if(!this.gfn_isNull(e.oldvalue)){
+				if(this.ds_bgChgDet.getColumn(this.ds_bgChgDet.rowposition,"rowStatus") > 1){
+					for(i=0; i<=this.ds_bgChgDet.rowcount; i++){
+						this.ds_bgChgDet.setColumn(i,"acntCd",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"acntCd"));
+						this.ds_bgChgDet.setColumn(i,"keyAcntCd",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"keyAcntCd"));
+					}
+				}else{
+					for(i=0; i<=this.ds_bgChgDet.rowcount; i++){
+						this.ds_bgChgDet.setColumn(i,"acntCd",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"acntCd"));
+						this.ds_bgChgDet.setColumn(i,"keyAcntCd",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"keyAcntCd"));
+						this.ds_bgChgDet.setColumn(i,"rowStatus",2);
+					}
+				}
+				for(i=0; i<=11; i++){
+					this.ds_bgChgSched.setColumn(i,"acntCd",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"acntCd"));
+					this.ds_bgChgSched.setColumn(i,"keyAcntCd",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"keyAcntCd"));
+					this.ds_bgChgSched.setColumn(i,"rowStatus",2);
+				}
+			}
+		}
+	}
+	if(e.columnid == "bizCd"){
+		if(this.ds_bgChg.getColumn(e.row,"bizCd") != null || this.ds_bgChg.getColumn(e.row,"bizCd") != "" ){
+			if(!this.gfn_isNull(e.oldvalue)){
+				if(this.ds_bgChgDet.getColumn(this.ds_bgChgDet.rowposition,"rowStatus") > 1){
+					for(i=0; i<=this.ds_bgChgDet.rowcount; i++){
+						this.ds_bgChgDet.setColumn(i,"bizCd",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"bizCd"));
+						this.ds_bgChgDet.setColumn(i,"keyBizCd",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"keyBizCd"));
+					}
+				}else{
+					for(i=0; i<=this.ds_bgChgDet.rowcount; i++){
+						this.ds_bgChgDet.setColumn(i,"bizCd",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"bizCd"));
+						this.ds_bgChgDet.setColumn(i,"keyBizCd",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"keyBizCd"));
+						this.ds_bgChgDet.setColumn(i,"rowStatus",2);
+					}
+				}
+				for(i=0; i<=11; i++){
+					this.ds_bgChgSched.setColumn(i,"bizCd",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"bizCd"));
+					this.ds_bgChgSched.setColumn(i,"keyBizCd",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"keyBizCd"));
+					this.ds_bgChgSched.setColumn(i,"rowStatus",2);
+				}
+			}
+		}
+	}
+	if(e.columnid == "budgOrgId"){
+		if(this.ds_bgChg.getColumn(e.row,"budgOrgId") != null || this.ds_bgChg.getColumn(e.row,"budgOrgId") != "" ){
+			if(!this.gfn_isNull(e.oldvalue)){
+				if(this.ds_bgChgDet.getColumn(this.ds_bgChgDet.rowposition,"rowStatus") > 1){
+					for(i=0; i<=this.ds_bgChgDet.rowcount; i++){
+						this.ds_bgChgDet.setColumn(i,"budgOrgId",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"budgOrgId"));
+						this.ds_bgChgDet.setColumn(i,"keyBudgOrgId",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"keyBudgOrgId"));
+					}
+				}else{
+					for(i=0; i<=this.ds_bgChgDet.rowcount; i++){
+						this.ds_bgChgDet.setColumn(i,"budgOrgId",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"budgOrgId"));
+						this.ds_bgChgDet.setColumn(i,"keyBudgOrgId",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"keyBudgOrgId"));
+						this.ds_bgChgDet.setColumn(i,"rowStatus",2);
+					}
+				}
+				for(i=0; i<=11; i++){
+					this.ds_bgChgSched.setColumn(i,"budgOrgId",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"budgOrgId"));
+					this.ds_bgChgSched.setColumn(i,"keyBudgOrgId",this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"keyBudgOrgId"));
+					this.ds_bgChgSched.setColumn(i,"rowStatus",2);
+				}
+			}
+		}
+	}
+	if(e.columnid == "budgAmt"){
+		if(nexacro.toNumber(this.ds_bgChg.getColumn(e.row,"budgAmt"))+nexacro.toNumber(this.ds_bgChg.getColumn(e.row,"balnAmt")) < 0  ){
+			this.gfn_message("A","잔액이 부족합니다.");
+			this.ds_bgChg.setColumn(e.row,"budgAmt",0);
+			return false;
+		}
+	}
+	if(e.columnid == "acntNm"){
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition,"acntCd","");
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition,"mokNm","");
+	}
+	
+}
+
+ /********************************************************************************
+ * 함 수 명 	: ds_bgChgDet_oncolumnchanged
+ * 함수설명 	: 예산계정상세항목중 산출근거에 계산식제어/계정항목코드를 팝업으로 입력후에 재변경할때 그에따라 하위데이터셋 재설정
+ ********************************************************************************/
+this.ds_bgChgDet_oncolumnchanged = function(obj:Dataset, e:nexacro.DSColChangeEventInfo)
+{
+	if(e.columnid == "calcBss"){
+		var strString = e.newvalue;
+		var tempString = "";
+		var strResult = "";
+
+		for ( i=0; i < strString.length; i++ ) {
+			
+			tempString = strString.substr(i, 1);
+			
+			if ( nexacro.isNumeric(tempString) == true || tempString == "+" || tempString == "-" || tempString == "/" 
+			      || tempString == "*" || tempString == "(" || tempString == ")" || tempString == "%" || tempString == "." || tempString == "=") { //산출근거 계산식
+				if ( tempString == '%' ) {
+					strResult += '/100';
+				} else if ( tempString == '=' ) {
+					strResult ="";
+				} else {	
+					strResult += tempString;
+				}
+
+			}
+		}
+		this.ds_bgChgDet.setColumn(e.row, "budgAmt", Math.round(eval(strResult)));
+		//this.ds_bgFrmn.enableevent = false;
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, "budgAmt",this.ds_bgChgDet.getCaseSum("rowStatus < 8","budgAmt")); 
+		if(this.ds_bgChgDet.getColumn(this.ds_bgChgDet.rowposition,"rowStatus") == 1){ 
+			this.ds_bgChg.setColumn(this.ds_bgChg.rowposition,"rowStatus",4);
+		}
+		//this.ds_bgFrmn.enableevent = true;
+	}
+	if(e.columnid == "budgAmt"){
+		this.ds_bgChg.enableevent = false;
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, "budgAmt",this.ds_bgChgDet.getCaseSum("rowStatus < 8","budgAmt")); 
+		//this.grd_main.setCellPos(8);
+		//this.grd_main.setFocus();
+		if(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"rowStatus") == 2 ){
+			this.ds_bgChgDet.setColumn(this.ds_bgChgDet.rowposition,"rowStatus",2);
+		}else{
+			this.ds_bgChg.setColumn(this.ds_bgChg.rowposition,"rowStatus",4);
+		}
+		this.ds_bgChg.enableevent = true;
+		
+	}
+}
+
+ /********************************************************************************
+ * 함 수 명 	: grd_main_onkeyup
+ * 함수설명 	: 팝업호출
+ ********************************************************************************/
+this.grd_main_onkeyup = function(obj:Grid, e:nexacro.KeyEventInfo)
+{
+	if(obj.getBindCellIndex("body","acntNm") == obj.currentcell){
+		if(e.keycode == 13 ){
+			if(this.gfn_isNull(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"balDiv"))){
+				var strMsg = "수지구분을 먼저 선택 해 주세요.";
+				this.gfn_message("A",  strMsg);
+				return false;
+			}else if(this.gfn_isNull(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"budgOrgId"))){
+				var strMsg = "부서를 먼저 선택 해 주세요.";
+				this.gfn_message("A",  strMsg);
+				return false;
+			}
+			if(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"rowStatus") == 2){
+				var argumentsList = new Array();
+					argumentsList['acntYy'] = strAcntYy;
+					argumentsList['acntUnt'] = strAcntUnt;
+					argumentsList['budgOrgId'] = this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"budgOrgId");
+					argumentsList['acntNm']  = this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"acntNm");
+					argumentsList['balDiv']  = this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"balDiv");
+					if(nexacro.toNumber(this.ds_bgChg.rowcount) > 1){
+						if(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition-1,"acntCd").substr(0,2) != '46' ){
+							argumentsList['acntCd']  = this.ds_bgChg.getColumn(this.ds_bgChg.rowposition-1,"acntCd");
+						}	
+					}
+					//argumentsList['autoClose'] = false;
+					argumentsList['autoSearch'] = "autoSearch";
+				
+				
+				this.cfn_bgBudgOrgPopupBg(argumentsList,"fn_bgAcntPopCallback");
+			}	
+		}
+	}else if(obj.getBindCellIndex("body","bizNm") == obj.currentcell){
+		if(e.keycode == 13 ){
+			if(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"rowStatus") == 2){
+				var strParam = {acntUnt:strAcntUnt
+							   ,bizLvlCd:"30"
+							   ,bizNm:this.gfn_getNullToEmpty(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"bizNm"))
+							   ,autoSearch:true
+							   };
+				this.cfn_bgBizPopup(strParam,"fn_bgBizPopCallback");
+			}
+		}
+	}else if(obj.getBindCellIndex("body","budgOrgNm") == obj.currentcell){		
+		if(e.keycode == 13 ){
+			if(this.gfn_isNull(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"balDiv"))){
+				var strMsg = "수지구분을 먼저 선택 해 주세요.";
+				this.gfn_message("A",  strMsg);
+				return false;
+			}
+			if(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"rowStatus") == 2){
+				var strArg = {jojikCdNm:this.gfn_getNullToEmpty(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"budgOrgNm"))
+							 ,autoSearch:true
+							 ,autoClose:false}
+				this.cfn_deptPopup(strArg,"fn_bgDeptPopCallback");
+			}
+		}
+	}
+}	
+
+ /********************************************************************************
+ * 함 수 명 	: grd_main_onexpandup
+ * 함수설명 	: 팝업호출
+ ********************************************************************************/
+this.grd_main_onexpandup = function(obj:Grid, e:nexacro.GridMouseEventInfo)
+{
+	if(obj.getBindCellIndex("body","acntNm") == obj.currentcell){
+		if(this.gfn_isNull(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"balDiv"))){
+			var strMsg = "수지구분을 먼저 선택 해 주세요.";
+			this.gfn_message("A",  strMsg);
+			return false;
+		}else if(this.gfn_isNull(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"budgOrgId"))){
+			var strMsg = "부서를 먼저 선택 해 주세요.";
+			this.gfn_message("A",  strMsg);
+			return false;
+		}
+		var argumentsList = new Array();
+			argumentsList['acntYy'] = strAcntYy;
+			argumentsList['acntUnt'] = strAcntUnt;
+			argumentsList['budgOrgId'] = this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"budgOrgId");
+			argumentsList['acntNm']  = this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"acntNm");
+			argumentsList['balDiv']  = this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"balDiv");
+			if(nexacro.toNumber(this.ds_bgChg.rowcount) > 1){
+				if(this.ds_bgChg.getColumn(0,"acntCd").substr(0,2) != '46' ){
+					argumentsList['acntCd']  = this.ds_bgChg.getColumn(this.ds_bgChg.rowposition-1,"acntCd");
+				}	
+			}
+		//	argumentsList['autoClose'] = false;
+			argumentsList['autoSearch'] = "autoSearch";
+		
+		this.cfn_bgBudgOrgPopupBg(argumentsList,"fn_bgAcntPopCallback");
+		
+	}else if(obj.getBindCellIndex("body","bizNm") == obj.currentcell){
+		var strParam = {acntUnt:strAcntUnt
+					   ,bizLvlCd:"30"
+		               ,autoSearch:true
+		               };
+		this.cfn_bgBizPopup(strParam,"fn_bgBizPopCallback");
+		
+	}else if(obj.getBindCellIndex("body","budgOrgNm") == obj.currentcell){
+		if(this.gfn_isNull(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"balDiv"))){
+			var strMsg = "수지구분을 먼저 선택 해 주세요.";
+			this.gfn_message("A",  strMsg);
+			return false;
+		}
+		var strArg = {jojikCdNm:this.gfn_getNullToEmpty(this.ds_bgChg.getColumn(this.ds_bgChg.rowposition,"budgOrgNm"))
+					 ,autoSearch:true
+					 ,autoClose:false}
+		this.cfn_deptPopup(strArg,"fn_bgDeptPopCallback");
+	}
+	
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_bgAcntPopCallback
+ * 함수설명 	: 예산계정 팝업 리턴
+ *********************************************************************/
+this.fn_bgAcntPopCallback = function(strID, rtnVal)
+{
+	if(rtnVal == "close"){
+		return;
+	}
+	
+	this.ds_dummy.clear();
+	this.ds_dummy.loadXML(rtnVal);
+	
+	if(!this.gfn_isNull(this.ds_dummy)){
+// 		if(nexacro.toNumber(this.ds_bgChg.rowcount) > 1){
+// 			if ( this.ds_bgChg.getCaseCount("acntCd=='" + this.ds_dummy.getColumn(0, "acntCd") + "'") > 0 ) {
+// 				this.gfn_message("A", "이미 등록된 계정입니다.");
+// 				
+// 				this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'acntNm', "");
+// 				this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'acntCd', "");
+// 				this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'mokNm', "");
+// 				this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'totalBudgAmt', "");
+// 				this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'execAmt', "");
+// 				this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'balnAmt', "");
+// 				//this.grd_main.setCellPos(6);
+// 				//this.grd_main.setFocus();
+// 				return;
+// 			}
+// 		}
+
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'acntNm', this.ds_dummy.getColumn(0, "acntCdNm"));
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'acntCd', this.ds_dummy.getColumn(0, "acntCd"));
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'mokNm', this.ds_dummy.getColumn(0, "mokNm"));
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'totalBudgAmt', this.ds_dummy.getColumn(0, "asgnAmtSum"));
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'execAmt', this.ds_dummy.getColumn(0, "execAmtSum"));
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'balnAmt', this.ds_dummy.getColumn(0, "budgBal"));
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'bizCd', this.ds_dummy.getColumn(0, "bizCd"));
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'bizNm', this.ds_dummy.getColumn(0, "bizCdNm"));
+	} else {
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'acntNm', "");
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'acntCd', "");
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'mokNm', "");
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'totalBudgAmt', "");
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'execAmt', "");
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'balnAmt', "");
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'bizCd', "");
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'bizNm', "");
+	}
+
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_bgDeptPopCallback
+ * 함수설명 	: 부서 팝업 리턴
+ *********************************************************************/
+this.fn_bgDeptPopCallback = function (strID, rtnVal)
+{
+	if(rtnVal == "close") {
+		return;
+	}
+	
+	this.ds_dummy.clear();
+	this.ds_dummy.loadXML(rtnVal);
+	
+	if(!this.gfn_isNull(this.ds_dummy)){
+// 		if(nexacro.toNumber(this.ds_bgChg.rowcount) > 1){
+// 			if ( this.ds_bgChg.getCaseCount("budgOrgId=='" + this.ds_dummy.getColumn(0, "deptCd") + "'") > 0 ) {
+// 				this.gfn_message("A", "이미 등록된 부서입니다.");
+// 				
+// 				this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'budgOrgNm', "");
+// 				this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'budgOrgId', "");
+// 				//this.grd_main.setCellPos(6);
+// 				//this.grd_main.setFocus();
+// 				return;
+// 			}
+// 		}
+
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'budgOrgNm', this.ds_dummy.getColumn(0, "deptNmKor"));
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'budgOrgId', this.ds_dummy.getColumn(0, "deptCd"));
+	} else {
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'budgOrgNm', "");
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'budgOrgId', "");
+	}
+
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_bgBizPopCallback
+ * 함수설명 	: 사업 팝업 리턴
+ *********************************************************************/
+this.fn_bgBizPopCallback = function (strID, rtnVal)
+{
+	if(rtnVal == "close") {
+		return;
+	}
+	
+	this.ds_dummy.clear();
+	this.ds_dummy.loadXML(rtnVal);
+	
+	if(!this.gfn_isNull(this.ds_dummy)){
+// 		if(nexacro.toNumber(this.ds_bgChg.rowcount) > 1){
+// 			if ( this.ds_bgChg.getCaseCount("bizCd=='" + this.ds_dummy.getColumn(0, "bizCd") + "'") > 0 ) {
+// 				this.gfn_message("A", "이미 등록된 사업입니다.");
+// 				
+// 				this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'bizNm', "");
+// 				this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'bizCd', "");
+// 				//this.grd_main.setCellPos(6);
+// 				//this.grd_main.setFocus();
+// 				return;
+// 			}
+// 		}
+
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'bizNm', this.ds_dummy.getColumn(0, "bizNm"));
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'bizCd', this.ds_dummy.getColumn(0, "bizCd"));
+	} else {
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'bizNm', "");
+		this.ds_bgChg.setColumn(this.ds_bgChg.rowposition, 'bizCd', "");
+	}
+
+}
+
+
+
+/********************************************************************************
+ * 함 수 명 	: fn_btnCont
+ * 함수설명 	: 작성상태에 따라 버튼컨트롤한다.
+********************************************************************************/
+this.fn_btnCont = function(){
+	//부모창에서 넘어온 작성상태가 작성(10)일때는 버튼활성화
+	//신청프로그램에서는 작성=버튼활성화/신청=버튼비활성화
+	//확정프로그램에서는 신청=버튼활성화/확정=버튼비활성화
+	//프로그램ID+상태flag+확정+flag 유무로 체크기능 수정해야함
+// 	if(strStaCd == "10"){ //작성
+// 		this.btn_save.set_enable(true);
+// 		this.btn_new.set_enable(true);
+// 		this.btn_del.set_enable(true);
+// 		this.btn_saveDet.set_enable(true);
+// 		this.btn_newDet.set_enable(true);
+// 		this.btn_delDet.set_enable(true);
+// 		this.btn_saveSub.set_enable(true);
+// 		this.btn_apply.set_enable(true); 
+// 	}else 
+
+	if((strStaCd == "10" || strStaCd == "30" || (strManagerYn == "Y" && strStaCd == "50") ) && strSchedChk == "Y"){
+		this.btn_save.set_enable(true);
+		this.btn_new.set_enable(true);
+		this.btn_del.set_enable(true);
+// 		this.btn_saveDet.set_enable(true);
+// 		this.btn_newDet.set_enable(true);
+// 		this.btn_delDet.set_enable(true);
+// 		this.btn_saveSub.set_enable(true);
+// 		this.btn_apply.set_enable(true); 
+	}else{
+		this.btn_save.set_enable(false);
+		this.btn_new.set_enable(false);
+		this.btn_del.set_enable(false);
+// 		this.btn_saveDet.set_enable(false);
+// 		this.btn_newDet.set_enable(false);
+// 		this.btn_delDet.set_enable(false);
+// 		this.btn_saveSub.set_enable(false);
+// 		this.btn_apply.set_enable(false);
+	}
+	
+	
+}
+
+/********************************************************************************
+ * 함 수 명 	: grd_sub_onheadclick
+ * 함수설명 	: 그리드 헤더 클릭 막는다
+********************************************************************************/
+this.grd_sub_onheadclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	return false;
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_apply_onclick
+ * 함수설명 	: 월별편성금액을 3월저장/균등분할콤보에 따라 셋팅한다
+********************************************************************************/
+this.btn_apply_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	//3월저장
+	if(this.cmb_saveGb.value == "1"){
+		
+		for (i = 1; i <= 11; i++){
+			this.ds_bgChgSched.setColumn(i,"budgAmt",0);
+		}
+		this.ds_bgChgSched.setColumn(0,"budgAmt",this.ds_bgChgDet.getColumn(this.ds_bgChgDet.rowposition,"budgAmt"));
+		
+	//균등분할
+	}else if(this.cmb_saveGb.value == "2"){
+	
+		var amt1 = this.ds_bgChgDet.getColumn(this.ds_bgChgDet.rowposition,"budgAmt");
+		var amt2 = new Array();
+		var amt3;
+		for (i = 0; i <= 11; i++){
+			this.ds_bgChgSched.setColumn(i,"budgAmt",0);
+		}
+		for (i = 1; i <= 11; i++){
+			amt2[i] = amt1/12;
+			this.ds_bgChgSched.setColumn(i,"budgAmt",nexacro.floor(amt2[i]));
+		}
+		amt3 = nexacro.toNumber(amt1) - nexacro.toNumber(this.ds_bgChgSched.getSum("budgAmt"));
+		this.ds_bgChgSched.setColumn(0,"budgAmt",amt3);
+	}else if(this.cmb_saveGb.value == "3"){
+		//예산상세저장할때 월별계획이 저장되지않으면 새로 생성해준다
+
+		if(this.ds_bgChgSched.rowcount <= 0){
+			this.fn_chgSchedAddRowRemove();
+		}else{
+			for (i = 0; i <= 11; i++){
+				this.ds_bgChgSched.setColumn(i,"budgAmt",0);
+				this.ds_bgChgSched.setColumn(i,"rowStatus",1);
+			}
+		}
+		this.fn_saveBgChgSchedRemove();
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_setPositionChg
+ * 함수설명 	: key값을 가지고 이벤트가 일어난 로우를 찾아간다.
+********************************************************************************/
+this.fn_setPositionChg = function(){
+	var rowIdx = this.ds_bgChg.findRowExpr("acntCd == '" + selectRowKeyMain + "'",0);
+	
+	if(rowIdx == -1){
+		rowIdx = 0;
+	}
+
+	this.ds_bgChg.set_rowposition(rowIdx);
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_setPositionChgDet
+ * 함수설명 	: key값을 가지고 이벤트가 일어난 로우를 찾아간다.
+********************************************************************************/
+this.fn_setPositionChgDet = function(){
+	var rowIdx = this.ds_bgChgDet.findRowExpr("acntCd == '" + selectRowKeyMain + "' && seq == '" + selectRowKeyDet + "'",0);
+	
+	if(rowIdx == -1){
+		rowIdx = 0;
+	}
+
+	this.ds_bgChgDet.set_rowposition(rowIdx);	
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_setPositionChgSub
+ * 함수설명 	: key값을 가지고 이벤트가 일어난 로우를 찾아간다.
+********************************************************************************/
+this.fn_setPositionChgSub = function(){
+	var rowIdx = this.ds_bgChgSched.findRowExpr("acntCd == '" + selectRowKeyMain + "' && seq == '" + selectRowKeyDet + "' && seq == '" + selectRowKeySub + "'",0);
+	
+	if(rowIdx == -1){
+		rowIdx = 0;
+	}
+
+	this.ds_bgChgSched.set_rowposition(rowIdx);	
+}
+
+this.fn_saveRemove = function(){
+	this.fn_searchSub();
+}
+]]></Script>
+  </Form>
+</FDL>

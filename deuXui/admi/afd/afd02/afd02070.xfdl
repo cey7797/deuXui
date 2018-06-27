@@ -1,0 +1,773 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd02070" classname="afd02010" left="0" top="0" width="1038" height="855" titletext="지정기탁관리" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="0" left="0" top="0" right="15" height="42" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static05" taborder="99" text="지정기탁코드/명" cssclass="search" left="15" top="10" width="90" height="22" class="search_bul"/>
+              <Static id="Static02" taborder="101" text="w&#13;20" visible="false" left="274" top="10" width="20" height="23" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Calendar id="cal_createFromDt" taborder="109" left="607" top="10" width="100" height="22" class="essential" value="null" dateformat="yyyy-MM-dd ddd" visible="false"/>
+              <Calendar id="cal_createToDt" taborder="110" left="719" top="10" width="100" height="22" class="essential" visible="false"/>
+              <Static id="Static00" taborder="111" text="~" left="709" top="16" width="14" height="13" visible="false"/>
+              <Edit id="edt_sch_fixCdNm" taborder="116" left="113" top="10" width="161" height="22" style="border:1 solid #ccccccff ;"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static00" taborder="1" text="w&#13;&#10;15" visible="false" left="0" top="10" width="15" height="23" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static01" taborder="2" text="w8" visible="false" left="105" top="10" width="8" height="23" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static05" taborder="4" text="h10" visible="false" left="0" top="32" width="1038" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static03" taborder="5" text="h10" visible="false" left="0" top="0" width="1038" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static40" taborder="7" text="h15" visible="false" left="0" top="41" width="1038" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static08" taborder="8" text="w&#13;&#10;15" visible="false" top="56" right="0" width="15" height="799" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_search" taborder="9" text="조회" cssclass="search" top="56" width="60" height="22" tooltiptype="hover" tooltiptext="조회" onclick="btn_search_onclick" userBtnAuth="R" left="200"/>
+        <Static id="Static15" taborder="12" text="h10" visible="false" left="0" top="78" width="508" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static20" taborder="13" text="h10" visible="false" left="767" top="416" width="256" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_count_01" taborder="14" text="Count &lt;b v='true'&gt;999&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" width="76" height="20" top="426" right="15"/>
+        <Grid id="grd_main" taborder="16" binddataset="DS_FIX_CD_LIST" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="col" left="0" top="83" height="739" width="508" onselectchanged="grd_main_onselectchanged">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="40" band="left"/>
+                <Column size="100"/>
+                <Column size="150"/>
+                <Column size="80"/>
+                <Column size="80"/>
+              </Columns>
+              <Rows>
+                <Row size="26" band="head"/>
+                <Row size="24"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="지정기탁코드"/>
+                <Cell col="2" text="지정기탁코드명"/>
+                <Cell col="3" text="적립률"/>
+                <Cell col="4" text="사용여부"/>
+              </Band>
+              <Band id="body">
+                <Cell style="align:center;" text="expr:currow +1"/>
+                <Cell col="1" displaytype="normal" style="align:center;" text="bind:fixCd" editlimit="10" calendardisplaynulltype="none"/>
+                <Cell col="2" edittype="normal" style="align:left;" text="bind:fixNm" editdisplay="display"/>
+                <Cell col="3" edittype="masknumber" editfilter="number" style="align:right;" text="bind:fixRate" mask="9%" editlimit="2" editdisplay="display"/>
+                <Cell col="4" displaytype="combo" edittype="combo" style="align:center;" text="bind:useYn" editdisplay="edit" combodataset="DS_GID_USE_YN" combocodecol="cd" combodatacol="nm" combodisplay="display"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2"/>
+                <Cell col="3"/>
+                <Cell col="4"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="btn_save_main" taborder="18" text="저장" cssclass="save" top="56" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S" onclick="btn_save_onclick" left="386"/>
+        <Button id="btn_new_detail_01" taborder="19" text="추가" onclick="btn_new_detail01_onclick" cssclass="new" top="56" width="60" height="22" tooltiptype="hover" tooltiptext="추가" userBtnAuth="S" right="139"/>
+        <Button id="btn_del_detail_01" taborder="20" text="삭제" onclick="btn_del_detail01_onclick" cssclass="del" top="56" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" userBtnAuth="S" right="77"/>
+        <Button id="btn_save_detail_01" taborder="21" text="저장" onclick="btn_save_detail01_onclick" cssclass="save" top="56" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S" right="15"/>
+        <Grid id="grd_detail_01" taborder="22" binddataset="DS_FIX_CD_DET_01_LIST" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="col" left="515" top="83" height="333" right="15">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="24" band="left"/>
+                <Column size="40" band="left"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="180"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="40"/>
+              </Columns>
+              <Rows>
+                <Row size="26" band="head"/>
+                <Row size="24"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell displaytype="checkbox" tooltiptype="center"/>
+                <Cell col="1" text="순번"/>
+                <Cell col="2" text="기부일자"/>
+                <Cell col="3" text="기부자"/>
+                <Cell col="4" text="소속"/>
+                <Cell col="5" text="금액"/>
+                <Cell col="6" text="일반적립화"/>
+                <Cell col="7" text="비고"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="checkbox" edittype="checkbox" text="bind:chk" tooltiptype="center"/>
+                <Cell col="1" text="expr:currow +1"/>
+                <Cell col="2" displaytype="date" edittype="date" text="bind:ioDt" editlimit="10" calendardisplaynulltype="none"/>
+                <Cell col="3" edittype="normal" style="align:left;" text="bind:memberNm"/>
+                <Cell col="4" edittype="normal" style="align:left;" text="bind:sosokNm"/>
+                <Cell col="5" displaytype="number" edittype="masknumber" style="align:right;" text="bind:ioAmt"/>
+                <Cell col="6" displaytype="number" edittype="masknumber" style="align:right;" text="bind:saveAmt"/>
+                <Cell col="7" edittype="normal" style="align:left;" text="bind:remark"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2" colspan="3" text="수입합계"/>
+                <Cell col="5" displaytype="number" expr="expr:dataset.getSum('nexacro.toNumber(ioAmt)')"/>
+                <Cell col="6" displaytype="number" expr="expr:dataset.getSum('nexacro.toNumber(saveAmt)')"/>
+                <Cell col="7"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="btn_reSearch_01" taborder="24" cssclass="btn_WF_commonReset" top="57" width="20" height="20" tooltiptext="새로고침" onclick="btn_reSearch_01_onclick" right="203"/>
+        <Button id="btn_new_detail_02" taborder="25" text="추가" onclick="btn_new_detail02_onclick" cssclass="new" top="462" width="60" height="22" tooltiptype="hover" tooltiptext="추가" userBtnAuth="S" right="139"/>
+        <Button id="btn_del_detail_02" taborder="26" text="삭제" onclick="btn_del_detail02_onclick" cssclass="del" top="462" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" userBtnAuth="S" right="77"/>
+        <Button id="btn_save_detail_02" taborder="27" text="저장" onclick="btn_save_detail02_onclick" cssclass="save" top="462" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S" right="15"/>
+        <Button id="btn_reSearch_02" taborder="28" cssclass="btn_WF_commonReset" top="463" width="20" height="20" tooltiptext="새로고침" onclick="btn_reSearch_02_onclick" right="203"/>
+        <Button id="btn_new_main" taborder="29" text="추가" onclick="btn_new_onclick" cssclass="new" top="56" width="60" height="22" tooltiptype="hover" tooltiptext="추가" userBtnAuth="S" left="262"/>
+        <Button id="btn_del_main" taborder="30" text="삭제" onclick="btn_del_onclick" cssclass="del" top="56" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" userBtnAuth="S" left="324"/>
+        <Static id="Static02" taborder="31" text="h15" visible="false" left="515" top="447" width="508" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static04" taborder="32" text="h10" visible="false" left="767" top="822" width="256" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_count_02" taborder="33" text="Count &lt;b v='true'&gt;999&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" width="76" height="20" top="832" right="15"/>
+        <Static id="Static76" taborder="34" text="지정기탁코드 내역" cssclass="page_stitle" left="0" top="57" width="184" height="20"/>
+        <Static id="Static06" taborder="35" text="수입내역" cssclass="page_stitle" left="515" top="57" width="120" height="20"/>
+        <Static id="Static07" taborder="36" text="지출내역" cssclass="page_stitle" left="515" top="463" width="120" height="20"/>
+        <Static id="Static10" taborder="37" text="h10" visible="false" left="515" top="484" width="508" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Grid id="grd_detail_02" taborder="38" binddataset="DS_FIX_CD_DET_02_LIST" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="col" left="515" top="489" height="333" right="15">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="24" band="left"/>
+                <Column size="40" band="left"/>
+                <Column size="80"/>
+                <Column size="260"/>
+                <Column size="100"/>
+                <Column size="104"/>
+                <Column size="40"/>
+              </Columns>
+              <Rows>
+                <Row size="26" band="head"/>
+                <Row size="24"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell displaytype="checkbox" tooltiptype="center"/>
+                <Cell col="1" text="순번"/>
+                <Cell col="2" text="지출일자"/>
+                <Cell col="3" text="내용"/>
+                <Cell col="4" text="금액"/>
+                <Cell col="5" text="결재부서"/>
+                <Cell col="6" text="비고"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="checkbox" edittype="checkbox" text="bind:chk" tooltiptype="center"/>
+                <Cell col="1" text="expr:currow +1"/>
+                <Cell col="2" displaytype="date" edittype="date" text="bind:ioDt" editlimit="10" calendardisplaynulltype="none"/>
+                <Cell col="3" edittype="normal" style="align:left;" text="bind:expDesc"/>
+                <Cell col="4" displaytype="number" edittype="masknumber" style="align:right;" text="bind:ioAmt"/>
+                <Cell col="5" edittype="normal" style="align:left;" text="bind:approvalDept"/>
+                <Cell col="6" edittype="normal" style="align:left;" text="bind:remark"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2" colspan="2" text="지출합계"/>
+                <Cell col="4" displaytype="number" expr="expr:dataset.getSum('nexacro.toNumber(ioAmt)')"/>
+                <Cell col="5"/>
+                <Cell col="6"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="btn_excel" taborder="39" text="엑셀" cssclass="btn_WF_commonPrint" left="448" top="56" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S" onclick="btn_excel_onclick"/>
+        <Button id="btn_apply" taborder="40" text="일괄적용" cssclass="btn_WF_Common" left="431" top="10" width="76" height="22" tooltiptype="hover" tooltiptext="추가" userBtnAuth="S" onclick="btn_apply_onclick"/>
+        <Static id="Static11" taborder="41" text="적립률" cssclass="search" left="354" top="11" width="38" height="22" class="search_bul"/>
+        <Edit id="edt_sch_fixCdNm00" taborder="42" left="392" top="10" width="34" height="22" style="border:1 solid #ccccccff ;" maxlength="2" inputtype="number"/>
+        <Static id="Static12" taborder="44" text="h10" visible="false" left="515" top="78" width="508" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_count" taborder="45" text="Count &lt;b v='true'&gt;999&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" left="432" top="832" width="76" height="20"/>
+        <Static id="Static13" taborder="46" text="h10" visible="false" left="252" top="822" width="256" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Grid id="grd_excel" taborder="48" binddataset="DS_EXCEL_DET_LIST" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="col" onselectchanged="grd_main_onselectchanged" left="0" top="864" width="1038" height="1000" visible="false">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="40"/>
+                <Column size="80"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="100"/>
+              </Columns>
+              <Rows>
+                <Row size="30" band="head"/>
+                <Row size="30" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell colspan="7" text="수입"/>
+                <Cell col="7" colspan="5" text="지출"/>
+                <Cell row="1" text="지정기탁명"/>
+                <Cell row="1" col="1" text="날짜"/>
+                <Cell row="1" col="2" text="기부자"/>
+                <Cell row="1" col="3" text="소속"/>
+                <Cell row="1" col="4" text="금액"/>
+                <Cell row="1" col="5" text="일반적립화"/>
+                <Cell row="1" col="6" text="비고"/>
+                <Cell row="1" col="7" text="지정기탁명"/>
+                <Cell row="1" col="8" text="날짜"/>
+                <Cell row="1" col="9" text="금액"/>
+                <Cell row="1" col="10" text="내용"/>
+                <Cell row="1" col="11" text="결재부서"/>
+              </Band>
+              <Band id="body">
+                <Cell text="bind:fixNm"/>
+                <Cell col="1" displaytype="normal" style="align:center;" text="bind:incIoDt" editlimit="10" calendardisplaynulltype="none"/>
+                <Cell col="2" displaytype="normal" style="align:center;" text="bind:incMemberNm" editlimit="10" calendardisplaynulltype="none"/>
+                <Cell col="3" displaytype="normal" style="align:center;" text="bind:incSosokNm" editlimit="10" calendardisplaynulltype="none"/>
+                <Cell col="4" displaytype="normal" style="align:center;" text="bind:incIoAmt" editlimit="10" calendardisplaynulltype="none"/>
+                <Cell col="5" displaytype="normal" style="align:center;" text="bind:incSaveAmt" editlimit="10" calendardisplaynulltype="none"/>
+                <Cell col="6" displaytype="normal" style="align:center;" text="bind:incRemark" editlimit="10" calendardisplaynulltype="none"/>
+                <Cell col="7" text="bind:fixNm"/>
+                <Cell col="8" displaytype="normal" style="align:center;" text="bind:expIoDt" editlimit="10" calendardisplaynulltype="none"/>
+                <Cell col="9" displaytype="normal" style="align:center;" text="bind:expIoAmt" editlimit="10" calendardisplaynulltype="none"/>
+                <Cell col="10" displaytype="normal" style="align:center;" text="bind:expDesc" editlimit="10" calendardisplaynulltype="none"/>
+                <Cell col="11" displaytype="normal" style="align:center;" text="bind:expApprovalDept" editlimit="10" calendardisplaynulltype="none"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="DS_FIX_CD_LIST" onrowposchanged="DS_FIX_CD_LIST_onrowposchanged">
+        <ColumnInfo>
+          <Column id="wsJuminNo" type="string" size="32"/>
+          <Column id="paymthd" type="string" size="32"/>
+          <Column id="fpyPrearngeDt" type="string" size="32"/>
+          <Column id="pcpsklRel" type="string" size="32"/>
+          <Column id="remark" type="string" size="32"/>
+          <Column id="tmprEnggNo" type="string" size="32"/>
+          <Column id="endwCd" type="string" size="32"/>
+          <Column id="inspySeq" type="string" size="32"/>
+          <Column id="inspyMonthCnt" type="string" size="32"/>
+          <Column id="hpNo" type="string" size="32"/>
+          <Column id="chk" type="string" size="32"/>
+          <Column id="inspyMgnNo" type="string" size="32"/>
+          <Column id="tmprEnggDt" type="string" size="32"/>
+          <Column id="rcpmnyerNm" type="string" size="32"/>
+          <Column id="mtInspyAmt" type="string" size="32"/>
+          <Column id="frstInspyPrearngeDt" type="string" size="32"/>
+          <Column id="endwNm" type="string" size="32"/>
+          <Column id="memberNmKor" type="string" size="32"/>
+          <Column id="rowStatus" type="string" size="32"/>
+          <Column id="procGb" type="string" size="32"/>
+          <Column id="memberNo" type="string" size="32"/>
+          <Column id="enggAmt" type="string" size="32"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="DS_FIX_CD_DET_01_LIST" oncolumnchanged="DS_FIX_CD_DET_01_LIST_oncolumnchanged">
+        <ColumnInfo>
+          <Column id="wsJuminNo" type="string" size="32"/>
+          <Column id="paymthd" type="string" size="32"/>
+          <Column id="fpyPrearngeDt" type="string" size="32"/>
+          <Column id="pcpsklRel" type="string" size="32"/>
+          <Column id="remark" type="string" size="32"/>
+          <Column id="tmprEnggNo" type="string" size="32"/>
+          <Column id="endwCd" type="string" size="32"/>
+          <Column id="inspySeq" type="string" size="32"/>
+          <Column id="inspyMonthCnt" type="string" size="32"/>
+          <Column id="hpNo" type="string" size="32"/>
+          <Column id="chk" type="string" size="32"/>
+          <Column id="inspyMgnNo" type="string" size="32"/>
+          <Column id="tmprEnggDt" type="string" size="32"/>
+          <Column id="rcpmnyerNm" type="string" size="32"/>
+          <Column id="mtInspyAmt" type="string" size="32"/>
+          <Column id="frstInspyPrearngeDt" type="string" size="32"/>
+          <Column id="endwNm" type="string" size="32"/>
+          <Column id="memberNmKor" type="string" size="32"/>
+          <Column id="rowStatus" type="string" size="32"/>
+          <Column id="procGb" type="string" size="32"/>
+          <Column id="memberNo" type="string" size="32"/>
+          <Column id="enggAmt" type="string" size="32"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="DS_FIX_CD_DET_02_LIST">
+        <ColumnInfo>
+          <Column id="wsJuminNo" type="string" size="32"/>
+          <Column id="paymthd" type="string" size="32"/>
+          <Column id="fpyPrearngeDt" type="string" size="32"/>
+          <Column id="pcpsklRel" type="string" size="32"/>
+          <Column id="remark" type="string" size="32"/>
+          <Column id="tmprEnggNo" type="string" size="32"/>
+          <Column id="endwCd" type="string" size="32"/>
+          <Column id="inspySeq" type="string" size="32"/>
+          <Column id="inspyMonthCnt" type="string" size="32"/>
+          <Column id="hpNo" type="string" size="32"/>
+          <Column id="chk" type="string" size="32"/>
+          <Column id="inspyMgnNo" type="string" size="32"/>
+          <Column id="tmprEnggDt" type="string" size="32"/>
+          <Column id="rcpmnyerNm" type="string" size="32"/>
+          <Column id="mtInspyAmt" type="string" size="32"/>
+          <Column id="frstInspyPrearngeDt" type="string" size="32"/>
+          <Column id="endwNm" type="string" size="32"/>
+          <Column id="memberNmKor" type="string" size="32"/>
+          <Column id="rowStatus" type="string" size="32"/>
+          <Column id="procGb" type="string" size="32"/>
+          <Column id="memberNo" type="string" size="32"/>
+          <Column id="enggAmt" type="string" size="32"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="DS_GID_USE_YN">
+        <ColumnInfo>
+          <Column id="cd" type="STRING" size="256"/>
+          <Column id="nm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="cd">0</Col>
+            <Col id="nm">미사용</Col>
+          </Row>
+          <Row>
+            <Col id="cd">1</Col>
+            <Col id="nm">사용</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_fix_cd_excel"/>
+      <Dataset id="DS_EXCEL_CD_LIST">
+        <ColumnInfo>
+          <Column id="cd" type="STRING" size="256"/>
+          <Column id="nm" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="DS_EXCEL_DET_LIST">
+        <ColumnInfo>
+          <Column id="cd" type="STRING" size="256"/>
+          <Column id="nm" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::frameUtils.xjs";
+include "commJs::lib_String.xjs";
+
+/****************************************************************************
+* 함 수 명 	: form_onload
+* 함수설명 	: 화면로드 이벤트
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.gfn_bindCmmnFunction();
+	
+	this.gfn_getDatasetCount(this.DS_FIX_CD_LIST, this.sta_count);
+	this.gfn_getDatasetCount(this.DS_FIX_CD_DET_01_LIST, this.sta_count_01);
+	this.gfn_getDatasetCount(this.DS_FIX_CD_DET_02_LIST, this.sta_count_02);
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_search_onclick
+* 함수설명 	: 지정기탁코드 조회버튼 클릭 이벤트
+*****************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search_main();
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_search_main
+* 함수설명 	: 지정기탁코드 grid조회 함수
+*****************************************************************************/
+this.fn_search_main = function()
+{
+	var strArg = "createFromDt="+nexacro.wrapQuote(this.gfn_nvl(this.div_search.cal_createFromDt.value, "19000101"));
+		strArg += " createToDt="+nexacro.wrapQuote(this.gfn_nvl(this.div_search.cal_createFromDt.value, "21001231"));
+		//strArg += " memberNo="+nexacro.wrapQuote(this.gfn_nvl(this.div_search.cal_createFromDt.value, ""));\
+		strArg += " fixCd="+nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_sch_fixCdNm.value, ""));
+		
+	this.gfn_transaction("SEARCH"
+						,"txAdmUrl::com/admi/afd/afd02/selectAFD02070_main.do"
+						,""
+						,"DS_FIX_CD_LIST=resultList"
+						,strArg
+						,""
+						,true);
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_del_onclick
+* 함수설명 	: 지정기탁코드 삭제버튼 클릭 이벤트
+*****************************************************************************/
+this.btn_del_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.gfn_message("C", "선택한 지정기탁코드를 삭제하시겠습니까?"))
+	{
+	
+		this.DS_FIX_CD_LIST.setColumn(this.DS_FIX_CD_LIST.rowposition, "rowStatus", "8");//삭제처리 상태
+		this.fn_save_main();//저장함수 호출
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_save_onclick
+* 함수설명 	: 지정기탁코드 저장버튼 클릭 이벤트
+*****************************************************************************/
+this.btn_save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_save_main();
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_save_main
+* 함수설명 	: 지정기탁코드 grid저장 함수
+*****************************************************************************/
+this.fn_save_main = function() 
+{
+	this.gfn_transaction("SAVE"
+						,"txAdmUrl::com/admi/afd/afd02/saveAFD02070_main.do"
+						,"resultList=DS_FIX_CD_LIST:u"
+						,""
+						,""
+						,""
+						,true);
+}
+
+// /****************************************************************************
+// * 함 수 명 	: fn_save_detail
+// * 함수설명 	: 지정기탁코드 grid저장 함수
+// *****************************************************************************/
+// this.fn_save_detail = function() 
+// {
+// 	this.gfn_transaction("SAVE_01"
+// 						,"txAdmUrl::com/admi/afd/afd02/saveOnlnCntrct.do"
+// 						,"resultList=ds_onlnCntrct:u"
+// 						,""
+// 						,""
+// 						,""
+// 						,true);
+// }
+
+/****************************************************************************
+* 함 수 명 	: DS_FIX_CD_LIST_onrowposchanged
+* 함수설명 	: 지정기탁코드 row변경 후 이벤트
+*****************************************************************************/
+this.DS_FIX_CD_LIST_onrowposchanged = function(obj:Dataset, e:nexacro.DSRowPosChangeEventInfo)
+{
+	var v_fixCd = obj.getColumn(e.newrow,"fixCd");
+	
+	this.fn_search_detail01(v_fixCd);
+	this.fn_search_detail02(v_fixCd);
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_search_detail01
+* 함수설명 	: 지정기탁코드 수입 grid조회 함수
+*****************************************************************************/
+this.fn_search_detail01 = function(fixCd)
+{
+	if(this.gfn_isNull(fixCd))
+	{
+		fixCd = this.DS_FIX_CD_LIST.getColumn(this.DS_FIX_CD_LIST.rowposition, "fixCd");
+	}
+	
+	var strArg = "fixCd="+nexacro.wrapQuote(fixCd);	
+	
+	this.gfn_transaction("SEARCH_DETAIL01"
+						,"txAdmUrl::com/admi/afd/afd02/selectAFD02070_detail01.do"
+						,""
+						,"DS_FIX_CD_DET_01_LIST=resultList"
+						,strArg
+						,""
+						,true);
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_search_detail02
+* 함수설명 	: 지정기탁코드 지출 grid조회 함수
+*****************************************************************************/
+this.fn_search_detail02 = function(fixCd)
+{
+	if(this.gfn_isNull(fixCd))
+	{
+		fixCd = this.DS_FIX_CD_LIST.getColumn(this.DS_FIX_CD_LIST.rowposition, "fixCd");
+	}
+	
+	var strArg = "fixCd="+nexacro.wrapQuote(fixCd);
+	
+	this.gfn_transaction("SEARCH_DETAIL02"
+						,"txAdmUrl::com/admi/afd/afd02/selectAFD02070_detail02.do"
+						,""
+						,"DS_FIX_CD_DET_02_LIST=resultList"
+						,strArg
+						,""
+						,true);
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_new_onclick
+* 함수설명 	: 지정기탁코드 main 추가 이벤트
+*****************************************************************************/
+this.btn_new_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_addRow(this.DS_FIX_CD_LIST);
+	
+	this.DS_FIX_CD_LIST.setColumn(this.DS_FIX_CD_LIST.rowposition,"fixCd","자동생성");//코드
+	this.DS_FIX_CD_LIST.setColumn(this.DS_FIX_CD_LIST.rowposition,"fixRate","15");//적립률
+	this.DS_FIX_CD_LIST.setColumn(this.DS_FIX_CD_LIST.rowposition,"useYn","1");//사용여부
+}                                      
+
+/****************************************************************************
+* 함 수 명 	: btn_reSearch_01_onclick
+* 함수설명 	: 지정기탁코드 detail01 새로고침
+*****************************************************************************/
+this.btn_reSearch_01_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var v_fixCd = this.DS_FIX_CD_LIST.getColumn(this.DS_FIX_CD_LIST.rowposition, "fixCd");
+	
+	this.fn_search_detail01(v_fixCd);
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_new_detail01_onclick
+* 함수설명 	: 지정기탁코드 detail01 추가 이벤트
+*****************************************************************************/
+this.btn_new_detail01_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_addRow(this.DS_FIX_CD_DET_01_LIST);
+	
+	this.DS_FIX_CD_DET_01_LIST.setColumn(this.DS_FIX_CD_DET_01_LIST.rowposition,"fixCd", this.DS_FIX_CD_LIST.getColumn(this.DS_FIX_CD_LIST.rowposition, "fixCd"));//코드
+	//this.DS_FIX_CD_LIST.setColumn(this.DS_FIX_CD_LIST.rowposition,"fixCd","자동생성");//코드
+	//this.DS_FIX_CD_LIST.setColumn(this.DS_FIX_CD_LIST.rowposition,"fixRate","15");//적립률
+	//this.DS_FIX_CD_LIST.setColumn(this.DS_FIX_CD_LIST.rowposition,"useYn","1");//사용여부
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_del_detail01_onclick
+* 함수설명 	: 지정기탁코드 detail01 삭제버튼 클릭 이벤트
+*****************************************************************************/
+this.btn_del_detail01_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_deleteRow(this.DS_FIX_CD_DET_01_LIST,"this.fn_save_detail01()");
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_save_detail_onclick
+* 함수설명 	: 지정기탁코드 detail01 저장버튼 클릭 이벤트
+*****************************************************************************/
+this.btn_save_detail01_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_save_detail01();
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_save_detail01
+* 함수설명 	: 지정기탁코드 저장버튼 클릭 함수
+*****************************************************************************/
+this.fn_save_detail01 = function()
+{
+	//수정
+	this.gfn_transaction("SAVE_DETAIL01"
+						,"txAdmUrl::com/admi/afd/afd02/saveAFD02070_detail01.do"
+						,"resultList=DS_FIX_CD_DET_01_LIST:u"
+						,""
+						,""
+						,""
+						,true);
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_reSearch_02_onclick
+* 함수설명 	: 지정기탁코드 detail02 새로고침
+*****************************************************************************/
+this.btn_reSearch_02_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var v_fixCd = this.DS_FIX_CD_LIST.getColumn(this.DS_FIX_CD_LIST.rowposition, "fixCd");
+	
+	this.fn_search_detail02(v_fixCd);
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_new_detail02_onclick
+* 함수설명 	: 지정기탁코드 detail02 추가 이벤트
+*****************************************************************************/
+this.btn_new_detail02_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_addRow(this.DS_FIX_CD_DET_02_LIST);
+	
+	this.DS_FIX_CD_DET_02_LIST.setColumn(this.DS_FIX_CD_DET_02_LIST.rowposition,"fixCd", this.DS_FIX_CD_LIST.getColumn(this.DS_FIX_CD_LIST.rowposition, "fixCd"));//코드
+	//this.DS_FIX_CD_LIST.setColumn(this.DS_FIX_CD_LIST.rowposition,"fixCd","자동생성");//코드
+	//this.DS_FIX_CD_LIST.setColumn(this.DS_FIX_CD_LIST.rowposition,"fixRate","15");//적립률
+	//this.DS_FIX_CD_LIST.setColumn(this.DS_FIX_CD_LIST.rowposition,"useYn","1");//사용여부
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_del_detail02_onclick
+* 함수설명 	: 지정기탁코드 detail02 삭제버튼 클릭 이벤트
+*****************************************************************************/
+this.btn_del_detail02_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_deleteRow(this.DS_FIX_CD_DET_02_LIST,"this.fn_save_detail02()");
+	//this.fn_save_detail02();
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_save_detail02_onclick
+* 함수설명 	: 지정기탁코드 detail02 저장버튼 클릭 이벤트
+*****************************************************************************/
+this.btn_save_detail02_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	
+	this.fn_save_detail02();
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_save_detail02
+* 함수설명 	: 지정기탁코드 저장버튼 클릭 이벤트
+*****************************************************************************/
+this.fn_save_detail02 = function()
+{
+	//수정
+	this.gfn_transaction("SAVE_DETAIL02"
+						,"txAdmUrl::com/admi/afd/afd02/saveAFD02070_detail02.do"
+						,"resultList=DS_FIX_CD_DET_02_LIST:u"
+						,""
+						,""
+						,""
+						,true);
+}
+
+// /****************************************************************************
+// * 함 수 명 	: btn_new_onclick
+// * 함수설명 	: 지정기탁코드 적립률 일괄적용 이벤트
+// *****************************************************************************/
+// this.btn_new_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+// {
+// 	this.gfn_addRow(this.DS_FIX_CD_LIST);
+// 	
+// 	this.DS_FIX_CD_LIST.setColumn(this.DS_FIX_CD_LIST.rowposition,"fixCd","자동생성");//코드
+// 	this.DS_FIX_CD_LIST.setColumn(this.DS_FIX_CD_LIST.rowposition,"fixRate","15");//적립률
+// 	this.DS_FIX_CD_LIST.setColumn(this.DS_FIX_CD_LIST.rowposition,"useYn","1");//사용여부
+// }
+
+/****************************************************************************
+* 함 수 명 	: fn_callBack
+* 함수설명 	: fn_callBack 함수
+*****************************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg) 
+{
+	if(errCd < 0 ) 
+	{
+		this.gfn_message("A", errMsg);
+		return false;
+	}
+	else 
+	{
+		//화면로드
+		if("LOAD" == trId) 
+		{
+				
+	this.gfn_getDatasetCount(this.DS_FIX_CD_DET_02_LIST, this.sta_count_02);
+
+		}
+		//지정기탁코드 조회
+		else if("SEARCH" == trId) 
+		{
+			this.gfn_getDatasetCount(this.DS_FIX_CD_LIST, this.sta_count);
+		}
+		//수입내역 조회
+		else if("SEARCH_DETAIL01" == trId)
+		{
+			this.gfn_getDatasetCount(this.DS_FIX_CD_DET_01_LIST, this.sta_count_01);
+		}
+		//지출내역 조회
+		else if("SEARCH_DETAIL02" == trId)
+		{
+			this.gfn_getDatasetCount(this.DS_FIX_CD_DET_02_LIST, this.sta_count_02);
+		}		
+		//지정기탁코드 저장
+		else if("SAVE" == trId)
+		{
+			this.gfn_message("A", "정상적으로 처리되었습니다.");
+			this.fn_search_main();
+		}
+		//수입내역 저장
+		else if("SAVE_DETAIL01" == trId) 
+		{
+			this.gfn_message("A", "정상적으로 처리되었습니다.");
+			this.fn_search_detail01();
+		}
+		//지출내역 저장
+		else if("SAVE_DETAIL02" == trId) 
+		{
+			this.gfn_message("A", "정상적으로 처리되었습니다.");
+			this.fn_search_detail02();
+		}
+		else if("SEARCH_EXCEL" == trId)
+		{
+			var excelGrd = new Array();
+				excelGrd[0] = this.grd_excel;
+			
+			this.gfn_excelDown(excelGrd, "지정기탁내역");
+		}
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_excel_onclick
+* 함수설명 	: 지정기탁코드 엑셀 클릭 이벤트
+*****************************************************************************/
+this.btn_excel_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	//var strArg = "fixCd="+nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_sch_fixCdNm.value, ""));
+	var strArg = "fixCd="+nexacro.wrapQuote(this.gfn_nvl(this.DS_FIX_CD_LIST.getColumn(this.DS_FIX_CD_LIST.rowposition, "fixCd"), ""));
+	
+	this.gfn_transaction("SEARCH_EXCEL"
+						,"txAdmUrl::com/admi/afd/afd02/selectAFD02070_excel.do"
+						,""
+						,"DS_EXCEL_DET_LIST=resultList"
+						,strArg
+						,""
+						,true);
+						
+} 
+/****************************************************************************
+* 함 수 명 	: btn_apply_onclick
+* 함수설명 	: 지정기탁코드 일괄적용 버튼 클릭 이벤트
+*****************************************************************************/
+this.btn_apply_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	for(var i=0; i< this.DS_FIX_CD_LIST.rowcount ; i++)
+	{
+		this.DS_FIX_CD_LIST.setColumn(i, "fixRate", this.edt_sch_fixCdNm00.value);
+	}
+	
+	//지출일 일괄적용 후 저장
+	if(this.confirm("적립률( " + this.edt_sch_fixCdNm00.value + " %)을 일괄적용 하시겠습니까?"))
+	{
+		this.fn_save_main();
+	}	
+}
+/****************************************************************************
+* 함 수 명 	: DS_FIX_CD_DET_01_LIST_oncolumnchange
+* 함수설명 	: 수입 적립률 계산 이벤트
+*****************************************************************************/
+this.DS_FIX_CD_DET_01_LIST_oncolumnchanged = function(obj:Dataset, e:nexacro.DSColChangeEventInfo)
+{
+
+	if(e.columnid == "ioAmt")
+	{
+		var v_fixCd = obj.getColumn(obj.rowposition,"ioAmt");
+		var v_fixRate = this.DS_FIX_CD_LIST.getColumn(this.DS_FIX_CD_LIST.rowposition, "fixRate")/100;
+		
+		obj.setColumn(obj.rowposition, "saveAmt", v_fixCd*v_fixRate);
+	}
+	
+}
+]]></Script>
+  </Form>
+</FDL>

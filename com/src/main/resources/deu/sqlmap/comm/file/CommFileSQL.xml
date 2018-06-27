@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CommFileSQL">
+
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	
+	<select id="comDAO.selectFileInfo"  parameterClass="java.util.HashMap" resultClass="egovMap">
+			SELECT A.FILE_MASTER_NO
+			     , B.FILE_SEQ
+                 , A.SUB_ID
+                 , A.MENU_ID
+                 , A.PROG_ID
+                 , A.INSERT_ID
+                 , A.INSERT_DT
+                 , A.UPDATE_ID
+                 , A.UPDATE_DT
+                 , B.FILE_SEQ
+                 , B.ORG_FILE_NM AS FILE_NM
+                 , B.FILE_PATH AS FILE_URL
+                 , B.FILE_SIZE 
+			  FROM COM_FILE A,
+			       COM_FILE_SUB B
+			 WHERE A.FILE_MASTER_NO = B.FILE_MASTER_NO
+			   AND A.FILE_MASTER_NO = #strFileMasterNo#
+			   <isNotEmpty property="strFileSeq" >
+			   AND B.FILE_SEQ = CONVERT(BIGINT, #strFileSeq#)
+			   </isNotEmpty>
+	</select> 
+	
+</sqlMap>

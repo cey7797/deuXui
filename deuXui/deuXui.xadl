@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ADL version="1.2">
+  <TypeDefinition url="default_typedef.xml"/>
+  <GlobalVariables url="globalvars.xml"/>
+  <Application id="deuXui" codepage="utf-8" language="Korean" loginformurl="" loginformstyle="" windowopeneffect="" windowcloseeffect="" version="" tracemode="" themeid="deuXtheme.xtheme" onload="application_onload" onerror="application_onerror" usewaitcursor="true">
+    <Layout>
+      <MainFrame id="mainframe" title="maintitle" defaultfont="" resizable="true" showtitlebar="true" showstatusbar="false" left="0" top="0" width="1280" height="1024" openstatus="maximize" showcascadetitletext="false" showcascadestatustext="false">
+        <VFrameSet id="VFrameSet" showtitleicon="true" showcascadetitletext="true" showcascadestatustext="true" showstatusbar="false" showtitlebar="false" separatesize="0, *">
+          <Frames>
+            <ChildFrame id="TopFrame" showtitlebar="false" formurl="commMain::TopFrame.xfdl" resizable="true" dragmovetype="none"/>
+            <HFrameSet id="MiddleFrameSet" showtitleicon="false" separatesize="0, *">
+              <Frames>
+                <ChildFrame id="LeftFrame" showtitlebar="false" formurl="commMain::LeftFrame.xfdl" dragmovetype="none"/>
+                <VFrameSet id="BizFrameSet" separatesize="0, *">
+                  <Frames>
+                    <ChildFrame id="MDIFrame" showtitlebar="false" formurl="commMain::MDIFrame.xfdl" dragmovetype="none"/>
+                    <FrameSet id="MainFrameSet" showcascadetitletext="false" showcascadestatustext="false" showtitleicon="false" showtitlebar="false" openstatus="normal">
+                      <Frames>
+                        <ChildFrame id="WorkFrame" showtitlebar="false" topmost="false" dragmovetype="none" left="0" top="0" resizable="false" showstatusbar="false" openstatus="maximize" showtitleicon="false" showcascadetitletext="false" showcascadestatustext="false"/>
+                      </Frames>
+                    </FrameSet>
+                  </Frames>
+                </VFrameSet>
+              </Frames>
+            </HFrameSet>
+          </Frames>
+        </VFrameSet>
+      </MainFrame>
+    </Layout>
+    <ScreenInfo/>
+    <Script type="xscript5.0"/>
+    <Style url=".\css\RichTextEditor.css"/>
+    <Style url=".\css\editor.css"/>
+    <Style url=".\css\javacolors.css"/>
+    <Style url=".\css\jscolors.css"/>
+    <Style url=".\css\xmlcolors.css"/>
+  </Application>
+  <Script type="xscript5.0"><![CDATA[// 프레임 Alias
+    this.apVFrameSet 		  = application.mainframe.VFrameSet;
+    this.apTopFrame 		  = application.mainframe.VFrameSet.TopFrame;
+    this.apMiddleFrameSet	= application.mainframe.VFrameSet.MiddleFrameSet;
+    this.apLeftFrame    	= application.mainframe.VFrameSet.MiddleFrameSet.LeftFrame;
+    this.apBizFrameSet 	  = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet;
+    this.apMDIFrame 	    = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MDIFrame;
+    this.apMainFrameSet 	= application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet;
+    this.apWorkFrame 		  = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.WorkFrame;
+    
+    this.application_onload = function(obj:Object, e:TOBE.LoadEventInfo)
+    {
+		//<link rel="shortcut icon" href="./img/favicon.ico">
+		
+     	/*
+     	var sUrl = application.xadl;
+    	var sServerUrl = "";
+    	if(sUrl.indexOf("http")>-1){
+    		sServerUrl = nexacro.replaceAll(sUrl,"http://");
+    		application.services['txComUrl'].url =  sServerUrl.substr(0,sServerUrl.indexOf("/"));
+    		application.services['txAdmUrl'].url =  sServerUrl.substr(0,sServerUrl.indexOf("/"));
+    		application.services['txGaaUrl'].url =  sServerUrl.substr(0,sServerUrl.indexOf("/"));
+    		application.services['txResUrl'].url =  sServerUrl.substr(0,sServerUrl.indexOf("/"));
+    		application.services['txCobUrl'].url =  sServerUrl.substr(0,sServerUrl.indexOf("/"));
+    	}
+     	*/
+     	
+     	if(application.gv_formType == "purcPopup"){
+			//로그인
+			this.apWorkFrame.set_formurl("commMain::LogInPop.xfdl");
+			//1. memberNo 로 자동로그인 처리(password 제외)
+			//2. top, left프레임 사이즈 0처리
+			//3. formname 받은걸로 leftFram click이벤트 한것처럼 화면 자동 open
+     	}else if(application.gv_formType == "linkPopup"){
+			//로그인
+			this.apWorkFrame.set_formurl("commMain::LogInLink.xfdl");
+			//1. memberNo 로 자동로그인 처리(password 제외)
+			//2. top, left프레임 사이즈 0처리
+			//3. formname 받은걸로 leftFram click이벤트 한것처럼 화면 자동 open
+     	
+     	}else if(application.gv_formType == "popup"){
+			//발전기금시스템 회원인증
+			this.apWorkFrame.set_formurl("commMain::PopupFrame.xfdl");
+		}else{
+			//로그인
+			this.apWorkFrame.set_formurl("commMain::LogIn.xfdl");
+   		}   		
+     	
+    	var appUrl = application.xadl;
+//    	application.alert(appUrl);
+    	var appUrlSplit = appUrl.split("/");
+    
+    	var protocol = appUrlSplit[0];
+    
+    	if(protocol != "file:")
+    	{
+    		application.services["svr"].url = protocol + "//" + appUrlSplit[2] + "/";		
+    	}
+    	
+    		application.mainframe.set_titletext("우리대학교(로컬)");
+    		
+    	TOBE = nexacro;
+    }
+
+    this.application_onerror = function(obj:Application, e:nexacro.ErrorEventInfo)
+    {
+    	
+    }
+
+    this.gds_sys_onrowposchanged = function(obj:Dataset, e:nexacro.DSRowPosChangeEventInfo)
+    {
+    	var strArg = "memberNo=" + nexacro.wrapQuote(this.gds_user.getColumn(this.gds_user.rowposition, "memberNo"));
+    	    strArg += " strSysId=" + nexacro.wrapQuote(obj.getColumn(obj.rowposition, "sysId"));
+    	    strArg += " gv_langFg=" + nexacro.wrapQuote(application.gv_langFg);
+    	
+    	this.transaction("",
+    					 "txComUrl::com/comm/selectSubMenu.do",
+    					 "",
+    					 "gds_subsys=resultList",
+    					 strArg,
+    					 "");
+    }
+
+this.gds_open_onrowposchanged = function(obj:Dataset, e:nexacro.DSRowPosChangeEventInfo)
+{
+	//ds_open의 데이터가 있을 경우 모든탭닫기 버튼 보이기
+	if(obj.getRowCount() > 0){
+		this.apMDIFrame.form.btn_closeAll.set_visible(true);
+		this.apMDIFrame.form.btn_closeOthers.set_visible(true);
+		this.apMDIFrame.form.btn_favorite.set_visible(true);
+	}else{
+		this.apMDIFrame.form.btn_closeAll.set_visible(false);
+		this.apMDIFrame.form.btn_closeOthers.set_visible(false);
+		this.apMDIFrame.form.btn_favorite.set_visible(false);	
+	}
+}]]></Script>
+</ADL>

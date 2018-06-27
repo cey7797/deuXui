@@ -1,0 +1,524 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="ac01040" classname="ac01040" left="0" top="0" width="1038" height="855" titletext="법인카드개인사용내역" onload="ac01040_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="0" left="0" top="0" right="15" height="39" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static09" taborder="0" text="w&#13;&#10;15" visible="false" left="1" top="11" width="15" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static01" taborder="1" text="승인일자" cssclass="search" left="21" top="10" width="49" height="22"/>
+              <Calendar id="S_APVL_FROM_DT" taborder="2" left="88" top="9" width="145" height="21" style=":disabled {color:black;}"/>
+              <Static id="Static00" taborder="3" text="~" left="239" top="9" width="10" height="21"/>
+              <Calendar id="S_APVL_TO_DT" taborder="4" left="254" top="9" width="145" height="21" style=":disabled {color:black;}"/>
+              <Static id="Static07" taborder="5" text="카드번호" cssclass="search" left="415" top="8" width="47" height="22"/>
+              <Edit id="S_CDNO" taborder="6" onkeydown="div_search_edt_roleNm_onkeydown" left="476" top="8" width="149" height="21" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static02" taborder="7" text="정산구분" cssclass="search" left="663" top="8" width="47" height="22"/>
+              <Combo id="cmb_calcGb" taborder="8" left="725" top="8" width="121" height="22" codecolumn="codecolumn" datacolumn="datacolumn" onitemchanged="div_search_cmb_calcGb_onitemchanged">
+                <Dataset id="innerdataset">
+                  <ColumnInfo>
+                    <Column id="codecolumn" size="256"/>
+                    <Column id="datacolumn" size="256"/>
+                  </ColumnInfo>
+                  <Rows>
+                    <Row>
+                      <Col id="codecolumn">0</Col>
+                      <Col id="datacolumn">전체</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">1</Col>
+                      <Col id="datacolumn">정산</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">2</Col>
+                      <Col id="datacolumn">미정산</Col>
+                    </Row>
+                  </Rows>
+                </Dataset>
+              </Combo>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static20" taborder="1" text="h15" visible="false" left="0" top="39" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static76" taborder="2" text="법인카드승인목록" cssclass="page_stitle" left="0" top="55" width="196" height="20"/>
+        <Static id="Static04" taborder="3" text="w&#13;&#10;15" visible="false" top="10" right="0" width="15" height="814" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Grid id="grd_det" taborder="4" binddataset="ds_acCorpCardUse" autoenter="select" useinputpanel="false" autofittype="col" left="0" top="505" right="15" onexpandup="grd_det_onexpandup" onkeyup="grd_det_onkeyup" bottom="28">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="35" band="left"/>
+                <Column size="20" band="left"/>
+                <Column size="30" band="left"/>
+                <Column size="60"/>
+                <Column size="100"/>
+                <Column size="120"/>
+                <Column size="100"/>
+                <Column size="150"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="100"/>
+              </Columns>
+              <Rows>
+                <Row size="24" band="head"/>
+                <Row size="24"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox"/>
+                <Cell col="2" text="순번"/>
+                <Cell col="3" text="입력구분"/>
+                <Cell col="4" text="카드업체명"/>
+                <Cell col="5" text="카드번호"/>
+                <Cell col="6" text="승인일자"/>
+                <Cell col="7" text="입금액"/>
+                <Cell col="8" text="입금자"/>
+                <Cell col="9" text="입금일자"/>
+                <Cell col="10" text="결의번호"/>
+                <Cell col="11" text="결의제목"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="image" text="bind:rowStatus" expr="expr:rowStatus==2?&quot;URL('theme://images/ico_i.png')&quot;:rowStatus==4?&quot;URL('theme://images/ico_u.png')&quot;:rowStatus==8?&quot;URL('theme://images/ico_d.png')&quot;:&quot;&quot;"/>
+                <Cell col="1" displaytype="checkbox" edittype="expr:tableGb == 2? 'none':'checkbox'" text="bind:chk"/>
+                <Cell col="2" text="expr:currow+1"/>
+                <Cell col="3" text="bind:tableGbNm"/>
+                <Cell col="4" displaytype="normal" edittype="none" text="bind:cardEnpnm" expandshow="hide"/>
+                <Cell col="5" text="bind:cdno" mask="####-####-####-####"/>
+                <Cell col="6" displaytype="date" edittype="none" editfilter="integer" text="bind:apvlDt" editlimit="8"/>
+                <Cell col="7" displaytype="number" edittype="expr:tableGb == 2? 'none':'normal'" style="align:right;" text="bind:useAmt" editautoselect="true"/>
+                <Cell col="8" edittype="expr:tableGb == 2? 'none':'normal'" text="bind:memberNm" expandshow="expr:tableGb == 2? 'hide':'show'" expandimage="URL('theme://images\ico_expand.png')"/>
+                <Cell col="9" displaytype="date" edittype="expr:tableGb == 2? 'none':'date'" editfilter="integer" text="bind:useDt" editlimit="8" editautoselect="true"/>
+                <Cell col="10" text="bind:vouNo"/>
+                <Cell col="11" text="bind:vouTtl"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2"/>
+                <Cell col="3"/>
+                <Cell col="4"/>
+                <Cell col="5"/>
+                <Cell col="6"/>
+                <Cell col="7" displaytype="number" style="align:right;" text="expr:dataset.getSum(&quot;useAmt&quot;)"/>
+                <Cell col="8"/>
+                <Cell col="9"/>
+                <Cell col="10"/>
+                <Cell col="11"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="btn_search" taborder="5" text="조회" onclick="btn_search_onclick" cssclass="search" top="54" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R" tabstop="false"/>
+        <Static id="Static00" taborder="9" text="h5" visible="false" left="0" top="76" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static06" taborder="11" text="h5" visible="false" left="930" top="827" width="8.96%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_grdDet" taborder="12" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" right="15" width="86" height="20" style="border:0 none #808080ff ;align:right middle;" bottom="6"/>
+        <Static id="Static07" taborder="13" text="h5" visible="false" left="930" top="845" width="8.96%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_newDet" taborder="14" text="추가" cssclass="new" top="478" right="139" width="60" height="22" tooltiptype="hover" tooltiptext="추가" userBtnAuth="S" onclick="btn_newDet_onclick" tabstop="false"/>
+        <Button id="btn_delDet" taborder="15" text="삭제" cssclass="del" top="478" right="77" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" userBtnAuth="S" onclick="btn_delDet_onclick" tabstop="false"/>
+        <Button id="btn_saveDet" taborder="16" text="저장" cssclass="save" top="478" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S" onclick="btn_saveDet_onclick" tabstop="false"/>
+        <Static id="Static01" taborder="17" text="h5" visible="false" left="0" top="500" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static02" taborder="18" text="법인카드 입금목록" cssclass="page_stitle" left="0" top="479" width="196" height="20"/>
+        <Static id="Static03" taborder="19" text="h15" visible="false" left="0" top="463" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Grid id="grd_admiPopupList" taborder="20" binddataset="ds_admiPopupList" useinputpanel="false" autofittype="col" nodatatext="No Data" oncelldblclick="grd_admiPopupList_oncelldblclick" left="0" top="80" height="361" right="15">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="30" band="left"/>
+                <Column size="100"/>
+                <Column size="140"/>
+                <Column size="170"/>
+                <Column size="120"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="100"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="카드업체명"/>
+                <Cell col="2" text="카드번호"/>
+                <Cell col="3" text="가맹점명"/>
+                <Cell col="4" text="승인일자"/>
+                <Cell col="5" text="승인금액"/>
+                <Cell col="6" text="정산금액"/>
+                <Cell col="7" text="정산잔액"/>
+                <Cell col="8" text="승인번호"/>
+              </Band>
+              <Band id="body">
+                <Cell text="expr:currow+1"/>
+                <Cell col="1" style="align:center;" text="bind:cardEnpnm"/>
+                <Cell col="2" displaytype="normal" style="align:center;" text="bind:cdno" mask="####-####-####-####"/>
+                <Cell col="3" displaytype="normal" style="align:left;" text="bind:mcNm"/>
+                <Cell col="4" displaytype="date" edittype="none" style="align:center;" text="bind:apvlDt" calendardisplaynulltype="none"/>
+                <Cell col="5" displaytype="number" style="align:right;" text="bind:apvlAmtDom" mask="###,###,###,###"/>
+                <Cell col="6" displaytype="number" style="align:right;" text="bind:calcAmt" mask="###,###,###,###"/>
+                <Cell col="7" displaytype="number" style="align:right;" text="bind:calcRemainAmt" mask="###,###,###,###"/>
+                <Cell col="8" displaytype="normal" style="align:center;" text="bind:aprno"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static05" taborder="21" text="h5" visible="false" left="930" top="440" width="8.96%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_grdMain" taborder="22" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" top="442" right="15" width="86" height="20" style="border:0 none #808080ff ;align:right middle;"/>
+        <Static id="Static09" taborder="23" text="h5" visible="false" left="930" top="458" width="8.96%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_acCorpCardUse" oncolumnchanged="ds_acCorpCardUse_oncolumnchanged">
+        <ColumnInfo>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="cardEnpc" type="STRING" size="256"/>
+          <Column id="cardEnpnm" type="STRING" size="256"/>
+          <Column id="cdno" type="STRING" size="256"/>
+          <Column id="apvlDt" type="STRING" size="256"/>
+          <Column id="bicApvlSeq" type="STRING" size="256"/>
+          <Column id="useSeq" type="STRING" size="256"/>
+          <Column id="useAmt" type="STRING" size="256"/>
+          <Column id="memberNo" type="STRING" size="256"/>
+          <Column id="memberNm" type="STRING" size="256"/>
+          <Column id="useDt" type="STRING" size="256"/>
+          <Column id="tableGb" type="STRING" size="256"/>
+          <Column id="tableGbNm" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_dummy"/>
+      <Dataset id="ds_admiPopupList" onrowposchanged="ds_admiPopupList_onrowposchanged"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[// [프로젝트]	동의대학교 예산회계시스템 구축
+// [시스템명]	회계
+// [부시스템]	회계관리
+// [프로그램]	법인카드개인입금관리
+// [설명] 
+//	         
+// [작성자명]	라병수
+// [작성일자]	2016.06.14
+//////////////////////////////////[수정이력]//////////////////////////////////
+// [수정일자] 
+// [수 정 자] 
+// [수정내용]
+
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+this.ac01040_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.fn_postLoad();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{
+	var essGrd = new Array();
+		essGrd[0] = this.grd_admiPopupList;
+		essGrd[1] = this.grd_det;
+
+	this.gfn_essDataset(essGrd);
+	this.gfn_bindCmmnFunction();
+	
+	this.div_search.cmb_calcGb.set_index(0);
+	
+	this.fn_search();
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_search_onclick
+ * 함수설명 	: 조회 버튼 클릭 함수
+********************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preSearch
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preSearch = function()
+{
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_search = function()
+{
+	if(this.fn_preSearch()){
+		var strArg  = "apvlFromDt=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.S_APVL_FROM_DT.value));	//승인시작일자
+			strArg += " apvlToDt=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.S_APVL_TO_DT.value));	//승인종료일자
+			strArg += " cdno=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.S_CDNO.value));	//카드번호
+			strArg += " calcGb=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.cmb_calcGb.value));	//로그인유저부서
+			strArg += "cardAcntNo=" + nexacro.wrapQuote("101-2040-8840-01");
+		
+		this.gfn_transaction("SEARCH",
+							 "txAdmUrl::com/admi/adcom/selectAc01040.do",
+							 "",
+							 "ds_admiPopupList=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postSearch
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearch = function()
+{	
+	this.gfn_getDatasetCount(this.ds_admiPopupList, this.sta_grdMain);
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preSearchDet
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preSearchDet = function()
+{
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_searchDet
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_searchDet = function()
+{
+	if(this.fn_preSearchDet()){
+		var strArg  = "cardEnpc=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.ds_admiPopupList.getColumn(this.ds_admiPopupList.rowposition,"cardEnpc")));	//카드업체코드
+			strArg += " cdno=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.ds_admiPopupList.getColumn(this.ds_admiPopupList.rowposition,"cdno")));	//카드번호
+			strArg += " apvlDt=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.ds_admiPopupList.getColumn(this.ds_admiPopupList.rowposition,"apvlDt")));	
+			strArg += " bicApvlSeq=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.ds_admiPopupList.getColumn(this.ds_admiPopupList.rowposition,"bicApvlSeq")));	
+		
+		this.gfn_transaction("SEARCHDET",
+							 "txAdmUrl::com/admi/ac01/selectAcCorpCardUseList.do",
+							 "",
+							 "ds_acCorpCardUse=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postSearchDet
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearchDet = function()
+{	
+	this.gfn_getDatasetCount(this.ds_acCorpCardUse, this.sta_grdDet);
+}
+
+this.btn_preNewDet = function()
+{
+	if(this.ds_admiPopupList.rowcount <= 0){
+		this.gfn_message("A", "법인카드승인목록이 없습니다.");
+		return false;
+	}else{
+		return true
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_newDet_onclick
+ * 함수설명 	: Row를 추가한다.
+********************************************************************************/
+this.btn_newDet_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.btn_preNewDet()){
+		var addRow = this.ds_acCorpCardUse.addRow();
+		this.ds_acCorpCardUse.setColumn(addRow,"rowStatus",2);
+		this.ds_acCorpCardUse.setColumn(addRow,"cardEnpc",this.ds_admiPopupList.getColumn(this.ds_admiPopupList.rowposition,"cardEnpc"));
+		this.ds_acCorpCardUse.setColumn(addRow,"cardEnpnm",this.ds_admiPopupList.getColumn(this.ds_admiPopupList.rowposition,"cardEnpnm"));
+		this.ds_acCorpCardUse.setColumn(addRow,"cdno",this.ds_admiPopupList.getColumn(this.ds_admiPopupList.rowposition,"cdno"));
+		this.ds_acCorpCardUse.setColumn(addRow,"apvlDt",this.ds_admiPopupList.getColumn(this.ds_admiPopupList.rowposition,"apvlDt"));
+		this.ds_acCorpCardUse.setColumn(addRow,"bicApvlSeq",this.ds_admiPopupList.getColumn(this.ds_admiPopupList.rowposition,"bicApvlSeq"));
+				
+		this.grd_det.setCellPos(4);
+		this.grd_det.setFocus();
+	}	
+		
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_delDet_onclick
+ * 함수설명 	: 선택한 Data를 삭제한다.
+ *********************************************************************/
+this.btn_delDet_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_deleteRow(this.ds_acCorpCardUse, "this.fn_saveDet()");
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_saveDet_onclick
+ * 함수설명 	: 저장버튼 클릭 event
+ *********************************************************************/
+this.btn_saveDet_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{	
+	this.fn_saveDet();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_preSaveDet
+ * 함수설명 	: DataSet을 저장 전 처리 함수.
+ *********************************************************************/
+this.fn_preSaveDet = function()
+{
+	
+	if(!this.gfn_isUpdate(this.ds_acCorpCardUse)){
+		this.gfn_message("A", "변경된 데이터가 없습니다.");
+		return false;
+	}
+	
+	/*
+	 * 필수값 입력 체크
+	 */
+	var colNm = "cardEnpc$cdno$apvlDt$bicApvlSeq$useAmt$memberNm$memberNo$useDt";
+	var korNm = "카드업체코드$카드번호$승인일자$BIC승인일련번호$입금액$입금자명$입금자ID$입금일자";
+	var cmpNm = "$";
+	
+	var result = this.gfn_chkEssItem("ds_acCorpCardUse", colNm, korNm, cmpNm);
+	if (result[0] != "success") {
+		this.gfn_message("A", result[0]);
+		this.ds_acCorpCardUse.set_rowposition(result[1]);
+		if(result[3] != ""){
+			this.objects[result[3]].setFocus();
+		}
+		return false;	
+	}
+	
+// 	//데이터 중복 체크
+// 	if(!this.gfn_chkValidation("ds_acCorpCardUse", "cardNo", "카드번호")){
+// 		return false;
+// 	}
+	
+	return true;
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_saveDet
+ * 함수설명 	: DataSet을 저장한다.
+ *********************************************************************/
+this.fn_saveDet = function()
+{
+	if(this.fn_preSaveDet()){
+	
+		this.gfn_transaction("SAVEDET",
+							 "txAdmUrl::com/admi/ac01/saveAcCorpCardUseList.do",
+							 "resultList=ds_acCorpCardUse:u",
+							 "",
+							 "",
+							 "fn_callBack");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSaveDet
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postSaveDet = function()
+{
+	this.gfn_message("A", "저장이 완료되었습니다.");
+	this.fn_searchDet();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.gfn_message("A", errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		} else if(trId == "SEARCH"){
+			this.fn_postSearch();
+		} else if(trId == "SEARCHDET"){
+			this.fn_postSearchDet();	
+		} else if(trId == "SAVEDET"){
+			this.fn_postSaveDet();
+		}
+	}
+}
+
+this.ds_admiPopupList_onrowposchanged = function(obj:Dataset, e:nexacro.DSRowPosChangeEventInfo)
+{
+	this.fn_searchDet();
+}
+
+this.grd_det_onexpandup = function(obj:Grid, e:nexacro.GridMouseEventInfo)
+{
+	//은행조회팝업
+	if(e.cell == 8)
+	{
+		var strParam = {nm:this.ds_acCorpCardUse.getColumn(this.ds_acCorpCardUse.rowposition,"memberNm")
+					   ,autoClose:false
+					   ,autoSearch:true
+					   };
+		
+		this.cfn_comUserPopup(strParam,"fn_popCallback");	
+	}	
+	
+	
+}
+
+this.grd_det_onkeyup = function(obj:Grid, e:nexacro.KeyEventInfo)
+{
+	if(e.cell == 8)
+	{
+		if(e.keycode == 13){
+			var strParam = {nm:this.ds_acCorpCardUse.getColumn(this.ds_acCorpCardUse.rowposition,"memberNm")
+						   ,autoClose:false
+						   ,autoSearch:true
+						   };
+			
+			this.cfn_comUserPopup(strParam,"fn_popCallback");	
+		}	
+	}
+}
+
+this.fn_popCallback = function (strID, rtnVal)
+{
+	if(rtnVal == "close") {
+		return;
+	}
+	
+	//Dataset을 return 할 경우
+	this.ds_dummy.clear();
+	this.ds_dummy.loadXML(rtnVal);
+	
+	this.ds_acCorpCardUse.setColumn(this.ds_acCorpCardUse.rowposition, "memberNo", this.ds_dummy.getColumn(0, "memberNo")); //신고대상자
+	this.ds_acCorpCardUse.setColumn(this.ds_acCorpCardUse.rowposition, "memberNm", this.ds_dummy.getColumn(0, "nm")); //신고대상자명
+ 		
+
+}
+this.ds_acCorpCardUse_oncolumnchanged = function(obj:Dataset, e:nexacro.DSColChangeEventInfo)
+{
+	if(e.columnid == "useAmt"){
+		if(nexacro.toNumber(this.ds_admiPopupList.getColumn(this.ds_admiPopupList.rowposition,"apvlAmtDom")) < nexacro.toNumber(obj.getCaseSum("rowStatus < 8","useAmt") ) ){
+			this.gfn_message("A","입금액의 합이 승인금액보다 큽니다.");
+			obj.setColumn(e.row,"useAmt",e.oldvalue);
+			return false;
+		}
+	
+	}
+}
+
+this.div_search_cmb_calcGb_onitemchanged = function(obj:Combo, e:nexacro.ItemChangeEventInfo)
+{
+	this.fn_search();
+}
+]]></Script>
+  </Form>
+</FDL>

@@ -1,0 +1,513 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="LogIn" classname="LogIn" left="0" top="0" width="1280" height="1024" onload="LogIn_onload">
+    <Layouts>
+      <Layout>
+        <Div id="divBg" taborder="5" left="0%" top="398" right="0%" height="294" style="background:transparent URL('theme://images\login\login_bg.gif') repeat-x;" cssclass="loginBody"/>
+        <Div id="div_wrap" taborder="4" left="20%" top="228" height="504" width="944">
+          <Layouts>
+            <Layout>
+              <ImageViewer id="ivLogo" taborder="0" image="URL('theme://images\login\txt_login.gif')" cssclass="logo" left="-36" top="32" height="117" style="background:transparent;border:1 none #e5e5e5ff ;" width="504"/>
+              <Div id="div_info_kr" taborder="4" left="403" top="282" height="83" width="541" style="border:0 none #808080ff ;">
+                <Layouts>
+                  <Layout>
+                    <Static id="Static00" taborder="0" text="교원신규 채용자는 등록한 이메일, 성명, 비밀번호(숫자 4자리)로 인증하여 사용가능합니다." left="3.09%" top="4" right="1.74%" height="12" cssclass="login_info" style="color:#ffffffff;"/>
+                    <Static id="Static01" taborder="1" text="인증오류 시 관리자(042-865-2384)에게 문의하시기 바랍니다." left="3.09%" top="21" right="1.74%" height="12" style="color:#ffffffff;"/>
+                    <Static id="sta_recuInfo" taborder="2" text="현재 2015년도 전기 2차 채용모집중 입니다." left="3.09%" top="38" right="1.74%" height="12" style="color:#ffffffff;"/>
+                    <Static id="Static05" taborder="5" left="6" top="4" height="76" style="background:#4da19fff;" width="1"/>
+                  </Layout>
+                </Layouts>
+              </Div>
+              <Div id="div_footer" taborder="5" left="127" top="444" height="46" width="766">
+                <Layouts>
+                  <Layout>
+                    <Static id="Static00" taborder="0" text="(305-350) 대전광역시 유성구 가정로 217 과학기술연합대학원대학교 TEL: +82-42-864-5551 Fax:+82-42-864-5554" left="2" top="13" height="13" width="744" style="color:#707070ff;"/>
+                    <Static id="Static01" taborder="1" text="Copyright 2012 university of science and technology. all right reserved." left="0.27%" top="30" right="2.66%" height="13" style="color:#707070ff;"/>
+                  </Layout>
+                </Layouts>
+              </Div>
+              <Div id="div_idLogin" taborder="6" left="10" top="234" width="397" height="141" scrollbars="none">
+                <Layouts>
+                  <Layout>
+                    <Edit id="edt_email" taborder="0" autoselect="true" onkeyup="div_wrap_div_idLogin_edt_pw_onkeyup" left="156" top="25" width="158" height="25" tooltiptext="이메일을 입력하세요" imemode="alpha" onkillfocus="div_wrap_div_idLogin_edt_email_onkillfocus"/>
+                    <Edit id="edt_nm" taborder="1" password="false" autoselect="true" onkeyup="div_wrap_div_idLogin_edt_pw_onkeyup" left="156" top="52" width="158" height="25" tooltiptext="성명을 입력하세요" imemode="hangul"/>
+                    <Button id="btn_login" taborder="4" onclick="btn_login_onclick" left="317" top="44" width="80" height="74" style="background:transparent URL('theme://images\login\btn_login.gif');border:0 none #999999ff ;cursor:hand;"/>
+                    <Static id="Static00" taborder="15" text="이메일" left="30" top="27" width="120" height="25" style="color:white;align:right middle;font:9 Dotum bold;"/>
+                    <Edit id="edt_pw" taborder="2" password="true" autoselect="true" onkeyup="div_wrap_div_idLogin_edt_pw_onkeyup" left="156" top="79" width="158" height="25" tooltiptext="PW를 입력하세요" maxlength="4" inputtype="number"/>
+                    <Static id="Static01" taborder="17" text="성명" left="30" top="51" width="120" height="25" style="color:white;align:right middle;font:9 Dotum bold;"/>
+                    <Static id="Static02" taborder="18" text="비밀번호" left="30" top="79" width="120" height="25" style="color:white;align:right middle;font:9 Dotum bold;"/>
+                    <Radio id="rdo_register" taborder="19" index="0" codecolumn="codecolumn" datacolumn="datacolumn" value="0" direction="vertical" left="156" top="3" width="216" height="18" style="color:white;" onitemchanged="div_wrap_div_idLogin_rdo_register_onitemchanged">
+                      <Dataset id="innerdataset">
+                        <ColumnInfo>
+                          <Column id="codecolumn" size="256"/>
+                          <Column id="datacolumn" size="256"/>
+                        </ColumnInfo>
+                        <Rows>
+                          <Row>
+                            <Col id="codecolumn">0</Col>
+                            <Col id="datacolumn"> 신규계정생성</Col>
+                          </Row>
+                          <Row>
+                            <Col id="codecolumn">1</Col>
+                            <Col id="datacolumn"> 지원정보확인</Col>
+                          </Row>
+                        </Rows>
+                      </Dataset>
+                    </Radio>
+                    <Static id="Static03" taborder="20" text="비밀번호확인" left="30" top="106" width="120" height="25" style="color:white;align:right middle;font:9 Dotum bold;"/>
+                    <Edit id="edt_pwConfirm" taborder="3" password="true" inputtype="number" maxlength="4" autoselect="true" onkeyup="div_wrap_div_idLogin_edt_pw_onkeyup" left="156" top="106" width="158" height="25" tooltiptext="PW를 입력하세요" onkillfocus="div_wrap_div_idLogin_edt_pwConfirm_onkillfocus"/>
+                  </Layout>
+                </Layouts>
+              </Div>
+            </Layout>
+          </Layouts>
+        </Div>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_auth" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="cd" type="STRING" size="256"/>
+          <Column id="nm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="cd">id</Col>
+            <Col id="nm">ID 로그인</Col>
+          </Row>
+          <Row>
+            <Col id="cd">phone</Col>
+            <Col id="nm">핸드폰 로그인</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_lang" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="cd" type="STRING" size="256"/>
+          <Column id="nm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="cd">ko</Col>
+            <Col id="nm">KOREAN</Col>
+          </Row>
+          <Row>
+            <Col id="cd">en</Col>
+            <Col id="nm">ENGLISH</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_Init" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="cd" type="STRING" size="256"/>
+          <Column id="nm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="cd">id</Col>
+            <Col id="nm">ID 로그인</Col>
+          </Row>
+          <Row>
+            <Col id="cd">phone</Col>
+            <Col id="nm">핸드폰 로그인</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_info"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : LogIn.xfdl
+* 화면설명     : 로그인
+* 작성자       : 최용현
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.07.08     최용현         최초생성
+* 2015.07.08     최용현         주석 수정
+******************************************************************************/
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+this.apVFrameSet 	  = application.mainframe.VFrameSet;
+this.apTopFrame 	  = application.mainframe.VFrameSet.TopFrame;
+this.apMiddleFrameSet = application.mainframe.VFrameSet.MiddleFrameSet;
+this.apLeftFrame      = application.mainframe.VFrameSet.MiddleFrameSet.LeftFrame;
+this.apBizFrameSet 	  = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet;
+this.apMDIFrame 	  = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MDIFrame;
+this.apMainFrameSet   = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet;
+this.apWorkFrame 	  = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.WorkFrame;
+this.gds_user         = application.gds_user;
+this.chk_flag = 0;
+/******************************************************************************
+* 함 수 명 	: LogIn_onload
+* 함수설명 	: 폼변수 호출, 화면 로드 후 함수
+*****************************************************************************/
+this.LogIn_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.apVFrameSet.set_separatesize("0, *");
+	this.apMiddleFrameSet.set_separatesize("0, *");
+	this.apBizFrameSet.set_separatesize("0, *");
+	
+	this.fn_searchRecruitInfo();
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_postLoad
+* 함수설명 	: 화면 로드 후 함수
+*****************************************************************************/
+this.fn_postLoad = function()
+{
+	
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_searchRecruitInfo
+* 함수설명 	: 진행중인 채용정보 조회 함수
+*****************************************************************************/
+this.fn_searchRecruitInfo = function()
+{
+	this.gfn_transaction("INFO",
+						 "txComUrl::com/comm/selectRecruitInfo.do",
+						 "",
+						 "ds_info=resultList",
+						 "",
+						 "fn_callBack"); 
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_postSearchRecruitInfo
+* 함수설명 	: 진행중인 채용정보 조회 후 함수
+*****************************************************************************/
+this.fn_postSearchRecruitInfo = function()
+{
+	if(this.ds_info.getRowCount() == 0){
+		this.gfn_message("A", "현재 진행중인 모집전형이 없습니다.");
+		this.div_wrap.div_idLogin.edt_email.set_enable(false);
+		this.div_wrap.div_idLogin.edt_nm.set_enable(false);
+		this.div_wrap.div_idLogin.edt_pw.set_enable(false);
+		this.div_wrap.div_idLogin.btn_login.set_enable(false);
+	}else{		
+		var text = "";
+		var year = this.ds_info.getColumn(0, "year");
+		var chasu = this.ds_info.getColumn(0, "chasu");
+		var termNm = this.ds_info.getColumn(0, "termNm");
+		
+		text = "현재 " + year + "년도 " + termNm + " " + chasu + "차 채용모집중 입니다.";
+		
+		this.div_wrap.div_info_kr.sta_recuInfo.set_text(text);
+	}
+}
+
+/******************************************************************************
+* 함 수 명 	: LogIn_onload
+* 함수설명 	: 폼변수 호출, 화면 로드 후 함수
+*****************************************************************************/
+this.btn_login_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_login();
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_preLogin
+* 함수설명 	: 로그인 전 처리 함수
+*****************************************************************************/
+this.fn_preLogin = function()
+{
+	if(this.gfn_isNull(this.div_wrap.div_idLogin.edt_email.value)){
+		this.gfn_message("A", "이메일를 입력하세요.");
+		this.div_wrap.div_idLogin.edt_email.setFocus();
+		return false;
+	}
+
+	if(this.gfn_isNull(this.div_wrap.div_idLogin.edt_nm.value) && this.div_wrap.div_idLogin.rdo_register.value == 0){	
+		this.gfn_message("A", "성명를 입력하세요.");
+		this.div_wrap.div_idLogin.edt_nm.setFocus();
+		return false;
+	}
+	
+	if(this.gfn_isNull(this.div_wrap.div_idLogin.edt_pw.value)){	
+		this.gfn_message("A", "비밀번호를 입력하세요.");
+		this.div_wrap.div_idLogin.edt_pw.setFocus();
+		return false;
+	}
+	
+	if(this.gfn_isNull(this.div_wrap.div_idLogin.edt_pwConfirm.value) && this.div_wrap.div_idLogin.rdo_register.value == 0){	
+		this.gfn_message("A", "비밀번호 확인을 입력하세요.");
+		this.div_wrap.div_idLogin.edt_pwConfirm.setFocus();
+		return false;
+	}
+	
+	if(this.gfn_isNull(this.div_wrap.div_idLogin.edt_pwConfirm.value) && this.chk_flag != 1){
+		this.gfn_message("A", "비밀번호 확인을 하지 않았습니다.");
+		this.div_wrap.div_idLogin.edt_pwConfirm.setFocus();
+		return false;
+	}
+	
+	if(this.div_wrap.div_idLogin.rdo_register.value == 0){
+		this.gfn_message("A", "입력한 이메일은 " + this.div_wrap.div_idLogin.edt_email.value + " 입니다. \n" + "성명은 " + this.div_wrap.div_idLogin.edt_nm.value + " 입니다. \n" + "비밀번호는 " + this.div_wrap.div_idLogin.edt_pw.value + " 입니다. \n");
+	}
+	
+	return true;
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_login
+* 함수설명 	: 로그인 함수
+*****************************************************************************/
+this.fn_login = function()
+{
+	if(this.fn_preLogin()){
+		var strArg = "strUserId="  		+ "recruit";
+			strArg += " strPwd=" 		+ "recruit";
+			strArg += " strLoginGb="	+ "RECRUIT";
+			strArg += " strYear="		+ nexacro.wrapQuote(this.ds_info.getColumn(0, "year"));
+			strArg += " strChasu="		+ nexacro.wrapQuote(this.ds_info.getColumn(0, "chasu"));
+			strArg += " strTermCd="		+ nexacro.wrapQuote(this.ds_info.getColumn(0, "termCd"));
+			strArg += " strEmail="		+ nexacro.wrapQuote(this.div_wrap.div_idLogin.edt_email.value);
+			strArg += " strNm="			+ nexacro.wrapQuote(this.div_wrap.div_idLogin.edt_nm.value);
+			strArg += " strPassword="	+ nexacro.wrapQuote(this.div_wrap.div_idLogin.edt_pw.value);
+			if(this.div_wrap.div_idLogin.rdo_register.value == 0){
+				strArg += " strRegisterGb="	+ "REGISTER";
+			}else{
+				strArg += " strRegisterGb="	+ "LOGIN";
+			}
+		
+		this.gfn_transaction("LOGIN",
+							 "txComUrl::com/comm/doGetLogin.do",
+							 "",
+							 "gds_user=resultList",
+							 strArg,
+							 "fn_callBack"); 
+	}
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_postLogin
+* 함수설명 	: 로그인 후 처리 함수
+*****************************************************************************/
+this.fn_postLogin = function()
+{
+	if(this.gds_user.getColumn(0, "personInfYn") == 0){
+		var popupId = "ppm07005";
+		var argumentsList = new Array();
+		var popupUrl = "ppm07::ppm07005.xfdl";
+		var popupCallback = "fn_popCallBack";
+		var popupWidth = 790;
+		var popupHeight = 463;
+		var obj = this;	
+				
+		argumentsList['year']   = this.ds_info.getColumn(0, "year");
+		argumentsList['termCd']   = this.ds_info.getColumn(0, "termCd");
+		argumentsList['chasu']   = this.ds_info.getColumn(0, "chasu");
+		argumentsList['email']   = this.gds_user.getColumn(0, "memberNo");
+		
+		this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, popupWidth, popupHeight, obj);
+	}else{
+		if(this.gds_user.getRowCount() > 0){
+			this.apTopFrame.form.div_navi.set_url("commMain::OutNaviFrame.xfdl");
+			this.fn_searchSys();
+		}
+	}
+}
+
+this.fn_popCallBack = function(strID, rtnVal)
+{
+	if(rtnVal == "login"){
+		this.apTopFrame.form.div_navi.set_url("commMain::OutNaviFrame.xfdl");
+		this.fn_searchSys();
+	}
+}
+/******************************************************************************
+* 함 수 명 	: fn_searchSys
+* 함수설명 	: sys메뉴 조회
+*****************************************************************************/
+this.fn_searchSys = function()
+{
+	var strArg = "memberNo=" + nexacro.wrapQuote(this.gds_user.getColumn(this.gds_user.rowposition, "memberNo"));
+	
+	this.gfn_transaction("SYS",
+					 "txComUrl::com/comm/selectSysMenu.do",
+					 "",
+					 "gds_sys=resultList",
+					 strArg,
+					 "fn_callBack");
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_postSearchSys
+* 함수설명 	: sys메뉴 후 함수
+*****************************************************************************/
+this.fn_postSearchSys = function()
+{
+	if(this.gds_user.getRowCount() > 0 ){
+		this.apVFrameSet.set_separatesize("95, *");
+		this.apMiddleFrameSet.set_separatesize("242, *");
+		this.apBizFrameSet.set_separatesize("33, *");
+		this.apWorkFrame.set_formurl("");
+		var userInfo = " "+this.gds_user.getColumn(0, "nm") + " / " + this.gds_user.getColumn(0, "deptNmKor")
+		this.apTopFrame.form.div_navi.btn_userInfo.set_text(userInfo);
+		this.fn_insertTabPage();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId == "INFO"){
+			this.fn_postSearchRecruitInfo();
+		}else if(trId == "LOGIN"){
+			this.fn_postLogin();
+		}else if(trId == "SYS"){
+			this.fn_postSearchSys();
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: div_wrap_div_idLogin_edt_pw_onkeyup
+ * 함수설명 	: 패스워드 enter key입력 이벤트 함수
+ *********************************************************************/
+this.div_wrap_div_idLogin_edt_pw_onkeyup = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	if(e.keycode == 13){
+		this.btn_login_onclick();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: div_wrap_div_idLogin_edt_email_onkillfocus
+ * 함수설명 	: 이메일주소 포커스를 잃었을때 이벤트 함수
+ *********************************************************************/
+this.div_wrap_div_idLogin_edt_email_onkillfocus = function(obj:Edit, e:nexacro.KillFocusEventInfo)
+{
+	if(!this.gfn_isNull(obj.value)){
+		if(!this.gfn_isEmail(obj.value)){
+			obj.setFocus();
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_insertTabPage
+ * 함수설명 	: 화면 추가 함수
+ *********************************************************************/
+this.fn_insertTabPage = function()
+{
+	this.gds_open         = application.gds_open;
+	this.apMDIFrame 	  = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MDIFrame;
+	this.apMainFrameSet   = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet;
+	var menuUrl    = "ppm07::ppm07020.xfdl";
+	var sysId     = "ADM";
+	var sysNm     = "행정관리";
+	var subId     = "APE";
+	var subNm     = "교원지원자";
+	var menuId     = "APE01";
+	var menuNm     = "지원자등록";
+	var parentId   = "ppm07020";
+	var parentNm   = "지원서 등록";
+	var year       = "";
+	var termCd     = "";
+	var scheduleCd = "";
+	var selectFlag = 1;
+	var saveFlag = 1;
+	var printFlag = 1;
+	var downloadFlag = 1;
+	var uploadFlag = 0;
+	var sendFlag = 0;
+	var personInfoFlag = 0;
+	var managerFlag = 0;		
+	var tabCnt     = this.apMDIFrame.form.workTab.getTabpageCount();
+	var tabIndex   = this.apMDIFrame.form.workTab.getIndex();
+	var uniqueId   = "ChildFrame_"+ menuId;
+	
+	//MDI Tab버튼 추가
+	this.apMDIFrame.form.workTab.insertTabpage("tab"+parentId+menuId,tabCnt, "", parentNm);
+	var addRow = application.gds_open.addRow();
+	this.gds_open.setColumn(addRow, 'sysId', sysId);
+	this.gds_open.setColumn(addRow, 'sysNm', sysNm);
+	this.gds_open.setColumn(addRow, 'subId', subId);
+	this.gds_open.setColumn(addRow, 'subNm', subNm);
+	this.gds_open.setColumn(addRow, 'menuId', menuId);
+	this.gds_open.setColumn(addRow, 'menuNm', menuNm);
+	this.gds_open.setColumn(addRow, 'parentId', parentId);
+	this.gds_open.setColumn(addRow, 'parentNm', parentNm);
+	this.gds_open.setColumn(addRow, 'year', year);
+	this.gds_open.setColumn(addRow, 'termCd', termCd);
+	this.gds_open.setColumn(addRow, 'scheduleCd', scheduleCd);
+	this.gds_open.setColumn(addRow, 'selectFlag', selectFlag);
+	this.gds_open.setColumn(addRow, 'saveFlag', saveFlag);
+	this.gds_open.setColumn(addRow, 'printFlag', printFlag);
+	this.gds_open.setColumn(addRow, 'downloadFlag', downloadFlag);
+	this.gds_open.setColumn(addRow, 'uploadFlag', uploadFlag);
+	this.gds_open.setColumn(addRow, 'sendFlag', sendFlag);
+	this.gds_open.setColumn(addRow, 'personInfoFlag', personInfoFlag);
+	this.gds_open.setColumn(addRow, 'managerFlag', managerFlag);
+
+	var objNewForm = new ChildFrame();
+
+	objNewForm.init(uniqueId, "absolute", 0, 0, null, null, 0, 45, menuUrl);
+
+	this.apMainFrameSet.addChild(uniqueId, objNewForm);
+	var cmd = "application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet."+uniqueId+".set_showtitlebar(false)";
+	eval(cmd);
+	
+	objNewForm.show();
+}
+
+/*********************************************************************
+ * 함 수 명 	: div_wrap_div_idLogin_edt_pwConfirm_onkillfocus
+ * 함수설명 	: 패스워드 확인 포커스아웃 이벤트 함수
+ *********************************************************************/
+this.div_wrap_div_idLogin_edt_pwConfirm_onkillfocus = function(obj:Edit, e:nexacro.KillFocusEventInfo)
+{
+	if(!this.gfn_isNull(obj.value)){
+		if(this.gfn_isNull(this.div_wrap.div_idLogin.edt_pw.value)){
+			this.gfn_message("A", "비밀번호를 입력해 주세요");
+			this.div_wrap.div_idLogin.edt_pw.setFocus();
+			return false;
+		}else{
+			if(this.div_wrap.div_idLogin.edt_pw.value != this.div_wrap.div_idLogin.edt_pwConfirm.value){
+				this.gfn_message("A", "비밀번호가 일치하지 않습니다.");
+				this.div_wrap.div_idLogin.edt_pwConfirm.setFocus();
+				return false;	
+			}else{
+				this.chk_flag = 1;
+			}
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: div_wrap_div_idLogin_rdo_register_onitemchanged
+ * 함수설명 	: 로그인 구분 변경 이벤트
+ *********************************************************************/
+this.div_wrap_div_idLogin_rdo_register_onitemchanged = function(obj:Radio, e:nexacro.ItemChangeEventInfo)
+{
+	this.div_wrap.div_idLogin.edt_email.set_value("");
+	this.div_wrap.div_idLogin.edt_nm.set_value("");
+	this.div_wrap.div_idLogin.edt_pw.set_value("");
+	this.div_wrap.div_idLogin.edt_pwConfirm.set_value("");
+	
+	if(obj.value == 1){
+		this.div_wrap.div_idLogin.edt_nm.set_enable(false);
+		this.div_wrap.div_idLogin.Static03.set_visible(false);
+		this.div_wrap.div_idLogin.edt_pwConfirm.set_visible(false);
+		this.div_wrap.div_idLogin.btn_login.set_top(30);
+		this.chk_flag = 1;
+	}else{
+		this.div_wrap.div_idLogin.edt_nm.set_enable(true);
+		this.div_wrap.div_idLogin.Static03.set_visible(true);
+		this.div_wrap.div_idLogin.edt_pwConfirm.set_visible(true);
+		this.div_wrap.div_idLogin.btn_login.set_top(44);
+		this.chk_flag = 0;
+	}
+}
+]]></Script>
+  </Form>
+</FDL>

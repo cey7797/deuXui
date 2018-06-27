@@ -1,0 +1,416 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="bg01050" classname="bg01050" left="0" top="0" width="1038" height="855" titletext="관리부서등록" onclose="form_onclose" onload="bg01050_onload">
+    <Layouts>
+      <Layout>
+        <Static id="Static20" taborder="1" text="h15" visible="false" left="0" top="42" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_search" taborder="2" text="조회" onclick="btn_search_onClick" cssclass="search" top="57" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R"/>
+        <Static id="Static22" taborder="6" text="h5" visible="false" left="0" top="79" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static21" taborder="7" text="w&#13;&#10;15" visible="false" top="1" right="0" width="15" height="819" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static05" taborder="9" text="h5" visible="false" left="930" top="835" width="8.96%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_grdSub" taborder="10" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" right="15" width="86" height="20" style="border:0 none #808080ff ;align:right middle;" bottom="2"/>
+        <Static id="Static26" taborder="11" text="h5" visible="false" left="930" top="853" width="8.96%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static76" taborder="12" text="관리부서" cssclass="page_stitle" left="0" top="59" width="220" height="20"/>
+        <Static id="Static01" taborder="13" text="h5" visible="false" left="930" top="413" width="8.96%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_grdMain" taborder="14" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" top="415" right="15" width="86" height="20" style="border:0 none #808080ff ;align:right middle;" onclick="sta_grdMain_onclick"/>
+        <Static id="Static02" taborder="15" text="h5" visible="false" left="930" top="431" width="8.96%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Grid id="grid_dept" taborder="16" useinputpanel="false" left="0" top="84" right="15" height="331" autoenter="select" binddataset="ds_dept">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="284"/>
+                <Column size="100"/>
+                <Column size="400"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="상위부서명"/>
+                <Cell col="1" text="부서코드" expandshow="hide"/>
+                <Cell col="2" text="부서명"/>
+              </Band>
+              <Band id="body">
+                <Cell style="align:left;" text="bind:upDeptNm" treestartlevel="0"/>
+                <Cell col="1" text="bind:deptCd"/>
+                <Cell col="2" style="align:left;" text="bind:deptNmKor" treestartlevel="0"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static03" taborder="18" text="h15" visible="false" left="0" top="436" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_subNew" taborder="20" text="추가" cssclass="new" top="446" right="139" width="60" height="22" tooltiptype="hover" tooltiptext="추가" userBtnAuth="S" onclick="btn_subNew_onclick"/>
+        <Button id="btn_subDel" taborder="21" text="삭제" cssclass="del" top="446" right="77" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" userBtnAuth="S" onclick="btn_subDel_onclick"/>
+        <Static id="Static04" taborder="23" text="h5" visible="false" left="0" top="473" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static07" taborder="25" text="관리부서 상세" cssclass="page_stitle" left="0" top="453" width="220" height="20"/>
+        <Grid id="grid_bgOrgPerm" taborder="31" binddataset="ds_bgOrgPerm" useinputpanel="false" left="1" top="481" right="14" oncellclick="grid_bgOrgPerm_oncellclick" onexpanddown="grid_bgOrgPerm_onexpanddown" bottom="19">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="35" band="left"/>
+                <Column size="20"/>
+                <Column size="150"/>
+                <Column size="0"/>
+                <Column size="100"/>
+                <Column size="192"/>
+                <Column size="100"/>
+                <Column size="250"/>
+                <Column size="13"/>
+                <Column size="120"/>
+              </Columns>
+              <Rows>
+                <Row size="24" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox"/>
+                <Cell col="2" text="회계단위"/>
+                <Cell col="3"/>
+                <Cell col="4" text="업무구분"/>
+                <Cell col="5" text="상위부서명"/>
+                <Cell col="6" text="부서코드"/>
+                <Cell col="7" colspan="2">
+                  <Cell text="부서명" expandshow="hide"/>
+                  <Cell col="1"/>
+                </Cell>
+                <Cell col="9" text="사용구분"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="image" text="bind:rowStatus" expr="expr:rowStatus==2?&quot;URL('theme://images/ico_i.png')&quot;:rowStatus==4?&quot;URL('theme://images/ico_u.png')&quot;:rowStatus==8?&quot;URL('theme://images/ico_d.png')&quot;:&quot;&quot;"/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox" text="bind:chk"/>
+                <Cell col="2" displaytype="combo" edittype="expr:rowStatus==2 ? 'combo' : 'none'" style="align:center;" text="bind:acntUnt" combodataset="ds_acntUntCmb" combocodecol="cd" combodatacol="nm" combodisplay="expr:rowStatus==2 ? 'display' : 'edit'"/>
+                <Cell col="3"/>
+                <Cell col="4" displaytype="combo" edittype="expr:rowStatus==2 ? 'combo' : 'none'" style="align:center;" text="bind:workDiv" combodataset="ds_grid_workDiv" combocodecol="comCd" combodatacol="comCdNm" combodisplay="expr:rowStatus==2 ? 'display' : 'edit'"/>
+                <Cell col="5" style="align:left;" text="bind:upDeptNm"/>
+                <Cell col="6" text="bind:orgId"/>
+                <Cell col="7" style="align:left;" text="bind:orgIdNm"/>
+                <Cell col="8" expandshow="expr:rowStatus==2 ? 'show' : 'hide'" expandimage="URL('theme://images\ico_expand.png')"/>
+                <Cell col="9" displaytype="combo" edittype="combo" style="align:center;" text="bind:useYn" combodataset="ds_grid_useYn" combocodecol="comCd" combodatacol="comCdNm" combodisplay="display"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Div id="div_search" taborder="34" left="0" top="0" right="15" height="42" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static05" taborder="29" text="부서명" onclick="div_search_Static00_onclick" cssclass="search" left="10" top="10" width="42" height="22"/>
+              <Edit id="S_DEPT_NM_KOR" taborder="37" left="54" top="10" width="269" height="22" style="border:1 solid #ccccccff ;" onkeydown="div_search_S_DEPT_NM_KOR_onkeydown" imemode="hangul"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Button id="btn_subSave" taborder="35" text="저장" cssclass="save" top="446" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S" onclick="btn_subSave_onclick"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_bgOrgPerm" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" onrowposchanged="ds_bgOrgPermMain_onrowposchanged"/>
+      <Dataset id="ds_dept" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" onrowposchanged="ds_dept_onrowposchanged"/>
+      <Dataset id="ds_useYn"/>
+      <Dataset id="ds_acntUntCmb"/>
+      <Dataset id="ds_grid_workDiv"/>
+      <Dataset id="ds_grid_useYn"/>
+      <Dataset id="ds_dummy"/>
+    </Objects>
+    <Bind/>
+    <Script type="xscript5.0"><![CDATA[// [프로젝트]	동의대학교 예산회계시스템 구축
+// [시스템명]	행정
+// [부시스템]	예산관리
+// [프로그램]	기초정보 > 관리부서등록
+// [설명] 
+//	         
+// [작성자명]	이현욱
+// [작성일자]	11월 30일
+//////////////////////////////////[수정이력]//////////////////////////////////
+// [수정일자] 2015-12-06
+// [수 정 자] 박 태 희
+// [수정내용] 리뉴얼
+
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+
+this.bg01050_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	//데이터셋
+	var arrDataSet = Array(1);
+		arrDataSet[0]  	= "ds_grid_workDiv";  	 	//관리부서업무구분
+		arrDataSet[1]  	= "ds_grid_useYn";  		//사용여부
+	
+	// 공통코드
+	var arrGrpCd = Array(1);
+		arrGrpCd[0]  	= "CS001"; 			//관리부서업무구분
+		arrGrpCd[1]  	= "CS002";	 		//사용여부
+	
+	// 사용여부
+	var arrUseYn =	Array(1);
+		arrUseYn[0]  	=	"Y";
+		arrUseYn[1]  	=	"Y";
+	
+	// 콤보 플래그 T:전체,S:선택,X:없음 
+	var arrModeFg =	Array(1); 
+		arrModeFg[0]   	=	"X";
+		arrModeFg[1]   	=	"X";
+	
+	// WHERE절 내용 "X":없음
+	var arrWhere =	Array(1);
+		arrWhere[0]  	=	"X";//ABB_CD IN ('S','K')
+		arrWhere[1]  	=	"X";//ABB_CD IN ('S','K')
+		
+	/* 메소드명     : ComboLoad
+	 * 설명         : 공통코드 테이블을 조회하여 콤보박스를 생성한다.
+	 * 메소드인수1  : DataSet명의 배열
+	 * 메소드인수2  : 공통코드의 배열
+	 * 메소드인수3  : 사용여부
+	 * 메소드인수4  : 콤보 플래그
+	 * 메소드인수5  : WHERE절 내용 "X":없음
+	 */
+	 
+	this.gfn_bindCmmnFunction();
+	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere); 
+	
+	this.cfn_acntUntCombo("ds_acntUntCmb","","","","0","bg01010"); //회계단위콤보호출
+}
+
+//온로드 후처리
+this.fn_postLoad = function()
+{
+	this.fn_Search();
+}
+
+//서버 통신 후 callBack
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.gfn_message("A", errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		}else if(trId == "SEARCH"){
+			this.fn_postSearch();
+		}else if(trId == "SUB_SEARCH"){
+			this.fn_postSubSearch();
+		}else if(trId == "SAVE"){
+			this.fn_postSave();
+		}else if(trId == "SUB_SAVE"){
+			this.fn_postSubSave();
+		}
+	}
+}
+
+
+
+
+
+//조회버튼 클릭
+this.btn_search_onClick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_Search();
+}
+
+//조회 전 처리 함수
+this.fn_preSearch = function()
+{
+	return true;
+}
+
+//조회 액션
+this.fn_Search = function()
+{	
+	var strArg  = "DEPT_NM_KOR=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.S_DEPT_NM_KOR.text));
+   		
+	this.gfn_transaction("SEARCH",
+						 "txComUrl::com/admi/selectBgOrgPermMain.do",
+						 "",
+						 "ds_dept=resultList",
+						 strArg,
+						 "fn_callBack");
+}
+
+
+//조회 후 처리
+this.fn_postSearch = function()
+{
+	this.gfn_getDatasetCount(this.ds_dept, this.sta_grdMain);
+	
+	this.fn_SubSearch();
+}
+
+
+
+
+
+//SUB조회 전 처리 함수
+this.fn_preSubSearch = function()
+{
+	return true;
+}
+
+//SUB조회 액션
+this.fn_SubSearch = function()
+{	
+	var strArg  = "DEPT_CD=" + nexacro.wrapQuote(this.ds_dept.getColumn(this.ds_dept.rowposition, "deptCd"));
+   		
+	this.gfn_transaction("SUB_SEARCH",
+						 "txComUrl::com/admi/selectBgOrgPerm.do",
+						 "",
+						 "ds_bgOrgPerm=resultList",
+						 strArg,
+						 "fn_callBack");
+}
+
+//SUB조회 후 처리
+this.fn_postSubSearch = function()
+{
+	this.gfn_getDatasetCount(this.ds_bgOrgPerm, this.sta_grdSub);
+}
+
+
+
+
+//SUB추가버튼 클릭
+this.btn_subNew_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_addRow(this.ds_bgOrgPerm);
+	
+	this.ds_bgOrgPerm.setColumn(this.ds_bgOrgPerm.rowposition, "rowStatus", 2);
+	
+	this.ds_bgOrgPerm.setColumn(this.ds_bgOrgPerm.rowposition, "acntUnt", '10');	//회계단위(기본값)
+	this.ds_bgOrgPerm.setColumn(this.ds_bgOrgPerm.rowposition, "workDiv", '10');	//업무구분(기본값)
+	this.ds_bgOrgPerm.setColumn(this.ds_bgOrgPerm.rowposition, "mgtOrgId", this.ds_dept.getColumn(this.ds_dept.rowposition, 'deptCd'));	//관리부서
+		
+	this.ds_bgOrgPerm.setColumn(this.ds_bgOrgPerm.rowposition, "useYn", '1');		//사용구분(기본값)
+}
+
+
+
+
+
+
+
+
+
+//SUB저장버튼 클릭
+this.btn_subSave_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_SubSave();
+}
+
+//SUB저장 전 처리
+this.fn_preSubSave = function()
+{
+	if(!this.gfn_isUpdate(this.ds_bgOrgPerm)){
+		this.gfn_message("A", "변경된 데이터가 없습니다.");
+		return false;
+	}
+
+ 	//데이터 중복 체크
+	if(!this.gfn_chkValidation("ds_bgOrgPerm", "acntUnt$workDiv$mgtOrgId$orgId", "회계단위, 업무구분, 관리부서, 부서코드")){
+		return false;
+	}
+
+ 	//필수값 입력 체크
+	var colNm = "acntUnt$workDiv$orgId";
+	var korNm = "회계단위$업무구분$부서코드";
+	var cmpNm = " $ ";
+
+	var result = this.gfn_chkEssItem("ds_bgOrgPerm", colNm, korNm, cmpNm);
+	if (result[0] != "success") {
+		this.gfn_message("A", result[0]);
+		this.ds_bgOrgPerm.set_rowposition(result[1]);
+		//if(result[3] != ""){
+		//	this.objects[result[3]].setFocus();
+		//}
+		return false;	
+	}
+	
+	return true;	
+}
+
+//SUB저장 액션
+this.fn_SubSave = function()
+{
+	if(this.fn_preSubSave()){
+		this.gfn_transaction("SUB_SAVE",
+							  "txComUrl::com/admi/saveBgOrgPerm.do",
+							  "resultList=ds_bgOrgPerm:u",
+							  "",
+							  "",
+							 "fn_callBack");
+	}
+}
+
+//SUB저장 후 처리
+this.fn_postSubSave = function(trId)
+{
+	this.gfn_message("A", "저장이 완료되었습니다.");
+		
+	this.fn_SubSearch();
+}
+
+
+
+
+
+//SUB삭제버튼 클릭
+this.btn_subDel_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_deleteRow(this.ds_bgOrgPerm, "this.fn_SubSave()");
+}
+
+
+
+
+
+
+
+this.ds_dept_onrowposchanged = function(obj:Dataset, e:nexacro.DSRowPosChangeEventInfo)
+{
+	this.fn_SubSearch();
+}
+
+this.div_search_S_DEPT_NM_KOR_onkeydown = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	if(e.keycode == 13){
+		this.fn_Search();
+	}
+}
+
+this.grid_bgOrgPerm_oncellclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	this.grid_bgOrgPerm.dropdownCombo();
+}
+
+this.grid_bgOrgPerm_onexpanddown = function(obj:Grid, e:nexacro.GridMouseEventInfo)
+{
+	if(e.cell == 8)
+	{
+		var strParam = {
+						 jojikCdNm:""
+		               , autoSearch:true
+					   };
+		
+		this.cfn_deptPopup(strParam,"fn_popCallback");
+	}
+}
+
+this.fn_popCallback = function (strID, rtnVal)
+{
+	if(rtnVal == "close") {
+		return;
+	}
+	
+	//Dataset을 return 할 경우
+	this.ds_dummy.clear();
+	this.ds_dummy.loadXML(rtnVal);
+	
+	//조직도조회팝업 호출
+	if(strID == "admi01010_p07") {	
+ 		this.ds_bgOrgPerm.setColumn(this.ds_bgOrgPerm.rowposition, "orgId", this.ds_dummy.getColumn(0, "deptCd")); //부서코드
+ 		this.ds_bgOrgPerm.setColumn(this.ds_bgOrgPerm.rowposition, "orgIdNm", this.ds_dummy.getColumn(0, "deptNmKor")); //부서이름
+ 		this.ds_bgOrgPerm.setColumn(this.ds_bgOrgPerm.rowposition, "upDeptNm", this.ds_dummy.getColumn(0, "upDeptNm")); //상위부서
+	} 
+}]]></Script>
+  </Form>
+</FDL>

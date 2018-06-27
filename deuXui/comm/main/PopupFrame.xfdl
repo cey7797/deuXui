@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="PopupFrame" classname="WorkFrame" left="0" top="0" width="1038" height="855" titletext="개발 영역(팝업)" onload="PopupFrame_onload">
+    <Layouts>
+      <Layout/>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_auth"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[include "commJs::commonUtils.xjs";
+
+// 프레임 Alias
+this.apVFrameSet 		= application.mainframe.VFrameSet;
+this.apTopFrame 		= application.mainframe.VFrameSet.TopFrame;
+this.apMiddleFrameSet	= application.mainframe.VFrameSet.MiddleFrameSet;
+this.apLeftFrame    	= application.mainframe.VFrameSet.MiddleFrameSet.LeftFrame;
+this.apBizFrameSet 	    = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet;
+this.apMDIFrame 	    = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MDIFrame;
+this.apMainFrameSet 	= application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet;
+this.apWorkFrame 		= application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.WorkFrame;
+ 
+this.memberNo = application.gds_user.getColumn(0, "memberNo");
+this.menuId = application.gv_menuId;
+this.progId = application.gv_progId;
+
+this.PopupFrame_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+// 	this.apVFrameSet.set_separatesize("0, *");
+// 	this.apMiddleFrameSet.set_separatesize("0, *");
+// 	this.apBizFrameSet.set_separatesize("0, *");
+	
+// 	var strArg = "strFrameGb=" + "popup";
+// 		strArg += " gv_memberNo=" + nexacro.wrapQuote(application.gds_user.getColumn(application.gds_user.rowposition,"memberNo"));
+// 
+// 	this.transaction("INIT",
+// 					 "txComUrl::com/comm/doInit.do",
+// 					 "",
+// 					 "gds_user=resultList",
+// 					 strArg,
+// 					 "fn_callBack");
+	this.fn_postInit();
+}
+
+this.fn_postInit = function()
+{
+	this.fn_searchMenuAuth();
+}
+
+this.fn_searchMenuAuth = function()
+{
+	var strArg = "menuId=" + nexacro.wrapQuote(this.menuId);
+	    strArg += " progId=" + nexacro.wrapQuote(this.progId);
+
+	this.transaction("AUTH",
+					 "txComUrl::com/comm/selectMenuPopInfo.do",
+					 "",
+					 "ds_auth=resultList",
+					 strArg,
+					 "fn_callBack");
+}
+
+this.fn_postSearchMenu = function()
+{
+	this.fn_insertTabPage();
+}
+
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.gfn_message("A", errMsg);
+	}else{
+		if(trId=="INIT"){
+			this.fn_postInit();
+		}else if(trId == "AUTH"){
+			this.fn_postSearchMenu();
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_insertTabPage
+ * 함수설명 	: 화면 추가 함수
+ *********************************************************************/
+this.fn_insertTabPage = function()
+{
+	this.gds_open         = application.gds_open;
+	this.apMDIFrame 	  = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MDIFrame;
+	this.apMainFrameSet   = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet;
+	var menuUrl    		  = this.ds_auth.getColumn(this.ds_auth.rowposition, "url");
+	var sysId      		  = this.ds_auth.getColumn(this.ds_auth.rowposition, "sysId");
+	var sysNm      		  = this.ds_auth.getColumn(this.ds_auth.rowposition, "sysNm");
+	var subId      		  = this.ds_auth.getColumn(this.ds_auth.rowposition, "subId");
+	var subNm      		  = this.ds_auth.getColumn(this.ds_auth.rowposition, "subNm");
+	var menuId     		  = this.ds_auth.getColumn(this.ds_auth.rowposition, "menuId");
+	var menuNm     		  = this.ds_auth.getColumn(this.ds_auth.rowposition, "menuNm");
+	var parentId   		  = this.ds_auth.getColumn(this.ds_auth.rowposition, "parentId");
+	var parentNm   		  = this.ds_auth.getColumn(this.ds_auth.rowposition, "parentNm");
+	var year      		  = this.ds_auth.getColumn(this.ds_auth.rowposition, "year");
+	var termCd     	 	  = this.ds_auth.getColumn(this.ds_auth.rowposition, "termCd");
+	var scheduleCd		  = this.ds_auth.getColumn(this.ds_auth.rowposition, "scheduleCd");
+	var selectFlag 		  = this.ds_auth.getColumn(this.ds_auth.rowposition, "selectFlag");
+	var saveFlag 	 	  = this.ds_auth.getColumn(this.ds_auth.rowposition, "saveFlag");
+	var printFlag 		  = this.ds_auth.getColumn(this.ds_auth.rowposition, "printFlag");
+	var downloadFlag 	  = this.ds_auth.getColumn(this.ds_auth.rowposition, "downloadFlag");
+	var uploadFlag 		  = this.ds_auth.getColumn(this.ds_auth.rowposition, "uploadFlag");
+	var sendFlag 		  = this.ds_auth.getColumn(this.ds_auth.rowposition, "sendFlag");
+	var personInfoFlag 	  = this.ds_auth.getColumn(this.ds_auth.rowposition, "personInfoFlag");
+	var managerFlag 	  = this.ds_auth.getColumn(this.ds_auth.rowposition, "managerFlag");
+	var manualUrl 		  = this.ds_auth.getColumn(this.ds_auth.rowposition, "manualUrl");
+	var tabCnt     		  = this.apMDIFrame.form.workTab.getTabpageCount();
+	var tabIndex   		  = this.apMDIFrame.form.workTab.getIndex();
+	var uniqueId   		  = "ChildFrame_"+ menuId;
+	
+	//MDI Tab버튼 추가
+	this.apMDIFrame.form.workTab.insertTabpage("tab"+parentId+menuId,tabCnt, "", menuNm);
+	var addRow = application.gds_open.addRow();
+	this.gds_open.setColumn(addRow, 'sysId', sysId);
+	this.gds_open.setColumn(addRow, 'sysNm', sysNm);
+	this.gds_open.setColumn(addRow, 'subId', subId);
+	this.gds_open.setColumn(addRow, 'subNm', subNm);
+	this.gds_open.setColumn(addRow, 'menuId', menuId);
+	this.gds_open.setColumn(addRow, 'menuNm', menuNm);
+	this.gds_open.setColumn(addRow, 'parentId', parentId);
+	this.gds_open.setColumn(addRow, 'parentNm', parentNm);
+	this.gds_open.setColumn(addRow, 'year', year);
+	this.gds_open.setColumn(addRow, 'termCd', termCd);
+	this.gds_open.setColumn(addRow, 'scheduleCd', scheduleCd);
+	this.gds_open.setColumn(addRow, 'selectFlag', selectFlag);
+	this.gds_open.setColumn(addRow, 'saveFlag', saveFlag);
+	this.gds_open.setColumn(addRow, 'printFlag', printFlag);
+	this.gds_open.setColumn(addRow, 'downloadFlag', downloadFlag);
+	this.gds_open.setColumn(addRow, 'uploadFlag', uploadFlag);
+	this.gds_open.setColumn(addRow, 'sendFlag', sendFlag);
+	this.gds_open.setColumn(addRow, 'personInfoFlag', personInfoFlag);
+	this.gds_open.setColumn(addRow, 'managerFlag', managerFlag);
+	this.gds_open.setColumn(addRow, 'manualUrl', manualUrl);
+
+	var objNewForm = new ChildFrame();
+
+	objNewForm.init(uniqueId, "absolute", 0, 0, null, null, 0, 45, menuUrl);
+	
+	this.apMainFrameSet.addChild(uniqueId, objNewForm);
+	objNewForm.set_showtitlebar(false);
+	//var cmd = "application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet."+uniqueId+".set_showtitlebar(false)";
+	//eval(cmd);
+	
+	objNewForm.show();
+}]]></Script>
+  </Form>
+</FDL>

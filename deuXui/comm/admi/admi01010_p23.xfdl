@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="admi01010_p23" classname="Component_Guide" inheritanceid="" position="absolute" scrollbars="none" left="0" top="0" width="870" height="522" titletext="입금내역연계팝업" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Grid id="grd_admiPopupList" taborder="23" useinputpanel="false" autofittype="none" nodatatext="No Data" position="absolute" left="15" top="129" height="335" width="840" binddataset="ds_admiPopupList" oncelldblclick="grd_admiPopupList_oncelldblclick">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="40" band="left"/>
+                <Column size="66"/>
+                <Column size="107"/>
+                <Column size="101"/>
+                <Column size="88"/>
+                <Column size="112"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="150"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell displaytype="checkbox" edittype="checkbox"/>
+                <Cell col="1" text="은행명"/>
+                <Cell col="2" text="계좌번호"/>
+                <Cell col="3" text="계좌별칭"/>
+                <Cell col="4" text="예금종류"/>
+                <Cell col="5" text="입금일시"/>
+                <Cell col="6" text="입금액"/>
+                <Cell col="7" text="정산잔액"/>
+                <Cell col="8" text="입금메모"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="checkbox" edittype="checkbox" text="bind:chk"/>
+                <Cell col="1" style="align:center;" text="bind:bnkNm"/>
+                <Cell col="2" displaytype="normal" style="align:left;" text="bind:acno"/>
+                <Cell col="3" displaytype="normal" style="align:left;" text="bind:acntAlias"/>
+                <Cell col="4" displaytype="normal" style="align:left;" text="bind:acntKndNm"/>
+                <Cell col="5" displaytype="normal" style="align:center;" text="bind:tdtTrnsHr"/>
+                <Cell col="6" displaytype="number" style="align:right;" text="bind:depsAmt"/>
+                <Cell col="7" displaytype="number" style="align:right;" text="bind:janAmt"/>
+                <Cell col="8" displaytype="normal" style="align:left;" text="bind:trnsCntn"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Div id="div_search" taborder="25" left="15" top="45" width="839" height="69" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static33" taborder="57" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="1" top="0" width="20" height="39"/>
+              <Static id="Static01" taborder="59" text="입금일자" cssclass="search" left="21" top="10" height="22" width="49"/>
+              <Static id="Static14" taborder="60" text="W10" cssclass="tipGuide" visible="false" left="72" top="1" height="61" width="16"/>
+              <Static id="Static12" taborder="61" text="H9" cssclass="tipGuide" visible="false" left="144" top="0" height="9" width="31"/>
+              <Static id="Static11" taborder="62" text="H9" cssclass="tipGuide" visible="false" left="27" top="30" height="9" width="599"/>
+              <Static id="Static00" taborder="63" text="W10" cssclass="tipGuide" visible="false" left="209" top="1" height="37" width="16"/>
+              <Calendar id="S_TDT" taborder="0" enable="true" left="88" top="9" height="21" style=":disabled {color:black;}" width="121"/>
+              <Static id="Static02" taborder="65" text="계좌번호" cssclass="search" left="225" top="10" height="22" width="52"/>
+              <Static id="Static03" taborder="66" text="W10" cssclass="tipGuide" visible="false" left="277" top="1" height="37" width="17"/>
+              <Edit id="S_ACNO" taborder="1" onkeydown="div_search_edt_roleNm_onkeydown" left="293" top="9" height="21" width="164" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static04" taborder="68" text="입금액" cssclass="search" left="2.76%" top="40" right="90.79%" height="22"/>
+              <Edit id="S_TRNS_CNTN" taborder="4" onkeydown="div_search_edt_roleNm_onkeydown" left="553" top="40" height="21" width="149" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static05" taborder="70" text="H9" cssclass="tipGuide" visible="false" left="143" top="60" height="9" width="33"/>
+              <MaskEdit id="S_DEPS_AMT_FROM" taborder="2" mask="###,###,###,###" onkeydown="div_search_S_RES_NO_onkeydown" enable="true" left="88" top="39" height="21" style="border:1 solid #ccccccff ;align:right middle; :disabled {color:black;}" width="169"/>
+              <MaskEdit id="S_DEPS_AMT_TO" taborder="3" mask="###,###,###,###" onkeydown="div_search_S_RES_NO_onkeydown" enable="true" left="290" top="39" height="21" style="border:1 solid #ccccccff ;align:right middle; :disabled {color:black;}" width="169"/>
+              <Static id="Static06" taborder="73" text="~" left="270" top="39" height="21" width="10"/>
+              <Static id="Static07" taborder="74" text="입금메모" cssclass="search" left="483" top="40" height="22" width="62"/>
+              <Static id="Static08" taborder="75" text="W10" cssclass="tipGuide" visible="false" left="467" top="31" height="37" width="17"/>
+              <Static id="Static09" taborder="76" text="W10" cssclass="tipGuide" visible="false" left="536" top="31" height="37" width="18"/>
+              <Static id="Static10" taborder="77" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="743" top="16" height="39" width="16"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static00" taborder="26" text="입금내역연계팝업" cssclass="sta_WF_Title" left="15" top="9" width="186" height="29"/>
+        <Static id="Static34" taborder="27" text="h45" cssclass="tipGuide" visible="false" left="214" top="0" width="74" height="45"/>
+        <Static id="Static02" taborder="28" text="w15" cssclass="tipGuide" visible="false" left="0" top="6" width="15" height="503"/>
+        <Static id="Static06" taborder="29" text="w15" cssclass="tipGuide" visible="false" left="855" top="14" width="15" height="503"/>
+        <Static id="Static21" taborder="30" text="h15" cssclass="tipGuide" visible="false" left="15" top="114" right="262" height="15"/>
+        <Static id="Static03" taborder="33" text="h10" cssclass="tipGuide" visible="false" left="741" top="0" width="34" height="10"/>
+        <Button id="btn_search" taborder="34" text="조회" onclick="btn_search_onclick" cssclass="btn_WF_commonSearch" top="10" right="15" width="60" height="25"/>
+        <Static id="Static04" taborder="35" text="h10" cssclass="tipGuide" visible="false" left="741" top="35" width="34" height="10"/>
+        <Static id="Static05" taborder="36" text="h15" cssclass="tipGuide" visible="false" right="15" bottom="43" width="727" height="15"/>
+        <Static id="Static22" taborder="39" text="h17" cssclass="tipGuide" visible="false" left="36" top="0" width="74" height="17"/>
+        <Static id="Static23" taborder="40" text="h14" cssclass="tipGuide" visible="false" left="36" top="31" width="74" height="14"/>
+        <Static id="bg" taborder="42" cssclass="sta_POP_bottomBg" left="15" top="479" width="760" height="41" positionstep="-1"/>
+        <Static id="Static01" taborder="38" text="10" cssclass="tipGuide" visible="false" right="15" bottom="2" width="136" height="10"/>
+        <Button id="btn_confirm" taborder="41" text="확인" onclick="btn_confirm_onclick" cssclass="btn_POP_Common" left="730" top="489" width="60" height="21"/>
+        <Button id="btn_close" taborder="32" text="닫기" onclick="btn_close_onclick" cssclass="btn_POP_Common" left="795" top="489" width="60" height="21"/>
+        <Static id="Static28" taborder="37" text="10" cssclass="tipGuide" visible="false" right="15" bottom="33" width="136" height="10"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_admiPopupList"/>
+      <Dataset id="ds_dummy" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" onrowposchanged="ds_account_onrowposchanged"/>
+    </Objects>
+    <Bind/>
+    <Script type="xscript5.0"><![CDATA[/* ====================================================================
+ * 01. 업무구분	: 행정공통
+ * 02. 화면명		: admi01010_p23.xfdl
+ * 03. 화면설명	: 입금내역연계팝업 화면이다.
+ * 04. 작성일		: 2016.04.14
+ * 05. 작성자		: 김현수
+ * 06. 수정이력	: 
+ * ====================================================================
+ *     수정일     수정자   내용
+ * ====================================================================
+ *
+ * ==================================================================== */
+ 
+/* ====================================================================
+ * 1. 공통 라이브러리
+ * ==================================================================== */
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+/* ====================================================================
+ * 2. 변수 선언부
+ * ==================================================================== */
+var P_tdt;		//입금일자
+var P_acno;		//계좌번호
+var P_depsAmt;	//금액
+var P_userMemo; //입금메시지
+var P_deptCd;   //부서코드
+var autoClose;  //자동종료옵션
+var autoSearch; //자동조회옵션
+var P_acntUnt;
+
+/* ====================================================================
+ * 3. Event 처리 부분
+ * ==================================================================== */
+
+/******************************************************************************
+* 함 수 명 	: admi01010_p03_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.gfn_bindCmmnFunction();
+	
+	this.fn_postLoad();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{
+	P_tdt = this.gfn_nvl(this.parent.tdt,"");					//입금일자
+	P_acno = this.gfn_nvl(this.parent.acno,"");					//계좌번호
+	P_depsAmt = this.gfn_nvl(this.parent.depsAmt,"");			//입금액
+	P_userMemo = this.gfn_nvl(this.parent.userMemo,"");			//입금메시지
+	P_deptCd = this.gfn_nvl(this.parent.deptCd, "");			//부서코드
+	P_acntUnt = this.gfn_nvl(this.parent.acntUnt, "");			//회계단위
+	
+	autoClose = this.gfn_nvl(this.parent.autoClose,false);		//자동종료옵션
+	autoSearch = this.gfn_nvl(this.parent.autoSearch,false);	//자동조회옵션
+	
+	this.div_search.S_TDT.set_value(P_tdt);//입금일자
+	this.div_search.S_ACNO.set_value(P_acno);//계좌번호
+	//this.div_search.S_DEPS_AMT_FROM.set_value(P_depsAmt);//시작입금액
+	//this.div_search.S_DEPS_AMT_TO.set_value(P_depsAmt);//종료입금액
+	this.div_search.S_TRNS_CNTN.set_value(P_userMemo);//입금메모
+	this.div_search.S_TDT.setFocus();	
+	
+	//자동조회 옵션
+	if(autoSearch) {
+		this.fn_search();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_confirm_onclick
+ * 함수설명 	: 확인
+ *********************************************************************/
+this.btn_confirm_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_confirm();
+}
+
+/*********************************************************************
+ * 함 수 명 	: grd_roleList_oncelldblclick
+ * 함수설명 	: 그리드 더블클릭
+ *********************************************************************/
+this.grd_admiPopupList_oncelldblclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	this.fn_confirm();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_confirm
+ * 함수설명 	: 부모로 리턴
+ *********************************************************************/
+this.fn_confirm = function()
+{
+	this.ds_dummy.copyData(this.ds_admiPopupList);
+	this.ds_dummy.clearData();
+	
+	var addRow = "";
+	
+	if (this.ds_admiPopupList.getCaseCount("chk==1") == 0) {
+		addRow = this.ds_dummy.addRow();
+		this.ds_dummy.copyRow(addRow, this.ds_admiPopupList, this.ds_admiPopupList.rowposition);
+		this.close(this.ds_dummy.saveXML());
+	} else {
+		for(var i=0; i < this.ds_admiPopupList.rowcount; i++ ) {
+			if( this.ds_admiPopupList.getColumn(i, "chk") == "1" ) {
+				addRow = this.ds_dummy.addRow();
+				this.ds_dummy.copyRow(addRow, this.ds_admiPopupList, i);
+			}
+		}
+	
+		this.close(this.ds_dummy.saveXML());
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_search_onclick
+ * 함수설명 	: 조회 버튼 클릭 함수
+********************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preSearch
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preSearch = function()
+{
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_search = function()
+{
+	if(this.fn_preSearch()){
+		var strArg  = "tdt=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.S_TDT.value,''));	//입금일자
+			strArg += " acno=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.S_ACNO.value,''));	//계좌번호
+			strArg += " depsAmtFrom=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.S_DEPS_AMT_FROM.value,''));	//입금액FROM
+			strArg += " depsAmtTo=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.S_DEPS_AMT_TO.value,''));	//입금액TO
+			strArg += " trnsCntn=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.S_TRNS_CNTN.value,''));	//입금메모
+			strArg += " deptCd=" + nexacro.wrapQuote(this.gfn_nvl(P_deptCd,''));	//부서코드
+			strArg += " acntUnt=" + nexacro.wrapQuote(P_acntUnt);	//회계단위
+			
+		this.gfn_transaction("SEARCH",
+							 "txAdmUrl::com/admi/adcom/selectAdmi01010_p23.do",
+							 "",
+							 "ds_admiPopupList=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postSearch
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearch = function()
+{	
+	if(autoClose && this.ds_admiPopupList.rowcount == 1){
+		this.fn_confirm();
+	}
+}
+
+// /*********************************************************************
+//  * 함 수 명 	: div_search_edt_roleNm_onkeydown
+//  * 함수설명 	: 엔터키
+//  *********************************************************************/
+// this.div_search_edt_roleNm_onkeydown = function(obj:Edit, e:nexacro.KeyEventInfo)
+// {
+// 	if(e.keycode == "13") {
+// 		this.fn_search();
+// 	}
+// }
+
+/*********************************************************************
+ * 함 수 명 	: btn_close_onclick
+ * 함수설명 	: 화면 종료
+ *********************************************************************/
+this.btn_close_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.close("close");
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		} else if(trId=="SEARCH"){
+			this.fn_postSearch();
+		}
+	}
+}]]></Script>
+  </Form>
+</FDL>

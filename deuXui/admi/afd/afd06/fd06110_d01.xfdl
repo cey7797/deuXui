@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="fd05010_d01" classname="aac01001_001" left="0" top="0" width="500" height="753" titletext="전표출력" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_printForm" taborder="37" text="div_printForm" left="-1" top="1" height="752" width="500">
+          <Layouts>
+            <Layout>
+              <Static id="Static14" taborder="0" cssclass="detail_bg" left="0" top="30" height="30" style="border:1 solid #c7c9ccff,0 none #808080ff;" right="0"/>
+              <Static id="Static05" taborder="1" text="일자" cssclass="detail_title" left="-1" top="30" width="100" height="30" style="align:left;"/>
+              <Static id="Static16" taborder="47" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="528" top="1" width="20" height="503"/>
+              <Button id="btn_print" taborder="46" text="출력" cssclass="print" top="70" right="1" width="60" height="22" tooltiptype="hover" tooltiptext="출력" userBtnAuth="P" onclick="div_printForm_btn_print_onclick"/>
+              <Static id="Static18" taborder="49" text="H10" cssclass="tipGuide" visible="false" left="-1" top="116" width="502" height="10"/>
+              <Static id="Static17" taborder="53" text="H10" cssclass="tipGuide" visible="false" left="-1" top="61" width="502" height="10"/>
+              <Static id="Static00" taborder="54" cssclass="detail_bg" left="0" top="1" right="0" height="30" style="border:1 solid #c7c9ccff,0 none #808080ff;"/>
+              <Static id="Static01" taborder="55" text="회계연도" cssclass="detail_title" left="-1" top="1" width="100" height="30" style="align:left;"/>
+              <Spin id="spn_acntYy" taborder="56" value="0" max="9999" onspin="div_printForm_spn_acntYy_onspin" left="103" top="5" width="64" height="22"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Calendar id="cal_useFrDt" taborder="38" autoselect="true" dateformat="yyyy-MM-dd" oneditclick="div_search_Calendar00_oneditclick" left="101" top="35" width="124" height="21"/>
+        <Static id="Static11" taborder="39" text="~" onclick="div_search_Static00_onclick" cssclass="search" left="230" top="34" width="13" height="22"/>
+        <Calendar id="cal_useToDt" taborder="40" autoselect="true" dateformat="yyyy-MM-dd" oneditclick="div_search_Calendar00_oneditclick" left="245" top="35" width="124" height="21"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_dummy"/>
+      <Dataset id="ds_acntYy" oncolumnchanged="ds_acntYy_oncolumnchanged"/>
+    </Objects>
+    <Bind>
+      <BindItem id="item1" compid="Div00.cmb_pfmBudgCd" propid="value" datasetid="ds_bgFrmn" columnid="budgCd"/>
+      <BindItem id="item3" compid="Div00.Radio00" propid="value" datasetid="ds_bgFrmn" columnid="balDiv"/>
+      <BindItem id="item2" compid="Div00.cmb_pfmAcntUnt" propid="value" datasetid="ds_bgFrmn" columnid="acntUnt"/>
+      <BindItem id="item0" compid="Div00.spn_acntYy00" propid="value" datasetid="ds_bgFrmn" columnid="acntYy"/>
+      <BindItem id="item18" compid="div_searchForm.spn_acntYy" propid="value" datasetid="ds_bgBiz" columnid="begYy"/>
+      <BindItem id="item9" compid="div_searchForm.cmb_acntUnt" propid="value" datasetid="ds_bgBiz" columnid="acntUnt"/>
+      <BindItem id="item4" compid="div_searchForm.cmb_acntUnt00" propid="value" datasetid="ds_bgBiz" columnid="acntUnt"/>
+      <BindItem id="item5" compid="div_searchForm.cmb_acntUnt01" propid="value" datasetid="ds_bgBiz" columnid="acntUnt"/>
+      <BindItem id="item6" compid="div_searchForm.cmb_acntUnt02" propid="value" datasetid="ds_bgBiz" columnid="acntUnt"/>
+      <BindItem id="item7" compid="div_printForm.spn_acntYy" propid="value" datasetid="ds_acntYy" columnid="acntYy"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+	
+/******************************************************************************
+* 함 수 명 	: form_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.cfn_acntYy("ds_acntYy");
+	this.cal_useFrDt.set_value(this.gfn_getCurrentDate("YYYYMM")+"01");
+	this.cal_useToDt.set_value(this.gfn_getCurrentDate("YYYYMMDD"));
+}
+ 
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0)
+	{
+		this.gfn_message("A", errMsg);
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: div_printForm_btn_print_onclick
+ * 함수설명 	: 레포트 호출
+ *********************************************************************/
+this.div_printForm_btn_print_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.gfn_isNull(this.div_printForm.spn_acntYy.value))
+	{
+		this.gfn_message("A", "회계연도를 입력하세요.");
+		return false;
+	} 
+
+	//시작일 null체크
+	if(this.gfn_isNull(this.cal_useFrDt.value))
+	{
+		this.gfn_message("A", "조회 시작일자는 필수입력입니다.");
+		return false;
+	} 
+	//종료일 null체크
+	if(this.gfn_isNull(this.cal_useToDt.value))
+	{
+		this.gfn_message("A", "조회 종료일자는 필수입력입니다.");
+		return false;
+	}
+
+	var objParams = {yyyy:this.div_printForm.spn_acntYy.value
+	                ,frDt:this.cal_useFrDt.value
+	                ,toDt:this.cal_useToDt.value
+	                };
+	
+	this.parent.fn_print(objParams);
+}
+]]></Script>
+  </Form>
+</FDL>

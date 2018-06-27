@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="multiComboPop" classname="multiComboPop" left="0" top="0" width="230" height="160" titletext="멀티콤보팝업" onload="multiComboPop_onload" scrollbars="none" style="padding:0 0 0 0;">
+    <Layouts>
+      <Layout>
+        <Div id="Div00" taborder="3" left="0" top="0" style="border:1 solid #808080ff ;" right="0" height="160">
+          <Layouts>
+            <Layout width="230" height="160"/>
+          </Layouts>
+        </Div>
+        <Grid id="grd_multiCmb" taborder="0" useinputpanel="false" left="1" top="1" height="120" autofittype="col" right="1" oncellclick="grd_multiCmb_oncellclick" onkeyup="grd_multiCmb_onkeyup" oncelldblclick="grd_multiCmb_oncelldblclick">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="30" band="left"/>
+                <Column size="124"/>
+              </Columns>
+              <Rows>
+                <Row size="24"/>
+              </Rows>
+              <Band id="body">
+                <Cell displaytype="checkbox" edittype="checkbox" text="bind:chk"/>
+                <Cell col="1"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="btn_confirm" taborder="1" text="확인" left="92" top="131" width="40" height="22" tooltiptype="hover" onclick="btn_confirm_onclick"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_dummy" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+      <Dataset id="ds_multi" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[
+this.multiComboPop_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	var cmd = "this.getOwnerFrame().form."+application.gv_multiDsNm;
+
+	this.ds_multi.copyData(eval(cmd));
+	this.grd_multiCmb.set_binddataset(this.ds_multi);
+	this.grd_multiCmb.setCellProperty("Body", 1, "text", "bind:"+application.gv_multiColNm);	
+	this.fn_resize();
+}
+
+this.btn_confirm_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.ds_dummy.copyData(this.ds_multi);
+	this.ds_dummy.clearData();
+	
+	for(var i=0; i<this.ds_multi.getRowCount(); i++){
+		if(this.ds_multi.getColumn(i, 'chk') == "1"){
+			var addRow = this.ds_dummy.addRow();
+			this.ds_dummy.copyRow(addRow, this.ds_multi, i);
+		}
+	}
+	objNm = application.gv_multiPopNm;
+	eval("this.parent."+objNm+".closePopup(this.ds_dummy.saveXML())");
+}
+
+this.grd_multiCmb_oncellclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	if(e.cell == 0){
+		if(this.ds_multi.getColumn(e.row, application.gv_multiColNm) == "전체"){
+			if(this.ds_multi.getColumn(e.row, "chk") == 1){
+				for(var i=1; i<this.ds_multi.getRowCount(); i++){
+					this.ds_multi.setColumn(i, "chk", 1);
+				}
+			}else{
+				for(var i=1; i<this.ds_multi.getRowCount(); i++){
+					this.ds_multi.setColumn(i, "chk", 0);
+				}
+			}
+		}
+	}
+}
+
+this.grd_multiCmb_onkeyup = function(obj:Grid, e:nexacro.KeyEventInfo)
+{
+	if(e.keycode == 13){
+		this.btn_confirm_onclick();
+	}
+}
+
+this.grd_multiCmb_oncelldblclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	this.btn_confirm_onclick();
+}
+
+this.fn_resize = function()
+{
+	if(this.ds_multi.getRowCount() > 10){
+		this.grd_multiCmb.set_height(231);
+		this.btn_confirm.set_top(241);
+		this.Div00.set_height(270);
+	}else if(this.ds_multi.getRowCount() == 9){
+		this.grd_multiCmb.set_height(217);
+		this.btn_confirm.set_top(227);
+		this.Div00.set_height(256);
+	}else if(this.ds_multi.getRowCount() == 8){
+		this.grd_multiCmb.set_height(193);
+		this.btn_confirm.set_top(203);
+		this.Div00.set_height(232);
+	}else if(this.ds_multi.getRowCount() == 7){
+		this.grd_multiCmb.set_height(169);
+		this.btn_confirm.set_top(179);
+		this.Div00.set_height(208);
+	}else if(this.ds_multi.getRowCount() == 6){
+		this.grd_multiCmb.set_height(145);
+		this.btn_confirm.set_top(155);
+		this.Div00.set_height(184);
+	}else if(this.ds_multi.getRowCount() == 5){
+		this.grd_multiCmb.set_height(121);
+		this.btn_confirm.set_top(131);
+		this.Div00.set_height(160);
+	}else if(this.ds_multi.getRowCount() == 4){
+		this.grd_multiCmb.set_height(97);
+		this.btn_confirm.set_top(107);
+		this.Div00.set_height(136);
+	}else if(this.ds_multi.getRowCount() == 3){
+		this.grd_multiCmb.set_height(73);
+		this.btn_confirm.set_top(83);
+		this.Div00.set_height(112);
+	}else if(this.ds_multi.getRowCount() == 2){
+		this.grd_multiCmb.set_height(49);
+		this.btn_confirm.set_top(59);
+		this.Div00.set_height(88);
+	}else if(this.ds_multi.getRowCount() == 1){
+		this.grd_multiCmb.set_height(25);
+		this.btn_confirm.set_top(35);
+		this.Div00.set_height(64);
+	}
+}]]></Script>
+  </Form>
+</FDL>

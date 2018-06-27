@@ -1,0 +1,620 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd03010" classname="aac01001_001" left="0" top="0" width="1038" height="855" titletext="기부금영수증발급" onload="afd03010_onload">
+    <Layouts>
+      <Layout>
+        <Static id="Static15" taborder="11" text="h5" visible="false" left="0" top="80" width="1038" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static76" taborder="14" text="기부자 목록" cssclass="page_stitle" left="0" top="61" width="171" height="20" onclick="Static76_onclick"/>
+        <Grid id="grd_rcpter" taborder="129" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="col" left="0" top="85" height="321" right="15" binddataset="ds_rcpter">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="40" band="left"/>
+                <Column size="100"/>
+                <Column size="140"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="300"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="100"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="24"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="회원번호"/>
+                <Cell col="2" text="주민등록/사업자번호"/>
+                <Cell col="3" text="기부시작일"/>
+                <Cell col="4" displaytype="normal" text="기부종료일"/>
+                <Cell col="5" text="기부자명"/>
+                <Cell col="6" text="금액"/>
+                <Cell col="7" text="주소"/>
+                <Cell col="8" text="발급년도"/>
+                <Cell col="9" text="발급일자"/>
+                <Cell col="10" text="발급번호"/>
+              </Band>
+              <Band id="body">
+                <Cell text="expr:currow+1"/>
+                <Cell col="1" text="bind:memberNo"/>
+                <Cell col="2" text="bind:juminNo"/>
+                <Cell col="3" displaytype="date" text="bind:rcpmnyFromDt" calendardisplaynulltype="none"/>
+                <Cell col="4" displaytype="date" text="bind:rcpmnyToDt" calendardisplaynulltype="none"/>
+                <Cell col="5" text="bind:memberNmKor"/>
+                <Cell col="6" displaytype="number" style="align:right;" text="bind:sumPaymentAmt" mask="#,###"/>
+                <Cell col="7" style="align:left;" text="bind:addr"/>
+                <Cell col="8" text="bind:certificateYy"/>
+                <Cell col="9" displaytype="date" text="bind:receiptIssueDt" calendardisplaynulltype="none"/>
+                <Cell col="10" text="bind:receiptNo"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2"/>
+                <Cell col="3"/>
+                <Cell col="4"/>
+                <Cell col="5"/>
+                <Cell col="6" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;sumPaymentAmt&quot;)"/>
+                <Cell col="7"/>
+                <Cell col="8"/>
+                <Cell col="9"/>
+                <Cell col="10"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="sta_count" taborder="361" usedecorate="true" cssclass="inquiry_icon" top="837" right="13" width="60" height="20"/>
+        <Static id="Static01" taborder="362" text="h10" visible="false" left="868" top="827" width="157" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_search" taborder="639" text="조회" cssclass="search" top="58" right="279" width="60" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R" onclick="btn_search_onclick"/>
+        <Div id="div_search" taborder="675" left="0" top="0" right="15" height="43" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static00" taborder="139" text="w&#13;&#10;15" visible="false" left="0" top="10" width="15" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static07" taborder="140" text="h10" visible="false" left="0" top="0" width="1038" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static05" taborder="141" text="회원성명" cssclass="search" left="162" top="10" width="54" height="22" class="search_bul"/>
+              <Static id="Static01" taborder="142" text="w8" visible="false" left="123" top="10" width="8" height="23" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static02" taborder="145" text="w&#13;20" visible="false" left="142" top="10" width="20" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static06" taborder="153" text="w8" visible="false" left="83" top="36" width="8" height="24" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static14" taborder="159" text="w8" visible="false" left="601" top="37" width="8" height="23" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Edit id="edt_sMemberNo" taborder="168" left="224" top="10" width="88" height="22" style="border:1 solid #ccccccff ;" imemode="hangul"/>
+              <Button id="btn_pop" taborder="169" onclick="div_search_btn_pop_onclick" cssclass="popupDetail" left="314" top="10" width="24" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R"/>
+              <Edit id="edt_sMemberNmKor" taborder="170" readonly="true" left="340" top="10" width="130" height="22" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static10" taborder="174" text="발급년도" cssclass="search_req" left="15" top="10" width="50" height="22" class="search_bul"/>
+              <Spin id="spn_sCertificateYy" taborder="177" value="2015" displaynulltext="1" min="1" left="73" top="10" width="69" height="22" style="padding:1 0 0 0;"/>
+              <Static id="Static03" taborder="178" text="w8" visible="false" left="65" top="10" width="8" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static04" taborder="179" text="w8" visible="false" left="216" top="10" width="8" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static18" taborder="677" text="h15" visible="false" left="0" top="43" width="1038" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static08" taborder="678" text="h5" visible="false" left="0" top="32" width="1038" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_print" taborder="679" text="영수증" cssclass="print" top="58" right="141" width="76" height="22" tooltiptype="hover" tooltiptext="출력" userBtnAuth="P" onclick="btn_print_onclick"/>
+        <Grid id="grd_rcpmny" taborder="680" binddataset="ds_rcpmny" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" left="0" top="448" right="15" autofittype="col" height="376">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="26" band="left"/>
+                <Column size="40" band="left"/>
+                <Column size="40" band="left"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="100"/>
+                <Column size="387"/>
+                <Column size="145"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="24"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" displaytype="expr:receiptNo == &quot;생성전&quot; ? &quot;checkbox&quot; : &quot;none&quot;" edittype="checkbox" text="bind:chk"/>
+                <Cell col="2" text="순번"/>
+                <Cell col="3" text="입금일자"/>
+                <Cell col="4" text="기부유형"/>
+                <Cell col="5" text="기부금액"/>
+                <Cell col="6" text="기부내용"/>
+                <Cell col="7" text="입금계좌"/>
+              </Band>
+              <Band id="body">
+                <Cell/>
+                <Cell col="1" displaytype="expr:receiptNo == &quot;생성전&quot; ? &quot;checkbox&quot; : &quot;none&quot;" edittype="checkbox" text="bind:chk"/>
+                <Cell col="2" text="expr:currow+1"/>
+                <Cell col="3" displaytype="date" text="bind:rcpmnyDt" calendardisplaynulltype="none"/>
+                <Cell col="4" style="align:left;" text="bind:cntrTypeNm"/>
+                <Cell col="5" displaytype="number" style="align:right;" text="bind:paymentAmt" mask="#,###"/>
+                <Cell col="6" style="align:left;" text="bind:remark"/>
+                <Cell col="7" style="align:left;" text="bind:paymentBankCd"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2"/>
+                <Cell col="3"/>
+                <Cell col="4"/>
+                <Cell col="5" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;paymentAmt&quot;)"/>
+                <Cell col="6"/>
+                <Cell col="7"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static00" taborder="681" text="입금내역" cssclass="page_stitle" left="0" top="424" width="171" height="20"/>
+        <Static id="Static02" taborder="682" text="h15" visible="false" left="0" top="406" width="1038" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static03" taborder="683" text="h5" visible="false" left="0" top="443" width="1038" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static04" taborder="684" text="w&#13;&#10;15" visible="false" top="4" right="0" width="15" height="851" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_count00" taborder="685" text="Count &lt;b v='true'&gt;999&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" right="15" width="60" height="20" top="424"/>
+        <Static id="sta_count01" taborder="686" text="Count &lt;b v='true'&gt;999&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" right="15" width="60" top="837" height="16"/>
+        <Button id="btn_excel" taborder="687" text="엑셀" onclick="btn_excel_onclick" cssclass="btn_WF_Common" top="58" right="218" width="60" height="22" tooltiptype="hover" tooltiptext="Excel" userBtnAuth="D"/>
+        <Radio id="Radio00" taborder="688" codecolumn="codecolumn" datacolumn="datacolumn" direction="vertical" top="58" width="160" height="19" right="358" onitemchanged="Radio00_onitemchanged" index="0" value="jumin_1">
+          <Dataset id="innerdataset">
+            <ColumnInfo>
+              <Column id="codecolumn" size="256"/>
+              <Column id="datacolumn" size="256"/>
+            </ColumnInfo>
+            <Rows>
+              <Row>
+                <Col id="codecolumn">jumin_1</Col>
+                <Col id="datacolumn">생년월일</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">jumin_2</Col>
+                <Col id="datacolumn">주민번호</Col>
+              </Row>
+            </Rows>
+          </Dataset>
+        </Radio>
+        <Static id="Static05" taborder="689" text="기부금 영수증 출력시 선택해 주시기 바랍니다." top="55" width="252" height="25" style="border:0 none #808080ff ;color:mediumblue;align:left;font:9 arial;" right="526"/>
+        <Button id="btn_create" taborder="690" text="영수증일괄발급" cssclass="print" top="58" right="15" width="124" height="22" tooltiptype="hover" tooltiptext="영수증일괄발급" userBtnAuth="P" onclick="btn_create_onclick" enable="true"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_rcpter" onrowposchanged="ds_rcpter_onrowposchanged">
+        <ColumnInfo>
+          <Column id="chk" type="string" size="32"/>
+          <Column id="rowStatus" type="string" size="32"/>
+          <Column id="wsJuminNo" type="string" size="32"/>
+          <Column id="rcpmnyFromDt" type="string" size="32"/>
+          <Column id="receiptNo" type="string" size="32"/>
+          <Column id="certificateDt" type="string" size="32"/>
+          <Column id="certificateYy" type="string" size="32"/>
+          <Column id="addr" type="string" size="32"/>
+          <Column id="memberNmKor" type="string" size="32"/>
+          <Column id="rcpmnyToDt" type="string" size="32"/>
+          <Column id="sumPaymentAmt" type="string" size="32"/>
+          <Column id="memberNo" type="string" size="32"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_rcpmny">
+        <ColumnInfo>
+          <Column id="chk" type="string" size="32"/>
+          <Column id="rowStatus" type="string" size="32"/>
+          <Column id="rcpmnyDt" type="string" size="32"/>
+          <Column id="cntrType" type="string" size="32"/>
+          <Column id="cntrTypeNm" type="string" size="32"/>
+          <Column id="remark" type="string" size="32"/>
+          <Column id="paymentAmt" type="bigdecimal" size="16"/>
+          <Column id="paymentBankCd" type="string" size="32"/>
+          <Column id="rcpmnyFromDt" type="string" size="32"/>
+          <Column id="rcpmnyToDt" type="string" size="32"/>
+          <Column id="enggMgnNo" type="string" size="32"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_dummy">
+        <ColumnInfo>
+          <Column id="chk" type="string" size="32"/>
+          <Column id="rowStatus" type="string" size="32"/>
+          <Column id="receiptNo" type="STRING" size="256"/>
+          <Column id="receiptNm" type="STRING" size="256"/>
+          <Column id="receiptFrDt" type="STRING" size="256"/>
+          <Column id="receiptToDt" type="STRING" size="256"/>
+          <Column id="receiptAmt" type="STRING" size="256"/>
+          <Column id="yy" type="STRING" size="256"/>
+          <Column id="receiptIssueDt" type="STRING" size="256"/>
+          <Column id="printYn" type="STRING" size="256"/>
+          <Column id="memberNo" type="STRING" size="256"/>
+          <Column id="juminNo" type="STRING" size="256"/>
+          <Column id="addr" type="STRING" size="256"/>
+          <Column id="remark" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_dummy2">
+        <ColumnInfo>
+          <Column id="chk" type="string" size="32"/>
+          <Column id="rowStatus" type="string" size="32"/>
+          <Column id="receiptNo" type="STRING" size="256"/>
+          <Column id="receiptNm" type="STRING" size="256"/>
+          <Column id="receiptFrDt" type="STRING" size="256"/>
+          <Column id="receiptToDt" type="STRING" size="256"/>
+          <Column id="receiptAmt" type="STRING" size="256"/>
+          <Column id="yy" type="STRING" size="256"/>
+          <Column id="receiptIssueDt" type="STRING" size="256"/>
+          <Column id="printYn" type="STRING" size="256"/>
+          <Column id="memberNo" type="STRING" size="256"/>
+          <Column id="juminNo" type="STRING" size="256"/>
+          <Column id="addr" type="STRING" size="256"/>
+          <Column id="remark" type="STRING" size="256"/>
+          <Column id="enggMgnNo" type="STRING" size="256"/>
+          <Column id="rcpmnyDt" type="STRING" size="256"/>
+          <Column id="cntrTypeNm" type="STRING" size="256"/>
+          <Column id="paymentAmt" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_receiptNo"/>
+      <Dataset id="ds_result"/>
+      <Dataset id="ds_input">
+        <ColumnInfo>
+          <Column id="IN_YY" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="rowStatus">4</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::frameUtils.xjs";
+include "commJs::lib_String.xjs";
+
+var jumin_no;
+/****************************************************************************
+* 함 수 명 	: afd03010_onload
+* 함수설명 	: 화면 로딩 이벤트
+*****************************************************************************/
+this.afd03010_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.fn_postLoad();
+	jumin_no = "jumin_1";
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_postLoad
+* 함수설명 	: 화면 로딩 후 함수
+*****************************************************************************/
+this.fn_postLoad = function()
+{
+	this.gfn_getDatasetCount(this.ds_rcpter, this.sta_count00);
+	this.gfn_getDatasetCount(this.ds_rcpmny, this.sta_count01);
+	
+ 	this.div_search.spn_sCertificateYy.set_value(this.gfn_getCurrentDate('YYYY'));
+ 	
+ 	var essGrd = new Array();
+	essGrd[0] = this.grd_rcpter;
+	
+ 	this.gfn_essDataset(essGrd);
+	this.gfn_bindCmmnFunction();
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_search_onclick
+* 함수설명 	: 조회버튼 클릭
+*****************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();	
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_search
+* 함수설명 	: 기부자목록 조회 함수
+*****************************************************************************/
+this.fn_search = function() 
+{
+	var strArg = "certificateYy=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.spn_sCertificateYy.value, ""));
+		strArg += " memberNo=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_sMemberNo.value, ""));
+		
+	this.gfn_transaction("SEARCH"
+						,"txAdmUrl::com/admi/afd/afd03/retrieveRcpter.do"
+						,""
+						,"ds_rcpter=resultList"
+						,strArg
+						,"");
+	
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_searchRcpmny
+* 함수설명 	: 입금내역 조회 함수
+*****************************************************************************/
+this.fn_searchRcpmny = function() 
+{
+	
+	if(this.ds_rcpter.getColumn(this.ds_rcpter.rowposition, "receiptNo") == "생성전")
+	{
+		var strArg = "memberNo=" + nexacro.wrapQuote(this.gfn_nvl(this.ds_rcpter.getColumn(this.ds_rcpter.rowposition, "memberNo"), ""));
+			strArg += " certificateYy=" + nexacro.wrapQuote(this.gfn_nvl(this.ds_rcpter.getColumn(this.ds_rcpter.rowposition, "certificateYy"), ""));
+			strArg += " receiptNo=" + nexacro.wrapQuote("");
+	}
+	else
+	{
+		var strArg = "memberNo=" + nexacro.wrapQuote(this.gfn_nvl(this.ds_rcpter.getColumn(this.ds_rcpter.rowposition, "memberNo"), ""));
+			strArg += " certificateYy=" + nexacro.wrapQuote(this.gfn_nvl(this.ds_rcpter.getColumn(this.ds_rcpter.rowposition, "certificateYy"), ""));
+			strArg += " receiptNo=" + nexacro.wrapQuote(this.gfn_nvl(this.ds_rcpter.getColumn(this.ds_rcpter.rowposition, "receiptNo"), ""));
+	}
+	
+	this.gfn_transaction("SEARCH_RCPMNY"
+						,"txAdmUrl::com/admi/afd/afd03/retrieveRcpmny.do"
+						,""
+						,"ds_rcpmny=resultList"
+						,strArg
+						,"");
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_print
+* 함수설명 	: 기부금영수증 출력 함수
+*****************************************************************************/
+this.fn_print = function(receiptNo) 
+{
+	var callType = "param"; // null 값이나 "param" 값으로 던질것
+    var crfName = "afd/fd03010_r01"; //  업무명/레포트명 
+	var memberNo = "";
+	
+    var crfParams = "CERTIFICATE_YY:" + this.gfn_nvl(this.ds_dummy.getColumn(0, "certificateYy"),""); //예) 키:값|키:값|키:값
+        crfParams+= "|MEMBER_NO:" + this.ds_rcpter.getColumn(this.ds_rcpter.rowposition,"memberNo");
+        //crfParams+= "|RECEIPT_NO:" + this.ds_rcpter.getColumn(this.ds_rcpter.rowposition,"receiptNo").replace(/-/g, "");
+        crfParams+= "|RECEIPT_NO:" + receiptNo;
+        crfParams+= "|JUMIN_NO:" + jumin_no;
+
+    var crfDbName = "oracle1"; // null 값이나 "oracle1" 값으로 던질것
+	this.gfn_openClipReport(callType,crfName,crfParams,crfDbName);
+	this.ds_dummy.clearData();
+}
+
+/****************************************************************************
+* 함 수 명 	: ds_rcpter_onrowposchanged
+* 함수설명 	: 기부자목록 row변경 이벤트
+*****************************************************************************/
+this.ds_rcpter_onrowposchanged = function(obj:Dataset, e:nexacro.DSRowPosChangeEventInfo)
+{	
+	this.fn_searchRcpmny();
+}
+
+/****************************************************************************
+* 함 수 명 	: div_search_btn_pop_onclick
+* 함수설명 	: 조회조건 약정인 팝업 클릭 이벤트
+*****************************************************************************/
+this.div_search_btn_pop_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{	
+	var popupId = "afd02020_p02";
+	var popupUrl = "afd02::afd02020_p02.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var argumentsList = new Array();
+		argumentsList['memberNo']   = this.gfn_nvl(this.div_search.edt_sMemberNo.value, "");
+		
+	this.gfn_popupOpen(popupId, "", popupUrl, popupCallback, this);
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_print_onclick
+* 함수설명 	: 영수증 버튼 클릭이벤트
+*****************************************************************************/
+this.btn_print_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	
+	if(this.fn_preSave()) 
+	{
+		if(this.ds_rcpter.getColumn(this.ds_rcpter.rowposition, "receiptNo") != "생성전")
+		{//재발행
+			var receiptNo = this.ds_rcpter.getColumn(this.ds_rcpter.rowposition,"receiptNo").replace(/-/g, "");
+			this.fn_print(receiptNo);
+		}
+		else
+		{//신규발행
+
+			if(this.ds_rcpmny.getCaseCount("chk == '1'") == 0)
+			{
+				this.gfn_message("A", "신규발행은 입금내역을 선택하여 영수증발급 하세요");
+				return false;
+			}
+			
+			var v_receiptAmt = 0;
+			var v_receiptFromDt = "";
+			var v_receiptToDt = "";
+			var v_receiptDt = new Array();
+
+			//this.ds_dummy2.assign(this.ds_rcpmny);
+			
+			this.ds_dummy2.clearData();//insert
+	
+			for(i=this.ds_rcpmny.getRowCount(); i>=0; i--)
+			{
+				if(this.ds_rcpmny.getColumn(i,'chk') == '1')
+				{
+					//선택한 입금내역의 입금일자를 배열로 담는다.
+					v_receiptAmt += this.ds_rcpmny.getColumn(i,"paymentAmt");//합계
+					v_receiptDt[i] = this.ds_rcpmny.getColumn(i,"rcpmnyDt");//영수기간
+					
+				}
+			}
+			
+			v_receiptDt = v_receiptDt.sort();
+			
+			v_receiptFromDt = v_receiptDt[0];//시작일
+			v_receiptToDt = v_receiptDt[v_receiptDt.length-1];//마지막일
+			
+			this.gfn_addRow(this.ds_dummy2);
+			
+			//insert
+			this.ds_dummy2.setColumn(0,"receiptNo","");//영수증번호
+			this.ds_dummy2.setColumn(0,"receiptNm",this.ds_rcpter.getColumn(this.ds_rcpter.rowposition,"memberNmKor"));//영수증성명
+			this.ds_dummy2.setColumn(0,"receiptFrDt",v_receiptFromDt);//영수기간FROM
+			this.ds_dummy2.setColumn(0,"receiptToDt",v_receiptToDt);//영수기간TO
+			this.ds_dummy2.setColumn(0,"receiptAmt",v_receiptAmt);//영수증금액
+			this.ds_dummy2.setColumn(0,"yy",this.div_search.spn_sCertificateYy.value);//영수증발급연도
+			this.ds_dummy2.setColumn(0,"receiptIssueDt","");//영수증발급일자
+			this.ds_dummy2.setColumn(0,"printYn","1");//출력여부
+			this.ds_dummy2.setColumn(0,"memberNo",this.ds_rcpter.getColumn(this.ds_rcpter.rowposition,"memberNo"));//직번
+			this.ds_dummy2.setColumn(0,"juminNo",this.ds_rcpter.getColumn(this.ds_rcpter.rowposition,"juminNo"));//주민번호
+			this.ds_dummy2.setColumn(0,"addr",this.ds_rcpter.getColumn(this.ds_rcpter.rowposition,"addr"));//주소
+			this.ds_dummy2.setColumn(0,"remark","");//비고
+			
+			//update
+			for(i=this.ds_rcpmny.getRowCount(); i>=0; i--)
+			{
+				if(this.ds_rcpmny.getColumn(i,'chk') == '1')
+				{
+					this.gfn_addRow(this.ds_dummy2);
+					this.ds_dummy2.copyRow(this.ds_dummy2.rowposition, this.ds_rcpmny, i);
+				}
+			}
+
+			trace(this.ds_dummy2.saveXML());
+
+			//저장
+			this.fn_save();
+			
+		}
+	}	
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_preSave
+* 함수설명 	: 저장 전 함수
+*****************************************************************************/
+this.fn_preSave = function() 
+{	
+	if(!this.gfn_message("C","현재 선택된 항목의 영수증을 출력하시겠습니까?"))
+	{
+		
+		this.ds_dummy.clearData();
+		return false;
+	}
+	
+	return true;
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_save
+* 함수설명 	: 저장 함수
+*****************************************************************************/
+this.fn_save = function() 
+{
+	//신규발행
+	this.gfn_transaction("SAVE"
+						,"txAdmUrl::com/admi/afd/afd03/saveRciptissu.do"
+						,"resultList=ds_dummy2:u"
+						,"ds_receiptNo=out_resultList"
+						,""
+						,"");
+	
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_callBack
+* 함수설명 	: callback 함수
+*****************************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg) 
+{
+	if(errCd < 0 ){
+		this.gfn_message("A", errMsg);
+	}
+	
+	//
+	if(trId == "SEARCH")
+	{
+		this.gfn_getDatasetCount(this.ds_rcpter, this.sta_count00);
+		
+		if(this.ds_rcpter.getRowCount() == 0) 
+		{
+			this.ds_rcpmny.clearData();
+		}
+	}
+	//
+	else if(trId == "SEARCH_RCPMNY")
+	{
+		this.gfn_getDatasetCount(this.ds_rcpmny, this.sta_count01);
+	}
+	//
+	else if(trId == "SAVE")
+	{
+		var receiptNo = this.ds_receiptNo.getColumn(0, "receiptNo");
+		this.fn_print(receiptNo);
+	}
+	else if(trId == "CREATE")
+	{
+		this.fn_postCreateProc();
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_popCallBack
+* 함수설명 	: popCallBack 함수
+*****************************************************************************/
+this.fn_popCallBack = function(strID, rtnVal) 
+{
+	if("close" == rtnVal) 
+	{
+		return;
+	}
+	
+	this.ds_dummy.clearData();
+	this.ds_dummy.loadXML(rtnVal);
+	
+	this.div_search.edt_sMemberNo.set_value(this.ds_dummy.getColumn(0, "memberNo"));
+	this.div_search.edt_sMemberNmKor.set_value(this.ds_dummy.getColumn(0, "memberNmKor"));		
+}
+
+
+this.btn_excel_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var excelGrd = new Array();
+		excelGrd[0] = this.grd_rcpter;
+ 	this.gfn_excelDown(excelGrd, "발전기금_기부금영수증");
+ 	
+}
+
+this.Radio00_onitemchanged = function(obj:Radio, e:nexacro.ItemChangeEventInfo)
+{
+	jumin_no = e.postvalue;
+}
+
+this.btn_create_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.gfn_message("C", "기부금 영수증을 일괄 발급하시겠습니까?\n\n한번에 최대 100명까지 발급됩니다.")) {
+	
+		this.ds_result.clearData();
+		this.ds_input.setColumn(0, "IN_YY", this.div_search.spn_sCertificateYy.value);
+	
+		this.gfn_transaction("CREATE"
+							,"txAdmUrl::com/admi/afd/afd03/createRciptissu.do"
+							,"resultList=ds_input"
+							,"ds_result=resultList"
+							,""
+							,"");
+	}
+	
+}
+
+this.fn_postCreateProc = function()
+{
+	var OUT_CNT = "";
+	var OUT_MSG = "";
+
+	OUT_CNT = this.ds_result.getColumn(0, "OUT_CNT");
+	OUT_MSG = this.ds_result.getColumn(0, "OUT_MSG");
+
+	if(OUT_CNT == 0)
+	{
+		this.gfn_message("A", "기부금 영수증 일괄발급이 완료되었습니다.");
+ 		this.fn_search();
+	}
+	else
+	{
+		this.gfn_message("A", OUT_MSG);
+	}
+}
+]]></Script>
+  </Form>
+</FDL>

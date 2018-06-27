@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="LogoFrame" classname="LogoFrame" left="0" top="0" width="242" height="91">
+    <Layouts>
+      <Layout>
+        <ImageViewer id="iv_logo" taborder="0" image="URL('theme://images\main\logo.png')" left="0" top="0" height="100%" style="background:transparent;border:0 none #808080ff ;padding:0 22 0 0;cursor:hand;" width="100%" onclick="iv_logo_onclick"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.0"><![CDATA[include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+this.apWorkFrame 	  = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.WorkFrame;
+this.apMDIFrame 	  = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MDIFrame;
+/******************************************************************************
+* 함 수 명 	: iv_logo_onclick
+* 함수설명 	: logo click 함수
+*****************************************************************************/
+this.iv_logo_onclick = function(obj:ImageViewer,  e:nexacro.ClickEventInfo)
+{
+	for(i=application.gds_open.getRowCount()-1; i>=0; i--){
+		this.apMDIFrame.form.workTab.removeTabpage(i);
+		var menuId = application.gds_open.getColumn(i, "menuId");
+		
+		var delObj = "application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.ChildFrame_"+menuId;
+		application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.removeChild(delObj);
+ 		var cmd = delObj+".destroy()";
+ 		eval(cmd);
+	}
+	
+	application.gds_open.deleteAll();
+	
+	this.fn_searchSys();
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_searchSys
+* 함수설명 	: sys메뉴 조회
+*****************************************************************************/
+this.fn_searchSys = function()
+{
+	var strArg = "memberNo=" + nexacro.wrapQuote(application.gds_user.getColumn(application.gds_user.rowposition, "memberNo"));
+	
+	this.gfn_transaction("SYS",
+					 "txComUrl::com/comm/selectSysMenu.do",
+					 "",
+					 "gds_sys=resultList",
+					 strArg,
+					 "fn_callBack");
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_postSearchSys
+* 함수설명 	: sys메뉴 후 함수
+*****************************************************************************/
+this.fn_postSearchSys = function()
+{
+	if(application.gds_user.getRowCount() > 0 ){
+		this.apWorkFrame.set_formurl("");//mainpage 화면 추가해야된다.
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId == "SYS"){
+			this.fn_postSearchSys();
+		}
+	}
+}]]></Script>
+  </Form>
+</FDL>

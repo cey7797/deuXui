@@ -1,0 +1,439 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="zipCodeForm" classname="gcm01030" left="0" top="0" width="22" height="22" titletext="우편번호 컴포넌트" scrollbars="none" onload="zipCodeForm_onload" userBtnAuth="S">
+    <Layouts>
+      <Layout>
+        <Button id="btn_popSearch" taborder="1" cssclass="popupDetail" left="0" top="0" width="22" height="22" tooltiptype="hover" class="btn_search_icon" onclick="btnPopSearch_onclick" userBtnAuth="S" enable="true"/>
+        <PopupDiv id="PopupDiv" text="PopupDiv00" onpopup="PopupDiv00_onpopup" left="0" top="25" width="767" height="447" style="background:white;border:1 solid #808080ff ;color:#444444ff;bordertype:round 5 5 ;showeffect:TransitionAnimation00;" visible="false">
+          <Layouts>
+            <Layout>
+              <ImageViewer id="ImageViewer00" taborder="0" image="URL('theme://images\tbg.gif')" left="0" top="0" height="39" width="765"/>
+              <Static id="Static23" taborder="1" left="15" top="11" width="7" height="13" style="background:transparent URL('theme://images\h1_icon.gif');"/>
+              <Static id="Static00" taborder="2" text="우편번호조회" cssclass="popup_title" enable="false" left="26" top="0" width="118" height="37"/>
+              <Div id="div_search" taborder="3" left="0" top="40" height="45" scrollbars="none" class="search_bg" width="765" cssclass="search">
+                <Layouts>
+                  <Layout width="765" height="69">
+                    <Static id="Static02" taborder="126" text="시도/구분" cssclass="search" left="15" top="10" width="68" height="22" class="search_bul"/>
+                    <Combo id="cmb_cityGb" taborder="1" innerdataset="@ds_city" codecolumn="comCd" datacolumn="comCdNm" left="85" top="10" width="166" height="22" class="essential"/>
+                    <Static id="Static01" taborder="138" text="지번/도로명" cssclass="search" left="263" top="10" width="113" height="22"/>
+                    <Edit id="edt_dong" taborder="139" left="350" top="10" width="163" height="22" onkeyup="PopupDiv_div_search_edt_dong_onkeyup"/>
+                  </Layout>
+                </Layouts>
+              </Div>
+              <Button id="btn_close" taborder="4" text="닫기" top="92" right="15" width="40" height="22" tooltiptype="hover" tooltiptext="닫기" onclick="PopupDiv_btn_close_onclick" style="bordertype:round 10 10 ;"/>
+              <Button id="btn_search" taborder="5" text="  조회" cssclass="search" top="92" right="58" width="64" height="22" tooltiptype="hover" tooltiptext="조회" onclick="PopupDiv_btn_search_onclick"/>
+              <Grid id="grd_main" taborder="6" binddataset="ds_addr" useinputpanel="false" autofittype="col" autosizingtype="col" oncelldblclick="grd_main_oncelldblclick" top="121" height="290" left="0" width="765">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="40"/>
+                      <Column size="100"/>
+                      <Column size="400"/>
+                      <Column size="210"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="24" band="head"/>
+                      <Row size="24"/>
+                    </Rows>
+                    <Band id="head">
+                      <Cell text="순번"/>
+                      <Cell col="1" text="우편번호"/>
+                      <Cell col="2" text="주소"/>
+                      <Cell col="3" text="번지"/>
+                    </Band>
+                    <Band id="body">
+                      <Cell text="expr:currow + 1"/>
+                      <Cell col="1" text="bind:zip" mask="#####"/>
+                      <Cell col="2" style="align:left middle;" text="bind:addr"/>
+                      <Cell col="3" style="align:left middle;" text="bind:addrJibeun"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+            </Layout>
+          </Layouts>
+        </PopupDiv>
+      </Layout>
+    </Layouts>
+    <Bind/>
+    <Objects>
+      <Dataset id="ds_addr" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="graduateDt" type="string" size="32" prop=""/>
+          <Column id="paperLimitDt" type="string" size="32" prop=""/>
+          <Column id="phdPassYn" type="string" size="32" prop=""/>
+          <Column id="univCd" type="string" size="32" prop=""/>
+          <Column id="univGraduatHakwi" type="string" size="32" prop=""/>
+          <Column id="companyTelNo" type="string" size="32" prop=""/>
+          <Column id="doroCompanyAddr2" type="string" size="32" prop=""/>
+          <Column id="hakchikCd" type="string" size="32" prop=""/>
+          <Column id="doroCompanyAddr1" type="string" size="32" prop=""/>
+          <Column id="doroBonjukAddr" type="string" size="32" prop=""/>
+          <Column id="grdeDeptNmEng" type="string" size="32" prop=""/>
+          <Column id="doroBohoPostNo" type="string" size="32" prop=""/>
+          <Column id="passIsuCnt" type="string" size="32" prop=""/>
+          <Column id="changeCd" type="string" size="32" prop=""/>
+          <Column id="bonjukAddr" type="string" size="32" prop=""/>
+          <Column id="marredYn" type="string" size="32" prop=""/>
+          <Column id="bohoJob" type="string" size="32" prop=""/>
+          <Column id="bohoFamilyDiv" type="string" size="32" prop=""/>
+          <Column id="bohoDepoMan" type="string" size="32" prop=""/>
+          <Column id="univMajorNm" type="string" size="32" prop=""/>
+          <Column id="depoMm" type="string" size="32" prop=""/>
+          <Column id="courseCd" type="string" size="32" prop=""/>
+          <Column id="enterDt" type="string" size="32" prop=""/>
+          <Column id="bohoSchlDiv" type="string" size="32" prop=""/>
+          <Column id="grdeDeptNmKor" type="string" size="32" prop=""/>
+          <Column id="doroPostNo" type="string" size="32" prop=""/>
+          <Column id="totPassDt" type="string" size="32" prop=""/>
+          <Column id="stateCd" type="string" size="32" prop=""/>
+          <Column id="deptCd" type="string" size="32" prop=""/>
+          <Column id="schCd" type="string" size="32" prop=""/>
+          <Column id="outsiderCd" type="string" size="32" prop=""/>
+          <Column id="hakwiCd" type="string" size="32" prop=""/>
+          <Column id="changeDt" type="string" size="32" prop=""/>
+          <Column id="bohoTelNo" type="string" size="32" prop=""/>
+          <Column id="entNo" type="string" size="32" prop=""/>
+          <Column id="eMail" type="string" size="32" prop=""/>
+          <Column id="grade" type="string" size="32" prop=""/>
+          <Column id="majorCd" type="string" size="32" prop=""/>
+          <Column id="graduateNo" type="string" size="32" prop=""/>
+          <Column id="isuCnt" type="string" size="32" prop=""/>
+          <Column id="bohoBankCd" type="string" size="32" prop=""/>
+          <Column id="univGraduatHakwiNo" type="string" size="32" prop=""/>
+          <Column id="completeDt" type="string" size="32" prop=""/>
+          <Column id="cmpySch" type="string" size="32" prop=""/>
+          <Column id="grdeMajorNmKor" type="string" size="32" prop=""/>
+          <Column id="enterYear" type="string" size="32" prop=""/>
+          <Column id="univNm" type="string" size="32" prop=""/>
+          <Column id="stdNmChi" type="string" size="32" prop=""/>
+          <Column id="doroBohoAddr2" type="string" size="32" prop=""/>
+          <Column id="doroBohoAddr1" type="string" size="32" prop=""/>
+          <Column id="mobileNo" type="string" size="32" prop=""/>
+          <Column id="langPassDt" type="string" size="32" prop=""/>
+          <Column id="remark" type="string" size="32" prop=""/>
+          <Column id="univGraduatNationCd" type="string" size="32" prop=""/>
+          <Column id="companyNm" type="string" size="32" prop=""/>
+          <Column id="paperPassDt" type="string" size="32" prop=""/>
+          <Column id="grdeMajorNmEng" type="string" size="32" prop=""/>
+          <Column id="hakwiNoEng" type="string" size="32" prop=""/>
+          <Column id="bankNo" type="string" size="32" prop=""/>
+          <Column id="doroAddr2" type="string" size="32" prop=""/>
+          <Column id="doroAddr1" type="string" size="32" prop=""/>
+          <Column id="telNo" type="string" size="32" prop=""/>
+          <Column id="bohoEMail" type="string" size="32" prop=""/>
+          <Column id="curriTermCd" type="string" size="32" prop=""/>
+          <Column id="enterTermCd" type="string" size="32" prop=""/>
+          <Column id="sexCd" type="string" size="32" prop=""/>
+          <Column id="paperTitle" type="string" size="32" prop=""/>
+          <Column id="doroCompanyPostNo" type="string" size="32" prop=""/>
+          <Column id="integEnterYn" type="string" size="32" prop=""/>
+          <Column id="reenterDt" type="string" size="32" prop=""/>
+          <Column id="graduateCnt" type="string" size="32" prop=""/>
+          <Column id="bohoAccountNo" type="string" size="32" prop=""/>
+          <Column id="chk" type="string" size="32" prop=""/>
+          <Column id="stdNmEng" type="string" size="32" prop=""/>
+          <Column id="bohoMobileNo" type="string" size="32" prop=""/>
+          <Column id="exchangeschlCd" type="string" size="32" prop=""/>
+          <Column id="degreeNm" type="string" size="32" prop=""/>
+          <Column id="cmpyNm" type="string" size="32" prop=""/>
+          <Column id="troubleYn" type="string" size="32" prop=""/>
+          <Column id="curriYear" type="string" size="32" prop=""/>
+          <Column id="companyFaxNo" type="string" size="32" prop=""/>
+          <Column id="applyCd" type="string" size="32" prop=""/>
+          <Column id="disabilityYn" type="string" size="32" prop=""/>
+          <Column id="bohoNm" type="string" size="32" prop=""/>
+          <Column id="hakwiNoKor" type="string" size="32" prop=""/>
+          <Column id="reenterGrade" type="string" size="32" prop=""/>
+          <Column id="completeNo" type="string" size="32" prop=""/>
+          <Column id="entDiv" type="string" size="32" prop=""/>
+          <Column id="nationCd" type="string" size="32" prop=""/>
+          <Column id="bohoGraduateDiv" type="string" size="32" prop=""/>
+          <Column id="masterChangeYn" type="string" size="32" prop=""/>
+          <Column id="teacherEmpNo3" type="string" size="32" prop=""/>
+          <Column id="teacherEmpNo1" type="string" size="32" prop=""/>
+          <Column id="birthDt" type="string" size="32" prop=""/>
+          <Column id="teacherEmpNo2" type="string" size="32" prop=""/>
+          <Column id="enterCd" type="string" size="32" prop=""/>
+          <Column id="juminNo" type="string" size="32" prop=""/>
+          <Column id="engPassDt" type="string" size="32" prop=""/>
+          <Column id="stdNmKor" type="string" size="32" prop=""/>
+          <Column id="engPassYn" type="string" size="32" prop=""/>
+          <Column id="firstEnterDt" type="string" size="32" prop=""/>
+          <Column id="univGraduatDt" type="string" size="32" prop=""/>
+          <Column id="stdDiv" type="string" size="32" prop=""/>
+          <Column id="rowStatus" type="string" size="32" prop=""/>
+          <Column id="stdNo" type="string" size="32" prop=""/>
+          <Column id="accountCd" type="string" size="32" prop=""/>
+          <Column id="deptNm" type="STRING" size="256"/>
+          <Column id="majorNm" type="STRING" size="256"/>
+          <Column id="enterNm" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_selectedRow" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+      <Dataset id="ds_city" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : zipCodeForm.xfdl
+* 화면설명     : 우편번호 컴포넌트
+* 작성자       : 최용현
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.08.20     최용현         최초생성
+******************************************************************************/
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+var fv_bindDataset;
+var fv_bindZipCodeColumn	= "";
+var fv_bindAddrColumn		= "";
+var fv_bindAddr1Column		= "";
+var fv_bindAddr2Column		= "";
+var fv_callback				= "fn_zipCallback";
+var fv_url = "txComUrl::com/selectZipPopUp.do";
+
+this.zipCodeForm_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	var arrDataSet = Array(0);
+		arrDataSet[0]  =  "ds_city";  		//시도 구분
+	
+	// 조회조건으로	넘어갈 공통코드	정의.(화면대로 순서꼭 지켜주세요.)
+	
+	var arrGrpCd = Array(0);
+		arrGrpCd[0]  = "COM_COD_28"; //시도 구분
+			
+	// 사용여부	지정할 아큐먼트를 넘긴다.
+	var arrUseYn =	Array(0);
+		arrUseYn[0]  =	"Y";
+	
+	// T:전체,S:선택,X:없음 
+	var arrModeFg =	Array(0);
+		arrModeFg[0]  =	"S";
+
+	// WHERE절 내용 "X":없음
+	var arrWhere =	Array(0);
+		arrWhere[0]  =	"com_cd <> '@'";//ABB_CD IN ('S','K')
+		
+	/* 메소드명     : ComboLoad
+	 * 설명         : 공통코드 테이블을 조회하여 콤보박스를 생성한다.
+	 * 메소드인수1  : DataSet명의 배열
+	 * 메소드인수2  : 그룹코드번호의 배열
+	 * 메소드인수3  : 캠퍼스구분 배열 ("T":전체, "C":공통만, "S":서울, "K":경주)
+	 * 메소드인수4  : 조건문의 배열 (1:사용, 0:사용안함)
+	 * 메소드인수5  : 전체공란 첨부여부 "T": 전체, "S":선택, "X" : 데이터시작
+	 * 메소드인수6  : WHERE절 내용 "X":없음
+	 */
+
+ 	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+ 	
+	//this.PopupDiv.div_search.cmb_cityGb.setInnerDataset(this.ds_city);
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{
+	this.PopupDiv.div_search.cmb_cityGb.set_index(0);
+	this.gfn_bindCmmnFunction();
+}
+
+/********************************************************************************
+ * 함 수 명 	: btnPopSearch_onclick()
+ * 함수설명 	: 조회 버튼 클릭 호출
+********************************************************************************/
+this.btnPopSearch_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_openPopup();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preFind
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preFind = function()
+{
+ 	this.ds_addr.clearData();
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_search = function()
+{
+	var strArg  = "pv_cityGb="  + nexacro.wrapQuote(this.PopupDiv.div_search.cmb_cityGb.value);
+		strArg  += "pv_detail="  + nexacro.wrapQuote(this.gfn_nvl(this.PopupDiv.div_search.edt_dong.value, ""));
+	
+	this.gfn_transaction("FIND",
+					     fv_url,
+						 "",
+						 "ds_addr=resultList",
+						 strArg,
+						 "fn_callBack");
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postFind
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postFind = function()
+{
+
+}
+
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		}else if(trId=="FIND"){
+			this.fn_postFind();
+		}
+	}	
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_openPopup
+ * 함수설명 	: 학생조회 팝업 호출
+ *********************************************************************/
+this.fn_openPopup = function()
+{
+	var w = application.mainframe.width;
+	var h = application.mainframe.height;
+	var l = (w/2)-(this.PopupDiv.width/2);
+	var t = (h/2)-(this.PopupDiv.height/2);
+		
+	this.PopupDiv.trackPopup(l, t, this.PopupDiv.position.width, this.PopupDiv.position.height, 'fn_popZipCodeClose');
+	
+	this.PopupDiv.div_search.edt_dong.setFocus();
+}
+
+/*********************************************************************
+ * 함 수 명 	: grd_main_oncelldblclick
+ * 함수설명 	: 학생조회 팝업 닫기 클릭
+ *********************************************************************/
+this.grd_main_oncelldblclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.PopupDiv.closePopup('select');
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_popZipCodeClose
+ * 함수설명 	: 우편번호 조회 팝업 닫기
+ *********************************************************************/
+this.fn_popZipCodeClose = function(strID, rtnVal)
+{
+	if(rtnVal == 'select'){
+		fv_bindDataset.setColumn(fv_bindDataset.rowposition, fv_bindZipCodeColumn, this.ds_addr.getColumn(this.ds_addr.rowposition, "zip"));
+		fv_bindDataset.setColumn(fv_bindDataset.rowposition, fv_bindAddrColumn, this.ds_addr.getColumn(this.ds_addr.rowposition, "addr"));
+		fv_bindDataset.setColumn(fv_bindDataset.rowposition, fv_bindAddr1Column, this.ds_addr.getColumn(this.ds_addr.rowposition, "addr1"));
+		fv_bindDataset.setColumn(fv_bindDataset.rowposition, fv_bindAddr2Column, this.ds_addr.getColumn(this.ds_addr.rowposition, "addr2"));
+		
+		if(!this.gfn_isNull(fv_callback)){
+			this.fn_callFunction(fv_callback);
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callFunction
+ * 함수설명 	: 펑션 호출하기
+ *********************************************************************/
+this.fn_callFunction = function(fncNm)
+{
+	var parentStr = this.gfn_searchParent(fncNm);
+
+	if(this.gfn_isNull(eval("this." + parentStr)[fncNm])==false)
+	{
+		eval("this." + parentStr +"."+fncNm+"(this)");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: getSelectedRow
+ * 함수설명 	: 선택된 주소 정보를 리턴한다.
+ * 사용예제    : this.div_zipPop.getSelectedRow('ZIP');
+ *********************************************************************/
+this.getSelectedRow = function(column) {
+	
+	return this.ds_addr.getColumn(this.ds_addr.rowposition, column);
+}
+
+/*********************************************************************
+ * 함 수 명 	: edt_hakbeon_onkeyup
+ * 함수설명 	: 엔터키시 검색호출
+ *********************************************************************/
+this.PopupDiv_div_search_edu_sch_hakbeonNm_onkeyup = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	if(e.keycode == '13')
+	{
+		this.fn_search();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: setBindDataset
+ * 함수설명 	: 학생검색 컴포넌트 바인드 정보 셋팅
+ * 사용예제    : this.POP_HAKBEON.setBindDataset( this.ds_mainDataset, "HAKBEON","NAME");
+ *********************************************************************/
+this.setBindDataset = function(bindDataset, bindZipColumn, bindAddrColumn, bindAddr1Column, bindAddr2Column, callback) {
+	fv_bindDataset 			= this.gfn_getNullToEmpty(bindDataset);	
+	fv_bindZipCodeColumn	= this.gfn_getNullToEmpty(bindZipColumn);
+	fv_bindAddrColumn		= this.gfn_getNullToEmpty(bindAddrColumn);
+	fv_bindAddr1Column		= this.gfn_getNullToEmpty(bindAddr1Column);
+	fv_bindAddr2Column		= this.gfn_getNullToEmpty(bindAddr2Column);
+	fv_callback				= this.gfn_getNullToEmpty(callback);	
+}
+
+/*********************************************************************
+ * 함 수 명 	: setUrl
+ * 함수설명 	: 쿼리 호출 경로 설정
+ *********************************************************************/
+this.setUrl = function(_url)
+{
+	fv_url = _url;
+}
+
+/*********************************************************************
+ * 함 수 명 	: PopupDiv_btn_search_onclick
+ * 함수설명 	: 팝업 조회 클릭
+ *********************************************************************/
+this.PopupDiv_btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();
+}
+
+/*********************************************************************
+ * 함 수 명 	: PopupDiv_div_search_edt_dong_isuHakgi_onkeyup
+ * 함수설명 	: 지번/도로명 엔터 이벤트
+ *********************************************************************/
+this.PopupDiv_div_search_edt_dong_onkeyup = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	if(e.keycode == '13')
+	{
+		this.fn_search();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: PopupDiv_btn_close_onclick
+ * 함수설명 	: 닫기버튼 클릭 이벤트
+ *********************************************************************/
+this.PopupDiv_btn_close_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.PopupDiv.closePopup('close');
+}
+]]></Script>
+  </Form>
+</FDL>

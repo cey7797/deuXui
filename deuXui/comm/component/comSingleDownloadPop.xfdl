@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="comSingleDownloadPop" classname="comSingleUpload" left="0" top="0" width="810" height="265" titletext="파일다운로드(팝업)" onload="comSingleDownload_onload" ontimer="comSingleDownloadPop_ontimer">
+    <Layouts>
+      <Layout>
+        <WebBrowser id="WebBrowser00" left="5" top="5" right="5" bottom="5" taborder="0"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_rtnVal" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="originalName" type="STRING" size="256"/>
+          <Column id="uploadName" type="STRING" size="256"/>
+          <Column id="guid" type="STRING" size="256"/>
+          <Column id="size" type="STRING" size="256"/>
+          <Column id="uploadPath" type="STRING" size="256"/>
+          <Column id="logicalPath" type="STRING" size="256"/>
+          <Column id="fileExtension" type="STRING" size="256"/>
+          <Column id="localPath" type="STRING" size="256"/>
+          <Column id="mark" type="STRING" size="256"/>
+          <Column id="responseCustomValue" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_fileNo" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="fileMasterNo" type="BIGDECIMAL" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : comSingleDownload.xfdl
+* 화면설명     : 싱글다운로드 popup
+* 작성자       : 라병수
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.06.04     라병수         최초생성
+******************************************************************************/
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+var fileMstNo = this.gfn_nvl(this.parent.fileMstNo, "0");
+var fv_loadYn = true;
+this.comSingleDownload_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.setTimer(0, 10);
+	
+	//alert(application.gv_svrUrl+"dext5Upload/ust_download.jsp?fileMstNo="+fileMstNo);
+}
+
+
+//다운로드화면 조회로직 추가할것
+this.WebBrowser00_onloadcompleted = function(obj:WebBrowser, e:nexacro.WebLoadCompEventInfo)
+{
+	
+}
+
+this.comSingleDownloadPop_ontimer = function(obj:Form, e:nexacro.TimerEventInfo)
+{
+	if(fv_loadYn){
+		this.WebBrowser00.set_url(application.gv_svrUrl+"dext5Upload/ust_download.jsp?fileMstNo="+fileMstNo);
+		this.killTimer(0);
+		fv_loadYn = false;
+	}
+}
+]]></Script>
+  </Form>
+</FDL>

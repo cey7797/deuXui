@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MetaInfo version="1.0">
+	<Object id="nexacro.ExtExcel">
+		<ObjectInfo
+			inheritance="nexacro.Component"
+			typename="nexacro.ExtExcel"
+			csstypename="ExtExcel"
+			csscontrolname="ExtExcel"
+			group="UIComponent"
+			csspseudo="true"
+			container="false"
+			composite="true"
+			tabstop="true"
+			cssstyle="true"
+			contents="true"
+			formats="false"
+			contentseditor="auto"
+			defaultwidth="300"
+			defaultheight="200"
+			requirement="Runtime,HTML5"
+			description="ExtExcel"/>
+			
+	</Object>
+</MetaInfo>

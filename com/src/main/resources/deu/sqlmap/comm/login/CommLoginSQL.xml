@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CommLoginSQL">
+
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	
+	<select id="commMenuDAO.doGetLogin"  parameterClass="java.util.HashMap" resultClass="egovMap">
+			SELECT A.MEMBER_NO ,
+			       A.NM ,
+			       A.USER_GB AS USER_GB ,
+			       dbo.F_COM_CODE_NM('USER_GB', A.USER_GB, 'KOR') AS USER_GB_NM_KOR ,
+			       dbo.F_COM_CODE_NM('USER_GB', A.USER_GB, 'ENG') AS USER_GB_NM_ENG ,
+			       A.DEPT_CD AS DEPT_CD ,
+			       B.DEPT_NM_KOR AS DEPT_NM_KOR ,
+			       B.DEPT_NM_ENG AS DEPT_NM_ENG ,
+			       CASE WHEN A.USE_FLAG IS NULL OR A.USE_FLAG = '' THEN 'N' ELSE A.USE_FLAG END AS USE_FLAG ,
+				   CASE WHEN A.LOGIN_FAIL_CNT IS NULL OR CONVERT(VARCHAR, A.LOGIN_FAIL_CNT) = '' THEN 0 ELSE A.LOGIN_FAIL_CNT END AS LOGIN_FAIL_CNT ,
+			       '' AS EMAIL ,
+			       #sessIp# AS IP_ADDR ,
+			       'NORMAL' AS LOGIN_GB
+			  FROM VW_USER_LIST A ,
+			       VW_COMM_DEPT B
+			 WHERE A.DEPT_CD = B.DEPT_CD
+			   AND A.MEMBER_NO = #strUserId#
+			   <isEmpty property="strOnetimePwd">
+			   AND A.PWD = #strPwd#
+			   </isEmpty>
+			   AND CASE WHEN A.USE_FLAG IS NULL OR A.USE_FLAG = '' THEN '0' ELSE A.USE_FLAG END = '1'
+	</select> 
+	
+	<select id="commMenuDAO.doGetLoginPop"  parameterClass="java.util.HashMap" resultClass="egovMap">
+			SELECT A.MEMBER_NO ,
+			       A.NM ,
+			       A.USER_GB AS USER_GB ,
+			       dbo.F_COM_CODE_NM('USER_GB', A.USER_GB, 'KOR') AS USER_GB_NM_KOR ,
+			       dbo.F_COM_CODE_NM('USER_GB', A.USER_GB, 'ENG') AS USER_GB_NM_ENG ,
+			       A.DEPT_CD AS DEPT_CD ,
+			       B.DEPT_NM_KOR AS DEPT_NM_KOR ,
+			       B.DEPT_NM_ENG AS DEPT_NM_ENG ,
+			       CASE WHEN A.USE_FLAG IS NULL OR A.USE_FLAG = '' THEN 'N' ELSE A.USE_FLAG END AS USE_FLAG ,
+				   CASE WHEN A.LOGIN_FAIL_CNT IS NULL OR CONVERT(VARCHAR, A.LOGIN_FAIL_CNT) = '' THEN 0 ELSE A.LOGIN_FAIL_CNT END AS LOGIN_FAIL_CNT ,
+			       '' AS EMAIL ,
+			       #sessIp# AS IP_ADDR ,
+			       'NORMAL' AS LOGIN_GB
+			  FROM VW_USER_LIST A ,
+			       VW_COMM_DEPT B
+			 WHERE A.DEPT_CD = B.DEPT_CD
+			   AND A.MEMBER_NO = #strUserId#
+			   AND CASE WHEN A.USE_FLAG IS NULL OR A.USE_FLAG = '' THEN '0' ELSE A.USE_FLAG END = '1'
+	</select>
+	
+	<update id="commMenuDAO.doLogout" parameterClass="java.util.HashMap">
+			UPDATE COM_LOGIN_HISTORY_TABLE SET
+				   LOGOUT_DAT = GETDATE()
+			 WHERE SESS_ID = #sessId#
+	</update>
+	
+	<select id="commMenuDAO.doGetUserCount" parameterClass="java.util.HashMap" resultClass="int">
+			SELECT COUNT(*) 
+			  FROM VW_USER_LIST
+			 WHERE MEMBER_NO = #strUserId#
+			   AND CASE WHEN USE_FLAG IS NULL OR USE_FLAG = '' THEN '0' ELSE USE_FLAG END  = '1' 
+			   AND CONVERT(CHAR(10),GETDATE(),112) BETWEEN CASE WHEN FROM_DT IS NULL OR FROM_DT = '' THEN '00000101' ELSE FROM_DT END
+			                                           AND CASE WHEN TO_DT IS NULL OR TO_DT = '' THEN '99991231' ELSE TO_DT END
+	</select>
+	
+	<update id="commMenuDAO.doIncrementLoginFailCnt" parameterClass="java.util.HashMap">
+	</update>
+	
+	<update id="commMenuDAO.doInitLoginFailCnt" parameterClass="java.util.HashMap">
+	</update>
+	
+	<update id="commMenuDAO.doInitOnetimePwd" parameterClass="java.util.HashMap">
+	</update>
+	
+	<insert id="commMenuDAO.doInsertLog" parameterClass="java.util.HashMap">
+			INSERT INTO COM_LOGIN_HISTORY_TABLE(
+				        SEQ
+				      , SESS_ID
+				      , MEMBER_NO
+				      , IP_ADDR
+				      , LOGIN_DAT
+			)
+            SELECT  COUNT(1) + 1
+				      , #sessId#
+				      , #strUserId#
+				      , #sessIp#
+				      , GETDATE()
+			FROM COM_LOGIN_HISTORY_TABLE
+	</insert> 	
+	
+	<update id="commMenuDAO.updateOneTimePassword" parameterClass="java.util.HashMap">
+	</update>
+	
+</sqlMap>

@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="mobileLoginPop" classname="com02001_p04" left="0" top="0" width="440" height="225" onload="com02001_p04_onload">
+    <Layouts>
+      <Layout>
+        <Static id="Static27" taborder="13" cssclass="detail_bg" left="0" top="144" height="30" right="0"/>
+        <ImageViewer id="ImageViewer00" taborder="0" image="URL('theme://images\tbg.gif')" left="0" top="0" height="39" right="0"/>
+        <Static id="Static23" taborder="1" left="15" top="11" width="7" height="13" style="background:transparent URL('theme://images\h1_icon.gif');"/>
+        <Static id="Static09" taborder="2" text="휴대폰 로그인 인증팝업" cssclass="popup_title" enable="false" left="26" top="0" width="126" height="37"/>
+        <Button id="btn_close" taborder="10" text="닫기" onclick="btn_close_onclick" left="222" top="191" width="41" height="22" tooltiptext="닫기" userBtnAuth="R"/>
+        <Static id="Static00" taborder="11" text="통합시스템에 등록된 &#13;&#10;핸드폰 번호: 로 인증번호가 발송되었습니다. &#13;&#10;&#13;&#10;* 장시간 응답이 없을경우 창을 닫고 다시 로그인하시기 바랍니다.&#13;&#10;" left="0" top="39" height="106" cssclass="detail_bg" right="0" style="align:center bottom;font:bold 9 Dotum;"/>
+        <Static id="Static01" taborder="12" text="인증번호" left="0" top="145" width="120" height="28" cssclass="detail_title"/>
+        <Static id="Static29" taborder="5" text="w25" visible="false" left="775" top="39" width="25" height="365" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Edit id="edt_confirmNo" taborder="14" left="121" top="147" width="308" height="24" onkeyup="edt_confirmNo_onkeyup"/>
+        <Button id="btn_login" taborder="15" text="로그인" left="170" top="191" width="49" height="22" tooltiptext="닫기" userBtnAuth="R" onclick="btn_login_onclick"/>
+      </Layout>
+    </Layouts>
+    <Bind/>
+    <Objects>
+      <Dataset id="ds_member"/>
+      <Dataset id="ds_sms">
+        <ColumnInfo>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="memberNo" type="STRING" size="256"/>
+          <Column id="userId" type="STRING" size="256"/>
+          <Column id="scheduleType" type="STRING" size="256"/>
+          <Column id="subject" type="STRING" size="256"/>
+          <Column id="smsMsg" type="STRING" size="256"/>
+          <Column id="sender" type="STRING" size="256"/>
+          <Column id="destCount" type="STRING" size="256"/>
+          <Column id="destInfo" type="STRING" size="256"/>
+          <Column id="onetimePwd" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_confirm"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : com02001_p04.xfdl
+* 화면설명     : 사용자 정보수정 팝업
+* 작성자       : 최용현
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.07.14     최용현         최초생성
+******************************************************************************/
+include "commJs::commonUtils.xjs";
+
+this.memberNo = "";
+this.mobileNo = "";
+this.apVFrameSet 	  = application.mainframe.VFrameSet;
+this.apTopFrame 	  = application.mainframe.VFrameSet.TopFrame;
+this.apMiddleFrameSet = application.mainframe.VFrameSet.MiddleFrameSet;
+this.apLeftFrame      = application.mainframe.VFrameSet.MiddleFrameSet.LeftFrame;
+this.apBizFrameSet 	  = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet;
+this.apMDIFrame 	  = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MDIFrame;
+this.apMainFrameSet   = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet;
+this.apWorkFrame 	  = application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet.WorkFrame;
+this.gds_user         = application.gds_user;
+/********************************************************************************
+ * 함 수 명 	: com02001_p04_onload
+ * 함수설명 	: 화면 로드 함수
+********************************************************************************/
+this.com02001_p04_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.memberNo = this.parent.memberNo;
+	this.fn_search();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_preSearch
+ * 함수설명 	: 사용자의 정보 조회 전 함수
+ *********************************************************************/
+this.fn_preSearch = function()
+{
+	this.ds_member.clearData();
+	return true;
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 사용자의 정보를 조회 함수
+ *********************************************************************/
+this.fn_search = function()
+{
+	if(this.fn_preSearch()){
+		var strArg = "strUserId="	+ nexacro.wrapQuote(this.memberNo);
+		
+		this.gfn_transaction("SEARCH",
+							 "txComUrl::com/comm/selectMobileNo.do",
+							 "",
+							 "ds_member=resultList",
+							 strArg,
+							 "fn_callBack"); 
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSearch
+ * 함수설명 	: 사용자의 전화번호를 조회 후 함수
+ *********************************************************************/
+this.fn_postSearch = function()
+{
+	this.pwd = this.ds_member.getColumn(0, "passwdDe");
+	this.mobileNo = this.ds_member.getColumn(0, "mobileNo");
+	
+	var text = "통합시스템에 등록된 \n핸드폰 번호 :" + this.mobileNo + "로 인증번호가 발송되었습니다. \n\n* 장시간 응답이 없을경우 창을 닫고 다시 로그인하시기 바랍니다.\n";
+	
+	this.Static00.set_text(text);
+	
+	//sms전송 관련 dataset clear
+	this.ds_confirm.clearData();
+	this.ds_sms.clearData();
+	
+	var addRow = this.ds_sms.addRow();
+	
+	this.ds_sms.setColumn(addRow, "rowStatus", 2);					//상태
+	this.ds_sms.setColumn(addRow, "memberNo", this.memberNo);		//로그인아이디
+	this.ds_sms.setColumn(addRow, "userId", "ust_com");				//SMS아이디
+	this.ds_sms.setColumn(addRow, "scheduleType", "0"); 			//즉시전송
+	this.ds_sms.setColumn(addRow, "subject", "로그인인증");		//메시지 제목
+	this.ds_sms.setColumn(addRow, "smsMsg", "");					//메시지 내용
+	this.ds_sms.setColumn(addRow, "sender", "0428645551");			//발신자 전화번호
+	this.ds_sms.setColumn(addRow, "destCount", 1);					//수신자수 (1고정)
+	this.ds_sms.setColumn(addRow, "destInfo", "로그인인증^"+this.mobileNo);	//메시지제목^수신자전화번호
+	this.ds_sms.setColumn(addRow, "onetimePwd", "");
+	
+	this.fn_sendSms();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_sendSms
+ * 함수설명 	: 사용자의 전화번호로 인증번호를 발송한다.
+ *********************************************************************/
+this.fn_sendSms = function()
+{	
+	this.gfn_transaction("SMS",
+						 "txComUrl::com/comm/sendLoginSms.do",
+						 "resultList=ds_sms:n",
+						 "ds_confirm=resultList",
+						 "",
+						 "fn_callBack");
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSendSms
+ * 함수설명 	: 인증번호 전송 후 함수
+ *********************************************************************/
+this.fn_postSendSms = function()
+{
+	this.gfn_message("A", "인증번호 전송이 완료되었습니다. \n인증번호를 입력해 주세요.");
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+		this.btn_close_onclick();
+	}else{
+		if(trId=="SEARCH"){
+			this.fn_postSearch();
+		}else if(trId=="SMS"){
+			this.fn_postSendSms();
+		}else if(trId=="LOGIN"){
+			this.fn_postLogin();
+		}else if(trId == "SYS"){
+			this.fn_postSearchSys();
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_close_onclick
+ * 함수설명 	: 닫기 버튼 클릭 함수
+ *********************************************************************/
+this.btn_close_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.close("close");
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_login_onclick
+ * 함수설명 	: 로그인 버튼 클릭 함수
+ *********************************************************************/
+this.btn_login_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var strArg = "strUserId="  		+ nexacro.wrapQuote(this.memberNo);
+		strArg += " strOnetimePwd="	+ nexacro.wrapQuote(this.edt_confirmNo.value);
+		strArg += " strLoginGb=" 	+ nexacro.wrapQuote("MOBILE");
+	
+	this.gfn_transaction("LOGIN",
+						 "txComUrl::com/comm/doGetLogin.do",
+						 "",
+						 "gds_user=resultList",
+						 strArg,
+						 "fn_callBack"); 
+}
+
+/*********************************************************************
+ * 함 수 명 	: edt_confirmNo_onkeyup
+ * 함수설명 	: 인증번호 enter key입력 이벤트
+ *********************************************************************/
+this.edt_confirmNo_onkeyup = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	if(e.keycode == 13){
+		this.btn_login_onclick();
+	}
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_postLogin
+* 함수설명 	: 로그인 후 처리 함수
+*****************************************************************************/
+this.fn_postLogin = function()
+{
+	if(this.gds_user.getRowCount() > 0){
+		this.fn_searchSys();
+	}
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_searchSys
+* 함수설명 	: sys메뉴 조회
+*****************************************************************************/
+this.fn_searchSys = function()
+{
+	var strArg = "memberNo=" + nexacro.wrapQuote(this.gds_user.getColumn(this.gds_user.rowposition, "memberNo"));
+	
+	this.gfn_transaction("SYS",
+					 "txComUrl::com/comm/selectSysMenu.do",
+					 "",
+					 "gds_sys=resultList",
+					 strArg,
+					 "fn_callBack");
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_postSearchSys
+* 함수설명 	: sys메뉴 후 함수
+*****************************************************************************/
+this.fn_postSearchSys = function()
+{
+	if(this.gds_user.getRowCount() > 0 ){
+		this.apVFrameSet.set_separatesize("95, *");
+		this.apMiddleFrameSet.set_separatesize("242, *");
+		this.apBizFrameSet.set_separatesize("33, *");
+		this.apWorkFrame.set_formurl("");
+		var userInfo = " "+this.gds_user.getColumn(0, "nm") + " / " + this.gds_user.getColumn(0, "deptNmKor")
+		this.apTopFrame.form.div_navi.btn_userInfo.set_text(userInfo);
+		
+		this.btn_close_onclick();
+	}
+}]]></Script>
+  </Form>
+</FDL>

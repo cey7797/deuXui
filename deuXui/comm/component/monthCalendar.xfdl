@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="../..\default_typedef.xml"/>
+  <Form id="compCalendarMonth" classname="compCalendarMonth" left="0" top="0" width="81" height="20" titletext="월달력컴포넌트" onload="CommCalendarMonth_onload">
+    <Layouts>
+      <Layout>
+        <Button id="btn_Calendar" taborder="0" text="월" left="65" top="2" height="17" onclick="btn_Calendar_onclick" width="15" userBtnAuth="R"/>
+        <PopupDiv id="PopMonth" left="1.23%" top="22" height="124" visible="false" scrollbars="none" oncloseup="PopMonth_oncloseup" width="150" dragscrolltype="both" style="background:#ffffffff;border:1 solid #808080ff ;">
+          <Layouts>
+            <Layout>
+              <Static id="Static00" taborder="2" left="-159" top="-39" height="120" style="border:0 none #46463dff ;opacity:100;" width="150" visible="false"/>
+              <Static id="stcYear" taborder="3" text="2015" left="58" top="18" height="17" width="30"/>
+              <Button id="btn_PreYear" taborder="1" text="&lt;" left="28" top="18" height="17" onclick="btn_PreYear_onclick" width="15"/>
+              <Button id="btn_NextYear" taborder="0" text="&gt;" left="103" top="18" height="17" onclick="btn_NextYear_onclick" width="15"/>
+              <Button id="btnM12" taborder="4" text="12월" left="113" top="92" height="17" onclick="btnM_onclick" width="26"/>
+              <Button id="btnM11" taborder="5" text="11월" left="80" top="92" height="17" onclick="btnM_onclick" width="26"/>
+              <Button id="btnM10" taborder="6" text="10월" left="45" top="92" height="17" onclick="btnM_onclick" width="26"/>
+              <Button id="btnM09" taborder="7" text="9월" left="11" top="92" height="17" onclick="btnM_onclick" width="26"/>
+              <Button id="btnM08" taborder="8" text="8월" left="113" top="69" height="17" onclick="btnM_onclick" width="26"/>
+              <Button id="btnM07" taborder="9" text="7월" left="80" top="69" height="17" onclick="btnM_onclick" width="26"/>
+              <Button id="btnM06" taborder="10" text="6월" left="45" top="69" height="17" onclick="btnM_onclick" width="26"/>
+              <Button id="btnM05" taborder="11" text="5월" left="11" top="69" height="17" onclick="btnM_onclick" width="26"/>
+              <Button id="btnM04" taborder="12" text="4월" left="113" top="45" height="17" width="26" onclick="btnM_onclick"/>
+              <Button id="btnM03" taborder="13" text="3월" left="80" top="45" height="17" width="26" onclick="btnM_onclick"/>
+              <Button id="btnM02" taborder="14" text="2월" left="45" top="45" height="17" width="26" onclick="btnM_onclick"/>
+              <Button id="btnM01" taborder="15" text="1월" left="11" top="45" height="17" onclick="btnM_onclick" width="26"/>
+              <Static id="Static37" taborder="16" text="w&#13;&#10;10" visible="false" left="0" top="44" width="10" height="70" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static01" taborder="17" text="h10" visible="false" left="0" top="35" width="150" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static02" taborder="18" text="w&#13;&#10;10" visible="false" top="44" height="70" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;" right="0" width="10"/>
+              <Static id="Static03" taborder="19" text="h10" visible="false" left="0" top="109" width="150" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+            </Layout>
+          </Layouts>
+        </PopupDiv>
+        <MaskEdit id="edt_calendar" taborder="3" left="2" top="1" height="19" mask="####-##" type="string" ontextchanged="edt_calendar_ontextchanged" width="60" style="align:center middle;"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.0"><![CDATA[include "commJs::commonUtils.xjs";
+/*===============================================================================================
+ * [ PART 1 ] Include 할 라이브러리(xjs)파일 정의
+================================================================================================*/
+
+/*===============================================================================================
+ * [ PART 2 ] Form변수 정의
+================================================================================================*/
+var lv_selYearMonth;
+var lv_selYear;
+var lv_selMonth;
+var lv_Active;  
+
+/*===============================================================================================
+ * [ PART 3 ] Event
+================================================================================================*/
+/************************************************************************************************
+ * Function : Null 여부 확인
+ * @param   : sValue - Null 여부 확인 값
+ * @param   : e - GridClickEventInfo
+ * Return   : boolean
+************************************************************************************************/
+function gfn_isNull(sValue)
+{
+	if(new String(sValue).valueOf() == "undefined" || new String(sValue).valueOf() == "[Undefined]") return true;
+	if(sValue == null) return true;
+	if(("x"+sValue == "xNaN") && (String(sValue.length).valueOf() == "undefined"))
+		return true;
+	if(String(sValue).length == 0) return true;
+  
+    //Trim 기능 추가  
+    var sArg = new String(sValue);
+	if (sArg.replace(/(^\s*)|(\s*$)/g, "").length == 0 ) return true;
+	
+ 	return false;
+}
+/************************************************************************************************
+ * Function : 왼쪽 채우기 함수 (length를 byte로 계산)
+ * @param   : sValue  - 대상문자열
+              nLength - 자리수
+              sChar    - 채울 문자
+ * Return   : String - length
+************************************************************************************************/
+function gfn_padLeftB (sValue, nLength, sChar) 
+{
+    if(gfn_isNull(sValue)) return sValue;
+    if(gfn_isNull(sChar)) sChar = " ";
+
+    var sRetVal = new String(sValue);
+    var nIteration 	= nLength - gfn_getLengthB(sRetVal);
+    var sPadChar = (sChar.length > 1) ? sChar.charAt(0) : sChar;
+
+    for(var i=0; i<nIteration; i++)
+        sRetVal = sPadChar + sRetVal;
+
+    return sRetVal;
+}
+/************************************************************************************************
+ * Function : 입력받은 전체 길이를 계산 결과를 Number Type으로 반환
+              문자, 숫자, 특수문자 : 1 로 Count
+              그 외 한글/한자 : 3 로 count
+ * @param   : 대상문자열
+ * Return   : number - length
+************************************************************************************************/
+function gfn_getLengthB (sValue)
+{
+	if(gfn_isNull(sValue)) return 0;
+
+	var sChk = sValue.toString();
+	var iCnt = 0;
+
+	for(var i=0; i<sChk.length; i++)
+		(sChk.charCodeAt(i) > 127) ? iCnt += 3 : iCnt++;
+
+	return iCnt;
+}
+/************************************************************************************************
+ * Function : 해당 PC의 오늘 날짜를 가져온다
+ * @param   : 
+ * Return   : 오늘 날짜("yyyyMMdd" 형태)
+************************************************************************************************/
+function gfn_today ()
+{ 
+	var sToday = "";
+	var objDate = new Date();
+	var sToday  = objDate.getFullYear() + "";
+		sToday += gfn_padLeftB(objDate.getMonth() + 1, 2, "0");
+		sToday += gfn_padLeftB(objDate.getDate(), 2, "0");
+
+	return sToday;
+}
+/************************************************************************************************
+ * Function : 문자 포맷 형식 변환 ( 해당 문자는 포맷에서 @ 사용)
+ * @param   : sValue - 문자열
+              sMask - 문자열 포맷, (@:문자, 포맷스트링("-", ",", ".")등
+ * Return   : 포맷된 문자
+************************************************************************************************/
+function gfn_getFormat (sValue, sMask) 
+{
+	var sRetVal = "";
+	var sUnit;
+	
+
+	if(gfn_isNull(sValue)) return "";
+
+	sValue = String(sValue);
+
+	for(var i=0; i<sMask.length; i++){
+		sUnit = sMask.charAt(i);
+		if(sUnit == "@"){
+			sRetVal += sValue.charAt(0);
+			sValue = sValue.substr(1);
+		}
+		else
+		    sRetVal += sUnit;
+    }
+
+    return sRetVal;
+}
+/************************************************************************************************
+ * Function : 날짜 정합성 체크
+ * @param   : sDate - 날짜형식의 문자열
+ * Return   : true/false(정합 여부)
+************************************************************************************************/
+function gfn_isDate (sDate)
+{
+	if(gfn_isNull(sDate)) return false;
+
+	sDate = new String(sDate);
+	try {
+		var objDate = new Date(gfn_getFormat(sDate, "@@@@-@@-@@"));
+
+		if(gfn_isNull(objDate)) return false;
+		//if(objDate.toFormatString("%Y-%m-%d") != gfn_getFormat(sDate, "@@@@-@@-@@")) return false;alert(5);
+	}
+	catch(e){
+	    return false;
+	}
+
+    return true;
+}
+
+
+/*----------------------------------------------------------------------------------------------
+ * 설명   : setData
+ * return  : void
+-----------------------------------------------------------------------------------------------*/
+this.setData = function (sDt, sAction){
+	lv_Active = gfn_isNull(sAction) ? "" : sAction ;
+	
+   if(!gfn_isNull(sDt)){
+       sDt = sDt.toString();
+       sDt = sDt.replace(" ", "").replace("-", "").replace("-", "");
+	   var tmpDt = (sDt.length == 8) ? sDt : sDt+"01";
+	  
+	   if(gfn_isDate(tmpDt)){
+		  lv_selYearMonth = sDt;
+		  lv_selYear = lv_selYearMonth.substr(0,4);
+		  lv_selMonth = lv_selYearMonth.substr(4,2);
+		  this.edt_calendar.set_value(lv_selYearMonth);
+		  this.fn_SetCalendar(lv_selYear,lv_selMonth);
+	   }  
+   }
+}
+
+/*----------------------------------------------------------------------------------------------
+ * 설명   : getData
+ * return  : void
+-----------------------------------------------------------------------------------------------*/
+this.getData = function (){
+   return lv_selYearMonth;
+}
+
+
+/*----------------------------------------------------------------------------------------------
+ * 설명   : fn_SetCalendar
+ * return  : void
+-----------------------------------------------------------------------------------------------*/
+this.fn_SetCalendar = function(strYY,strMM)
+{ 
+	if(!gfn_isDate(strYY+strMM+"01")){
+		return false;
+	} 
+
+	this.PopMonth.stcYear.set_text(strYY);
+
+	lv_selYear = strYY;
+	lv_selMonth = strMM;
+	
+	eval("this.PopMonth.btnM" + strMM +".setFocus();");
+	
+}
+
+
+
+
+
+this.btn_PreYear_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var strYY = this.PopMonth.stcYear.text;
+	this.PopMonth.stcYear.set_text((parseInt(strYY) - 1).toString());
+}
+
+this.btn_NextYear_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var strYY = this.PopMonth.stcYear.text;
+	this.PopMonth.stcYear.set_text((parseInt(strYY) + 1).toString());	
+	
+}
+
+this.btn_Calendar_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	/* 달력 버튼 클릭 시 value 값 확인 */
+	if( gfn_isNull(this.edt_calendar.value) ){ 
+		this.PopMonth.stcYear.set_text(gfn_today().substr(0,4));
+		lv_selMonth = gfn_today().substr(4,2);
+	}else{ 
+		this.PopMonth.stcYear.set_text(this.edt_calendar.value.substr(0,4));
+		lv_selMonth = this.edt_calendar.value.substr(4,2);
+	}
+	
+	lv_selYear = this.PopMonth.stcYear.text;
+		
+	var nX = system.clientToScreenX(this.edt_calendar, -1) - system.clientToScreenX(application.mainframe, 0);
+	var nY = system.clientToScreenY(obj, 0) + (nexacro.toNumber(obj.height,0)+ 2) - system.clientToScreenY(application.mainframe, 0);
+
+    if(this.PopMonth.isPopup()==false){
+        this.PopMonth.trackPopup(nX, nY);
+      
+        this.fn_SetCalendar(lv_selYear,lv_selMonth);
+	}else{
+		this.PopMonth.closePopup();
+	}
+	 
+}
+
+this.btnM_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var aDate = new Array(3);	
+	lv_selYear = this.PopMonth.stcYear.text;
+	lv_selMonth = obj.name.replace("btnM","");
+	lv_selYearMonth = lv_selYear + lv_selMonth;
+    this.edt_calendar.set_value(lv_selYearMonth);
+	this.PopMonth.closePopup();
+
+    if(!gfn_isNull(lv_Active)) application.getActiveForm().Action(lv_Active,lv_selYearMonth);
+    
+}
+
+this.CommCalendarMonth_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+
+	this.PopMonth.stcYear.set_text(gfn_today().substr(0,4));
+}
+
+
+
+this.edt_calendar_ontextchanged = function(obj:MaskEdit,  e:nexacro.TextChangedEventInfo)
+{
+   var sDt = this.edt_calendar.value
+   sDt = sDt.replace(" ", "").replace("-", "").replace("-", "");
+   if(sDt.length == 6){
+		if(!gfn_isNull(sDt)){
+			  lv_selYearMonth = sDt;
+			  lv_selYear = lv_selYearMonth.substr(0,4);
+			  lv_selMonth = lv_selYearMonth.substr(4,2);
+			  this.edt_calendar.set_value(lv_selYearMonth);
+			  this.fn_SetCalendar(lv_selYear,lv_selMonth);
+			  if(!gfn_isNull(lv_Active)) application.getActiveForm().Action(lv_Active,lv_selYearMonth);
+			  
+
+		}
+		
+		if(!gfn_isDate(sDt+"01")){
+		    this.edt_calendar.set_value("");
+			this.edt_calendar.setFocus();
+        } 	
+    }
+    
+    this.fn_callFunction("fn_calendar_ontextchange");
+}
+
+this.PopMonth_oncloseup = function(obj:PopupDiv, e:nexacro.EventInfo)
+{
+	this.edt_calendar.set_value(lv_selYearMonth);
+}
+
+
+this.set_bind = function(ds, name)
+{
+	//바인딩.
+	var objBindItem = new BindItem();  
+	objBindItem.init("BindItem00", "edt_calendar", "value", ds.id, name);
+	this.addChild("BindItem00", objBindItem); 
+	objBindItem.bind(); 
+	trace("========================================"); 
+	
+
+	
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callFunction
+ * 함수설명 	: 펑션 호출하기
+ *********************************************************************/
+this.fn_callFunction = function(fncNm)
+{
+	var parentStr = this.gfn_searchParent(fncNm);
+	var strValue = true;
+	
+	if(this.gfn_isNull(eval("this." + parentStr)[fncNm])==false)
+	{
+		strValue = eval("this." + parentStr +"."+fncNm+"(this)");
+	}
+	
+	return strValue;
+}]]></Script>
+  </Form>
+</FDL>

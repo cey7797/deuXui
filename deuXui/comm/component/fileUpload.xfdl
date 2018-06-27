@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="fileUpload" classname="fileUpload" left="0" top="0" width="340" height="22" titletext="파일업로드" onload="fileUpload_onload">
+    <Layouts>
+      <Layout>
+        <Edit id="edt_fileNm" taborder="0" enable="true" left="0" top="0" height="22" visible="true" oneditclick="edt_fileNm_oneditclick" right="82" readonly="true"/>
+        <Button id="btn_fileUp" taborder="1" text="파일업로드" onclick="btn_fileUp_onclick" cssclass="fileUp" top="0" height="22" tooltiptype="hover" tooltiptext="파일업로드" userBtnAuth="U" right="1" width="76"/>
+        <Edit id="edt_fileMasterNo" taborder="2" left="346" top="24" width="60" height="20" visible="false" onchanged="edt_fileMasterNo_onchanged"/>
+        <Edit id="edt_fileUrl" taborder="3" left="411" top="24" width="60" height="20" visible="false"/>
+      </Layout>
+    </Layouts>
+    <Bind>
+      <BindItem id="item0" compid="edt_fileMasterNo" propid="value" datasetid="ds_file_info" columnid="fileMasterNo"/>
+      <BindItem id="item1" compid="edt_fileNm" propid="value" datasetid="ds_file_info" columnid="fileNm"/>
+      <BindItem id="item2" compid="edt_fileUrl" propid="value" datasetid="ds_file_info" columnid="fileUrl"/>
+    </Bind>
+    <Objects>
+      <Dataset id="ds_file" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="fileMasterNo" type="STRING" size="256"/>
+          <Column id="fileNm" type="STRING" size="256"/>
+          <Column id="fileUrl" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_file_info" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="fileMasterNo" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : fileUpload.xfdl
+* 화면설명     : 싱글파일업로드
+* 작성자       : 최용현
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.07.28     최용현         최초생성
+******************************************************************************/
+
+include "commJs::commonUtils.xjs";
+/*********************************************************************
+ * 함 수 명 	: fileUpload_onload
+ * 함수설명 	: 파일업로드 로드 함수.
+ *********************************************************************/
+this.fileUpload_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	var objBindItem = new BindItem(); 
+	objBindItem.init("fileMasterNo", "this.edt_fileMasterNo", "value", "ds_fake", "fileMasterNo"); 
+	this.addChild("fileMasterNo", objBindItem); 
+	objBindItem.bind();	
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_fileUp_onclick
+ * 함수설명 	: 파일업로드 버튼클릭 함수.
+ *********************************************************************/
+this.btn_fileUp_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var parFunc = this.gfn_searchParent("fn_preUpload");
+
+	if(eval("this."+parFunc+".fn_preUpload('"+obj.parent.id+"')")){
+		this.gfn_searchFileUploadPop(this.edt_fileMasterNo.text, "getFileMasterNo", "single");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_popCallBack
+ * 함수설명 	: 파일업로드 콜백함수.
+ *********************************************************************/
+this.fn_popCallBack = function(strID, rtnVal)
+{
+	if(!this.gfn_isNull(rtnVal)){
+		this.ds_file.loadXML(rtnVal);
+		this.edt_fileMasterNo.set_value(this.ds_file.getColumn(0, "fileMasterNo"));
+		this.edt_fileNm.set_value(this.ds_file.getColumn(0, "fileNm"));
+		this.edt_fileUrl.set_value(this.ds_file.getColumn(0, "fileUrl"));
+		var parFunc = this.gfn_searchParent("fn_uploadCallback");
+		eval("this."+parFunc+".fn_uploadCallback(rtnVal)");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_popCallBack
+ * 함수설명 	: 파일업로드 콜백함수.
+ *********************************************************************/
+this.getFileMasterNo = function(result)
+{
+	this.edt_fileMasterNo.set_value("");
+	this.edt_fileNm.set_value("");
+	this.edt_fileUrl.set_value("");
+}
+
+/*********************************************************************
+ * 함 수 명 	: edt_fileNm_oneditclick
+ * 함수설명 	: 파일명 클릭 시 파일다운로드 팝업 호출 함수
+ *********************************************************************/
+this.edt_fileNm_oneditclick = function(obj:Edit,  e:nexacro.EditClickEventInfo)
+{
+	this.gfn_searchFileDownloadPop(this.gfn_nvl(this.edt_fileMasterNo.value,0));
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_searchFile
+ * 함수설명 	: file 조회 함수.
+ *********************************************************************/
+this.fn_searchFile = function(fileMasterNo)
+{
+	if(!this.gfn_isNull(fileMasterNo)){
+		var strArg = "strFileMasterNo=" + nexacro.wrapQuote(fileMasterNo);		// 파일마스터번호
+
+		this.gfn_transaction("FILE",
+							 "txComUrl::com/comm/selectFile.do",
+							 "",
+							 "ds_file_info=resultList",
+							 strArg,
+							 "fn_callBack");
+	}else{
+		this.ds_file_info.clear();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSearchFile
+ * 함수설명 	: file 조회 후 함수.
+ *********************************************************************/
+this.fn_postSearchFile = function()
+{
+	
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId == "FILE"){
+			this.fn_postSearchFile();
+		}
+	}
+}]]></Script>
+  </Form>
+</FDL>

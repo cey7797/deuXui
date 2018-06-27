@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script type="xscript5.0"><![CDATA[/*********************************************************************
+ * 함 수 명 	: gfn_isCloseUpdate
+ * 함수설명 	: dataSet의 수정처리가 되 있는지 확인한다.
+                  MDIFrame에서 호출
+ * 입    력 	: dataSet
+ * 결    과 	: boolean
+ *********************************************************************/
+this.gfn_isCloseUpdate = function(objDs, objGrd)
+{		
+	var cnt = 0;
+	objGrd.updateToDataset();
+	
+	for(var i=0; i<objDs.getRowCount(); i++){
+		if(objDs.getRowType(i) != 1){
+			cnt++;		
+		}
+	}
+	if(objDs.getDeletedRowCount() != 0){
+		cnt++;
+	}
+
+	if(cnt > 0){
+		return true;
+	}else{
+		return false;
+	}
+
+}
+]]></Script>

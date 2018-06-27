@@ -1,0 +1,745 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd01050" classname="afd01050" left="0" top="0" width="1038" height="855" titletext="회원정보관리" onload="afd01050_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="0" left="0" top="0" right="15" height="43" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static05" taborder="76" text="회원번호/성명" cssclass="search_req" left="15" top="10" width="83" height="22" class="search_bul"/>
+              <Edit id="edt_memberNoNm" taborder="77" maxlength="10" left="106" top="10" width="215" height="22" style="border:1 solid #ccccccff ;" onkeyup="div_search_edt_memberNoNm_onkeyup"/>
+              <Static id="Static02" taborder="78" text="w&#13;20" visible="false" left="321" top="10" width="20" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static00" taborder="79" text="내외구분" cssclass="search" left="341" top="10" width="49" height="22"/>
+              <Combo id="cmb_newoiGb" taborder="80" left="398" top="10" width="84" height="22" class="essential" codecolumn="codecolumn" datacolumn="datacolumn" index="0" text="전체">
+                <Dataset id="innerdataset">
+                  <ColumnInfo>
+                    <Column id="codecolumn" size="256"/>
+                    <Column id="datacolumn" size="256"/>
+                  </ColumnInfo>
+                  <Rows>
+                    <Row>
+                      <Col id="codecolumn"/>
+                      <Col id="datacolumn">전체</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">0</Col>
+                      <Col id="datacolumn">교내</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">1</Col>
+                      <Col id="datacolumn">교외</Col>
+                    </Row>
+                  </Rows>
+                </Dataset>
+              </Combo>
+              <Combo id="cmb_sMemberDivNm" taborder="81" codecolumn="cd" datacolumn="cdNm" index="-1" left="574" top="10" width="127" height="22" class="essential" innerdataset="@ds_afdMembas"/>
+              <Static id="Static01" taborder="82" text="회원등급명" cssclass="search" left="501" top="10" width="65" height="22"/>
+              <Edit id="edt_endwNm" taborder="83" readonly="true" cssclass="compulsory" left="115" top="-328" width="196" height="22"/>
+              <Button id="btn_endwPop" taborder="84" onclick="btn_endwPop_onclick" cssclass="popupDetail" enable="false" left="313" top="-328" width="24" height="22" tooltiptype="hover" tooltiptext="조회"/>
+              <Edit id="edt_sEndwCd" taborder="85" canchange="div_search_edt_sMemberNo_canchange" left="768" top="10" width="84" height="22" style="border:1 solid #ccccccff ;"/>
+              <Button id="btn_popup" taborder="86" onclick="div_search_btn_popup_onclick" cssclass="popupDetail" left="854" top="10" width="22" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R"/>
+              <Edit id="edt_sEndwNm" taborder="87" readonly="true" left="878" top="10" width="136" height="22" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static03" taborder="88" text="기금명" cssclass="search" left="725" top="10" width="35" height="22" class="search_bul"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static00" taborder="1" text="w&#13;&#10;15" visible="false" left="0" top="10" width="15" height="21" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static01" taborder="2" text="w8" visible="false" left="98" top="10" width="8" height="21" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static05" taborder="4" text="h10" visible="false" left="0" top="31" width="1023" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static03" taborder="5" text="h10" visible="false" left="0" top="0" width="1023" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static04" taborder="6" text="w&#13;&#10;15" visible="false" top="0" right="0" width="15" height="855" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_search" taborder="7" text="조회" cssclass="search" top="56" right="263" width="60" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R" onclick="btn_search_onclick" visible="true"/>
+        <Button id="btn_new" taborder="8" text="추가" cssclass="new" top="56" right="201" width="60" height="22" tooltiptype="hover" tooltiptext="추가" onclick="btn_new_onclick" userBtnAuth="R"/>
+        <Button id="btn_del" taborder="9" text="삭제" cssclass="del" top="56" right="139" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" onclick="btn_del_onclick" userBtnAuth="R"/>
+        <Button id="btn_save" taborder="10" text="저장" cssclass="save" top="56" right="77" width="60" height="22" tooltiptype="hover" tooltiptext="저장" onclick="btn_save_onclick" userBtnAuth="R"/>
+        <Static id="Static40" taborder="13" text="h15" visible="false" left="0" top="42" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Tab id="tab_afd" taborder="18" left="0" top="387" right="15" height="465" tabindex="0" scrollbars="autoboth" style="showextrabutton:false;" canchange="tab_afd_canchange" onchanged="tab_afd_onchanged" preload="false">
+          <Tabpages>
+            <Tabpage id="tp_afdMaster" text="기본정보" url="afd01::afd01050_t01.xfdl"/>
+            <Tabpage id="tp_dmAddr" text="DM주소관리" url="afd01::afd01050_t02.xfdl"/>
+            <Tabpage id="tp_cntrct" text="약정현황" url="afd01::afd01050_t03.xfdl"/>
+            <Tabpage id="tp_hlrt" text="예우현황" url="afd01::afd01050_t04.xfdl"/>
+            <Tabpage id="tp_dm" text="DM현황" url="afd01::afd01050_t05.xfdl"/>
+          </Tabpages>
+        </Tab>
+        <Grid id="grd_main01" taborder="19" binddataset="ds_afdMaster" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="col" left="0" top="83" right="15" height="274">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="40" band="left"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="102"/>
+                <Column size="80"/>
+                <Column size="120"/>
+                <Column size="140"/>
+                <Column size="140"/>
+                <Column size="160"/>
+                <Column size="320"/>
+              </Columns>
+              <Rows>
+                <Row size="26" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="회원번호"/>
+                <Cell col="2" text="성명"/>
+                <Cell col="3" text="소속"/>
+                <Cell col="4" text="재직구분"/>
+                <Cell col="5" text="전화번호"/>
+                <Cell col="6" text="핸드폰"/>
+                <Cell col="7" text="이메일"/>
+                <Cell col="8" text="회원등급"/>
+                <Cell col="9" text="주소"/>
+              </Band>
+              <Band id="body">
+                <Cell text="expr:currow +1"/>
+                <Cell col="1" text="bind:memberNo"/>
+                <Cell col="2" displaytype="normal" style="align:left;" text="bind:memberNmKor" calendardisplaynulltype="none"/>
+                <Cell col="3" text="bind:deptCdNm"/>
+                <Cell col="4" text="bind:hofcDivNm"/>
+                <Cell col="5" style="align:left;" text="bind:telNo"/>
+                <Cell col="6" displaytype="normal" style="align:left;" text="bind:hpNo"/>
+                <Cell col="7" style="align:left;" text="bind:eMail"/>
+                <Cell col="8" style="align:left;" text="bind:memberDivCdNm"/>
+                <Cell col="9" style="align:left;" text="bind:addrFull"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static02" taborder="20" text="h10" visible="false" left="0" top="78" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static06" taborder="21" text="h10" visible="false" left="866" top="372" width="157" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_count" taborder="22" text="Count &lt;b v='true'&gt;999&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" top="358" right="15" width="100" height="20" style="align:right middle;"/>
+        <Static id="Static51" taborder="23" text="h15" visible="false" left="-1" top="357" width="866" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static76" taborder="24" text="회원내역" cssclass="page_stitle" left="0" top="58" width="324" height="20"/>
+        <Static id="Static07" taborder="25" text="w8" visible="false" left="390" top="10" width="8" height="21" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Combo id="cmb_membas" taborder="26" innerdataset="ds_membas" codecolumn="cd" datacolumn="cdNm" cssclass="compulsory" left="798" top="-340" width="216" height="22"/>
+        <Button id="btn_excel" taborder="27" text="엑셀" cssclass="btn_WF_Common" top="56" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="Excel" userBtnAuth="D" onclick="btn_excel_onclick"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_memberNo">
+        <ColumnInfo>
+          <Column id="memberNo" type="STRING" size="32"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_dummy"/>
+      <Dataset id="ds_newAfdMaster"/>
+      <Dataset id="ds_membas"/>
+      <Dataset id="ds_afdMembas"/>
+      <Dataset id="ds_afdMaster" onrowposchanged="ds_afdMaster_onrowposchanged">
+        <ColumnInfo>
+          <Column id="chk" type="string" size="32"/>
+          <Column id="rowStatus" type="string" size="32"/>
+          <Column id="memberNo" type="string" size="32"/>
+          <Column id="memberNmKor" type="string" size="32"/>
+          <Column id="nationDiv" type="string" size="32"/>
+          <Column id="wsJuminNo" type="string" size="32"/>
+          <Column id="birthDt" type="string" size="32"/>
+          <Column id="sex" type="string" size="32"/>
+          <Column id="telNo" type="string" size="32"/>
+          <Column id="hpNo" type="string" size="32"/>
+          <Column id="eMail" type="string" size="32"/>
+          <Column id="zip" type="string" size="32"/>
+          <Column id="addr1" type="string" size="32"/>
+          <Column id="addr2" type="string" size="32"/>
+          <Column id="vipYn" type="string" size="32"/>
+          <Column id="annymtyYn" type="string" size="32"/>
+          <Column id="deathYn" type="string" size="32"/>
+          <Column id="pcpsklRel" type="string" size="32"/>
+          <Column id="pcpsklRelDesc" type="string" size="32"/>
+          <Column id="wrcNm" type="string" size="32"/>
+          <Column id="deptNm" type="string" size="32"/>
+          <Column id="rankNm" type="string" size="32"/>
+          <Column id="occupationDiv" type="string" size="32"/>
+          <Column id="wrcTelNo" type="string" size="32"/>
+          <Column id="wrcFaxNo" type="string" size="32"/>
+          <Column id="wrcZip" type="string" size="32"/>
+          <Column id="wrcAddr1" type="string" size="32"/>
+          <Column id="wrcAddr2" type="string" size="32"/>
+          <Column id="remark" type="string" size="32"/>
+          <Column id="dmDiv" type="string" size="32"/>
+          <Column id="dmExcpYn" type="string" size="32"/>
+          <Column id="dmRetrnYn" type="string" size="32"/>
+          <Column id="esdngExcp" type="string" size="32"/>
+          <Column id="rcver" type="string" size="32"/>
+          <Column id="title" type="string" size="32"/>
+          <Column id="dmOvseaAddr" type="string" size="32"/>
+          <Column id="dmZip" type="string" size="32"/>
+          <Column id="dmAddr1" type="string" size="32"/>
+          <Column id="dmAddr2" type="string" size="32"/>
+          <Column id="addrFull" type="string" size="32"/>
+          <Column id="delYn" type="string" size="32"/>
+          <Column id="schoolNm" type="string" size="32"/>
+          <Column id="schoolDeptNm" type="string" size="32"/>
+          <Column id="inYear" type="string" size="32"/>
+          <Column id="outYear" type="string" size="32"/>
+          <Column id="memberGb" type="string" size="32"/>
+          <Column id="memberType" type="string" size="32"/>
+          <Column id="memberRecommendName" type="string" size="32"/>
+          <Column id="memberRecommendDept" type="string" size="32"/>
+          <Column id="memberRecommendCode" type="string" size="32"/>
+          <Column id="memberDivCd" type="string" size="32"/>
+          <Column id="memberDivCdNm" type="string" size="32"/>
+          <Column id="jigbeon" type="string" size="32"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Bind>
+      <BindItem id="item19" compid="cmb_membas" propid="value" datasetid="ds_afdMaster" columnid="memberDivCd"/>
+      <BindItem id="item32" compid="div_search.edt_endwNm" propid="value" datasetid="ds_afdCntrct" columnid="endwNm"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::frameUtils.xjs";
+include "commJs::lib_String.xjs";
+
+/****************************************************************************
+* 함 수 명 	: fn_callBack
+* 함수설명 	: 트랜잭션 콜백함수
+*****************************************************************************/
+this.afd01050_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	//회원내역 count
+	this.gfn_getDatasetCount(this.ds_afdMaster, this.sta_count);
+	//회원구분코드 조회
+	this.fn_membasCombo();
+	this.fn_afdMembasCombo();
+	//sort
+	var essGrd = new Array();
+		essGrd[0] = this.grd_main01;
+ 	
+ 	this.gfn_essDataset(essGrd);
+	this.gfn_bindCmmnFunction();
+ 	
+		
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_membasCombo
+* 함수설명 	: 회원구분코드 조회(탭-회원등급)
+*****************************************************************************/
+this.fn_membasCombo = function()
+{
+	this.gfn_transaction("membasCombo"
+						, "txAdmUrl::com/admi/afd/afd01/selectComboMembas.do"
+						, ""
+						, "ds_membas=resultList"
+						, ""
+						, "");	
+}
+/****************************************************************************
+* 함 수 명 	: fn_afdMembasCombo
+* 함수설명 	: 회원구분코드 조회(조회조건-회원등급)
+*****************************************************************************/
+this.fn_afdMembasCombo = function()
+{
+	this.gfn_transaction("afdMembasCombo"
+						, "txAdmUrl::com/admi/afd/afd01/selectComboMembas.do"
+						, ""
+						, "ds_afdMembas=resultList"
+						, ""
+						, "");	
+	
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_search_onclick
+* 함수설명 	: 조회버튼 클릭 이벤트
+*****************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_search
+* 함수설명 	: 조회 함수
+*****************************************************************************/
+this.fn_search = function() 
+{
+	var strArg  = "memberNoNm="+nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_memberNoNm.value, ""));		
+		strArg += " newoiGb="+nexacro.wrapQuote(this.gfn_nvl(this.div_search.cmb_newoiGb.value, ""));		
+		strArg += " memberDivCd="+nexacro.wrapQuote(this.gfn_nvl(this.div_search.cmb_sMemberDivNm.value, ""));		
+		strArg += " endwCd="+nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_sEndwCd.value, ""));		
+	
+	this.gfn_transaction("SEARCH"
+						,"txAdmUrl::com/admi/afd/afd01/selectAFD01050_01.do"
+						,""
+						,"ds_afdMaster=resultList"
+						,strArg
+						,""
+						,true);
+}
+
+/******************************************************************************
+* 함 수 명 	: btn_new_onclick
+* 함수설명 	: 추가 버튼
+*****************************************************************************/
+this.btn_new_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.ds_afdMaster.clearData();
+	
+	this.gfn_addRow(this.ds_afdMaster);
+	
+	this.tab_afd.set_tabindex(0);
+	
+	this.tab_afd.tp_afdMaster.msk_wsJuminNo.set_enable(true);
+	this.ds_afdMaster.setColumn(this.ds_afdMaster.rowposition,"memberType","1");//1 : 개인
+	this.ds_afdMaster.setColumn(this.ds_afdMaster.rowposition,"memberGb","");
+	this.ds_afdMaster.setColumn(this.ds_afdMaster.rowposition,"memberDivCd","007");//회원등급
+	
+// 	this.tab_afd.tp_afdMaster.btn_pop01.set_enable(true);
+// 	this.tab_afd.tp_afdMaster.cal_birthDt.set_enable(true);
+// 	this.tab_afd.tp_afdMaster.rdo_sex.set_enable(true);
+
+// 	this.ds_afdMaster.setColumn(this.ds_afdMaster.rowposition,"memberGb"); //회원구분
+// 	this.ds_afdMaster.setColumn(this.ds_afdMaster.rowposition,"memberType"); //회원유형
+
+}
+
+/******************************************************************************
+* 함 수 명 	: btn_del_onclick
+* 함수설명 	: 삭제 버튼
+*****************************************************************************/
+this.btn_del_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.ds_afdMaster.getRowCount() == 0) 
+	{
+		return;
+	}
+	
+	if(this.gfn_message("C", "선택한 회원을 삭제하시겠습니까?"))
+	{
+	
+		this.ds_afdMaster.setColumn(this.ds_afdMaster.rowposition, "rowStatus", "8");//삭제처리 상태
+		//alert(this.ds_afdMaster.getColumn(this.ds_afdMaster.rowposition, "rowStatus"));
+		this.fn_save();//저장함수 호출
+	}
+}
+
+/******************************************************************************
+* 함 수 명 	: btn_save_onclick
+* 함수설명 	: 저장버튼 클릭 이벤트
+*****************************************************************************/
+this.btn_save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	//저장 전 함수
+	if(this.fn_preSave()) 
+	{
+		//저장함수
+		this.fn_save();
+	}
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_preSave
+* 함수설명 	: 저장전 체크 함수
+*****************************************************************************/
+this.fn_preSave = function() 
+{
+	if(this.ds_afdMaster.getRowCount() == 0) 
+	{
+		return;
+	}	
+	
+	//필수입력 체크
+	var colNm = "memberGb$memberType$memberNmKor$memberDivCd";
+	var korNm = "회원구분$회원유형$성명/기관명$회원등급";
+	var cmpNm = "$";
+
+	var result = this.gfn_chkEssItem("ds_afdMaster", colNm, korNm, cmpNm);
+	if (result[0] != "success") 
+	{
+		this.gfn_message("A", result[0]);
+		this.ds_afdMaster.set_rowposition(result[1]);
+		
+		if(result[3] != "")
+		{
+			this.objects[result[3]].setFocus();	
+		}
+		return false;	
+	}
+	
+	//개인/사업자인경우 필수입력 체크
+	for(i=0;i<this.ds_afdMaster.getRowCount();i++)
+	{
+		//수정상태(추가/수정만 해당)
+		if(this.ds_afdMaster.getRowType(i) == 2 || this.ds_afdMaster.getRowType(i) == 4)
+		{
+			//개인/사업자인 경우
+			if(this.ds_afdMaster.getColumn(i,"memberType") == "1" || this.ds_afdMaster.getColumn(i,"memberType") == "2")
+			{
+				//null이면
+				if(this.gfn_isNull(this.ds_afdMaster.getColumn(i,"wsJuminNo")))
+				{
+					this.gfn_message("A", this.tab_afd.tp_afdMaster.Static01.text + "는(은) 필수입력입니다.");
+					return false;
+				}
+				//null아니면
+				else 
+				{
+					//개인
+					if(this.ds_afdMaster.getColumn(i,"memberType") == "1")
+					{					
+						//주민번호 유효성체크
+						if(!this.gfn_bussRegNoChk(this.ds_afdMaster.getColumn(i,"wsJuminNo"), "JUMIN")) {
+							this.gfn_message("A", "[주민등록번호]가 유효하지 않습니다.");
+							return false;
+						}
+					}
+					else if(this.ds_afdMaster.getColumn(i,"memberType") == "2")
+					{
+						//사업자번호 유효성체크
+						if(!this.gfn_bussRegNoChk(this.ds_afdMaster.getColumn(i,"wsJuminNo"), "BUSS")) {
+							this.gfn_message("A", "[사업자등록번호]가 유효하지 않습니다.");
+							return false;
+						}
+					}
+				}
+			}
+			//교직원인 경우
+			if(this.ds_afdMaster.getColumn(i,"memberGb") == "13")
+			{
+				if(this.gfn_isNull(this.ds_afdMaster.getColumn(i,"jigbeon")))
+				{
+					this.gfn_message("A", "회원구분이 교직원인 경우 [직번]은 필수입력 입니다..");
+					return false;
+				}
+			}
+		}
+	}
+	
+// 	if(this.ds_afdMaster.getColumn(this.ds_afdMaster.rowposition, "rowStatus") == "2") {
+// 		if(this.tab_afd.tp_afdMaster.ds_jumin.getRowCount() == 0 ) {
+// 			this.gfn_message("A","주민등록번호 중복체크를 해 주세요.");
+// 			return false;
+// 		}
+// 	}
+// 	
+// 	var juminNo = this.ds_afdMaster.getColumn(this.ds_afdMaster.rowposition, "wsJuminNo").substr(0,6);
+// 	var sexCd =   this.ds_afdMaster.getColumn(this.ds_afdMaster.rowposition, "wsJuminNo").substr(6,1);
+// 	if("1" == sexCd || "2" == sexCd || "5" == sexCd || "6" == sexCd ){
+// 				juminNo = "19"+ juminNo;
+// 				
+// 			} else if("3" == sexCd || "4" == sexCd || "7" == sexCd || "8" == sexCd) {
+// 				juminNo = this.gfn_getCurrentDate("YY")+ juminNo;
+// 			}
+	//this.alert(juminNo + " " + this.ds_afdMaster.getColumn(this.ds_afdMaster.rowposition, "birthDt"));	
+// 	if( juminNo 
+// 		!= this.ds_afdMaster.getColumn(this.ds_afdMaster.rowposition, "birthDt")) {
+// 		this.gfn_message("A","주민등록번호 앞6자리와 생년월일이 일치하지 않습니다.");
+// 		return false;
+// 	}
+	
+	if(!this.gfn_isNull(this.tab_afd.tp_afdMaster.edt_eMail.value)) 
+	{
+		var email = this.tab_afd.tp_afdMaster.edt_eMail.value;
+		var match = email.match(/^(\".*\"|[A-Za-z0-9_-]([A-Za-z0-9_-]|[\+\.])*)@(\[\d{1,3}(\.\d{1,3}){3}]|[A-Za-z0-9][A-Za-z0-9_-]*(\.[A-Za-z0-9][A-Za-z0-9_-]*)+)$/);
+		
+		if(this.gfn_isNull(match))
+		{
+			this.gfn_message("A", "올바르지 않은 이메일 형식입니다.");
+			return false;
+		}
+	}
+	
+	return true;
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_save
+* 함수설명 	: 저장 함수
+*****************************************************************************/
+this.fn_save = function() 
+{	
+	this.gfn_transaction("SAVE"
+						 ,"txAdmUrl::com/admi/afd/afd01/saveAFD01050_01.do"
+						 ,"resultList=ds_afdMaster:u"
+						 ,"ds_newAfdMaster=out_resultList"
+						 ,""
+						 ,"");
+}
+
+/****************************************************************************
+* 함 수 명 	: div_search_edt_memberNoNm_onkeyup
+* 함수설명 	: 회원번호/성명 엔터키 이벤트
+*****************************************************************************/
+this.div_search_edt_memberNoNm_onkeyup = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	//Enter Key
+	if(e.keycode == "13") 
+	{
+		this.fn_search();
+	}
+}
+
+
+/******************************************************************************
+* 함 수 명 	: tab_afd_canchange
+* 함수설명 	: Tab변경 전 이벤트
+*****************************************************************************/
+this.tab_afd_canchange = function(obj:Tab, e:nexacro.TabIndexChangeEventInfo)
+{	
+// 	if(this.ds_afdMaster.getRowCount() == 0) {
+// 		this.gfn_message("A","회원정보가 존재하지 않습니다.");
+// 		return false;
+// 	}
+// 	
+// 	if("2" == this.ds_afdMaster.getColumn(this.ds_afdMaster.rowposition, "rowStatus")) {
+// 		this.gfn_message("A","신규회원 작성중에는 탭이동을 할 수 없습니다.");
+// 		return false;
+// 	}
+}
+
+/******************************************************************************
+* 함 수 명 	: tab_afd_onchanged
+* 함수설명 	: Tab변경 이벤트
+*****************************************************************************/
+this.tab_afd_onchanged = function(obj:Tab, e:nexacro.TabIndexChangeEventInfo)
+{
+	if(obj.tabindex == 1) { //DM주소관리
+	
+	}
+	else if(obj.tabindex == 2) { //약저현황
+		if(this.tab_afd.tp_cntrct.ds_afdCntrct) {
+			this.tab_afd.tp_cntrct.fn_search();
+		}
+		
+	}
+	else if(obj.tabindex == 3) { //예우현황
+		if(this.tab_afd.tp_hlrt.ds_eventHlrt) {
+			this.tab_afd.tp_hlrt.fn_search();
+		}
+		
+	}
+	else if(obj.tabindex == 4) { // DM현황
+		if(this.tab_afd.tp_dm.ds_afdDmsndng) {
+			this.tab_afd.tp_dm.fn_search();
+		}
+	}
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_callBack
+* 함수설명 	: 트랜잭션 콜백함수
+*****************************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg) 
+{
+	if(errCd < 0 ) 
+	{
+		this.gfn_message("A", errMsg);
+		return false;
+	}
+	
+	//조회
+	if("SEARCH" == trId) 
+	{
+		if(this.ds_afdMaster.getRowCount() != 0) {
+			//this.tab_afd.tp_afdMaster.msk_wsJuminNo.set_enable(false);
+			//회원내역 count
+			this.gfn_getDatasetCount(this.ds_afdMaster, this.sta_count);
+		}
+	}
+	//저장
+	else if("SAVE" == trId) 
+	{
+		this.gfn_message("A", "정상적으로 처리 되었습니다.");
+		this.fn_search();
+	}
+	//회원구분코드(탭)
+	else if("membasCombo" == trId) 
+	{
+		
+	}
+	//회원구분코드(조회조건)
+	else if("afdMembasCombo" == trId) 
+	{
+		
+		var rowAll = this.ds_afdMembas.insertRow(0);
+		
+		this.ds_afdMembas.setColumn(rowAll,"cd",null);
+		this.ds_afdMembas.setColumn(rowAll,"cdNm","전체");
+		
+		this.div_search.cmb_sMemberDivNm.set_index(0);
+				
+		//this.ds_afdMembas.setColumn(rowAll,"memberDivCd",null);
+		//this.ds_afdMembas.setColumn(rowAll,"memberDivNm","전체");
+	}
+}
+
+// /******************************************************************************
+// * 함 수 명 	: fn_deleteAfdMaster
+// * 함수설명 	: 
+// *****************************************************************************/
+// this.fn_deleteAfdMaster = function() 
+// {
+// 	if(this.ds_afdMaster.getRowCount() == 0) 
+// 	{
+// 		return;
+// 	}
+// 	
+// 	this.gfn_transaction("SAVE"
+// 						 ,"txAdmUrl::com/admi/afd/afd01/saveAfdMaster.do"
+// 						 ,"resultList=ds_afdMaster:u"
+// 						 ,"ds_newAfdMaster=resultList1"
+// 						 ,""
+// 						 ,"");
+// }
+
+// /******************************************************************************
+// * 함 수 명 	: fn_retrieveAfdMemberNo
+// * 함수설명 	: 
+// *****************************************************************************/
+// this.fn_retrieveAfdMemberNo = function() 
+// {
+// 	this.gfn_transaction("MEMBER_NO"
+// 						 ,"txAdmUrl::com/admi/afd/afd01/retrieveAfdMemberNo.do"
+// 						 ,""
+// 						 ,"ds_memberNo=resultList"
+// 						 ,""
+// 						 ,"");
+// }
+
+// /******************************************************************************
+// * 함 수 명 	: div_search_btn_pop_onclick
+// * 함수설명 	: 조회조건 회원정보 검색팝업 이벤트
+// *****************************************************************************/
+// this.div_search_btn_pop_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+// {
+// 	var popupId = "afd01050_p01";
+// 	var popupUrl = "afd01::afd01050_p01.xfdl";
+// 	var popupCallback = "fn_popCallBack";
+// 	var argumentsList = new Array();
+// 	argumentsList['memberNo']   = this.gfn_nvl(this.div_search.edt_sMemberNo.value, "");
+// 	
+// 	this.gfn_popupOpen(popupId, "", popupUrl, popupCallback, this);
+// }
+
+// this.fn_popCallBack = function(strID, rtnVal) 
+// {
+// 
+// 	if("close" == rtnVal) 
+// 	{
+// 		return;
+// 	}
+// 	
+// 	this.ds_dummy.clearData();
+// 	this.ds_dummy.loadXML(rtnVal);
+// 	
+// 	this.div_search.edt_sMemberNo.set_value(this.ds_dummy.getColumn(0, "memberNo"));
+// 	this.div_search.edt_sMemberNmKor.set_value(this.ds_dummy.getColumn(0, "memberNmKor"));
+// 	
+// 	this.fn_search();	
+// }
+this.ds_afdMaster_onrowposchanged = function(obj:Dataset, e:nexacro.DSRowPosChangeEventInfo)
+{
+	if(this.tab_afd.tabindex == 0) { //기본정보
+		/*
+			e.postvalue
+			1 - 개인
+			2 - 사업자
+			3 - 단체
+		*/
+		if(this.ds_afdMaster.getColumn(this.ds_afdMaster.rowposition, "memberType") == "1") 
+		{
+			this.tab_afd.tp_afdMaster.msk_wsJuminNo.set_cssclass("compulsory");
+			this.tab_afd.tp_afdMaster.Static01.set_text("주민등록번호");
+			this.tab_afd.tp_afdMaster.msk_wsJuminNo.set_mask("######-#{######}");
+			this.tab_afd.tp_afdMaster.msk_wsJuminNo.set_enable(true);
+		}
+		else if(this.ds_afdMaster.getColumn(this.ds_afdMaster.rowposition, "memberType") == "2") 
+		{
+			this.tab_afd.tp_afdMaster.msk_wsJuminNo.set_cssclass("compulsory");
+			this.tab_afd.tp_afdMaster.Static01.set_text("사업자번호");
+			this.tab_afd.tp_afdMaster.msk_wsJuminNo.set_mask("###-##-#####");
+			this.tab_afd.tp_afdMaster.msk_wsJuminNo.set_enable(true);
+		}
+		else if(this.ds_afdMaster.getColumn(this.ds_afdMaster.rowposition, "memberType") == "3")
+		{
+			this.tab_afd.tp_afdMaster.msk_wsJuminNo.set_cssclass("");
+			this.tab_afd.tp_afdMaster.Static01.set_text("주민등록번호");
+			this.tab_afd.tp_afdMaster.msk_wsJuminNo.set_mask("######-#{######}");
+			this.tab_afd.tp_afdMaster.msk_wsJuminNo.set_enable(false);
+		}
+		
+		//??this.tab_afd.tp_afdMaster.msk_wsJuminNo.set_value("");
+	}
+	else if(this.tab_afd.tabindex == 1) { //DM주소관리
+		
+	
+	}
+	else if(this.tab_afd.tabindex == 2) { //약정현황
+		if(this.tab_afd.tp_cntrct.ds_afdCntrct) {
+			this.tab_afd.tp_cntrct.fn_search();
+		}
+		
+	}
+	else if(this.tab_afd.tabindex == 3) { //예우현황
+		if(this.tab_afd.tp_hlrt.ds_eventHlrt) {
+			this.tab_afd.tp_hlrt.fn_search();
+		}
+		
+	}
+	else if(this.tab_afd.tabindex == 4) { // DM현황
+		if(this.tab_afd.tp_dm.ds_afdDmsndng) {
+			this.tab_afd.tp_dm.fn_search();
+		}
+	}
+}
+
+/******************************************************************************
+* 함 수 명 	: div_search_btn_popup_onclick
+* 함수설명 	: 조회조건 기금팝업 클릭 이벤트
+*****************************************************************************/
+this.div_search_btn_popup_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_pop();
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_pop
+* 함수설명 	: 기금팝업 함수
+*****************************************************************************/
+this.fn_pop = function()
+{
+	var popupId = "afd02020_p01";
+	var popupUrl = "afd02::afd02020_p01.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var argumentsList = new Array();
+
+	this.gfn_popupOpen(popupId, "", popupUrl, popupCallback, this);
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_popCallBack
+* 함수설명 	: fn_popCallBack함수
+*****************************************************************************/
+this.fn_popCallBack = function(strID, rtnVal) 
+{
+	
+	if("close" == strID) {
+		return;
+	}
+	
+	//기금팝업
+	if("afd02020_p01" == strID) 
+	{
+		this.ds_dummy.loadXML(rtnVal);	
+		
+		this.div_search.edt_sEndwCd.set_value(this.ds_dummy.getColumn(0, "endwCd"));
+		this.div_search.edt_sEndwNm.set_value(this.ds_dummy.getColumn(0, "endwNm"));
+	}
+	
+}
+this.btn_excel_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var excelGrd = new Array();
+		excelGrd[0] = this.grd_main01;
+ 	this.gfn_excelDown(excelGrd, "발전기금 회원 목록");
+}]]></Script>
+  </Form>
+</FDL>

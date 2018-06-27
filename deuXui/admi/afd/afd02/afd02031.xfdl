@@ -1,0 +1,930 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd02031" classname="afd02030" left="0" top="0" width="1038" height="855" titletext="CMS입금관리" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Button id="btn_search" taborder="12" text="조회" cssclass="search" top="58" right="249" width="60" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R" onclick="btn_search_onclick"/>
+        <Static id="Static11" taborder="15" text="w&#13;&#10;15" visible="false" top="0" right="0" width="15" height="855" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static23" taborder="19" text="h5" visible="false" left="0" top="80" width="1038" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Grid id="grd_rcpmny" taborder="22" binddataset="ds_rcpmny" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="none" left="0" top="85" right="15" bottom="31">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="40" band="left"/>
+                <Column size="80"/>
+                <Column size="60"/>
+                <Column size="60"/>
+                <Column size="80"/>
+                <Column size="160"/>
+                <Column size="80"/>
+                <Column size="120"/>
+                <Column size="120"/>
+                <Column size="80"/>
+                <Column size="160"/>
+                <Column size="80"/>
+                <Column size="120"/>
+                <Column size="240"/>
+                <Column size="60"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="100"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="40"/>
+                <Column size="40"/>
+                <Column size="40"/>
+                <Column size="80"/>
+                <Column size="160"/>
+                <Column size="160"/>
+                <Column size="400"/>
+              </Columns>
+              <Rows>
+                <Row size="34" band="head"/>
+                <Row size="24"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="약정번호"/>
+                <Cell col="2" text="년월"/>
+                <Cell col="3" text="관리번호"/>
+                <Cell col="4" text="이름"/>
+                <Cell col="5" text="상호"/>
+                <Cell col="6" text="출금형태"/>
+                <Cell col="7" text="사업자번호"/>
+                <Cell col="8" text="예금주&#13;&#10;생년월일"/>
+                <Cell col="9" text="은행"/>
+                <Cell col="10" text="계좌번호"/>
+                <Cell col="11" text="예금주명"/>
+                <Cell col="12" text="납부자번호"/>
+                <Cell col="13" text="불능내용"/>
+                <Cell col="14" text="출금일"/>
+                <Cell col="15" text="정기금액"/>
+                <Cell col="16" text="미납금액"/>
+                <Cell col="17" text="출금신청합계"/>
+                <Cell col="18" text="불능금액"/>
+                <Cell col="19" text="출금금액"/>
+                <Cell col="20" text="수수료"/>
+                <Cell col="21" text="납부회차"/>
+                <Cell col="22" text="지부1"/>
+                <Cell col="23" text="지부2"/>
+                <Cell col="24" text="지부3"/>
+                <Cell col="25" text="출금날짜"/>
+                <Cell col="26" text="연락처"/>
+                <Cell col="27" text="휴대폰"/>
+                <Cell col="28" text="주소"/>
+              </Band>
+              <Band id="body">
+                <Cell text="expr:currow +1"/>
+                <Cell col="1" text="bind:enggMgnNo"/>
+                <Cell col="2" style="align:center;" text="bind:yymm"/>
+                <Cell col="3" style="align:left;" text="bind:yymmSeq"/>
+                <Cell col="4" style="align:left;" text="bind:name"/>
+                <Cell col="5" style="align:left;" text="bind:mutual"/>
+                <Cell col="6" text="bind:wdrawType"/>
+                <Cell col="7" text="bind:bizRegNo"/>
+                <Cell col="8" displaytype="normal" text="bind:deposrBirthDt"/>
+                <Cell col="9" displaytype="normal" style="align:left;" text="bind:bankcd"/>
+                <Cell col="10" style="align:left;" text="bind:acno"/>
+                <Cell col="11" style="align:left;" text="bind:deposr"/>
+                <Cell col="12" text="bind:payNo"/>
+                <Cell col="13" style="align:left;" text="bind:deadCont"/>
+                <Cell col="14" text="bind:wdrawRegDt"/>
+                <Cell col="15" displaytype="number" style="align:right;" text="bind:routineAmt" mask="#,###"/>
+                <Cell col="16" displaytype="number" style="align:right;" text="bind:nonpymtAmt" mask="#,###"/>
+                <Cell col="17" displaytype="number" style="align:right;" text="bind:wdrawAplyTot" mask="#,###"/>
+                <Cell col="18" displaytype="number" style="align:right;" text="bind:deadAmt" mask="#,###"/>
+                <Cell col="19" displaytype="number" style="align:right;" text="bind:wdrawAmt" mask="#,###"/>
+                <Cell col="20" displaytype="number" style="align:right;" text="bind:comsnAmt" mask="#,###"/>
+                <Cell col="21" style="align:right;" text="bind:pymtSeq"/>
+                <Cell col="22" text="bind:jibu1"/>
+                <Cell col="23" text="bind:jibu2"/>
+                <Cell col="24" text="bind:jibu3"/>
+                <Cell col="25" displaytype="date" text="bind:wdrawDt" calendardisplaynulltype="none"/>
+                <Cell col="26" style="align:left;" text="bind:telNo1"/>
+                <Cell col="27" style="align:left;" text="bind:hpNo"/>
+                <Cell col="28" style="align:left;" text="bind:addr"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2"/>
+                <Cell col="3"/>
+                <Cell col="4"/>
+                <Cell col="5"/>
+                <Cell col="6"/>
+                <Cell col="7"/>
+                <Cell col="8"/>
+                <Cell col="9"/>
+                <Cell col="10"/>
+                <Cell col="11"/>
+                <Cell col="12"/>
+                <Cell col="13"/>
+                <Cell col="14"/>
+                <Cell col="15" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;routineAmt&quot;)"/>
+                <Cell col="16" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;nonpymtAmt&quot;)"/>
+                <Cell col="17" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;wdrawAplyTot&quot;)"/>
+                <Cell col="18" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;deadAmt&quot;)"/>
+                <Cell col="19" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;wdrawAmt&quot;)"/>
+                <Cell col="20" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;comsnAmt&quot;)"/>
+                <Cell col="21"/>
+                <Cell col="22"/>
+                <Cell col="23"/>
+                <Cell col="24"/>
+                <Cell col="25"/>
+                <Cell col="26"/>
+                <Cell col="27"/>
+                <Cell col="28"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="btn_excelUp" taborder="54" text="엑셀업로드" cssclass="btn_WF_Common" top="58" right="77" width="84" height="22" tooltiptype="hover" tooltiptext="Excel" userBtnAuth="D" onclick="btn_excelUp_onclick"/>
+        <Static id="sta_count" taborder="83" text="Count &lt;b v='true'&gt;999&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" right="15" width="60" height="20" bottom="2"/>
+        <Static id="Static00" taborder="84" text="h10" visible="false" left="0" top="823" width="1038" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Div id="div_search" taborder="0" left="0" top="0" right="15" height="43" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout width="1038" height="96">
+              <Static id="Static06" taborder="31" text="w8" visible="false" left="741" top="10" width="8" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Edit id="edt_endwNm" taborder="36" readonly="true" left="855" top="10" width="147" height="22" visible="false"/>
+              <Button id="btn_endwPop" taborder="37" onclick="btn_endwPop_onclick" cssclass="popupDetail" left="831" top="10" width="22" height="22" tooltiptype="hover" tooltiptext="조회" visible="false"/>
+              <Edit id="edt_endwCd" taborder="38" left="749" top="10" width="80" height="22" style="border:1 solid #ccccccff ;" visible="false"/>
+              <Static id="Static00" taborder="39" text="기금구분" cssclass="search" left="691" top="10" width="50" height="22" class="search_bul" visible="false"/>
+              <Static id="Static01" taborder="40" text="조회년월" cssclass="search" left="15" top="10" width="50" height="22" class="search_bul"/>
+              <Static id="Static02" taborder="41" text="w8" visible="false" left="65" top="10" width="8" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Div id="div_Yymm_Fr" taborder="42" url="component::monthCalendar.xfdl" left="73" top="10" width="82" height="22"/>
+              <Static id="Static04" taborder="44" text="마감여부" cssclass="search" left="527" top="10" width="50" height="22" class="search_bul" visible="false"/>
+              <Combo id="cmb_useYn" taborder="45" canitemchange="common_canitemchange" left="753" top="18" width="86" height="22" class="essential" codecolumn="codecolumn" datacolumn="datacolumn" index="0" value="0" text="N" visible="false">
+                <Dataset id="innerdataset">
+                  <ColumnInfo>
+                    <Column id="codecolumn" size="256"/>
+                    <Column id="datacolumn" size="256"/>
+                  </ColumnInfo>
+                  <Rows>
+                    <Row>
+                      <Col id="codecolumn">0</Col>
+                      <Col id="datacolumn">N</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">1</Col>
+                      <Col id="datacolumn">Y</Col>
+                    </Row>
+                  </Rows>
+                </Dataset>
+              </Combo>
+              <Static id="Static05" taborder="46" text="w8" visible="false" left="577" top="10" width="8" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static07" taborder="47" text="w&#13;20" visible="false" left="671" top="10" width="20" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static08" taborder="48" text="회원성명" cssclass="search" visible="true" left="330" top="10" width="50" height="22" class="search_bul"/>
+              <Static id="Static09" taborder="49" text="w&#13;20" visible="false" left="1002" top="10" width="20" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static10" taborder="50" text="w8" visible="false" left="252" top="10" width="8" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static03" taborder="52" text="w&#13;20" visible="false" left="206" top="10" width="20" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Div id="div_Yymm_To" taborder="53" url="component::monthCalendar.xfdl" left="169" top="10" width="82" height="22"/>
+              <Static id="Static17" taborder="54" text="~" left="157" top="10" width="22" height="23" style="align:left middle;"/>
+              <Edit id="edt_sMemberNo" taborder="55" canchange="edt_memberNo_canchange" left="385" top="10" width="88" height="22" style="border:1 solid #ccccccff ;"/>
+              <Button id="btn_sPopup" taborder="56" onclick="div_search_btn_sPopup_onclick" cssclass="popupDetail" left="475" top="10" width="22" height="22" tooltiptype="hover" tooltiptext="조회"/>
+              <Edit id="edt_sMemberNmKor" taborder="57" readonly="true" left="499" top="10" width="108" height="22" style="border:1 solid #ccccccff ;"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static28" taborder="86" text="w&#13;&#10;15" visible="false" left="0" top="10" width="15" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static20" taborder="88" text="h10" visible="false" left="0" top="0" width="1038" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static22" taborder="89" text="h15" visible="false" left="0" top="43" width="1038" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static01" taborder="90" text="h10" visible="false" left="0" top="32" width="1038" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static50" taborder="91" text="CMS입금내역" cssclass="page_stitle" left="7" top="59" width="324" height="20"/>
+        <Button id="btn_excelDown" taborder="93" text="엑셀" cssclass="btn_WF_Common" top="58" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="Excel" userBtnAuth="D" onclick="btn_excelDown_onclick"/>
+        <CheckBox id="All_Yymm" taborder="94" text="전체" left="253" top="10" height="22" width="50" onchanged="All_Yymm_onchanged"/>
+        <Grid id="grd_excel" taborder="95" binddataset="ds_rcpmny" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" left="0" top="549" right="15" bottom="103" visible="false">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="40" band="left"/>
+                <Column size="80"/>
+                <Column size="60"/>
+                <Column size="60"/>
+                <Column size="80"/>
+                <Column size="160"/>
+                <Column size="80"/>
+                <Column size="120"/>
+                <Column size="120"/>
+                <Column size="80"/>
+                <Column size="160"/>
+                <Column size="80"/>
+                <Column size="120"/>
+                <Column size="240"/>
+                <Column size="60"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="100"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="40"/>
+                <Column size="40"/>
+                <Column size="40"/>
+                <Column size="80"/>
+                <Column size="160"/>
+                <Column size="160"/>
+                <Column size="400"/>
+              </Columns>
+              <Rows>
+                <Row size="34" band="head"/>
+                <Row size="24"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="약정번호"/>
+                <Cell col="2" text="년월"/>
+                <Cell col="3" text="관리번호"/>
+                <Cell col="4" text="이름"/>
+                <Cell col="5" text="상호"/>
+                <Cell col="6" text="출금형태"/>
+                <Cell col="7" text="사업자번호"/>
+                <Cell col="8" text="예금주&#13;&#10;생년월일"/>
+                <Cell col="9" text="은행"/>
+                <Cell col="10" text="계좌번호"/>
+                <Cell col="11" text="예금주명"/>
+                <Cell col="12" text="납부자번호"/>
+                <Cell col="13" text="불능내용"/>
+                <Cell col="14" text="출금일"/>
+                <Cell col="15" text="정기금액"/>
+                <Cell col="16" text="미납금액"/>
+                <Cell col="17" text="출금신청합계"/>
+                <Cell col="18" text="불능금액"/>
+                <Cell col="19" text="출금금액"/>
+                <Cell col="20" text="수수료"/>
+                <Cell col="21" text="납부회차"/>
+                <Cell col="22" text="지부1"/>
+                <Cell col="23" text="지부2"/>
+                <Cell col="24" text="지부3"/>
+                <Cell col="25" text="출금날짜"/>
+                <Cell col="26" text="연락처"/>
+                <Cell col="27" text="휴대폰"/>
+                <Cell col="28" text="주소"/>
+              </Band>
+              <Band id="body">
+                <Cell text="expr:currow +1"/>
+                <Cell col="1" text="bind:enggMgnNo"/>
+                <Cell col="2" style="align:left;" text="bind:yymm"/>
+                <Cell col="3" style="align:left;" text="bind:yymmSeq"/>
+                <Cell col="4" style="align:left;" text="bind:name"/>
+                <Cell col="5" style="align:left;" text="bind:mutual"/>
+                <Cell col="6" text="bind:wdrawType"/>
+                <Cell col="7" text="bind:bizRegNo"/>
+                <Cell col="8" displaytype="normal" text="bind:deposrBirthDt"/>
+                <Cell col="9" displaytype="normal" style="align:left;" text="bind:bankcd"/>
+                <Cell col="10" style="align:left;" text="bind:acno"/>
+                <Cell col="11" style="align:left;" text="bind:deposr"/>
+                <Cell col="12" text="bind:payNo"/>
+                <Cell col="13" style="align:left;" text="bind:deadCont"/>
+                <Cell col="14" text="bind:wdrawRegDt"/>
+                <Cell col="15" displaytype="number" style="align:right;" text="bind:routineAmt" mask="#,###"/>
+                <Cell col="16" displaytype="number" style="align:right;" text="bind:nonpymtAmt" mask="#,###"/>
+                <Cell col="17" displaytype="number" style="align:right;" text="bind:wdrawAplyTot" mask="#,###"/>
+                <Cell col="18" displaytype="number" style="align:right;" text="bind:deadAmt" mask="#,###"/>
+                <Cell col="19" displaytype="number" style="align:right;" text="bind:wdrawAmt" mask="#,###"/>
+                <Cell col="20" displaytype="number" style="align:right;" text="bind:comsnAmt" mask="#,###"/>
+                <Cell col="21" style="align:right;" text="bind:pymtSeq"/>
+                <Cell col="22" text="bind:jibu1"/>
+                <Cell col="23" text="bind:jibu2"/>
+                <Cell col="24" text="bind:jibu3"/>
+                <Cell col="25" displaytype="date" text="bind:wdrawDt" calendardisplaynulltype="none"/>
+                <Cell col="26" style="align:left;" text="bind:telNo1"/>
+                <Cell col="27" style="align:left;" text="bind:hpNo"/>
+                <Cell col="28" style="align:left;" text="bind:addr"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2"/>
+                <Cell col="3"/>
+                <Cell col="4"/>
+                <Cell col="5"/>
+                <Cell col="6"/>
+                <Cell col="7"/>
+                <Cell col="8"/>
+                <Cell col="9"/>
+                <Cell col="10"/>
+                <Cell col="11"/>
+                <Cell col="12"/>
+                <Cell col="13"/>
+                <Cell col="14"/>
+                <Cell col="15" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;routineAmt&quot;)"/>
+                <Cell col="16" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;nonpymtAmt&quot;)"/>
+                <Cell col="17" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;wdrawAplyTot&quot;)"/>
+                <Cell col="18" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;deadAmt&quot;)"/>
+                <Cell col="19" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;wdrawAmt&quot;)"/>
+                <Cell col="20" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;comsnAmt&quot;)"/>
+                <Cell col="21"/>
+                <Cell col="22"/>
+                <Cell col="23"/>
+                <Cell col="24"/>
+                <Cell col="25"/>
+                <Cell col="26"/>
+                <Cell col="27"/>
+                <Cell col="28"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="btn_excelUpForm" taborder="96" text="업로드양식" cssclass="btn_WF_Common" top="58" right="163" width="84" height="22" tooltiptype="hover" tooltiptext="Excel" userBtnAuth="D" onclick="btn_excelUpForm_onclick"/>
+        <Grid id="grd_excelUpForm" taborder="97" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" visible="false" left="0" top="877" right="15" bottom="-225" binddataset="ds_excel">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="60"/>
+                <Column size="60"/>
+                <Column size="80"/>
+                <Column size="160"/>
+                <Column size="80"/>
+                <Column size="120"/>
+                <Column size="120"/>
+                <Column size="80"/>
+                <Column size="160"/>
+                <Column size="80"/>
+                <Column size="120"/>
+                <Column size="240"/>
+                <Column size="60"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="100"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="40"/>
+                <Column size="40"/>
+                <Column size="40"/>
+                <Column size="80"/>
+                <Column size="160"/>
+                <Column size="160"/>
+                <Column size="400"/>
+              </Columns>
+              <Rows>
+                <Row size="34" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="년월"/>
+                <Cell col="1" text="관리번호"/>
+                <Cell col="2" text="이름"/>
+                <Cell col="3" text="상호"/>
+                <Cell col="4" text="출금형태"/>
+                <Cell col="5" text="사업자번호"/>
+                <Cell col="6" text="예금주&#13;&#10;생년월일"/>
+                <Cell col="7" text="은행"/>
+                <Cell col="8" text="계좌번호"/>
+                <Cell col="9" text="예금주명"/>
+                <Cell col="10" text="납부자번호"/>
+                <Cell col="11" text="불능내용"/>
+                <Cell col="12" text="출금일"/>
+                <Cell col="13" text="정기금액"/>
+                <Cell col="14" text="미납금액"/>
+                <Cell col="15" text="출금신청합계"/>
+                <Cell col="16" text="불능금액"/>
+                <Cell col="17" text="출금금액"/>
+                <Cell col="18" text="수수료"/>
+                <Cell col="19" text="납부회차"/>
+                <Cell col="20" text="지부1"/>
+                <Cell col="21" text="지부2"/>
+                <Cell col="22" text="지부3"/>
+                <Cell col="23" text="출금날짜"/>
+                <Cell col="24" text="연락처"/>
+                <Cell col="25" text="휴대폰"/>
+                <Cell col="26" text="주소"/>
+              </Band>
+              <Band id="body">
+                <Cell style="align:left;" text="bind:yymm"/>
+                <Cell col="1" style="align:left;" text="bind:yymmSeq"/>
+                <Cell col="2" style="align:left;" text="bind:name"/>
+                <Cell col="3" style="align:left;" text="bind:mutual"/>
+                <Cell col="4" text="bind:wdrawType"/>
+                <Cell col="5" text="bind:bizRegNo"/>
+                <Cell col="6" displaytype="normal" text="bind:deposrBirthDt"/>
+                <Cell col="7" displaytype="normal" style="align:left;" text="bind:bankcd"/>
+                <Cell col="8" style="align:left;" text="bind:acno"/>
+                <Cell col="9" style="align:left;" text="bind:deposr"/>
+                <Cell col="10" text="bind:payNo"/>
+                <Cell col="11" style="align:left;" text="bind:deadCont"/>
+                <Cell col="12" text="bind:wdrawRegDt"/>
+                <Cell col="13" displaytype="number" style="align:right;" text="bind:routineAmt" mask="#,###"/>
+                <Cell col="14" displaytype="number" style="align:right;" text="bind:nonpymtAmt" mask="#,###"/>
+                <Cell col="15" displaytype="number" style="align:right;" text="bind:wdrawAplyTot" mask="#,###"/>
+                <Cell col="16" displaytype="number" style="align:right;" text="bind:deadAmt" mask="#,###"/>
+                <Cell col="17" displaytype="number" style="align:right;" text="bind:wdrawAmt" mask="#,###"/>
+                <Cell col="18" displaytype="number" style="align:right;" text="bind:comsnAmt" mask="#,###"/>
+                <Cell col="19" style="align:right;" text="bind:pymtSeq"/>
+                <Cell col="20" text="bind:jibu1"/>
+                <Cell col="21" text="bind:jibu2"/>
+                <Cell col="22" text="bind:jibu3"/>
+                <Cell col="23" displaytype="date" text="bind:wdrawDt" calendardisplaynulltype="none"/>
+                <Cell col="24" style="align:left;" text="bind:telNo1"/>
+                <Cell col="25" style="align:left;" text="bind:hpNo"/>
+                <Cell col="26" style="align:left;" text="bind:addr"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_search">
+        <ColumnInfo>
+          <Column id="searchCd" type="STRING" size="256"/>
+          <Column id="searchNm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="searchCd">0</Col>
+            <Col id="searchNm">전체</Col>
+          </Row>
+          <Row>
+            <Col id="searchCd">1</Col>
+            <Col id="searchNm">이름</Col>
+          </Row>
+          <Row>
+            <Col id="searchCd">2</Col>
+            <Col id="searchNm">회원번호</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_sCnfirmYn"/>
+      <Dataset id="ds_sBankCd"/>
+      <Dataset id="ds_bankCd"/>
+      <Dataset id="ds_cnfirmYn"/>
+      <Dataset id="ds_sMembas"/>
+      <Dataset id="ds_enggMgnNo"/>
+      <Dataset id="ds_paymthd">
+        <ColumnInfo>
+          <Column id="paymthdCd" type="STRING" size="256"/>
+          <Column id="paymthdNm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="paymthdCd"/>
+            <Col id="paymthdNm">선택</Col>
+          </Row>
+          <Row>
+            <Col id="paymthdCd">1</Col>
+            <Col id="paymthdNm">계좌이체</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_dummy"/>
+      <Dataset id="ds_rcpmny" onrowposchanged="ds_rcpmny_onrowposchanged">
+        <ColumnInfo>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="memberNo" type="STRING" size="256"/>
+          <Column id="enggMgnNo" type="STRING" size="256"/>
+          <Column id="yymm" type="STRING" size="256"/>
+          <Column id="yymmSeq" type="STRING" size="256"/>
+          <Column id="name" type="STRING" size="256"/>
+          <Column id="mutual" type="STRING" size="256"/>
+          <Column id="wdrawType" type="STRING" size="256"/>
+          <Column id="bizRegNo" type="STRING" size="256"/>
+          <Column id="deposrBirthDt" type="STRING" size="256"/>
+          <Column id="bankcd" type="STRING" size="256"/>
+          <Column id="acno" type="STRING" size="256"/>
+          <Column id="deposr" type="STRING" size="256"/>
+          <Column id="payNo" type="STRING" size="256"/>
+          <Column id="deadCont" type="STRING" size="256"/>
+          <Column id="wdrawRegDt" type="STRING" size="256"/>
+          <Column id="routineAmt" type="STRING" size="256"/>
+          <Column id="nonpymtAmt" type="STRING" size="256"/>
+          <Column id="wdrawAplyTot" type="STRING" size="256"/>
+          <Column id="deadAmt" type="STRING" size="256"/>
+          <Column id="wdrawAmt" type="STRING" size="256"/>
+          <Column id="comsnAmt" type="STRING" size="256"/>
+          <Column id="pymtSeq" type="STRING" size="256"/>
+          <Column id="jibu1" type="STRING" size="256"/>
+          <Column id="jibu2" type="STRING" size="256"/>
+          <Column id="jibu3" type="STRING" size="256"/>
+          <Column id="wdrawDt" type="STRING" size="256"/>
+          <Column id="telNo1" type="STRING" size="256"/>
+          <Column id="telNo2" type="STRING" size="256"/>
+          <Column id="hpNo" type="STRING" size="256"/>
+          <Column id="addr" type="STRING" size="256"/>
+          <Column id="createNo" type="STRING" size="256"/>
+          <Column id="createDt" type="STRING" size="256"/>
+          <Column id="createIp" type="STRING" size="256"/>
+          <Column id="entryNo" type="STRING" size="256"/>
+          <Column id="entryDt" type="STRING" size="256"/>
+          <Column id="entryIp" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_rcpmny_result"/>
+      <Dataset id="ds_check_dummy" onrowposchanged="ds_rcpmny_onrowposchanged">
+        <ColumnInfo>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="memberNo" type="STRING" size="256"/>
+          <Column id="enggMgnNo" type="STRING" size="256"/>
+          <Column id="yymm" type="STRING" size="256"/>
+          <Column id="yymmSeq" type="STRING" size="256"/>
+          <Column id="name" type="STRING" size="256"/>
+          <Column id="mutual" type="STRING" size="256"/>
+          <Column id="wdrawType" type="STRING" size="256"/>
+          <Column id="bizRegNo" type="STRING" size="256"/>
+          <Column id="deposrBirthDt" type="STRING" size="256"/>
+          <Column id="bankcd" type="STRING" size="256"/>
+          <Column id="acno" type="STRING" size="256"/>
+          <Column id="deposr" type="STRING" size="256"/>
+          <Column id="payNo" type="STRING" size="256"/>
+          <Column id="deadCont" type="STRING" size="256"/>
+          <Column id="wdrawRegDt" type="STRING" size="256"/>
+          <Column id="routineAmt" type="STRING" size="256"/>
+          <Column id="nonpymtAmt" type="STRING" size="256"/>
+          <Column id="wdrawAplyTot" type="STRING" size="256"/>
+          <Column id="deadAmt" type="STRING" size="256"/>
+          <Column id="wdrawAmt" type="STRING" size="256"/>
+          <Column id="comsnAmt" type="STRING" size="256"/>
+          <Column id="pymtSeq" type="STRING" size="256"/>
+          <Column id="jibu1" type="STRING" size="256"/>
+          <Column id="jibu2" type="STRING" size="256"/>
+          <Column id="jibu3" type="STRING" size="256"/>
+          <Column id="wdrawDt" type="STRING" size="256"/>
+          <Column id="telNo1" type="STRING" size="256"/>
+          <Column id="telNo2" type="STRING" size="256"/>
+          <Column id="hpNo" type="STRING" size="256"/>
+          <Column id="addr" type="STRING" size="256"/>
+          <Column id="createNo" type="STRING" size="256"/>
+          <Column id="createDt" type="STRING" size="256"/>
+          <Column id="createIp" type="STRING" size="256"/>
+          <Column id="entryNo" type="STRING" size="256"/>
+          <Column id="entryDt" type="STRING" size="256"/>
+          <Column id="entryIp" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_excel" onrowposchanged="ds_rcpmny_onrowposchanged">
+        <ColumnInfo>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="memberNo" type="STRING" size="256"/>
+          <Column id="enggMgnNo" type="STRING" size="256"/>
+          <Column id="yymm" type="STRING" size="256"/>
+          <Column id="yymmSeq" type="STRING" size="256"/>
+          <Column id="name" type="STRING" size="256"/>
+          <Column id="mutual" type="STRING" size="256"/>
+          <Column id="wdrawType" type="STRING" size="256"/>
+          <Column id="bizRegNo" type="STRING" size="256"/>
+          <Column id="deposrBirthDt" type="STRING" size="256"/>
+          <Column id="bankcd" type="STRING" size="256"/>
+          <Column id="acno" type="STRING" size="256"/>
+          <Column id="deposr" type="STRING" size="256"/>
+          <Column id="payNo" type="STRING" size="256"/>
+          <Column id="deadCont" type="STRING" size="256"/>
+          <Column id="wdrawRegDt" type="STRING" size="256"/>
+          <Column id="routineAmt" type="STRING" size="256"/>
+          <Column id="nonpymtAmt" type="STRING" size="256"/>
+          <Column id="wdrawAplyTot" type="STRING" size="256"/>
+          <Column id="deadAmt" type="STRING" size="256"/>
+          <Column id="wdrawAmt" type="STRING" size="256"/>
+          <Column id="comsnAmt" type="STRING" size="256"/>
+          <Column id="pymtSeq" type="STRING" size="256"/>
+          <Column id="jibu1" type="STRING" size="256"/>
+          <Column id="jibu2" type="STRING" size="256"/>
+          <Column id="jibu3" type="STRING" size="256"/>
+          <Column id="wdrawDt" type="STRING" size="256"/>
+          <Column id="telNo1" type="STRING" size="256"/>
+          <Column id="telNo2" type="STRING" size="256"/>
+          <Column id="hpNo" type="STRING" size="256"/>
+          <Column id="addr" type="STRING" size="256"/>
+          <Column id="createNo" type="STRING" size="256"/>
+          <Column id="createDt" type="STRING" size="256"/>
+          <Column id="createIp" type="STRING" size="256"/>
+          <Column id="entryNo" type="STRING" size="256"/>
+          <Column id="entryDt" type="STRING" size="256"/>
+          <Column id="entryIp" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Bind/>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::frameUtils.xjs";
+include "commJs::lib_String.xjs";
+
+/****************************************************************************
+* 함 수 명 	: form_onload
+* 함수설명 	: 화면로드 이벤트
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+ 	var essGrd = new Array();
+		essGrd[0] = this.grd_rcpmny;
+ 	
+ 	this.gfn_essDataset(essGrd);
+	this.gfn_bindCmmnFunction();
+	
+	//조회년월
+	this.div_search.div_Yymm_Fr.setData(this.gfn_getCurrentDate("YYYYMM"));
+	this.div_search.div_Yymm_To.setData(this.gfn_getCurrentDate("YYYYMM"));
+	//마감여부
+	this.div_search.cmb_useYn.set_index(0);
+	//그리드 count
+	this.gfn_getDatasetCount(this.ds_rcpmny, this.sta_count);
+}
+ 
+/****************************************************************************
+* 함 수 명 	: btn_search_onclick
+* 함수설명 	: 조회버튼
+*****************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();	
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_excelDown_onclick
+* 함수설명 	: 엑셀버튼
+*****************************************************************************/
+this.btn_excelDown_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.ds_rcpmny.getRowCount() == 0)
+	{
+		this.gfn_message("A", "CMS입금내역이 없습니다.");
+		return false;
+	}
+	var excelGrd = new Array();
+		excelGrd[0] = this.grd_rcpmny;
+ 	this.gfn_excelDown(excelGrd, "CMS입금내역");
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_excelUpForm_onclick
+* 함수설명 	: 업로드양식 버튼
+*****************************************************************************/
+this.btn_excelUpForm_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var excelGrd = new Array();
+		excelGrd[0] = this.grd_excelUpForm;
+ 	this.gfn_excelDown(excelGrd, "엑셀업로드양식");
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_excelUp_onclick
+* 함수설명 	: 엑셀업로드 버튼
+*****************************************************************************/
+this.btn_excelUp_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_excelUp(this.grd_excel, "fn_excelUpCallback", "A2", 2);
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_excelUpCallback
+ * 함수설명 	: 엑셀업로드 콜백
+ *********************************************************************/
+this.fn_excelUpCallback = function()
+{
+	if(this.ds_rcpmny.getRowCount() > 0) {
+		
+		//this.gfn_getDatasetCount(this.ds_rcpmny, this.sta_count);
+		
+		// rowStatus 컬럼 추가
+ 		this.ds_rcpmny.addColumn("rowStatus", "String");
+ 		//this.ds_rcpmny.addColumn("yymm", "String");
+ 		this.ds_rcpmny.addColumn("memberNo", "String");
+ 		this.ds_rcpmny.addColumn("enggMgnNo", "String");
+ 		
+		this.ds_rcpmny.set_updatecontrol(false);
+		this.ds_rcpmny.set_enableevent(false);
+		
+		for(var i=0 ; i<this.ds_rcpmny.getRowCount() ; i++){
+			this.ds_rcpmny.setColumn(i, "rowStatus", 2);
+			this.ds_rcpmny.setRowType(i, Dataset.ROWTYPE_INSERT);
+		}
+		
+		this.ds_rcpmny.set_updatecontrol(true);
+		this.ds_rcpmny.set_enableevent(true);
+		
+		this.pre_save_excel();
+	} else {
+		this.gfn_message("A", "업로드 할 자료가 없습니다.");
+		return false;
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: preSave_excel
+* 함수설명 	: 엑셀업로드 후 저장 전 함수
+*****************************************************************************/
+this.pre_save_excel = function()
+{
+	var strArg = "yymm=" + nexacro.wrapQuote(this.ds_rcpmny.getColumn(0,"yymm"));//조회년월
+
+	this.gfn_transaction("PRE_SAVE_EXCEL"
+						,"txAdmUrl::com/admi/afd/afd02/selectFD02031_02.do"
+						,""
+						,"ds_check_dummy=resultList"
+						,strArg
+						,""
+						,true);
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_save_excel
+* 함수설명 	: 엑셀업로드 후 저장 함수
+*****************************************************************************/
+this.fn_save_excel = function()
+{
+	var strArg = "yymm=" + nexacro.wrapQuote(this.ds_rcpmny.getColumn(0,"yymm"));//조회년월
+	
+	this.gfn_transaction("SAVE_EXCEL"
+						,"txAdmUrl::com/admi/afd/afd02/saveFD02031_01.do"
+						,"in_resultList=ds_rcpmny:u"
+						,"ds_rcpmny_result=out_resultList"
+						,strArg
+						,"");
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_search
+* 함수설명 	: 조회함수
+*****************************************************************************/
+this.fn_search = function() 
+{
+	if(this.All_Yymm.value == false)
+	{	
+		var strArg = "yymmFr=" + nexacro.wrapQuote(this.div_search.div_Yymm_Fr.getData());//조회년월
+			strArg += " yymmTo=" + nexacro.wrapQuote(this.div_search.div_Yymm_To.getData());//조회년월
+			//strArg += " name=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_name.value, ""));//이름
+			strArg += " memberNo=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_sMemberNo.value, ""));
+	}else
+	{
+		var strArg = "yymmFr=" + nexacro.wrapQuote("");//조회년월
+			strArg += " yymmTo=" + nexacro.wrapQuote("");//조회년월
+			//strArg += " name=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_name.value, ""));//이름
+			strArg += " memberNo=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_sMemberNo.value, ""));
+	}
+	
+	if(this.div_search.div_Yymm_Fr.getData()>this.div_search.div_Yymm_To.getData()){
+		this.gfn_message("A", "조회년도를 확인하십시오.");
+	}
+	
+	//전체연월 시 이름 필수
+	//if(this.All_Yymm.value == true && this.gfn_nvl(this.div_search.edt_name.value, "") == "")
+	if(this.All_Yymm.value == true && this.gfn_nvl(this.div_search.edt_sMemberNo.value, "") == "")
+	{
+		this.gfn_message("A", "전체 년도 조회시 이름은 필수입니다.");
+	}
+	else
+	{		
+		this.gfn_transaction("SEARCH"
+							,"txAdmUrl::com/admi/afd/afd02/selectFD02031_01.do"
+							,""
+							,"ds_rcpmny=resultList"
+							,strArg
+							,""
+							,true);
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_endwPop_onclick
+* 함수설명 	: 기금팝업 버튼클릭 이벤트
+*****************************************************************************/
+this.btn_endwPop_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var popupId = "afd02020_p01";
+	var popupUrl = "afd02::afd02020_p01.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var argumentsList = new Array();
+
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, this);
+}
+
+/****************************************************************************
+* 함 수 명 	: div_search_edt_name_onkeyup
+* 함수설명 	: 이름 엔터키 이벤트
+*****************************************************************************/
+this.div_search__onkeyup = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	//Enter Key
+	if(e.keycode == "13") 
+	{
+		this.fn_search();
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: All_Yymm_onchanged
+* 함수설명 	: 전체 체크시이벤트
+*****************************************************************************/
+this.All_Yymm_onchanged = function(obj:CheckBox, e:nexacro.CheckBoxChangeEventInfo)
+{
+	if(e.postvalue == "1")
+	{
+		this.div_search.div_Yymm_Fr.set_enable(false);
+		this.div_search.div_Yymm_To.set_enable(false);
+	}
+	else 
+	{
+		this.div_search.div_Yymm_Fr.set_enable(true);
+		this.div_search.div_Yymm_To.set_enable(true);
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: div_search_btn_sPopup_onclick
+* 함수설명 	: 회원성명 검색팝업 클릭 이벤트
+*****************************************************************************/
+this.div_search_btn_sPopup_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var popupId = "afd02020_p02";
+	var popupUrl = "afd02::afd02020_p02.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var argumentsList = new Array();
+		argumentsList['memberNo'] = this.gfn_nvl(this.div_search.edt_sMemberNo.value, "");
+	
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, this);
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_callBack
+* 함수설명 	: callback함수
+*****************************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg) 
+{
+	if(errCd < 0 ) 
+	{
+		this.gfn_message("A", errMsg);
+		return false;
+	}
+	else
+	{
+		if(trId == "SEARCH") 
+		{
+			this.gfn_getDatasetCount(this.ds_rcpmny, this.sta_count);
+		}
+		//엑셀업로드 저장 전 체크
+		else if(trId == "PRE_SAVE_EXCEL")
+		{	
+			//엑셀업로드 연월에 데이터여부
+			if(this.ds_check_dummy.getColumn(0,"chkYn") == "Y")
+			{
+				if(!this.confirm("기존 데이터가 존재합니다. 삭제하고 재생성하시겠습니까?")) 
+				{
+					return false;
+				}
+			}
+			
+			this.fn_save_excel();				
+		}
+		//엑셀업로드 저장 후
+		else if(trId == "SAVE_EXCEL")
+		{
+			this.ds_rcpmny.clearData();
+				
+			var OUT_CNT = "";
+			var OUT_MSG = "";
+
+			OUT_CNT = this.ds_rcpmny_result.getColumn(0, "OUT_CNT");
+			OUT_MSG = this.ds_rcpmny_result.getColumn(0, "OUT_MSG");
+			
+			if(OUT_CNT == 0)
+			{
+				this.gfn_message("A", OUT_MSG);
+			}
+			else
+			{
+				this.gfn_message("A", OUT_MSG);
+			}
+		}
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_popCallBack
+* 함수설명 	: 팝업 callback함수
+*****************************************************************************/
+this.fn_popCallBack = function(strID, rtnVal) 
+{
+	if("close" == rtnVal) 
+	{
+		return;
+	}
+		
+	//기금팝업
+	if("afd02020_p01" == strID) 
+	{
+		this.ds_dummy.loadXML(rtnVal);
+
+		this.div_search.edt_endwCd.set_value(this.ds_dummy.getColumn(0, "endwCd"));
+		this.div_search.edt_endwNm.set_value(this.ds_dummy.getColumn(0, "endwNm"));
+		
+	}
+	else if("afd02020_p02" == strID) 
+	{
+		this.ds_dummy.loadXML(rtnVal);		
+		this.div_search.edt_sMemberNo.set_value(this.ds_dummy.getColumn(0, "memberNo"));
+		this.div_search.edt_sMemberNmKor.set_value(this.ds_dummy.getColumn(0, "memberNmKor"));		
+	}
+}]]></Script>
+  </Form>
+</FDL>

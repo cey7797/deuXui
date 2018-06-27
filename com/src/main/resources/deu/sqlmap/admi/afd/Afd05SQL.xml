@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Afd05SQL">
+
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias alias="hashMap" type="java.util.HashMap"/>
+	 
+	<select id="Afd05SQL.selectExcel" parameterClass="hashMap" resultClass="egovMap">
+		
+		/* Afd05SQL.selectExcel */
+		SELECT A.RECEIPT_NO /* 영수증번호 */
+		     , case when LEN(B.JUMIN_NO)>=13 then SUBSTRING(B.JUMIN_NO,1,6) + '-' + SUBSTRING(B.JUMIN_NO,7,7) 
+					when LEN(B.JUMIN_NO)>=10 then SUBSTRING(B.JUMIN_NO,1,3) + '-' + SUBSTRING(B.JUMIN_NO,4,2) + '-' + SUBSTRING(B.JUMIN_NO,6,5)
+					else B.JUMIN_NO
+					end AS JUMIN_NO /* 주민(사업자)등록번호 */
+		     , SUBSTRING(MIN(A.PAY_DT),1,4)+'.'+SUBSTRING(MIN(A.PAY_DT),5,2) + '~' + SUBSTRING(MAX(A.PAY_DT),1,4)+'.'+SUBSTRING(MAX(A.PAY_DT),5,2) AS PAY_FRTO_DT/* 날짜 */
+		     , B.MEMBER_NM_KOR /* 성명(기관) */
+		     , SUM(A.AMT) AS PAY_AMT /* 금액(원) */
+		     , ISNULL(B.ADDR1, '') +', '+ ISNULL(ADDR2, '') AS ADDR_FULL /* 주소 */
+		  FROM (
+		        SELECT A.MEMBER_NO
+		             , A.YYMM
+		             , A.ENDW_CD
+		             , A.ENGG_MM_AMT AS AMT
+		             , SUBSTRING(A.SPEN_DT,1,6) AS PAY_DT
+		             , CASE WHEN A.RECEIPT_NO = '' THEN NULL
+                     		ELSE A.RECEIPT_NO
+                     	END AS RECEIPT_NO 
+		          FROM AFD_SAL_DEDUCT A
+		         WHERE A.ENGG_MM_AMT > 0
+		
+		         UNION ALL
+		
+		        SELECT A.MEMBER_NO
+		             , SUBSTRING(A.WDRAW_DT, 1, 6)
+		             , B.ENDW_CD
+		             , A.WDRAW_AMT AS AMT
+		             , A.YYMM
+		             , CASE WHEN A.RECEIPT_NO = '' THEN NULL
+                     		ELSE A.RECEIPT_NO
+                     	END AS RECEIPT_NO
+		          FROM AFD_CMS A
+		             , AFD_CNTRCT B
+		         WHERE A.ENGG_MGN_NO  = B.ENGG_MGN_NO
+		          AND A.WDRAW_AMT >0
+		
+		         UNION ALL
+		
+		        SELECT B.MEMBER_NO
+		             , SUBSTRING(A.RCPMNY_DT,1,4) AS YYMM
+		             , B.ENDW_CD
+		             , ISNULL(A.PAYMENT_AMT,B.ENGG_AMT) AS AMT
+		             , SUBSTRING(A.RCPMNY_DT,1,6) 
+		             , CASE WHEN A.RECEIPT_NO = '' THEN NULL
+                     		ELSE A.RECEIPT_NO
+                     	END AS RECEIPT_NO
+		          FROM AFD_RCPMNY A
+		             , AFD_CNTRCT B
+		         WHERE A.ENGG_MGN_NO  = B.ENGG_MGN_NO
+		       ) A
+		     , AFD_MASTER B
+		 WHERE A.MEMBER_NO = B.MEMBER_NO
+		   AND SUBSTRING(A.YYMM,1,4) = #yy#
+		   <isNotEmpty property="div" > 
+		   		<isEqual property="div" compareValue="1">
+		   			and B.MEMBER_GB NOT IN ('14', '15')
+		   		</isEqual>
+	            <isEqual property="div" compareValue="2">
+	            	and B.MEMBER_GB IN ('14', '15')
+		   		</isEqual>
+	        </isNotEmpty>
+		 GROUP BY A.RECEIPT_NO, B.MEMBER_NO, B.JUMIN_NO, B.MEMBER_NM_KOR, B.ADDR1, B.ADDR2
+		 order by A.RECEIPT_NO	    
+	</select>
+	
+	<select id="Afd05SQL.selectExcel_02" parameterClass="hashMap" resultClass="egovMap">
+		
+		/* Afd05SQL.selectExcel_02 (추천인목록)*/
+		SELECT '0' AS CHK
+	         , '' AS ROW_STATUS
+			 , B.USAGE_DIV
+			 , CASE WHEN B.USAGE_DIV = '100' or B.USAGE_DIV = '210' THEN '일반'
+	                ELSE '지정' END AS USAGE_DIV_NM
+		            /* 일반기탁(무통장입금)
+			       	   * usageDiv1 - 대학에일임
+			       	   * usageDiv2 - 용도지정
+			       	   * usageDiv21 - 일반
+			       	   * usageDiv22 - 장학금
+			       	   * usageDiv221 - 학부
+			       	   * usageDiv222 - 대학원   
+		             */ 
+		      , B.USAGE_DEPT_NAME
+		      , B.PAY_DT
+		      , B.MEMBER_NO /* 사번 */
+			  , C.MEMBER_NM_KOR /* 이름 */
+		      , C.DEPT_NM
+			  , dbo.F_AFD_DEPT_NM(B.MEMBER_NO, 'NM') AS DEPT_CD_NM /* 부서 */
+		      , A.RCPMNY_DT /* 입금일자 */
+			  , A.PAYMENT_AMT /* 금액 */
+			  , B.MEMBER_RECOMMEND_NAME
+			  , B.MEMBER_RECOMMEND_CODE
+			  , B.MEMBER_RECOMMEND_DEPT
+			  , B.REMARK
+		FROM AFD_RCPMNY A
+  	       , AFD_CNTRCT B
+	       , AFD_MASTER C
+	   WHERE A.ENGG_MGN_NO = B.ENGG_MGN_NO
+	     AND B.MEMBER_NO = C.MEMBER_NO
+         AND B.MEMBER_RECOMMEND_NAME IS NOT NULL
+         AND B.PAY_DT BETWEEN #yyFr# AND #yyTo#
+       ORDER BY B.PAY_DT
+
+	</select>
+	
+	<select id="Afd05SQL.selectExcel_03" parameterClass="hashMap" resultClass="egovMap">
+		SELECT '' CHK 
+ 		 	 , '0' ROW_STATUS
+ 		 	 , case when SUBSTRING(B.USAGE_DIV, 1,1) = '1' then '일반'
+ 		 			when SUBSTRING(B.USAGE_DIV, 1,1) = '2' then '지정'
+ 		 			ELSE ''
+ 		 			END AS USAGE_DIV /*사용용도*/
+ 		 	, MAIN.RECEIPT_NO
+ 		 	, B.USAGE_DEPT_NAME		/*지정기탁용도*/
+			, MAIN.RCPMNY_DT
+			, B.MEMBER_NO
+			, C.MEMBER_NM_KOR
+			, dbo.F_AFD_DEPT_NM(C.MEMBER_NO, 'NM') AS DEPT_CD_NM
+			, MAIN.AMT AS PAYMENT_AMT
+			, case when LEN(C.JUMIN_NO)>=13 then SUBSTRING(C.JUMIN_NO,1,6) + '-' + SUBSTRING(C.JUMIN_NO,7,7) 
+					when LEN(C.JUMIN_NO)>=10 then SUBSTRING(C.JUMIN_NO,1,3) + '-' + SUBSTRING(C.JUMIN_NO,4,2) + '-' + SUBSTRING(C.JUMIN_NO,6,5)
+					else C.JUMIN_NO
+					end AS JUMIN_NO /* 주민(사업자)등록번호 */
+			, C.TEL_NO
+		    , C.HP_NO
+		    , C.ZIP
+		    , C.ADDR1
+		    , C.ADDR2
+		    , '('+ISNULL(C.ZIP, '')+')'+ISNULL(C.ADDR1, '')+' '+ISNULL(C.ADDR2, '') AS ADDR
+		    , C.E_MAIL
+		    , B.MEMBER_RECOMMEND_NAME
+			, MAIN.REMARK
+			, MAIN.CONT
+		  FROM
+		       (SELECT SUBSTRING(A.YYMM,1,4) AS YY ,
+		       			case when A.SPEN_DT IS null or A.SPEN_DT = '' then A.YYMM
+							else A.SPEN_DT
+						end AS RCPMNY_DT,
+		              A.ENGG_MM_AMT AS AMT,
+		              A.ENGG_MGN_NO ,
+		              A.SPEN_DT ,
+		              A.RECEIPT_NO,
+		              A.REMARK,
+		              '급여공제' AS CONT
+		         FROM AFD_SAL_DEDUCT A
+		        WHERE 1=1
+		          and A.SPEN_DT BETWEEN #yyFr#+'01' AND #yyTo#+'31'
+		          AND A.ENGG_MM_AMT >0
+		           UNION ALL
+		       SELECT SUBSTRING(A.YYMM,1,4) AS YY ,
+		       		A.WDRAW_DT AS RCPMNY_DT,
+		              A.WDRAW_AMT AS AMT,
+		              A.ENGG_MGN_NO ,
+		              A.WDRAW_DT AS SPEN_DT ,
+		              A.RECEIPT_NO,
+		              '' REMARK,
+		              'CMS' AS CONT
+		         FROM AFD_CMS A
+		        WHERE 1=1
+		          and A.WDRAW_DT BETWEEN #yyFr#+'01' AND #yyTo#+'31'
+		          AND A.WDRAW_AMT > 0
+		           UNION ALL
+		       SELECT SUBSTRING(A.RCPMNY_DT,1,4) AS YY ,
+		       		  A.RCPMNY_DT AS RCPMNY_DT,
+		              A.PAYMENT_AMT AS AMT,
+		              A.ENGG_MGN_NO ,
+		              A.RCPMNY_DT AS SPEN_DT,
+		              A.RECEIPT_NO,
+		              A.REMARK,
+		              '무통장입금' AS CONT
+		         FROM AFD_RCPMNY A
+		        WHERE 1=1
+		          and A.RCPMNY_DT BETWEEN #yyFr#+'01' AND #yyTo#+'31'
+		          AND A.PAYMENT_AMT >0
+		          AND ISNULL(A.DEL_YN,'0') ='0'
+		        ) MAIN
+		       JOIN AFD_CNTRCT B ON MAIN.ENGG_MGN_NO = B.ENGG_MGN_NO
+		       JOIN AFD_MASTER C ON B.MEMBER_NO = C.MEMBER_NO      
+		 WHERE 1=1
+			<isNotEmpty property="usageDiv"> 
+	             AND SUBSTRING(B.USAGE_DIV, 1,1) = #usageDiv# 
+	        </isNotEmpty>
+		ORDER BY RCPMNY_DT, C.MEMBER_NO
+	</select>
+	
+</sqlMap>

@@ -1,0 +1,885 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Afd01SQL">
+
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias alias="hashMap" type="java.util.HashMap"/>
+	
+	<select id="Afd01SQL.retrieveEndwDivCd" parameterClass="hashMap" resultClass="egovMap">
+	
+		/* Afd01SQL.retrieveEndwDivCd */
+		SELECT ENDW_CD
+			 , ENDW_NM
+		  FROM (
+			<isNotEmpty property="disStr">
+				SELECT '' ENDW_CD
+			         , #disStr# ENDW_NM
+
+			     UNION ALL
+			</isNotEmpty>
+			    SELECT ENDW_CD
+			         , ENDW_NM
+			      FROM AFD_ENDOWMENT
+			     WHERE 1=1
+		  		   AND USE_YN ='1'
+				 <isNotEmpty property="endwDivLevl" >
+				 	<isEqual property="endwDivLevl" compareValue="1">
+				   AND ENDW_DIV_LEVL = '1'
+				 	</isEqual>
+				 	<isEqual property="endwDivLevl" compareValue="2">
+				   AND ENDW_DIV_LEVL = '2'
+				 		<isNotEmpty property="largeEndwCd">
+				   AND UPPER_ENDW_CD = #largeEndwCd#
+				 		</isNotEmpty>	
+					</isEqual>			
+				 </isNotEmpty>
+		        ) A
+		 ORDER BY CASE WHEN ENDW_CD = '' THEN 1 ELSE 2 END
+		     , ENDW_CD
+		 
+	</select>
+	 
+	<select id="Afd01SQL.retrieveEndw" parameterClass="hashMap" resultClass="egovMap">
+		
+		/* Afd01SQL.retrieveEndw */
+		WITH CTE_ENDW
+		AS
+		(
+		         SELECT SA.ENDW_CD                   
+				      , SA.ENDW_NM
+				      , SA.UPPER_ENDW_CD             
+				      , SA.ENDW_DIV_LEVL             
+				      , (CASE WHEN SA.ENDW_DIV_LEVL ='1' THEN SA.ENDW_CD
+				              WHEN SA.ENDW_DIV_LEVL ='2' THEN dbo.FN_RPAD(SUBSTRING(SA.ENDW_CD,0,2),6,'0')
+				              WHEN SA.ENDW_DIV_LEVL ='3' THEN dbo.FN_RPAD(SUBSTRING(SA.ENDW_CD,0,2),6,'0')
+				         END) AS LARGE_ENDW_CD
+				      , (CASE WHEN SA.ENDW_DIV_LEVL ='1' THEN ''
+				              WHEN SA.ENDW_DIV_LEVL ='2' THEN SA.ENDW_CD
+				              WHEN SA.ENDW_DIV_LEVL ='3' THEN dbo.FN_RPAD(SUBSTRING(SA.ENDW_CD,0,4),6,'0')
+				         END) AS MEDIUM_ENDW_CD
+				      , (CASE WHEN SA.ENDW_DIV_LEVL ='1' THEN ''
+				              WHEN SA.ENDW_DIV_LEVL ='2' THEN ''
+				              WHEN SA.ENDW_DIV_LEVL ='3' THEN SA.ENDW_CD
+				         END) AS SMALL_ENDW_CD
+				      , SA.FUND_SDT
+				      , SA.FUND_EDT
+				      , SA.REMARK
+				      , SA.USE_YN
+				      , SA.MENT_FORM_DIV
+				      , SA.SORT_SEQ
+				   FROM AFD_ENDOWMENT SA
+				      , (SELECT TA.ENDW_CD
+					          , TA.ENDW_NM
+					       FROM AFD_ENDOWMENT TA
+					      WHERE 1 = 1
+					      <isNotEmpty property="endwDivLevl">
+					        AND TA.ENDW_DIV_LEVL <![CDATA[<=]]> #endwDivLevl#
+					      </isNotEmpty>
+					      <isNotEmpty property="endwNm">
+					        AND TA.ENDW_NM LIKE '%'+#endwNm#+'%'
+					      </isNotEmpty>
+					      <isNotEmpty property="useYn">
+					        AND TA.USE_YN = #useYn#
+					      </isNotEmpty>
+					     ) SB
+				     WHERE 1 = 1			
+				       AND (   SA.ENDW_CD = dbo.FN_RPAD(SUBSTRING(SB.ENDW_CD,0,2),6,'0') 
+				            OR (   SA.ENDW_CD = dbo.FN_RPAD(SUBSTRING(SB.ENDW_CD,0,4),6,'0') 
+				                OR SA.ENDW_CD = SB.ENDW_CD
+				               )		               
+				           )
+				           
+				 UNION ALL
+				     
+				 SELECT SA.ENDW_CD                   
+				      , SA.ENDW_NM
+				      , SA.UPPER_ENDW_CD             
+				      , SA.ENDW_DIV_LEVL             
+				      , (CASE WHEN SA.ENDW_DIV_LEVL ='1' THEN SA.ENDW_CD
+				              WHEN SA.ENDW_DIV_LEVL ='2' THEN dbo.FN_RPAD(SUBSTRING(SA.ENDW_CD,0,2),6,'0')
+				              WHEN SA.ENDW_DIV_LEVL ='3' THEN dbo.FN_RPAD(SUBSTRING(SA.ENDW_CD,0,2),6,'0')
+				         END) AS LARGE_ENDW_CD
+				      , (CASE WHEN SA.ENDW_DIV_LEVL ='1' THEN ''
+				              WHEN SA.ENDW_DIV_LEVL ='2' THEN SA.ENDW_CD
+				              WHEN SA.ENDW_DIV_LEVL ='3' THEN dbo.FN_RPAD(SUBSTRING(SA.ENDW_CD,0,4),6,'0')
+				         END) AS MEDIUM_ENDW_CD
+				      , (CASE WHEN SA.ENDW_DIV_LEVL ='1' THEN ''
+				              WHEN SA.ENDW_DIV_LEVL ='2' THEN ''
+				              WHEN SA.ENDW_DIV_LEVL ='3' THEN SA.ENDW_CD
+				         END) AS SMALL_ENDW_CD
+				      , SA.FUND_SDT
+				      , SA.FUND_EDT
+				      , SA.REMARK
+				      , SA.USE_YN
+				      , SA.MENT_FORM_DIV
+				      , SA.SORT_SEQ
+				   FROM AFD_ENDOWMENT SA
+				      , (SELECT TA.ENDW_CD
+					          , TA.ENDW_NM
+					       FROM AFD_ENDOWMENT TA
+					      WHERE 1 = 1
+					      <isNotEmpty property="endwDivLevl">
+					        AND TA.ENDW_DIV_LEVL <![CDATA[<=]]> #endwDivLevl#
+					      </isNotEmpty>
+					      <isNotEmpty property="endwNm">
+					        AND TA.ENDW_NM LIKE '%'+#endwNm#+'%'
+					      </isNotEmpty>
+					      <isNotEmpty property="useYn">
+					        AND TA.USE_YN = #useYn#
+					      </isNotEmpty>
+					     ) SB
+					   , CTE_ENDW CTE
+				     WHERE 1 = 1			
+				       AND (   SA.ENDW_CD = dbo.FN_RPAD(SUBSTRING(SB.ENDW_CD,0,2),6,'0') 
+				            OR (   SA.ENDW_CD = dbo.FN_RPAD(SUBSTRING(SB.ENDW_CD,0,4),6,'0') 
+				                OR SA.ENDW_CD = SB.ENDW_CD
+				               )		               
+				           )
+				       AND CASE WHEN SA.ENDW_DIV_LEVL = '1' THEN ''
+				                WHEN SA.ENDW_DIV_LEVL = '2' THEN CTE.LARGE_ENDW_CD
+				                WHEN SA.ENDW_DIV_LEVL = '3' THEN CTE.MEDIUM_ENDW_CD END = SA.ENDW_CD
+		)
+	    SELECT DISTINCT '0' AS CHK
+	         , '' AS ROW_STATUS
+	         , TA.ENDW_CD                   
+	         , TA.ENDW_NM                    
+	         , TA.UPPER_ENDW_CD             
+	         , TA.ENDW_DIV_LEVL
+	         , TA.LARGE_ENDW_CD                   
+	         , TA.MEDIUM_ENDW_CD                   
+	         , TA.SMALL_ENDW_CD                   
+	         , TA.FUND_SDT                   
+	         , TA.FUND_EDT                  
+	         , TA.REMARK                    
+	         , TA.USE_YN
+	         , TA.MENT_FORM_DIV
+	         , TA.SORT_SEQ
+		  FROM CTE_ENDW TA
+	  ORDER BY SORT_SEQ
+	 </select>
+	 
+	<insert id="Afd01SQL.insertEndw" parameterClass="hashMap">
+	
+		/* Afd01SQL.insertEndw */
+		INSERT INTO AFD_ENDOWMENT
+            ( ENDW_CD                    <!-- 기금코드 -->
+            , ENDW_NM                    <!-- 기금명 -->
+            , UPPER_ENDW_CD              <!-- 상위기금코드 -->
+            , ENDW_DIV_LEVL              <!-- 기금구분레벨 -->
+            , FUND_SDT                   <!-- 기금시작일자 -->
+            , FUND_EDT                   <!-- 기금종료일자 -->
+            , REMARK                     <!-- 비고 -->
+            , USE_YN                     <!-- 사용여부 -->
+            , MENT_FORM_DIV              <!-- 관리화면구분 -->
+            , CREATE_DT                  <!-- 생성일시 -->
+            , CREATE_IP                  <!-- 생성IP -->
+            , CREATE_NO                  <!-- 생성자 -->
+            , SORT_SEQ                  <!-- 정렬순서 -->
+            )
+            SELECT
+	            (
+	            CASE #endwDivLevl# WHEN '1' THEN
+	            	(
+	            		SELECT 
+	            			CASE WHEN ISNULL (MAX (ENDW_CD), '' )  = '' THEN '010000'
+	              				 ELSE dbo.FN_RPAD(dbo.FN_LPAD(SUBSTRING(MAX(ENDW_CD),1,2)+1,2,'0') ,6,'0') END 
+	             		FROM AFD_ENDOWMENT  WHERE ENDW_DIV_LEVL = '1'
+	             	)
+	             	 			
+	            WHEN '2' THEN
+	            	(
+	            		SELECT 
+							CASE WHEN ISNULL (MAX (ENDW_CD), '')  = '' THEN SUBSTRING(#largeEndwCd#, 1, 2)+'0100'
+							     ELSE SUBSTRING(#largeEndwCd#, 1, 2) + dbo.FN_RPAD(dbo.FN_LPAD(SUBSTRING(MAX(ENDW_CD),3,2)+1,2,'0') ,4,'0') END FROM AFD_ENDOWMENT 
+							WHERE ENDW_DIV_LEVL = '2' AND UPPER_ENDW_CD=#largeEndwCd# 
+	            	 )
+	            	 
+	            WHEN '3' THEN
+	            	(
+	           			SELECT 
+	           				CASE WHEN (ISNULL (MAX (ENDW_CD), '')  = '' THEN SUBSTRING(#mediumEndwCd#, 1, 4)+'01'
+	           				     ELSE SUBSTRING(#mediumEndwCd#, 1, 4) + dbo.FN_RPAD(dbo.FN_LPAD(SUBSTRING(MAX(ENDW_CD),5,2)+1,2,'0') ,2,'0') END
+	            		FROM AFD_ENDOWMENT  WHERE ENDW_DIV_LEVL = '3' AND UPPER_ENDW_CD=#mediumEndwCd#
+	            	)
+	            END
+	            )
+            , #endwNm#
+            , (
+            	CASE #endwDivLevl# WHEN '1' THEN ''
+            	                   WHEN '2' THEN #largeEndwCd#
+            	                   WHEN '3' THEN #mediumEndwCd#
+            	END)
+            , #endwDivLevl#
+            , #fundSdt#
+            , #fundEdt#
+            , #remark#
+            , ISNULL(CONVERT(VARCHAR, #useYn#), '1')
+            , #mentFormDiv#
+            , GETDATE()
+            , #createIp#
+            , #createNo#
+            , #sortSeq#
+            
+	</insert>
+	
+	<update id="Afd01SQL.updateEndw"  parameterClass="hashMap">
+		
+		/* Afd01SQL.updateEndw */
+		UPDATE AFD_ENDOWMENT
+           SET FUND_SDT                       = #fundSdt#                  <!-- 기금시작일자 -->
+             , REMARK                         = #remark#                   <!-- 비고 -->
+             , ENDW_NM                        = #endwNm#                   <!-- 기금명 -->
+             , UPPER_ENDW_CD                  = #upperEndwCd#              <!-- 상위기금코드 -->
+             , FUND_EDT                       = #fundEdt#                  <!-- 기금종료일자 -->
+             , ENDW_DIV_LEVL                  = #endwDivLevl#              <!-- 기금구분레벨 -->
+             , USE_YN                         = #useYn#                    <!-- 사용여부 -->
+             , MENT_FORM_DIV                  = #mentFormDiv#              <!-- 관리화면구분 -->
+             , ENTRY_IP                       = #entryIp#                  <!-- 처리IP -->
+             , ENTRY_DT                       = GETDATE()                    <!-- 처리일시 -->
+             , ENTRY_NO                       = #entryNo#                  <!-- 처리자 -->
+             , SORT_SEQ                       = #sortSeq#                  <!-- 정렬순서 -->
+         WHERE ENDW_CD                        = #endwCd#
+         
+	</update> 
+	
+	<delete id="Afd01SQL.deleteEndw"   parameterClass="hashMap">
+	    DELETE 
+	      FROM AFD_ENDOWMENT
+         WHERE ENDW_CD = #endwCd#
+	</delete>
+	 
+	 <select id="Afd01SQL.retrieveUpperEndwCnt" parameterClass="hashMap" resultClass="int">
+		 SELECT COUNT(1) CNT 
+		   FROM AFD_ENDOWMENT
+		  WHERE UPPER_ENDW_CD = #endwCd#  
+	 </select>
+	
+	<select id="Afd01SQL.retrieveMembasCd" parameterClass="hashMap" resultClass="egovMap">
+		SELECT A.MEMBER_DIV_CD
+		     , A.MEMBER_DIV_NM
+ 		  FROM (SELECT '' MEMBER_DIV_CD 
+			         , #disStr# MEMBER_DIV_NM 
+			         , 0 SORT_SEQ
+			     UNION ALL 
+			    SELECT SA.MEMBER_DIV_CD 
+			         , SA.MEMBER_DIV_NM 
+			         , SA.SORT_SEQ
+			      FROM AFD_MEMBAS SA) A
+		 ORDER BY CASE WHEN MEMBER_DIV_CD IS NULL OR MEMBER_DIV_CD = '' THEN 1 ELSE 2 END
+		     , A.SORT_SEQ
+		     , A.MEMBER_DIV_CD
+	</select> 
+	 
+	<select id="Afd01SQL.retrieveMembas" parameterClass="hashMap" resultClass="egovMap">
+		SELECT '0' AS CHK
+             , '' AS ROW_STATUS
+             , A.MEMBER_DIV_CD              <!-- 회원구분코드 -->
+             , A.MEMBER_DIV_NM              <!-- 회원구분명 -->
+             , A.AMT_FROM                   <!-- 금액FROM -->
+             , A.AMT_TO                     <!-- 금액TO -->
+             , A.SORT_SEQ                   <!-- 정렬순서 -->
+          FROM AFD_MEMBAS A
+         WHERE 1 = 1
+	     <isNotEmpty property="memberDivCd">
+	       AND A.MEMBER_DIV_CD        = #memberDivCd#
+	     </isNotEmpty>
+         <isNotEmpty property="memberDivNm">
+       	   AND A.MEMBER_DIV_NM LIKE '%'+#memberDivNm#+'%'
+         </isNotEmpty>
+         <isNotEmpty property="amtFrom">
+           AND A.AMT_FROM >= #amtFrom#
+         </isNotEmpty>
+         <isNotEmpty property="amtTo">
+           AND A.AMT_TO <![CDATA[ <= ]]> #amtTo#
+         </isNotEmpty>
+         ORDER BY SORT_SEQ,  A.MEMBER_DIV_CD
+	 </select>
+	 
+	 <insert id="Afd01SQL.insertMembas" parameterClass="hashMap">
+	         INSERT INTO AFD_MEMBAS
+            ( MEMBER_DIV_CD              <!-- 회원구분코드 -->
+            , MEMBER_DIV_NM              <!-- 회원구분명 -->
+            , AMT_FROM                   <!-- 금액FROM -->
+            , AMT_TO                     <!-- 금액TO -->
+            , SORT_SEQ                   <!-- 정렬순서 -->
+            , CREATE_NO                  <!-- 생성자 -->
+            , CREATE_DT                  <!-- 생성일시 -->
+            , CREATE_IP                  <!-- 생성IP -->
+            )
+            VALUES
+            (
+            (SELECT dbo.FN_LPAD(ISNULL(MAX(MEMBER_DIV_CD ), 0)+1, 3, '0') FROM AFD_MEMBAS )
+            , #memberDivNm#
+            , #amtFrom#
+            , #amtTo#
+            , #sortSeq#
+            , #createNo#
+            , GETDATE()
+            , #createIp#
+            )
+	 </insert>
+	 
+	 <update id="Afd01SQL.updateMembas" parameterClass="hashMap">
+	 	UPDATE AFD_MEMBAS
+           SET AMT_TO                         = #amtTo#                     <!-- 금액TO -->
+             , MEMBER_DIV_NM                  = #memberDivNm#              <!-- 회원구분명 -->
+             , ENTRY_NO                       = #entryNo#                   <!-- 처리자 -->
+             , SORT_SEQ                       = #sortSeq#                   <!-- 정렬순서 -->
+             , AMT_FROM                       = #amtFrom#                   <!-- 금액FROM -->
+             , ENTRY_IP                       = #entryIp#                   <!-- 처리IP -->
+             , ENTRY_DT                       = GETDATE()                   <!-- 처리일시 -->
+         WHERE MEMBER_DIV_CD                  = #memberDivCd#
+	 </update>
+	 <delete id="Afd01SQL.deleteMembas" parameterClass="hashMap">
+	 	
+	 	BEGIN
+	     DELETE FROM AFD_MEMBAS
+         	WHERE MEMBER_DIV_CD                  = #memberDivCd#
+         ;
+        DELETE FROM AFD_HONORTREAT
+         WHERE MEMBER_DIV_CD                  = #memberDivCd#
+         ;
+        END;
+	 </delete>
+	 
+	 
+	 <select id="Afd01SQL.retrieveHonortreat" parameterClass="hashMap" resultClass="egovMap">
+	       SELECT '0' AS CHK
+            , '' AS ROW_STATUS
+            , A.MEMBER_DIV_CD             
+            , A.EVENT_HLRT_CD
+            , B.COM_CD_NM AS EVENT_HLRT_NM
+        FROM AFD_HONORTREAT A
+        , COM_COD B
+       WHERE A.EVENT_HLRT_CD = B.COM_CD 
+      AND B.COM_CD_DIV = 'AFD02'
+      AND A.MEMBER_DIV_CD        = #memberDivCd#
+       
+    ORDER BY A.MEMBER_DIV_CD
+           , A.EVENT_HLRT_CD
+	 </select>
+	 
+	 <delete id="Afd01SQL.deleteHonortreat" parameterClass="hashMap">
+	 	 DELETE FROM AFD_HONORTREAT
+         WHERE MEMBER_DIV_CD                  = #memberDivCd#
+         AND  EVENT_HLRT_CD = #eventHlrtCd#
+	 </delete>
+	 
+	 <insert id="Afd01SQL.insertHonortreat" parameterClass="hashMap">
+	 	INSERT INTO AFD_HONORTREAT
+            ( MEMBER_DIV_CD              
+            , EVENT_HLRT_CD              
+            , CREATE_NO                  
+            , CREATE_DT                  
+            , CREATE_IP                  
+            )
+            VALUES
+            ( #memberDivCd#
+            , #eventHlrtCd#
+            , #createNo#
+            , GETDATE()
+            , #createIp#
+            )
+	 </insert> 
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 회원정보관리(admi/afd/afd01/afd01050.xfdl)
+    #########################################################################################################################################
+    -->
+    
+	 
+	<select id="Afd01SQL.selectAFD01050_01" parameterClass="hashMap" resultClass="egovMap">
+		
+		/* Afd01SQL.selectAFD01050_01 회원정보관리 조회 */
+		SELECT '0' AS CHK
+		     , '' AS ROW_STATUS
+		     , A.MEMBER_NO                  <!-- 회원번호 -->
+			 , A.MEMBER_NM_KOR              <!-- 성명 -->
+			 , A.DEPT_NM                    <!-- 부서명 -->
+			 , dbo.F_AFD_USER_INFO(A.MEMBER_NO, 'HOFC_GB_NM') AS HOFC_DIV_NM <!-- 재직구분 -->
+       		 , dbo.F_AFD_DEPT_NM(A.MEMBER_NO, 'NM') AS DEPT_CD_NM
+			 , A.NATION_DIV                 <!-- 내외국인구분 -->
+			 , A.JUMIN_NO as WS_JUMIN_NO    <!-- 주민번호 -->
+			 , A.BIRTH_DT                   <!-- 생년월일 -->
+			 , A.SEX                        <!-- 성별 -->
+			 , A.TEL_NO                     <!-- 집전화번호 -->
+			 , A.HP_NO                      <!-- 휴대폰번호 -->
+			 , A.E_MAIL                     <!-- 전자우편 -->
+			 , A.ZIP                        <!-- 집우편번호 -->
+			 , A.ADDR1                      <!-- 집주소1 -->
+			 , A.ADDR2                      <!-- 집주소2 -->
+			 , CASE WHEN A.ADDR1 IS NOT NULL THEN '('+ISNULL(A.ZIP, '')+')'+' '+A.ADDR1+' '+ISNULL(A.ADDR2, '') ELSE '' END AS ADDR_FULL
+			 , A.VIP_YN                     <!-- VIP여부 -->
+			 , A.ANNYMTY_YN                 <!-- 익명여부 -->
+			 , A.DEATH_YN                   <!-- 사망여부 -->
+			 , A.PCPSKL_REL                 <!-- 본교관계 -->
+			 , A.PCPSKL_REL_DESC            <!-- 본교관계설명 -->
+			 , A.WRC_NM                     <!-- 직장명 -->
+			 , A.RANK_NM                    <!-- 직위명 -->
+			 , A.OCCUPATION_DIV             <!-- 직종구분 -->
+			 , A.WRC_TEL_NO                 <!-- 직장전화번호 -->
+			 , A.WRC_FAX_NO                 <!-- 직장팩스번호 -->
+			 , A.WRC_ZIP                    <!-- 직장우편번호 -->
+			 , A.WRC_ADDR1                  <!-- 직장주소1 -->
+			 , A.WRC_ADDR2                  <!-- 직장주소2 -->
+			 , A.REMARK                     <!-- 비고 -->
+			 , A.DM_DIV                     <!-- DM구분 -->
+			 , A.DM_EXCP_YN                 <!-- DM예외여부 -->
+			 , A.DM_RETRN_YN                <!-- DM반송여부 -->
+			 , A.ESDNG_EXCP                 <!-- 소식지발송제외 -->
+			 , A.RCVER                      <!-- 받는사람 -->
+			 , A.TITLE                      <!-- 직함 -->
+			 , A.DM_OVSEA_ADDR              <!-- DM해외주소 -->
+			 , A.DM_ZIP                     <!-- DM우편번호 -->
+			 , A.DM_ADDR1                   <!-- DM주소1 -->
+			 , A.DM_ADDR2                   <!-- DM주소2 -->
+			 , A.DEL_YN                     <!-- 삭제여부 -->
+			 , A.SCHOOL_NM                  <!-- 대학(원) -->
+			 , A.SCHOOL_DEPT_NM             <!-- 학부(과) -->
+			 , A.IN_YEAR                    <!-- 입학년도 -->
+			 , A.OUT_YEAR                   <!-- 졸업년도 -->
+			 , A.MEMBER_GB                  <!-- 회원구분 -->
+			 , A.MEMBER_TYPE                <!-- 회원유형 -->
+			 , A.MEMBER_RECOMMEND_NAME      <!-- 추천인성명 -->
+			 , A.MEMBER_RECOMMEND_DEPT      <!-- 추천인소속 -->
+			 , A.MEMBER_RECOMMEND_CODE      <!-- 추천인직번 -->
+			 , A.MEMBER_DIV_CD              <!-- 회원구분코드 -->
+			 , (SELECT MEMBER_DIV_NM FROM AFD_MEMBAS SA WHERE SA.MEMBER_DIV_CD = A.MEMBER_DIV_CD) AS MEMBER_DIV_CD_NM
+			, A.JIGBEON
+		  FROM AFD_MASTER A
+		 WHERE 1 = 1
+         <isNotEmpty property="memberNoNm">
+               AND (   A.MEMBER_NO LIKE '%' + #memberNoNm# + '%'
+               OR A.MEMBER_NM_KOR LIKE '%' + #memberNoNm# + '%')
+         </isNotEmpty>
+         <isNotEmpty property="endwCd">
+    		   AND A.MEMBER_NO IN (
+                  SELECT MEMBER_NO FROM AFD_CNTRCT
+                  WHERE ENDW_CD = #endwCd#
+                )
+         </isNotEmpty>
+		 <isNotEmpty property="newoiGb">
+		   <isEqual property="newoiGb" compareValue="0">
+		   AND MEMBER_GB = '13' /* 내외구분 : 0 : 교내 / 13 : 교직원 */
+		   </isEqual>
+		   <isEqual property="newoiGb" compareValue="1">
+		   AND MEMBER_GB != '13' /* 내외구분 : 1 : 교내 / 13 : 교직원 */
+		   </isEqual>
+		 </isNotEmpty>
+		 <isNotEmpty property="memberDivCd">
+		    AND A.MEMBER_DIV_CD = #memberDivCd#
+		 </isNotEmpty>
+		 ORDER BY A.MEMBER_NO
+		 
+	</select>
+	 
+	<select id="Afd01SQL.retrieveAfdMemberNo" parameterClass="hashMap" resultClass="String">
+	 
+	 	/* Afd01SQL.retrieveAfdMemberNo 회원번호 max값 조회 */
+	 	SELECT CONVERT(VARCHAR, dbo.FN_LPAD(CONVERT(VARCHAR, ISNULL(MAX(CONVERT(INT, MEMBER_NO)), 0) + 1), 6, '0')) AS MEMBER_NO 
+	 	  FROM AFD_MASTER
+	 	 WHERE LEN(MEMBER_NO) = 6 AND SUBSTRING(MEMBER_NO,1,1) = '0'
+	</select>
+	 
+	<insert id="Afd01SQL.insertAfdMaster" parameterClass="hashMap" >
+	
+		/* Afd01SQL.insertAfdMaster 회원정보 생성 */
+	 	INSERT INTO AFD_MASTER
+            ( MEMBER_NO                  <!-- 회원번호 -->
+            , MEMBER_NM_KOR              <!-- 성명 -->
+            , NATION_DIV                 <!-- 내외국인구분 -->
+            , JUMIN_NO                   <!-- 주민등록번호 -->
+            , BIRTH_DT                   <!-- 생년월일 -->
+            , SEX                        <!-- 성별 -->
+            , TEL_NO                     <!-- 집전화번호 -->
+            , HP_NO                      <!-- 휴대폰번호 -->
+            , E_MAIL                     <!-- 전자우편 -->
+            , ZIP                        <!-- 집우편번호 -->
+            , ADDR1                      <!-- 집주소1 -->
+            , ADDR2                      <!-- 집주소2 -->
+            , VIP_YN                     <!-- VIP여부 -->
+            , ANNYMTY_YN                 <!-- 익명여부 -->
+            , DEATH_YN                   <!-- 사망여부 -->
+            , PCPSKL_REL                 <!-- 본교관계 -->
+            , PCPSKL_REL_DESC            <!-- 본교관계설명 -->
+            , WRC_NM                     <!-- 직장명 -->
+            , DEPT_NM                    <!-- 부서명 -->
+            , RANK_NM                    <!-- 직위명 -->
+            , OCCUPATION_DIV             <!-- 직종구분 -->
+            , WRC_TEL_NO                 <!-- 직장전화번호 -->
+            , WRC_FAX_NO                 <!-- 직장팩스번호 -->
+            , WRC_ZIP                    <!-- 직장우편번호 -->
+            , WRC_ADDR1                  <!-- 직장주소1 -->
+            , WRC_ADDR2                  <!-- 직장주소2 -->
+            , REMARK                     <!-- 비고 -->
+            , DM_DIV                     <!-- DM구분 -->      
+            , TITLE                      <!-- 직함 -->
+            , DEL_YN                     <!-- 삭제여부 -->
+            , SCHOOL_NM                  <!-- 대학(원) -->
+            , SCHOOL_DEPT_NM             <!-- 학부(과) -->
+            , IN_YEAR                    <!-- 입학년도 -->
+            , OUT_YEAR                   <!-- 졸업년도 -->
+            , MEMBER_GB                  <!-- 회원구분 -->
+            , MEMBER_TYPE                <!-- 회원유형 -->
+			, MEMBER_RECOMMEND_NAME      <!-- 추천인성명 -->
+			, MEMBER_RECOMMEND_CODE      <!-- 추천인직번 -->
+			, MEMBER_RECOMMEND_DEPT      <!-- 추천인소속 -->
+			, MEMBER_DIV_CD              <!-- 회원구분코드 -->
+			, JIGBEON					 <!-- 직번 -->
+            , CREATE_NO                  <!-- 생성자 -->
+            , CREATE_DT                  <!-- 생성일시 -->
+            , CREATE_IP                  <!-- 생성IP -->
+            )
+            VALUES
+            ( CONVERT(VARCHAR(10), #memberNo#)
+            , CONVERT(VARCHAR, #memberNmKor#)
+            , ISNULL(CONVERT(VARCHAR, #nationDiv#), '2')
+            , CONVERT(VARCHAR, #wsJuminNo#)
+            , CONVERT(VARCHAR, #birthDt#)
+            , CONVERT(VARCHAR, #sex#)
+            , CONVERT(VARCHAR, #telNo#)
+            , CONVERT(VARCHAR, #hpNo#)
+            , CONVERT(VARCHAR, #eMail#)
+            , CONVERT(VARCHAR, #zip#)
+            , CONVERT(VARCHAR, #addr1#)
+            , CONVERT(VARCHAR, #addr2#)
+            , ISNULL(CONVERT(VARCHAR, #vipYn#), '2')
+            , ISNULL(CONVERT(VARCHAR, #annymtyYn#), '2')
+            , ISNULL(CONVERT(VARCHAR, #deathYn#), '2')
+            , CONVERT(VARCHAR, #pcpsklRel#)
+            , CONVERT(VARCHAR, #pcpsklRelDesc#)
+            , CONVERT(VARCHAR, #wrcNm#)
+            , CONVERT(VARCHAR, #deptNm#)
+            , CONVERT(VARCHAR, #rankNm#)
+            , CONVERT(VARCHAR, #occupationDiv#)
+            , CONVERT(VARCHAR, #wrcTelNo#)
+            , CONVERT(VARCHAR, #wrcFaxNo#)
+            , CONVERT(VARCHAR, #wrcZip#)
+            , CONVERT(VARCHAR, #wrcAddr1#)
+            , CONVERT(VARCHAR, #wrcAddr2#)
+            , CONVERT(VARCHAR, #remark#)
+            , CONVERT(VARCHAR, '1' )
+            , CONVERT(VARCHAR, #title#)
+            , CONVERT(VARCHAR, #delYn#)
+            , CONVERT(VARCHAR, #schoolNm#)
+            , CONVERT(VARCHAR, #schoolDeptNm#)
+            , CONVERT(VARCHAR, #inYear#)
+            , CONVERT(VARCHAR, #outYear#)
+            , CONVERT(VARCHAR, #memberGb#)
+            , CONVERT(VARCHAR, #memberType#)
+            , CONVERT(VARCHAR, #memberRecommendName#)
+            , CONVERT(VARCHAR, #memberRecommendCode#)
+            , CONVERT(VARCHAR, #memberRecommendDept#)
+            , CONVERT(VARCHAR, #memberDivCd#)
+            , CONVERT(VARCHAR, #jigbeon#)
+            , CONVERT(VARCHAR, #createNo#)
+            , GETDATE()
+            , CONVERT(VARCHAR, #createIp#)
+            )
+	</insert>
+	 
+	<update id="Afd01SQL.updateAfdMaster" parameterClass="hashMap">
+	
+		/* Afd01SQL.updateAfdMaster 회원정보 수정 */
+	 	UPDATE AFD_MASTER
+           SET WRC_TEL_NO                     = #wrcTelNo#                  <!-- 직장전화번호 -->
+             , ENTRY_NO                       = #entryNo#                   <!-- 처리자 -->
+             , ZIP                            = #zip#                       <!-- 집우편번호 -->
+             , OCCUPATION_DIV                 = #occupationDiv#             <!-- 직종구분 -->
+             , PCPSKL_REL_DESC                = #pcpsklRelDesc#             <!-- 본교관계설명 -->
+             , MEMBER_NM_KOR                  = #memberNmKor#               <!-- 성명 -->
+             , VIP_YN                         = #vipYn#                     <!-- VIP여부 -->
+             , ADDR2                          = #addr2#                     <!-- 집주소2 -->
+             , DEL_YN                         = #delYn#                     <!-- 삭제여부 -->
+             , WRC_NM                         = #wrcNm#                     <!-- 직장명 -->
+             , ENTRY_DT                       = GETDATE()                     <!-- 처리일시 -->
+             , RCVER                          = #rcver#                     <!-- 받는사람 -->
+             , DM_ZIP                         = #dmZip#                     <!-- DM우편번호 -->
+             , DM_ADDR1                       = #dmAddr1#                   <!-- DM주소1 -->
+             , DM_ADDR2                       = #dmAddr2#                   <!-- DM주소2 -->
+             , DM_OVSEA_ADDR                  = CASE WHEN #dmDiv# = '4' THEN #dmAddr1#+' '+ #dmAddr2# ELSE '' END   <!-- DM해외주소 -->
+             , TITLE                          = #title#                     <!-- 직함 -->
+         
+             , HP_NO                          = #hpNo#                      <!-- 휴대폰번호 -->
+             , JUMIN_NO 					  = #wsJuminNo#					<!-- 주민번호/사업자등록번호 -->
+             , WRC_ADDR2                      = #wrcAddr2#                  <!-- 직장주소2 -->
+             , ENTRY_IP                       = #entryIp#                   <!-- 처리IP -->
+             , RANK_NM                        = #rankNm#                    <!-- 직위명 -->
+             , PCPSKL_REL                     = #pcpsklRel#                 <!-- 본교관계 -->
+             , NATION_DIV                     = #nationDiv#                 <!-- 내외국인구분 -->
+             , WRC_FAX_NO                     = #wrcFaxNo#                  <!-- 직장팩스번호 -->
+             , ANNYMTY_YN                     = #annymtyYn#                 <!-- 익명여부 -->
+             , REMARK                         = #remark#                    <!-- 비고 -->
+             , ADDR1                          = #addr1#                     <!-- 집주소1 -->
+         
+             , WRC_ZIP                        = #wrcZip#                    <!-- 직장우편번호 -->
+             , E_MAIL                         = #eMail#                     <!-- 전자우편 -->
+             , DEPT_NM                        = #deptNm#                    <!-- 부서명 -->
+         
+             , WRC_ADDR1                      = #wrcAddr1#                  <!-- 직장주소1 -->
+             , DEATH_YN                       = #deathYn#                   <!-- 사망여부 -->
+             , DM_DIV                         = #dmDiv#                     <!-- DM구분 -->
+             , TEL_NO                         = #telNo#                     <!-- 집전화번호 -->
+             
+             , SCHOOL_NM                      = #schoolNm#					<!-- 대학(원) -->
+             , SCHOOL_DEPT_NM                 = #schoolDeptNm#				<!-- 학부(과) -->
+             , IN_YEAR                        = #inYear#					<!-- 입학년도 -->
+             , OUT_YEAR                       = #outYear#					<!-- 졸업년도 -->
+             , MEMBER_GB                      = #memberGb#					<!-- 회원구분 -->
+             , MEMBER_TYPE                    = #memberType#				<!-- 회원유형 -->  
+             , MEMBER_RECOMMEND_NAME          = #memberRecommendName#       <!-- 추천인성명 -->
+             , MEMBER_RECOMMEND_CODE          = #memberRecommendCode#       <!-- 추천인성명 -->
+             , MEMBER_RECOMMEND_DEPT          = #memberRecommendDept#       <!-- 추천인소속 -->
+             , MEMBER_DIV_CD                  = #memberDivCd#               <!-- 회원구분코드 -->
+             , JIGBEON						  = #jigbeon#					<!-- 직번 -->
+         WHERE MEMBER_NO                      = #memberNo#
+         
+	</update>
+	 
+	<delete id="Afd01SQL.deleteAfdMaster" parameterClass="hashMap">
+	
+		/* Afd01SQL.deleteAfdMaster 회원정보 삭제 */
+		DELETE 
+		  FROM AFD_MASTER
+         WHERE MEMBER_NO = #memberNo#
+         
+	</delete>
+	 
+	<select id="Afd01SQL.retrieveWsJuminNo" parameterClass="hashMap" resultClass="egovMap">
+	
+		/* Afd01SQL.retrieveWsJuminNo */
+		 SELECT JUMIN_NO 
+		   FROM AFD_MASTER
+		  WHERE 1 = 1
+		    AND JUMIN_NO = #wsJuminNo#  
+		 
+	</select>
+	 
+	<select id="Afd01SQL.createDmSndngNo" parameterClass="hashMap" resultClass="String">
+	
+		/* Afd01SQL.createDmSndngNo */
+	 	SELECT dbo.FN_LPAD(ISNULL(MAX(DM_SNDNG_NO), 0)+1, 3 ,'0') DM_SNDNG_NO 
+	 	
+	</select>
+	 
+	 <insert id="Afd01SQL.insertAfdDmSndng" parameterClass="hashMap" >
+	 
+	 	/* Afd01SQL.insertAfdDmSndng */
+	 	INSERT INTO AFD_DMSNDNG
+             ( DM_SNDNG_NO                <!-- DM발송고유번호 -->
+             , DM_SNDNG_DT                <!-- DM발송일자 -->
+             , MEMBER_NO                  <!-- 회원번호 -->
+             , ENGG_MGN_NO               <!-- 약정관리번호 -->
+             , REMARK                     <!-- 비고 -->
+             , DM_ADDR_DIV                <!-- DM주소구분 -->
+             , DM_OVSEA_ADDR              <!-- DM해외주소 -->
+             , DM_POST_NO                 <!-- DM우편번호 -->
+             , DM_ADDR1                   <!-- DM주소1 -->
+             , DM_ADDR2                   <!-- DM주소2 -->
+             , CREATE_NO                  <!-- 생성자 -->
+             , CREATE_DT                  <!-- 생성일시 -->
+             , CREATE_IP                  <!-- 생성IP -->
+             )
+             VALUES
+             ( #dmSndngNo#
+             , #dmSndngDt#
+             , #memberNo#
+             , #enggMgnNo#
+             , #remark#
+             , #dmAddrDiv#
+             , CASE WHEN #dmAddrDiv# = '4' THEN #dmAddr1# +' '+ #dmAddr2# ELSE '' END
+             , #dmPostNo#
+             , #dmAddr1#
+             , #dmAddr2#
+             , #createNo#
+             , GETDATE()
+             , #createIp#
+             )
+             
+	</insert>
+	 
+	<select id="Afd01SQL.retrieveAfdCntrct" parameterClass="hashMap" resultClass="egovMap">
+	
+		/* Afd01SQL.retrieveAfdCntrct */
+		SELECT '0' AS CHK
+             , '' AS ROW_STATUS
+             , A.ENGG_MGN_NO                 
+             , A.MEMBER_NO                   
+             , A.ENDW_CD                     
+             , (SELECT dbo.F_AFD_ENDW_NM(A.ENDW_CD) AS ENDW_NM ) AS ENDW_NM
+             , A.RCPMNYER_NM                
+             , A.ONLINE_ENGG_YN             
+             , A.ENGG_AMT                   
+             , A.FRST_ENGG_AMT           
+             , A.INSPY_MONTH_CNT       
+             , A.MT_INSPY_AMT             
+             , A.PAYMTHD                    
+             , A.ACTHNG_KND               
+             , A.ENGG_DT                     
+             , A.FRST_INSPY_PREARNGE_DT 
+             , A.FPY_PREARNGE_DT             
+             , A.RL_PREARNGE_DT              
+             , A.RECMNDR_MEM_NO          
+             , A.REMARK                     
+             , A.ENGG_STTUS               
+             , A.ENGG_CANCL_DESC     
+             , A.PAY_RESRVE_YN           
+             , A.RESERVEPD_FR             
+             , A.RESERVEPD_TO            
+             , A.RCPMNY_GDCC_YN      
+             , A.THANKS_SNDNG_YN     
+             , B.SUM_PAYMENT_AMT   
+         FROM AFD_CNTRCT A
+            , (SELECT A.MEMBER_NO ,A.ENGG_MGN_NO
+			        , SUM(A.ENGG_AMT) SUM_ENGG_AMT
+			        , SUM(B.PAYMENT_AMT) SUM_PAYMENT_AMT 
+			     FROM AFD_CNTRCT A LEFT OUTER JOIN AFD_RCPMNY B
+			          ON  A.ENGG_MGN_NO = B.ENGG_MGN_NO
+			    GROUP BY A.MEMBER_NO,A.ENGG_MGN_NO) B
+        WHERE 1 = 1
+          AND A.MEMBER_NO = B.MEMBER_NO
+          AND A.ENGG_MGN_NO = B.ENGG_MGN_NO
+          AND A.MEMBER_NO = #memberNo#
+        ORDER BY A.ENGG_MGN_NO
+        
+	</select>
+	
+	<select id="Afd01SQL.retrieveAfdDmsndng" parameterClass="hashMap" resultClass="egovMap">
+	
+		/* Afd01SQL.retrieveAfdDmsndng */
+		SELECT '0' AS CHK
+             , '' AS ROW_STATUS
+             , A.DM_SNDNG_NO                <!-- DM발송고유번호 -->
+             , A.DM_SNDNG_DT                <!-- DM발송일자 -->
+             , A.MEMBER_NO                  <!-- 회원번호 -->
+             , A.ENGG_MGN_NO               <!-- 약정관리번호 -->
+             , A.REMARK                     <!-- 비고 -->
+             , A.DM_ADDR_DIV                <!-- DM주소구분 -->
+             , A.DM_OVSEA_ADDR              <!-- DM해외주소 -->
+             , A.DM_POST_NO                 <!-- DM우편번호 -->
+             , A.DM_ADDR1                   <!-- DM주소1 -->
+             , A.DM_ADDR2                   <!-- DM주소2 -->
+             , A.DM_SNDNG_CNTN				<!--  발송내역 -->
+          FROM AFD_DMSNDNG A
+         WHERE 1 = 1
+           AND A.MEMBER_NO = #memberNo#
+         ORDER BY A.DM_SNDNG_NO
+	
+	</select>
+	
+	 
+	<select id="Afd01SQL.selectComboMembas" parameterClass="hashMap" resultClass="egovMap">
+	
+		/* Afd01SQL.selectComboMembas 회원구분조회 */
+		SELECT MEMBER_DIV_CD AS CD
+		     , MEMBER_DIV_NM AS CD_NM
+		     , AMT_FROM
+		     , AMT_TO
+		     , SORT_SEQ
+		  FROM AFD_MEMBAS
+		 ORDER BY SORT_SEQ
+		     , MEMBER_DIV_CD 
+		     
+	</select>
+	
+	<select id="Afd01SQL.selectAfdEvent"  parameterClass="java.util.HashMap" resultClass="egovMap">
+
+			SELECT '0' AS CHK
+				  , '' AS ROW_STATUS
+			      , COM_CD_DIV
+			      , COM_CD
+			      , COM_CD AS COM_CD_KEY
+			      , COM_CD_NM
+			      , COM_YAG
+			      , COM_ENG
+			      , COM_YAG_ENG
+			      , COM_CD_REF1
+			      , COM_CD_REF2
+			      , SORT_SEQ
+			      , MEMO
+			      , COM_SET_YN
+			      , UPMU_REF
+			      , CREATE_NO
+			      , CREATE_DT
+			      , ENTRY_NO
+			      , ENTRY_DT
+			      , USE_YN
+			      , COM_CD_REF3
+			      , COM_CD_REF4
+			      , COM_CD_REF5
+			      , COM_CD_REF6
+			      , COM_CD_REF7
+			      , COM_CD_REF8
+			      , COM_CD_REF9
+			      , COM_CD_REF10
+			      , COM_CD_REF11
+			      , COM_CD_REF12
+			      , COM_CD_REF13
+			      , COM_CD_REF14
+			      , COM_CD_REF15
+			      , COM_CD_REF16
+			      , COM_CD_REF17
+			      , COM_CD_REF18
+			      , COM_CD_REF19
+			  FROM COM_COD
+			 WHERE 1=1
+			   AND COM_CD <![CDATA[<>]]> '@'
+			   AND COM_CD_DIV = #pv_comCdDiv#
+			   <isNotEmpty prepend="AND" property="pv_useYn">
+			   ISNULL(USE_YN, 0) = #pv_useYn# 
+			   </isNotEmpty>
+			 ORDER BY COM_CD, SORT_SEQ
+	</select>
+	
+	<insert id="Afd01SQL.insertAfdEvent" parameterClass="java.util.HashMap">
+		INSERT INTO COM_COD (
+					COM_CD_DIV
+				  , COM_CD
+				  , COM_CD_NM
+				  , SORT_SEQ
+				  , USE_YN
+				  , COM_YAG
+			      , COM_ENG
+			      , COM_YAG_ENG
+			      , COM_CD_REF1
+			      , COM_CD_REF2
+			      , COM_SET_YN
+			      , UPMU_REF
+			      , COM_CD_REF3
+			      , COM_CD_REF4
+			      , COM_CD_REF5
+			      , COM_CD_REF6
+			      , COM_CD_REF7
+			      , COM_CD_REF8
+			      , COM_CD_REF9
+			      , COM_CD_REF10 )
+			SELECT
+				    #comCdDiv# comCdDiv
+				  ,  dbo.FN_LPAD(ISNULL(MAX(COM_CD),0)+1,3,0) AS COM_CD
+				  , #comCdNm# comCdNm
+				  , #sortSeq# sortSeq
+				  , #useYn# useYn
+				  , #comYag# comYag
+			      , #comEng# comEng
+			      , #comYagEng# comYagEng
+			      , #comCdRef1# comCdRef1
+			      , #comCdRef2# comCdRef2
+			      , #comSetYn# comSetYn
+			      , #upmuRef# upmuRef
+			      , #comCdRef3# comCdRef3
+			      , #comCdRef4# comCdRef4
+			      , #comCdRef5# comCdRef5
+			      , #comCdRef6# comCdRef6
+			      , #comCdRef7# comCdRef7
+			      , #comCdRef8# comCdRef8
+			      , #comCdRef9# comCdRef9
+			      , #comCdRef10# comCdRef10
+		     FROM  COM_COD
+		    WHERE COM_CD_DIV = 'AFD02' AND COM_CD <![CDATA[<>]]> '@'
+	</insert>
+	
+	
+</sqlMap>

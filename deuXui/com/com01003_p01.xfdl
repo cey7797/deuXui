@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\default_typedef.xml"/>
+  <Form id="com01003_p01" classname="com02001_P" left="0" top="0" width="790" height="522" titletext="우편번호 검색" onload="com01003_p01_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="1" left="15" top="45" height="39" cssclass="search" width="750">
+          <Layouts>
+            <Layout>
+              <Edit id="edt_dong" taborder="13" left="326" top="9" width="163" height="21" onkeydown="div_search_edt_dong_onkeydown" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static01" taborder="18" text="지번/도로명" cssclass="search" left="247" top="9" width="113" height="22"/>
+              <Combo id="cmb_cityGb" taborder="21" innerdataset="@ds_city" codecolumn="comCd" datacolumn="comCdNm" left="83" top="9" width="140" height="21" visible="true" index="-1"/>
+              <Static id="Static08" taborder="22" text="시도 구분" cssclass="search" left="20" top="9" width="55" height="22" visible="true"/>
+              <Static id="Static33" taborder="23" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="0" top="0" width="20" height="39"/>
+              <Static id="Static12" taborder="26" text="H9" cssclass="tipGuide" visible="false" left="204" top="0" width="30" height="9"/>
+              <Static id="Static11" taborder="27" text="H9" cssclass="tipGuide" visible="false" left="204" top="30" width="30" height="9"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static28" taborder="2" text="w&#13;&#10;15" visible="false" left="0" top="0" width="15" height="462" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static29" taborder="3" text="w25" visible="false" left="765" top="68" width="3.16%" height="318" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_search" taborder="8" text="조회" cssclass="search" top="10" width="60" height="25" tooltiptype="hover" tooltiptext="조회" left="705" onclick="btn_search_onclick"/>
+        <Static id="Static23" taborder="44" left="15" top="11" height="13" width="7" style="background:transparent URL('theme://images\h1_icon.gif');"/>
+        <Grid id="grd_main" taborder="51" binddataset="ds_addr" autoenter="select" useinputpanel="false" left="15" top="99" right="25" height="363" style="color:crimson;" autofittype="col" oncelldblclick="grd_main_oncelldblclick">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="30" band="left"/>
+                <Column size="104"/>
+                <Column size="284"/>
+                <Column size="112"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" edittype="none" text="우편번호"/>
+                <Cell col="2" text="주소"/>
+                <Cell col="3" text="번지"/>
+              </Band>
+              <Band id="body">
+                <Cell text="expr:currow+1"/>
+                <Cell col="1" displaytype="normal" edittype="normal" text="bind:zip"/>
+                <Cell col="2" displaytype="normal" edittype="none" style="align:left;" text="bind:addr"/>
+                <Cell col="3" text="bind:addrJibeun"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static04" taborder="52" text="우편번호 검색" cssclass="sta_WF_Title" left="23" top="9" width="170" height="29"/>
+        <Static id="Static00" taborder="53" text="h10" cssclass="tipGuide" visible="false" left="731" top="0" width="34" height="10"/>
+        <Static id="Static05" taborder="54" text="h10" cssclass="tipGuide" visible="false" left="731" top="35" width="34" height="10"/>
+        <Static id="Static03" taborder="55" text="h14" cssclass="tipGuide" visible="false" left="36" top="31" width="74" height="14"/>
+        <Static id="Static22" taborder="56" text="h17" cssclass="tipGuide" visible="false" left="36" top="0" width="74" height="17"/>
+        <Static id="Static34" taborder="57" text="h45" cssclass="tipGuide" visible="false" left="198" top="0" width="74" height="45"/>
+        <Static id="Static21" taborder="58" text="h15" cssclass="tipGuide" visible="false" left="119" top="84" right="329" height="15"/>
+        <Static id="bg" taborder="59" cssclass="sta_POP_bottomBg" left="15" top="477" width="760" height="41" positionstep="-1"/>
+        <Button id="btn_close00" taborder="60" text="닫기" onclick="btn_close_onclick" cssclass="btn_POP_Common" left="715" top="487" width="60" height="21"/>
+        <Static id="Static02" taborder="61" text="h15" cssclass="tipGuide" visible="false" right="15" bottom="45" width="760" height="15"/>
+        <Static id="Static06" taborder="62" text="10" cssclass="tipGuide" visible="false" right="15" bottom="35" width="136" height="10"/>
+        <Static id="Static07" taborder="63" text="10" cssclass="tipGuide" visible="false" right="15" bottom="4" width="136" height="10"/>
+        <Button id="btn_confirm" taborder="64" text="확인" onclick="btn_confrim_onclick" cssclass="btn_POP_Common" left="650" top="487" width="60" height="21"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_dummy" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="deptNmKor" type="STRING" size="256"/>
+          <Column id="deptCd" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_addr" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="zip" type="STRING" size="256"/>
+          <Column id="addr" type="STRING" size="256"/>
+          <Column id="bunji" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_city" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="comCd" type="STRING" size="256"/>
+          <Column id="comCdNm" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Bind>
+      <BindItem id="item0" compid="grd_main" propid="" datasetid="ds_cmmn_cd" columnid=""/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : com010003_p01.xfdl
+* 화면설명     : 우편번호검색팝업
+* 작성자       : 최용현
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.05.01     최용현         최초생성
+******************************************************************************/
+
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+this.com01003_p01_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	var arrDataSet = Array(0);
+		arrDataSet[0]  =  "ds_city";  		//시도 구분
+	
+	// 조회조건으로	넘어갈 공통코드	정의.(화면대로 순서꼭 지켜주세요.)
+	
+	var arrGrpCd = Array(0);
+		arrGrpCd[0]  = "COM_COD_28"; //시도 구분
+			
+	// 사용여부	지정할 아큐먼트를 넘긴다.
+	var arrUseYn =	Array(0);
+		arrUseYn[0]  =	"Y";
+	
+	// T:전체,S:선택,X:없음 
+	var arrModeFg =	Array(0);
+		arrModeFg[0]  =	"S";
+
+	// WHERE절 내용 "X":없음
+	var arrWhere =	Array(0);
+		arrWhere[0]  =	"com_cd <> '@'";//ABB_CD IN ('S','K')
+		
+	/* 메소드명     : ComboLoad
+	 * 설명         : 공통코드 테이블을 조회하여 콤보박스를 생성한다.
+	 * 메소드인수1  : DataSet명의 배열
+	 * 메소드인수2  : 그룹코드번호의 배열
+	 * 메소드인수3  : 캠퍼스구분 배열 ("T":전체, "C":공통만, "S":서울, "K":경주)
+	 * 메소드인수4  : 조건문의 배열 (1:사용, 0:사용안함)
+	 * 메소드인수5  : 전체공란 첨부여부 "T": 전체, "S":선택, "X" : 데이터시작
+	 * 메소드인수6  : WHERE절 내용 "X":없음
+	 */
+
+ 	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+
+}
+	
+this.fn_postLoad = function()
+{
+	this.div_search.cmb_cityGb.set_index(0);
+	this.div_search.edt_dong.set_value("");
+}
+
+this.btn_close_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.close("close");
+}
+
+this.btn_confrim_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	//변수를 return 할 경우
+	//this.close(this.parent.stuNm);
+	
+	//Dataset을 return 할 경우
+	this.ds_dummy.copyData(this.ds_addr);
+	this.ds_dummy.clearData();
+	
+	var addRow = this.ds_dummy.addRow();
+	this.ds_dummy.copyRow(addRow, this.ds_addr, this.ds_addr.rowposition);
+
+	this.close(this.ds_dummy.saveXML());
+	
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preFind
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/ 
+this.fn_preSearch = function()
+{
+	this.ds_addr.clearData();
+	
+	if(!this.gfn_isNull(this.div_search.cmb_cityGb.value)){
+		if(!this.gfn_isNull(this.div_search.edt_dong.value)){
+			return true;
+		} else {
+			this.gfn_message("A","지번/도로명을 입력하세요.");
+			return false;
+		}
+	} else {
+		this.gfn_message("A","시도 구분을 입력하세요."); 
+		return false;
+	}
+	return false; 
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_search_onclick
+ * 함수설명 	: 조회 버튼 클릭 함수
+********************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.fn_preSearch()){
+		var strArg  = "pv_cityGb="  + nexacro.wrapQuote(this.div_search.cmb_cityGb.value);
+		    strArg  += "pv_detail="  + nexacro.wrapQuote(this.div_search.edt_dong.value);
+
+		this.gfn_transaction("ADDR",
+							 "txComUrl::com/selectZipPopUp.do",
+							 "",
+							 "ds_addr=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postFind
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearch = function()
+{
+// 	var jojikNm = this.div_search.edt_jojikNm.value;
+// 	
+// 	if(!this.gfn_isNull(jojikNm)){
+// 		var jojikIdx = this.ds_jojik.findRow("deptNmKor", jojikNm);
+// 		this.ds_jojik.set_rowposition(jojikIdx);
+// 	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		}else if(trId=="ADDR"){
+			this.fn_postSearch();
+		}
+	}
+}
+
+this.grd_main_oncelldblclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	this.ds_dummy.copyData(this.ds_addr);
+	this.ds_dummy.clearData();
+	
+	var addRow = this.ds_dummy.addRow();
+	this.ds_dummy.copyRow(addRow, this.ds_addr, this.ds_addr.rowposition);
+
+	this.close(this.ds_dummy.saveXML());
+}
+
+this.div_search_edt_dong_onkeydown = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	if(e.keycode == "13") {
+		this.btn_search_onclick();
+	}
+}
+
+]]></Script>
+  </Form>
+</FDL>

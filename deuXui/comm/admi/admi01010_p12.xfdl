@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="admi01010_p12" classname="Component_Guide" inheritanceid="" position="absolute" scrollbars="none" left="0" top="0" width="790" height="522" titletext="(원)결의서조회팝업" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Grid id="grid_origy_vou" taborder="0" binddataset="ds_origyVou" formatid="10" useinputpanel="false" autofittype="col" nodatatext="No Data" treeinitstatus="expand,all" left="15" top="99" width="760" height="363" oncelldblclick="grid_origy_vou_oncelldblclick">
+          <Formats>
+            <Format id="10">
+              <Columns>
+                <Column size="80"/>
+                <Column size="100"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="120"/>
+                <Column size="140"/>
+                <Column size="40"/>
+                <Column size="120"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="회계년도"/>
+                <Cell col="1" text="회계단위"/>
+                <Cell col="2" text="결의종류"/>
+                <Cell col="3" text="진행상태"/>
+                <Cell col="4" text="결의번호"/>
+                <Cell col="5" text="결의제목"/>
+                <Cell col="6" text="예산&#13;&#10;건수"/>
+                <Cell col="7" text="결의금액"/>
+              </Band>
+              <Band id="body">
+                <Cell style="align:center;" text="bind:acntYy"/>
+                <Cell col="1" style="align:center;" text="bind:acntUntNm"/>
+                <Cell col="2" style="align:center;" text="bind:vouKndNm"/>
+                <Cell col="3" style="align:center;" text="bind:staCdNm"/>
+                <Cell col="4" style="align:center;" text="bind:vouNo" mask="@@@@@@@@-@@@@"/>
+                <Cell col="5" style="align:left;" text="bind:vouTtl"/>
+                <Cell col="6" style="align:center;" text="bind:vouSeqCnt"/>
+                <Cell col="7" displaytype="number" style="align:right;" text="bind:aplyAmtSum" mask="###,###,###,##0"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Div id="div_search" taborder="1" left="15" top="45" width="760" height="39" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static07" taborder="55" text="결의종류" cssclass="search" left="21" top="9" width="49" height="22"/>
+              <Static id="Static33" taborder="57" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="1" top="0" width="20" height="39"/>
+              <Static id="Static14" taborder="58" text="W10" cssclass="tipGuide" visible="false" left="70" top="1" width="13" height="37"/>
+              <Static id="Static12" taborder="59" text="H9" cssclass="tipGuide" visible="false" left="174" top="0" width="29" height="9"/>
+              <Static id="Static11" taborder="60" text="H9" cssclass="tipGuide" visible="false" left="174" top="30" width="29" height="9"/>
+              <Static id="Static13" taborder="61" text="W20" cssclass="tipGuide" visible="false" left="238" top="1" width="19" height="37"/>
+              <Static id="Static00" taborder="62" text="결의제목" cssclass="search" left="261" top="9" width="49" height="22"/>
+              <Edit id="S_VOU_TTL" taborder="63" left="41.58%" top="9" right="38.29%" height="22" style="border:1 solid #ccccccff ;" onkeydown="div_search_S_VOU_TTL_onkeydown"/>
+              <Combo id="S_VOU_KND" taborder="64" innerdataset="@ds_cmb_vou_knd_p" codecolumn="comCd" datacolumn="comCdNm" left="83" top="9" width="156" height="22" style=":disabled {color:black;}" class="essential" onitemchanged="div_search_S_VOU_KND_onitemchanged"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static00" taborder="2" text="(원)결의서조회팝업" cssclass="sta_WF_Title" left="15" top="9" width="170" height="29"/>
+        <Static id="Static34" taborder="3" text="h45" cssclass="tipGuide" visible="false" left="198" top="0" width="74" height="45"/>
+        <Static id="Static02" taborder="4" text="w15" cssclass="tipGuide" visible="false" left="0" top="6" width="15" height="503"/>
+        <Static id="Static06" taborder="5" text="w15" cssclass="tipGuide" visible="false" left="775" top="6" width="15" height="503"/>
+        <Static id="Static21" taborder="6" text="h15" cssclass="tipGuide" visible="false" left="119" top="84" right="329" height="15"/>
+        <Static id="bg" taborder="7" cssclass="sta_POP_bottomBg" left="15" top="477" width="760" height="41" positionstep="-1"/>
+        <Button id="btn_close" taborder="8" text="닫기" onclick="btn_close_onclick" cssclass="btn_POP_Common" left="715" top="487" width="60" height="21"/>
+        <Static id="Static03" taborder="9" text="h10" cssclass="tipGuide" visible="false" left="741" top="0" width="34" height="10"/>
+        <Button id="btn_search" taborder="10" text="조회" onclick="btn_search_onclick" cssclass="btn_WF_commonSearch" top="10" right="15" width="60" height="25"/>
+        <Static id="Static04" taborder="11" text="h10" cssclass="tipGuide" visible="false" left="741" top="35" width="34" height="10"/>
+        <Static id="Static05" taborder="12" text="h15" cssclass="tipGuide" visible="false" right="15" bottom="45" width="760" height="15"/>
+        <Static id="Static28" taborder="13" text="10" cssclass="tipGuide" visible="false" right="15" bottom="35" width="136" height="10"/>
+        <Static id="Static01" taborder="14" text="10" cssclass="tipGuide" visible="false" right="15" bottom="4" width="136" height="10"/>
+        <Static id="Static22" taborder="15" text="h17" cssclass="tipGuide" visible="false" left="36" top="0" width="74" height="17"/>
+        <Static id="Static23" taborder="16" text="h14" cssclass="tipGuide" visible="false" left="36" top="31" width="74" height="14"/>
+        <Button id="btn_confirm" taborder="17" text="확인" onclick="btn_confirm_onclick" cssclass="btn_POP_Common" left="650" top="487" width="60" height="21"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_origyVou"/>
+      <Dataset id="ds_dummy" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+      <Dataset id="ds_cmb_vou_knd_p" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+    </Objects>
+    <Bind/>
+    <Script type="xscript5.0"><![CDATA[/* ====================================================================
+ * 01. 업무구분	: 행정공통
+ * 02. 화면명		: admi01010_p12.xfdl
+ * 03. 화면설명	: (원)결의서조회 팝업.
+ * 04. 작성일		: 2016.03.03
+ * 05. 작성자		: 박태희
+ * 06. 수정이력	: 
+ * ====================================================================
+ *     수정일     수정자   내용
+ * ====================================================================
+ *
+ * ==================================================================== */
+ 
+/* ====================================================================
+ * 1. 공통 라이브러리
+ * ==================================================================== */
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+/* ====================================================================
+ * 2. 변수 선언부
+ * ==================================================================== */
+var acntUnt;	//회계단위
+var acntYy;		//회계년도
+var vouKnd;		//결의종류
+var vouTtl;		//결의제목
+var vouOrgId;	//결의부서
+var autoClose;  //자동종료옵션
+var autoSearch; //자동조회옵션
+
+/* ====================================================================
+ * 3. Event 처리 부분
+ * ==================================================================== */
+
+/******************************************************************************
+* 함 수 명 	: admi01010_p12_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	var arrDataSet = Array(1);
+		arrDataSet[0]  = "ds_cmb_vou_knd_p";	//결의종류
+		
+	
+	var arrGrpCd = Array(1);
+		arrGrpCd[0]  = "AC001";
+		
+
+	// 사용여부	지정할 아큐먼트를 넘긴다.
+	var arrUseYn =	Array(1);
+		arrUseYn[0]  =	"Y";
+		
+	
+	// T:전체,S:선택,X:없음 
+	var arrModeFg =	Array(1);
+		arrModeFg[0]  =	"X";
+	
+	
+	// WHERE절 내용 "X":없음
+	var arrWhere =	Array(1);
+		arrWhere[0]  =	"COM_CD IN ('11', '21')";	//수입, 지출
+
+		
+	/* 메소드명     : ComboLoad
+	 * 설명			 : 공통코드 테이블을 조회하여 콤보박스를 생성한다.
+	 * 메소드인수1  : DataSet명의 배열
+	 * 메소드인수2  : 그룹코드번호의 배열
+	 * 메소드인수3  : 캠퍼스구분 배열 ("T":전체, "C":공통만, "S":서울, "K":경주)
+	 * 메소드인수4  : 조건문의 배열 (1:사용, 0:사용안함)
+	 * 메소드인수5  : 전체공란 첨부여부 "T": 전체, "S":선택, "X" : 데이터시작
+	 * 메소드인수6  : WHERE절 내용 "X":없음
+	 */
+
+ 	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+	
+	//this.fn_postLoad();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{
+	this.acntUnt = this.gfn_nvl(this.parent.acntUnt,'');			//회계단위
+	this.acntYy = this.gfn_nvl(this.parent.acntYy,'');				//회계년도
+	this.vouKnd = this.gfn_nvl(this.parent.vouKnd,'');				//결의종류
+	this.vouTtl = this.gfn_nvl(this.parent.vouTtl,'');				//결의제목
+	this.vouOrgId = this.gfn_nvl(this.parent.vouOrgId,'');			//결의부서
+	this.autoClose = this.gfn_nvl(this.parent.autoClose,false);		//자동선택후 종료옵션
+	this.autoSearch = this.gfn_nvl(this.parent.autoSearch,false);	//자동조회 옵션
+	
+	this.div_search.S_VOU_KND.set_value(this.vouKnd);
+	this.div_search.S_VOU_TTL.set_value(this.vouTtl);
+	
+	if(this.autoSearch) {
+		this.fn_search();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_confirm_onclick
+ * 함수설명 	: 확인
+ *********************************************************************/
+this.btn_confirm_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_confirm();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_confirm
+ * 함수설명 	: 부모로 리턴
+ *********************************************************************/
+this.fn_confirm = function()
+{
+	this.ds_dummy.copyData(this.ds_origyVou);
+	this.ds_dummy.clearData();
+	
+	var addRow = this.ds_dummy.addRow();
+	this.ds_dummy.copyRow(addRow, this.ds_origyVou, this.ds_origyVou.rowposition);
+	this.close(this.ds_dummy.saveXML());
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_close_onclick
+ * 함수설명 	: 화면 종료
+ *********************************************************************/
+this.btn_close_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.close("close");
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_search_onclick
+ * 함수설명 	: 조회 버튼 클릭 함수
+********************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preSearch
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preSearch = function()
+{
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_search = function()
+{
+	if(this.fn_preSearch()){
+		var strArg   = "acntYy=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.acntYy));
+			strArg  += " acntUnt=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.acntUnt));
+			strArg  += " vouOrgId=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.vouOrgId));
+			strArg  += " vouKnd=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.S_VOU_KND.value));
+			strArg  += " vouTtl=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.S_VOU_TTL.value));
+		
+		this.gfn_transaction("SEARCH",
+							 "txAdmUrl::com/admi/adcom/admi01010_p12_01.do",
+							 "",
+							 "ds_origyVou=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postSearch
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearch = function()
+{
+	if(autoClose && ds_origyVou.rowcount == 1){
+		this.fn_confirm();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		} else if(trId=="SEARCH"){
+			this.fn_postSearch();
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: grid_origy_vou_oncelldblclick
+ * 함수설명 	: 그리드 더블클릭
+ *********************************************************************/
+this.grid_origy_vou_oncelldblclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	this.fn_confirm();
+}
+
+this.div_search_S_VOU_KND_onitemchanged = function(obj:Combo, e:nexacro.ItemChangeEventInfo)
+{
+	this.fn_search();
+}
+
+this.div_search_S_VOU_TTL_onkeydown = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	if(e.keycode == "13") {
+		this.fn_search();
+	}
+}
+]]></Script>
+  </Form>
+</FDL>

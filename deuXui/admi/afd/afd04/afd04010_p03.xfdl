@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd04010_p03" classname="ctc01001_p01" left="0" top="0" width="600" height="220" titletext="고유식별정보동의서" cssclass="popup_bg" onload="afd04010_p01_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="39" left="7" top="7" height="43" scrollbars="none" cssclass="search" ondrag="div_sCstmr_ondrag" width="586">
+          <Layouts>
+            <Layout width="919" height="69">
+              <Static id="Static00" taborder="66" text="성명" cssclass="search" left="207" top="10" right="65.84%" height="22" class="search_bul"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static29" taborder="9" text="w25" visible="false" top="50" right="1.5%" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;" width="426"/>
+        <ImageViewer id="ImageViewer01" image="URL('theme://images\tbg.gif')" left="7" top="144" height="39" width="586"/>
+        <Static id="Static00" taborder="40" text=" 귀하는 이에 대한 동의를 거부할 수 있으며, 다만, 동의가 없을 경우 이와 관련된 업무 진행이 불가능할 수 있음을 알려드립니다." onclick="Static00_onclick" cssclass="popup_title" enable="false" left="16" top="148" right="2.17%" height="29" wordwrap="char"/>
+        <Button id="btn_ok" taborder="45" text="확인" right="280" height="22" tooltiptype="hover" tooltiptext="Tooltip" userBtnAuth="S" width="40" onclick="btn_ok_onclick" top="190" cssclass="btn_WF_Common"/>
+        <Static id="Static08" taborder="47" text="고유식별정보 처리에 대한 동의" cssclass="search" left="16" top="18" width="540" height="22"/>
+        <Static id="Static14" taborder="48" cssclass="detail_bg" left="7" top="57" height="30" width="586"/>
+        <Static id="Static17" taborder="49" text="수집하는 고유식별정보 항목" cssclass="detail_title" left="8" top="57" width="195" height="30"/>
+        <Static id="Static02" taborder="50" cssclass="detail_bg" left="7" top="86" height="30" width="586"/>
+        <Static id="Static03" taborder="51" text="고유식별정보의 수집 및 이용목적" cssclass="detail_title" left="8" top="86" width="195" height="30"/>
+        <Static id="Static05" taborder="52" cssclass="detail_bg" left="7" top="115" height="30" width="586"/>
+        <Static id="Static06" taborder="53" text="고유식별정보의 보유 및 이용기간" cssclass="detail_title" left="8" top="115" width="195" height="30"/>
+        <Static id="sta_endwNm" taborder="56" left="210" top="58" height="28" width="383" text="주민등록번호"/>
+        <Static id="sta_enggAmt" taborder="57" left="208" top="87" height="28" width="385" text="제공하신 주민등록번호는 연말정산 기부금영수증발급용을 위해 사용" wordwrap="char"/>
+        <Static id="sta_paymthd" taborder="58" left="208" top="116" height="28" width="385" text="개인정보 제출 후 준영구 또는 개인정보 삭제 신청시까지"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_endwDivLevl"/>
+      <Dataset id="ds_endw" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" onrowposchanged="ds_endw_onrowposchanged">
+        <ColumnInfo>
+          <Column id="chk" type="string" size="32"/>
+          <Column id="rowStatus" type="string" size="32"/>
+          <Column id="endwCd" type="string" size="32"/>
+          <Column id="endwNm" type="string" size="32"/>
+          <Column id="upperEndwCd" type="string" size="32"/>
+          <Column id="endwDivLevl" type="string" size="32"/>
+          <Column id="largeEndwCd" type="string" size="32"/>
+          <Column id="mediumEndwCd" type="string" size="32"/>
+          <Column id="smallEndwCd" type="string" size="32"/>
+          <Column id="fundSdt" type="string" size="32"/>
+          <Column id="fundEdt" type="string" size="32"/>
+          <Column id="remark" type="string" size="32"/>
+          <Column id="useYn" type="string" size="32"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_dummy"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::lib_String.xjs";
+
+this.afd04010_p01_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{	
+			
+}
+
+this.btn_ok_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_ok();
+}
+
+this.fn_ok = function() 
+{
+	this.close("close");
+}]]></Script>
+  </Form>
+</FDL>

@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="fd05010_d01" classname="aac01001_001" left="0" top="0" width="500" height="753" titletext="대학발전기금 기탁현황" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_printForm" taborder="37" text="div_printForm" left="-1" top="1" height="752" width="500">
+          <Layouts>
+            <Layout>
+              <Static id="Static14" taborder="0" cssclass="detail_bg" left="0" top="1" height="30" style="border:1 solid #c7c9ccff,0 none #808080ff;" right="0"/>
+              <Static id="Static05" taborder="1" text="기탁일자" cssclass="detail_title" left="-1" top="1" width="100" height="30" style="align:left;"/>
+              <Static id="Static16" taborder="47" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="528" top="1" width="20" height="503"/>
+              <Button id="btn_print" taborder="46" text="출력" cssclass="print" top="65" right="1" width="60" height="22" tooltiptype="hover" tooltiptext="출력" userBtnAuth="P" onclick="div_printForm_btn_print_onclick"/>
+              <Static id="Static18" taborder="49" text="H10" cssclass="tipGuide" visible="false" left="-1" top="87" width="502" height="10"/>
+              <Static id="Static17" taborder="53" text="H10" cssclass="tipGuide" visible="false" left="-1" top="44" width="502" height="10"/>
+              <Div id="div_Yymm_Fr" taborder="54" url="component::monthCalendar.xfdl" left="100" top="5" width="82" height="22"/>
+              <Div id="div_Yymm_To" taborder="55" url="component::monthCalendar.xfdl" left="196" top="5" width="82" height="22"/>
+              <Static id="Static00" taborder="56" text="~" left="184" top="5" width="22" height="23" style="align:left middle;"/>
+              <Static id="Static01" taborder="57" cssclass="detail_bg" left="0" top="30" right="0" height="30" style="border:1 solid #c7c9ccff,0 none #808080ff;"/>
+              <Static id="Static02" taborder="58" text="기금코드" cssclass="detail_title" left="-1" top="30" width="100" height="30" style="align:left;"/>
+              <Edit id="edt_endwNm" taborder="60" readonly="true" cssclass="compulsory" left="102" top="34" width="196" height="22"/>
+              <Edit id="edt_endwCd" taborder="61" cssclass="compulsory" visible="false" left="327" top="34" width="172" height="22" style="border:1 solid #ccccccff ;"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Button id="btn_endwPop" taborder="39" onclick="btn_endwPop_onclick" cssclass="popupDetail" left="301" top="35" width="22" height="22" tooltiptype="hover" tooltiptext="조회"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_dummy"/>
+    </Objects>
+    <Bind>
+      <BindItem id="item1" compid="Div00.cmb_pfmBudgCd" propid="value" datasetid="ds_bgFrmn" columnid="budgCd"/>
+      <BindItem id="item3" compid="Div00.Radio00" propid="value" datasetid="ds_bgFrmn" columnid="balDiv"/>
+      <BindItem id="item2" compid="Div00.cmb_pfmAcntUnt" propid="value" datasetid="ds_bgFrmn" columnid="acntUnt"/>
+      <BindItem id="item0" compid="Div00.spn_acntYy00" propid="value" datasetid="ds_bgFrmn" columnid="acntYy"/>
+      <BindItem id="item18" compid="div_searchForm.spn_acntYy" propid="value" datasetid="ds_bgBiz" columnid="begYy"/>
+      <BindItem id="item9" compid="div_searchForm.cmb_acntUnt" propid="value" datasetid="ds_bgBiz" columnid="acntUnt"/>
+      <BindItem id="item4" compid="div_searchForm.cmb_acntUnt00" propid="value" datasetid="ds_bgBiz" columnid="acntUnt"/>
+      <BindItem id="item5" compid="div_searchForm.cmb_acntUnt01" propid="value" datasetid="ds_bgBiz" columnid="acntUnt"/>
+      <BindItem id="item6" compid="div_searchForm.cmb_acntUnt02" propid="value" datasetid="ds_bgBiz" columnid="acntUnt"/>
+      <BindItem id="item32" compid="div_printForm.edt_endwNm" propid="value" datasetid="ds_onlnCntrct" columnid="endwNm"/>
+      <BindItem id="item7" compid="div_printForm.edt_endwCd" propid="value" datasetid="ds_onlnCntrct" columnid="endwCd"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+	
+/******************************************************************************
+* 함 수 명 	: form_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	//조회년월
+	this.div_printForm.div_Yymm_Fr.setData(this.gfn_getCurrentDate("YYYYMM"));
+	this.div_printForm.div_Yymm_To.setData(this.gfn_getCurrentDate("YYYYMM"));
+}
+ 
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0)
+	{
+		this.gfn_message("A", errMsg);
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: div_printForm_btn_print_onclick
+ * 함수설명 	: 레포트 호출
+ *********************************************************************/
+this.div_printForm_btn_print_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	//시작일 null체크
+	if(this.gfn_isNull(this.div_printForm.div_Yymm_Fr.getData()))
+	{
+		this.gfn_message("A", "기탁시작일은 필수입력입니다.");
+		return false;
+	} 
+	//종료일 null체크
+	if(this.gfn_isNull(this.div_printForm.div_Yymm_To.getData()))
+	{
+		this.gfn_message("A", "기탁종료일은 필수입력입니다.");
+		return false;
+	}
+	
+	var objParams = {yymmFr:this.div_printForm.div_Yymm_Fr.getData()
+	                ,yymmTo:this.div_printForm.div_Yymm_To.getData()
+	                ,endwCd:this.div_printForm.edt_endwCd.value
+	                };
+	
+	this.parent.fn_print(objParams);
+}
+
+this.btn_endwPop_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var popupId = "afd02020_p01";
+	var popupUrl = "afd02::afd02020_p01.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var argumentsList = new Array();
+
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, this);
+}
+/****************************************************************************
+* 함 수 명 	: fn_popCallBack
+* 함수설명 	: 팝업 callback함수
+*****************************************************************************/
+this.fn_popCallBack = function(strID, rtnVal) 
+{
+	if("close" == rtnVal) 
+	{
+		return;
+	}
+		
+	//기금팝업
+	if("afd02020_p01" == strID) 
+	{
+		this.ds_dummy.loadXML(rtnVal);
+
+		this.div_printForm.edt_endwCd.set_value(this.ds_dummy.getColumn(0, "endwCd"));
+		this.div_printForm.edt_endwNm.set_value(this.ds_dummy.getColumn(0, "endwNm"));
+	}
+}
+]]></Script>
+  </Form>
+</FDL>

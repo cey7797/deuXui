@@ -1,0 +1,3387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Ac03SQL">
+
+    <typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>    
+    
+    <!--
+    #########################################################################################################################################
+    # 일계표(admi/ac/ac03/ac03010.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    <select id="ac03DAO.selectAc03010MainList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac03DAO.selectAc03010MainList 일계표 main 조회 */
+		SELECT ASD.ACNT_YY
+              ,BAC.UPR_ACNT_CD AS ACNT_CD
+              ,dbo.F_AC_GET_ACNT_INFO(ASD.ACNT_YY, #acntUnt#, BAC.UPR_ACNT_CD, '', '' ) AS ACNT_NM
+              ,SUM(CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT 
+                        WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+					    WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1 
+                        ELSE 0 END ) AS SLIP_AMT_SUM_10
+              ,SUM(CASE WHEN ASD.DRCR_CD = '20' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+                        WHEN ASD.DRCR_CD = '20' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+                        WHEN ASD.DRCR_CD = '10' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1
+                        ELSE 0 END ) AS SLIP_AMT_SUM_20
+              ,COUNT(CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.ACNT_CD 
+                          WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN ASD.ACNT_CD
+						  WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.ACNT_CD
+						  ELSE NULL END ) AS CNT_10
+              ,COUNT(CASE WHEN ASD.DRCR_CD = '20' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.ACNT_CD
+                          WHEN ASD.DRCR_CD = '20' AND ASD.SLIP_AMT > 0 THEN ASD.ACNT_CD
+						  WHEN ASD.DRCR_CD = '10' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.ACNT_CD
+						  ELSE NULL END ) AS CNT_20
+              ,SUM(CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT 
+                        WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT 
+					    WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1 
+                        ELSE 0 END ) AS SLIP_AMT_SUM_10_SUM
+              ,SUM(CASE WHEN ASD.DRCR_CD = '20' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+                        WHEN ASD.DRCR_CD = '20' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+                        WHEN ASD.DRCR_CD = '10' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1
+                        ELSE 0 END ) AS SLIP_AMT_SUM_20_SUM
+              ,COUNT(CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.ACNT_CD
+                          WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN ASD.ACNT_CD
+						  WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.ACNT_CD
+						  ELSE NULL END ) AS CNT_10_SUM
+              ,COUNT(CASE WHEN ASD.DRCR_CD = '20' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.ACNT_CD
+                          WHEN ASD.DRCR_CD = '20' AND ASD.SLIP_AMT > 0 THEN ASD.ACNT_CD
+						  WHEN ASD.DRCR_CD = '10' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.ACNT_CD
+						  ELSE NULL END ) AS CNT_20_SUM
+	          ,'1' AS GB
+	          ,( SELECT COUNT(DISTINCT SLIP_NO)
+	               FROM AC_SLIP RASL
+	              WHERE RASL.ACNT_YY = ASD.ACNT_YY
+	                AND RASL.ACNT_UNT IN (SELECT ACNT_UNT
+					                       FROM BG_UNT WITH(NOLOCK)
+					                      WHERE ACNT_UNT = #acntUnt#
+					                        AND ADD_YN = '0'
+			
+					                     UNION
+			
+					                     SELECT ADD_ACNT_UNT
+					                       FROM BG_UNT_ADD WITH(NOLOCK)
+					                      WHERE ACNT_UNT = #acntUnt#)
+	                AND RASL.SLIP_CFM_DT = #slipCfmDt#  ) AS SLIP_CNT
+          FROM AC_SLIP_DET ASD WITH(NOLOCK)
+         INNER
+          JOIN AC_SLIP ASL WITH(NOLOCK)
+            ON ASD.ACNT_YY = ASL.ACNT_YY
+           AND ASD.ACNT_UNT = ASL.ACNT_UNT
+           AND ASD.SLIP_NO = ASL.SLIP_NO
+         INNER
+          JOIN BG_ACNT_CD BAC
+               ON ASD.ACNT_YY = BAC.ACNT_YY
+               AND ASD.ACNT_UNT = BAC.ACNT_UNT
+               AND ASD.ACNT_CD = BAC.ACNT_CD
+         WHERE ASD.ACNT_YY = #acntYy#
+           AND ASD.ACNT_UNT IN (SELECT ACNT_UNT
+				                      FROM BG_UNT WITH(NOLOCK)
+				                     WHERE ACNT_UNT = #acntUnt#
+				                       AND ADD_YN = '0'
+		
+				                    UNION
+		
+				                    SELECT ADD_ACNT_UNT
+				                      FROM BG_UNT_ADD WITH(NOLOCK)
+				                     WHERE ACNT_UNT = #acntUnt#)
+           AND ASL.SLIP_CFM_DT = #slipCfmDt#
+           GROUP BY ASD.ACNT_YY,BAC.UPR_ACNT_CD
+           
+        UNION ALL
+           
+		SELECT ASD.ACNT_YY
+              ,BAC.ACNT_CD AS ACNT_CD
+              ,'   - ' + dbo.F_AC_GET_ACNT_INFO(ASD.ACNT_YY, #acntUnt#, BAC.ACNT_CD, '', '' ) AS ACNT_NM
+              ,SUM(CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+                        WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT 
+					    WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1 
+                        ELSE 0 END ) AS SLIP_AMT_SUM_10
+              ,SUM(CASE WHEN ASD.DRCR_CD = '20' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+                        WHEN ASD.DRCR_CD = '20' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+                        WHEN ASD.DRCR_CD = '10' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1
+                        ELSE 0 END ) AS SLIP_AMT_SUM_20
+              ,COUNT(CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.ACNT_CD
+                          WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN ASD.ACNT_CD
+						  WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.ACNT_CD
+						  ELSE NULL END ) AS CNT_10
+              ,COUNT(CASE WHEN ASD.DRCR_CD = '20' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.ACNT_CD
+                          WHEN ASD.DRCR_CD = '20' AND ASD.SLIP_AMT > 0 THEN ASD.ACNT_CD
+						  WHEN ASD.DRCR_CD = '10' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.ACNT_CD
+						  ELSE NULL END ) AS CNT_20
+              ,0 AS SLIP_AMT_SUM_10_SUM
+              ,0 AS SLIP_AMT_SUM_20_SUM
+              ,0 AS CNT_10_SUM
+              ,0 AS CNT_20_SUM
+			  , '2' AS GB
+	          ,( SELECT COUNT(DISTINCT SLIP_NO)
+	               FROM AC_SLIP RASL
+	              WHERE RASL.ACNT_YY = ASD.ACNT_YY
+	                AND RASL.ACNT_UNT IN (SELECT ACNT_UNT
+					                       FROM BG_UNT WITH(NOLOCK)
+					                      WHERE ACNT_UNT = #acntUnt#
+					                        AND ADD_YN = '0'
+			
+					                     UNION
+			
+					                     SELECT ADD_ACNT_UNT
+					                       FROM BG_UNT_ADD WITH(NOLOCK)
+					                      WHERE ACNT_UNT = #acntUnt#)
+	                AND RASL.SLIP_CFM_DT = #slipCfmDt#  ) AS SLIP_CNT
+          FROM AC_SLIP_DET ASD WITH(NOLOCK)
+         INNER
+          JOIN AC_SLIP ASL WITH(NOLOCK)
+            ON ASD.ACNT_YY = ASL.ACNT_YY
+           AND ASD.ACNT_UNT = ASL.ACNT_UNT
+           AND ASD.SLIP_NO = ASL.SLIP_NO
+         INNER
+          JOIN BG_ACNT_CD BAC
+               ON ASD.ACNT_YY = BAC.ACNT_YY
+               AND ASD.ACNT_UNT = BAC.ACNT_UNT
+               AND ASD.ACNT_CD = BAC.ACNT_CD
+         INNER
+          JOIN BG_ACNT_CD UP_BAC
+               ON BAC.ACNT_YY = UP_BAC.ACNT_YY
+               AND BAC.ACNT_UNT = UP_BAC.ACNT_UNT
+               AND BAC.UPR_ACNT_CD = UP_BAC.ACNT_CD
+         WHERE ASD.ACNT_YY = #acntYy#
+           AND ASD.ACNT_UNT IN (SELECT ACNT_UNT
+				                      FROM BG_UNT WITH(NOLOCK)
+				                     WHERE ACNT_UNT = #acntUnt#
+				                       AND ADD_YN = '0'
+		
+				                    UNION
+		
+				                    SELECT ADD_ACNT_UNT
+				                      FROM BG_UNT_ADD WITH(NOLOCK)
+				                     WHERE ACNT_UNT = #acntUnt#)
+           AND ASL.SLIP_CFM_DT = #slipCfmDt#
+           AND BAC.ACNT_NM != UP_BAC.ACNT_NM
+           AND 1 = #semokYn#
+           GROUP BY ASD.ACNT_YY,BAC.ACNT_CD
+           ORDER BY ACNT_YY,ACNT_CD
+    </select>
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 월계표(admi/ac/ac03/ac03020.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="ac03DAO.selectAc03020MainList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac03DAO.selectAc03020MainList 월계표 main 조회 */
+		SELECT ASD.ACNT_YY
+              ,BAC.UPR_ACNT_CD ACNT_CD
+              ,dbo.F_AC_GET_ACNT_INFO(ASD.ACNT_YY, #acntUnt#, BAC.UPR_ACNT_CD, '', '' ) AS ACNT_NM
+			  ,SUM(CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+			            WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT 
+					    WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1 
+                        ELSE 0 END ) AS SLIP_AMT_SUM_10
+              ,SUM(CASE WHEN ASD.DRCR_CD = '20' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+                        WHEN ASD.DRCR_CD = '20' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+                        WHEN ASD.DRCR_CD = '10' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1
+                        ELSE 0 END ) AS SLIP_AMT_SUM_20
+              ,COUNT(CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.ACNT_CD
+                          WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN ASD.ACNT_CD
+						  WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.ACNT_CD
+						  ELSE NULL END ) AS CNT_10
+              ,COUNT(CASE WHEN ASD.DRCR_CD = '20' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.ACNT_CD
+                          WHEN ASD.DRCR_CD = '20' AND ASD.SLIP_AMT > 0 THEN ASD.ACNT_CD
+						  WHEN ASD.DRCR_CD = '10' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.ACNT_CD
+						  ELSE NULL END ) AS CNT_20
+			  ,SUM(CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+			            WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT 
+					    WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1 
+                        ELSE 0 END ) AS SLIP_AMT_SUM_10_SUM
+              ,SUM(CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+                        WHEN ASD.DRCR_CD = '20' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+                        WHEN ASD.DRCR_CD = '10' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1
+                        ELSE 0 END ) AS SLIP_AMT_SUM_20_SUM
+              ,COUNT(CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.ACNT_CD
+                          WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN ASD.ACNT_CD
+						  WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.ACNT_CD
+						  ELSE NULL END ) AS CNT_10_SUM
+              ,COUNT(CASE WHEN ASD.DRCR_CD = '20' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.ACNT_CD
+                          WHEN ASD.DRCR_CD = '20' AND ASD.SLIP_AMT > 0 THEN ASD.ACNT_CD
+						  WHEN ASD.DRCR_CD = '10' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.ACNT_CD
+						  ELSE NULL END ) AS CNT_20_SUM
+			 ,'1' AS GB
+          FROM AC_SLIP_DET ASD WITH(NOLOCK)
+         INNER
+          JOIN AC_SLIP ASL WITH(NOLOCK)
+            ON ASD.ACNT_YY = ASL.ACNT_YY
+           AND ASD.ACNT_UNT = ASL.ACNT_UNT
+           AND ASD.SLIP_NO = ASL.SLIP_NO
+         INNER
+          JOIN BG_ACNT_CD BAC
+               ON ASD.ACNT_YY = BAC.ACNT_YY
+               AND ASD.ACNT_UNT = BAC.ACNT_UNT
+               AND ASD.ACNT_CD = BAC.ACNT_CD
+         WHERE ASD.ACNT_YY = #acntYy#
+           AND ASD.ACNT_UNT IN (SELECT ACNT_UNT
+				                      FROM BG_UNT WITH(NOLOCK)
+				                     WHERE ACNT_UNT = #acntUnt#
+				                       AND ADD_YN = '0'
+		
+				                    UNION
+		
+				                    SELECT ADD_ACNT_UNT
+				                      FROM BG_UNT_ADD WITH(NOLOCK)
+				                     WHERE ACNT_UNT = #acntUnt#)
+           AND SUBSTRING(ASL.SLIP_CFM_DT,1,6) = #slipCfmYYMM#
+           GROUP BY ASD.ACNT_YY,BAC.UPR_ACNT_CD
+           
+        UNION ALL
+           
+		SELECT ASD.ACNT_YY
+              ,BAC.ACNT_CD ACNT_CD
+              ,'   - ' + dbo.F_AC_GET_ACNT_INFO(ASD.ACNT_YY, #acntUnt#, BAC.ACNT_CD, '', '' ) AS ACNT_NM
+			  ,SUM(CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+			            WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT 
+					    WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT THEN ASD.SLIP_AMT * -1 
+                        ELSE 0 END ) AS SLIP_AMT_SUM_10
+              ,SUM(CASE WHEN ASD.DRCR_CD = '20' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+                        WHEN ASD.DRCR_CD = '20' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+                        WHEN ASD.DRCR_CD = '10' AND 0 > ASD.SLIP_AMT THEN ASD.SLIP_AMT * -1
+                        ELSE 0 END ) AS SLIP_AMT_SUM_20
+              ,COUNT(CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.ACNT_CD
+                          WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN ASD.ACNT_CD
+						  WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT THEN ASD.ACNT_CD
+						  ELSE NULL END ) AS CNT_10
+              ,COUNT(CASE WHEN ASD.DRCR_CD = '20' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.ACNT_CD
+                          WHEN ASD.DRCR_CD = '20' AND ASD.SLIP_AMT > 0 THEN ASD.ACNT_CD
+						  WHEN ASD.DRCR_CD = '10' AND 0 > ASD.SLIP_AMT THEN ASD.ACNT_CD
+						  ELSE NULL END ) AS CNT_20
+			  ,0 AS SLIP_AMT_SUM_10_SUM
+              ,0 AS SLIP_AMT_SUM_20_SUM
+              ,0 AS CNT_10_SUM
+              ,0 AS CNT_20_SUM
+			 ,'2' AS GB
+          FROM AC_SLIP_DET ASD WITH(NOLOCK)
+         INNER
+          JOIN AC_SLIP ASL WITH(NOLOCK)
+            ON ASD.ACNT_YY = ASL.ACNT_YY
+           AND ASD.ACNT_UNT = ASL.ACNT_UNT
+           AND ASD.SLIP_NO = ASL.SLIP_NO
+         INNER
+          JOIN BG_ACNT_CD BAC
+               ON ASD.ACNT_YY = BAC.ACNT_YY
+               AND ASD.ACNT_UNT = BAC.ACNT_UNT
+               AND ASD.ACNT_CD = BAC.ACNT_CD
+         INNER
+          JOIN BG_ACNT_CD UP_BAC
+               ON BAC.ACNT_YY = UP_BAC.ACNT_YY
+               AND BAC.ACNT_UNT = UP_BAC.ACNT_UNT
+               AND BAC.UPR_ACNT_CD = UP_BAC.ACNT_CD
+         WHERE ASD.ACNT_YY = #acntYy#
+           AND ASD.ACNT_UNT IN (SELECT ACNT_UNT
+				                      FROM BG_UNT WITH(NOLOCK)
+				                     WHERE ACNT_UNT = #acntUnt#
+				                       AND ADD_YN = '0'
+		
+				                    UNION
+		
+				                    SELECT ADD_ACNT_UNT
+				                      FROM BG_UNT_ADD WITH(NOLOCK)
+				                     WHERE ACNT_UNT = #acntUnt#)
+           AND SUBSTRING(ASL.SLIP_CFM_DT,1,6) = #slipCfmYYMM#
+           AND BAC.ACNT_NM != UP_BAC.ACNT_NM
+           AND 1 = #semokYn#
+           GROUP BY ASD.ACNT_YY, BAC.ACNT_CD
+           
+           ORDER BY ACNT_YY,ACNT_CD
+    </select>
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 현금출납부(admi/ac/ac03/ac03030.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="ac03DAO.selectAc03030MainList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac03DAO.selectAc03030MainList 현금출납부 main 조회 */
+		SELECT 'ac03030' ac
+    </select>
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 일일수지현황(admi/ac/ac03/ac03040.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    <select id="ac03DAO.selectAc03040MainList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac03DAO.selectAc03040MainList 일일수지현황 main 조회 */
+		   SELECT  ASD.ACNT_YY
+                 ,ASD.ACNT_UNT
+                 ,CASE WHEN ASD.RELV_ACNT_CD IS NULL OR ASD.RELV_ACNT_CD = '' THEN ASD.ACNT_CD ELSE ASD.RELV_ACNT_CD END AS ACNT_CD
+                 ,ASL.SLIP_NO
+                 ,SUBSTRING(ASL.SLIP_NO,9,4) AS SLIP_NO_DISP
+                 ,ASD.SLIP_CFM_DT
+                 ,dbo.F_AC_GET_ACNT_INFO(ASD.ACNT_YY, ASD.ACNT_UNT, CASE WHEN ASD.RELV_ACNT_CD IS NULL OR ASD.RELV_ACNT_CD = '' THEN ASD.ACNT_CD ELSE ASD.RELV_ACNT_CD END, '30', '' ) AS HANG_NM
+                 ,dbo.F_AC_GET_ACNT_INFO(ASD.ACNT_YY, ASD.ACNT_UNT, CASE WHEN ASD.RELV_ACNT_CD IS NULL OR ASD.RELV_ACNT_CD = '' THEN ASD.ACNT_CD ELSE ASD.RELV_ACNT_CD END, '50', '' ) AS ACNT_NM
+                 ,ASL.SLIP_DESC
+                 ,CASE ASD.DRCR_CD WHEN '10' THEN ASD.SLIP_AMT ELSE 0 END AS SLIP_AMT_DR
+                 ,CASE ASD.DRCR_CD WHEN '20' THEN ASD.SLIP_AMT ELSE 0 END AS SLIP_AMT_CR
+                 ,ASD_Y.SLIP_AMT_DR_SUM_Y
+                 ,ASD_Y.SLIP_AMT_CR_SUM_Y
+                 ,ASD_M.SLIP_AMT_DR_SUM_M
+                 ,ASD_M.SLIP_AMT_CR_SUM_M
+                 ,dbo.fn_Rpad(dbo.F_AC_GET_ACNT_INFO(ASD.ACNT_YY, ASD.ACNT_UNT, CASE WHEN ASD.RELV_ACNT_CD IS NULL OR ASD.RELV_ACNT_CD = '' THEN ASD.ACNT_CD ELSE ASD.RELV_ACNT_CD END, '20', '' ),30, ' ')+' - '+
+                  dbo.fn_Rpad(dbo.F_AC_GET_ACNT_INFO(ASD.ACNT_YY, ASD.ACNT_UNT, CASE WHEN ASD.RELV_ACNT_CD IS NULL OR ASD.RELV_ACNT_CD = '' THEN ASD.ACNT_CD ELSE ASD.RELV_ACNT_CD END, '30', '' ),30, ' ' )+' - '+
+                  dbo.fn_Rpad(dbo.F_AC_GET_ACNT_INFO(ASD.ACNT_YY, ASD.ACNT_UNT, CASE WHEN ASD.RELV_ACNT_CD IS NULL OR ASD.RELV_ACNT_CD = '' THEN ASD.ACNT_CD ELSE ASD.RELV_ACNT_CD END, '40', '' ),30, ' ' )+ CHAR(13)+
+                  dbo.fn_Rpad(SUBSTRING(ASL.SLIP_NO,1,8) + '-' + SUBSTRING(ASL.SLIP_NO,9,4), 22, ' ') + ASD.ABSTR AS jukyo
+             FROM AC_SLIP_DET ASD WITH(NOLOCK)
+            INNER
+             JOIN AC_SLIP ASL WITH(NOLOCK)
+               ON ASD.ACNT_YY = ASL.ACNT_YY
+              AND ASD.ACNT_UNT = ASL.ACNT_UNT
+              AND ASD.SLIP_NO = ASL.SLIP_NO
+            LEFT
+            OUTER
+             JOIN(SELECT A.ACNT_YY
+				     , SUM( DR_AMT ) SLIP_AMT_DR_SUM_Y
+				     , SUM( CR_AMT ) SLIP_AMT_CR_SUM_Y
+                 FROM (
+
+                        SELECT ASD.ACNT_YY
+						     , ASD.DR_AMT
+						     , ASD.CR_AMT
+						  FROM (SELECT ASD.ACNT_YY
+								     , SUM(DR_AMT) DR_AMT
+								     , SUM(CR_AMT) CR_AMT
+								  FROM ( SELECT ACNT_YY, ACNT_UNT, SLIP_NO, ACNT_CD, SLIP_CFM_DT, BAL_DIV,
+								            CASE DRCR_CD WHEN '10' THEN SLIP_AMT ELSE 0 END AS DR_AMT,
+								            CASE DRCR_CD WHEN '20' THEN SLIP_AMT ELSE 0 END CR_AMT
+								           FROM AC_SLIP_DET WITH(NOLOCK)
+								          WHERE #slipCfmDt# > SLIP_CFM_DT ) ASD
+								 INNER
+								  JOIN AC_SLIP ASL WITH(NOLOCK)
+								    ON ASD.ACNT_YY = ASL.ACNT_YY
+								   AND ASD.ACNT_UNT = ASL.ACNT_UNT
+								   AND ASD.SLIP_NO = ASL.SLIP_NO
+								 WHERE ASD.ACNT_UNT IN (SELECT ACNT_UNT
+														  FROM BG_UNT WITH(NOLOCK)
+														 WHERE ACNT_UNT = #acntUnt#
+														   AND ADD_YN = '0'
+
+														UNION
+
+														SELECT ADD_ACNT_UNT
+														  FROM BG_UNT_ADD WITH(NOLOCK)
+														 WHERE ACNT_UNT = #acntUnt#)
+								   AND ASD.ACNT_YY = #acntYy#
+					               AND ASD.BAL_DIV IS NOT NULL
+					               AND ASD.BAL_DIV != ''
+								   AND ASD.ACNT_CD NOT IN (SELECT ACNT_CD
+					                                         FROM BG_ACNT_CD WITH(NOLOCK)
+					                                        WHERE ACNT_YY = #acntYy#
+					                                          AND ACNT_UNT IN (SELECT ACNT_UNT
+																				  FROM BG_UNT WITH(NOLOCK)
+																				 WHERE ACNT_UNT = #acntUnt#
+																				   AND ADD_YN = '0'
+
+																				UNION
+
+																				SELECT ADD_ACNT_UNT
+																				  FROM BG_UNT_ADD WITH(NOLOCK)
+																				 WHERE ACNT_UNT = #acntUnt#)
+					                                          AND USAGE_CD IN ('10','60'))
+								 GROUP BY ASD.ACNT_YY ) ASD
+
+						UNION ALL
+
+
+						SELECT A.ACNT_YY
+						     , 0 DR_AMT
+						     , SUM(CR_AMT) CR_AMT
+						  FROM (SELECT DISTINCT ASD.ACNT_YY
+								     , CASE ASD.FG WHEN 'P' THEN ASD.AMT ELSE -1*ASD.AMT END CR_AMT
+								  FROM (SELECT ACNT_UNT
+										     , ACNT_YY
+										     , ACNT_YY+'0301' SLIP_CFM_DT
+										     , SUBSTRING(ACNT_CD,1,3) ACNT_CD
+										     , CASE WHEN SUBSTRING(ACNT_CD,1,3) = '111' THEN 'P'
+										            WHEN SUBSTRING(ACNT_CD,1,3) = '213' THEN 'M'
+										            ELSE '' END FG
+										     , SUM(TRANS_AMT) AMT
+										  FROM AC_BASE WITH(NOLOCK)
+										 WHERE SUBSTRING(ACNT_CD,1,4) IN ('1111','1112','2131')
+										   AND ACNT_YY = #acntYy#
+										   AND ACNT_UNT IN (SELECT ACNT_UNT
+															  FROM BG_UNT WITH(NOLOCK)
+															 WHERE ACNT_UNT = #acntUnt#
+															   AND ADD_YN = '0'
+
+															UNION
+
+															SELECT ADD_ACNT_UNT
+															  FROM BG_UNT_ADD WITH(NOLOCK)
+															 WHERE ACNT_UNT = #acntUnt#)
+										 GROUP BY ACNT_UNT, ACNT_YY, SUBSTRING(ACNT_CD,1,3) ) ASD ) A
+						 GROUP BY A.ACNT_YY
+
+						UNION ALL
+
+				        SELECT ASD1.ACNT_YY
+						     , -1 * SUM( DR_AMT ) SLIP_AMT_DR_SUM_M
+						     , -1 * SUM( CR_AMT ) SLIP_AMT_CR_SUM_M
+						  FROM (SELECT ASD.ACNT_YY
+					                 , ASD.ACNT_UNT
+								     , ASD.SLIP_CFM_DT
+								     , SUM(DR_AMT) DR_AMT
+								     , SUM(CR_AMT) CR_AMT
+								  FROM ( SELECT ACNT_YY, ACNT_UNT, SLIP_NO, ACNT_CD, SLIP_CFM_DT, BAL_DIV, CASE DRCR_CD WHEN '10' THEN 0 ELSE SLIP_AMT END AS DR_AMT, CASE DRCR_CD WHEN '20' THEN 0 ELSE SLIP_AMT END AS CR_AMT
+								           FROM AC_SLIP_DET WITH(NOLOCK)
+								          WHERE (DRCR_CD = '10' AND ( ACNT_CD = '112301' OR ACNT_CD = '112302' )) OR (DRCR_CD = '20' AND ACNT_CD = '214101' ) ) ASD
+								 WHERE ASD.ACNT_UNT IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+
+								                    UNION
+
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+								   AND ASD.ACNT_YY = #acntYy#
+								   AND SUBSTRING(#slipCfmDt#,1,6) > SUBSTRING(ASD.SLIP_CFM_DT,1,6) 
+								   AND #slipCfmDt# > ASD.SLIP_CFM_DT
+								 GROUP BY ASD.ACNT_YY
+								     , ASD.ACNT_UNT
+								     , ASD.SLIP_CFM_DT) ASD1
+						 GROUP BY ASD1.ACNT_YY
+                     ) A
+				 GROUP BY A.ACNT_YY  ) ASD_Y
+               ON ASD.ACNT_YY = ASD_Y.ACNT_YY
+            LEFT
+            OUTER
+             JOIN(  SELECT ASD1.ACNT_YY
+				     , SUM( DR_AMT ) SLIP_AMT_DR_SUM_M
+				     , SUM( CR_AMT ) SLIP_AMT_CR_SUM_M
+				  FROM (SELECT ASD.ACNT_YY
+					                 , ASD.ACNT_UNT
+								     , ASD.SLIP_CFM_DT
+								     , SUM(DR_AMT) DR_AMT
+								     , SUM(CR_AMT) CR_AMT
+								  FROM ( SELECT ACNT_YY, ACNT_UNT, SLIP_NO, ACNT_CD, SLIP_CFM_DT, BAL_DIV, CASE DRCR_CD WHEN '10' THEN 0 ELSE SLIP_AMT END AS DR_AMT, CASE DRCR_CD WHEN '20' THEN 0 ELSE SLIP_AMT END AS CR_AMT
+								           FROM AC_SLIP_DET WITH(NOLOCK)
+								          WHERE (DRCR_CD = '10' AND ( ACNT_CD = '112301' OR ACNT_CD = '112302' )) OR (DRCR_CD = '20' AND ACNT_CD = '214101' ) ) ASD
+								 WHERE ASD.ACNT_UNT IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+
+								                    UNION
+
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+								   AND ASD.ACNT_YY = #acntYy#
+								   AND SUBSTRING(ASD.SLIP_CFM_DT,1,6) = SUBSTRING(#slipCfmDt#,1,6)
+								   AND #slipCfmDt# >= ASD.SLIP_CFM_DT
+								 GROUP BY ASD.ACNT_YY
+								     , ASD.ACNT_UNT
+								     , ASD.SLIP_CFM_DT) ASD1
+				 GROUP BY ASD1.ACNT_YY ) ASD_M
+               ON ASD.ACNT_YY = ASD_M.ACNT_YY
+            WHERE ASD.ACNT_YY = #acntYy#
+              AND ASD.ACNT_UNT IN (SELECT ACNT_UNT
+			                         FROM BG_UNT WITH(NOLOCK)
+			                        WHERE ACNT_UNT = #acntUnt#
+			                          AND ADD_YN = '0'
+
+			                       UNION
+
+			                       SELECT ADD_ACNT_UNT
+			                         FROM BG_UNT_ADD WITH(NOLOCK)
+			                        WHERE ACNT_UNT = #acntUnt#)
+              AND ASL.SLIP_CFM_DT IS NOT NULL
+              AND ASD.BAL_DIV IS NOT NULL
+              AND ASD.BAL_DIV != ''
+              AND ASL.SLIP_CFM_DT = #slipCfmDt#
+			  AND ASD.ACNT_CD NOT IN (SELECT ACNT_CD
+                                        FROM BG_ACNT_CD WITH(NOLOCK)
+                                       WHERE ACNT_YY = #acntYy#
+                                         AND ACNT_UNT IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+
+								                    UNION
+
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+                                         AND USAGE_CD IN ('10','60'))
+			
+			<isEqual property="prtOrd" compareValue="slipNo">
+				ORDER BY ASL.SLIP_NO, ASD.ACNT_CD, SLIP_AMT_DR, SLIP_AMT_CR
+			</isEqual>
+			<isEqual property="prtOrd" compareValue="acntCd">
+				ORDER BY CASE WHEN ASD.BAL_DIV = '10' THEN 1
+				              WHEN ASD.DRCR_CD = '20' THEN 1
+				              ELSE 2 END , ASD.ACNT_CD, ASL.SLIP_NO, SLIP_AMT_DR, SLIP_AMT_CR
+			</isEqual>
+
+              
+
+    </select>
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 예산대비집행현황(admi/ac/ac03/ac03050.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="ac03DAO.selectAc03050MainList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac03DAO.selectAc03050MainList 예산대비집행현황 main 조회 */
+		SELECT 'ac03050' ac
+    </select>
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 계좌현황(admi/ac/ac03/ac03060.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="ac03DAO.selectAc03060MainList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac03DAO.selectAc03060MainList 계좌현황 main 조회 */
+		SELECT 'ac03060' ac
+    </select>
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 회계마감등록(admi/ac/ac03/ac03070.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="ac03DAO.selectAc03070MainList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac03DAO.selectAc03070MainList 회계마감등록 main 조회 */
+		SELECT 'ac03070' ac
+    </select>
+
+
+    <!--
+    #########################################################################################################################################
+    # 결산재무제표통계(admi/ac/ac03/ac03080.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="ac03DAO.selectAc03080_10List"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac03DAO.selectAc03080_10List 결산재무제표통계 - 계정별원장(엑셀) 조회 */
+	    SELECT D.ACNT_CD AS MOK_ACNT_CD
+		     , CASE WHEN A.BAL_DIV = '10' THEN CASE WHEN D.ACNT_INC_NM = '' OR D.ACNT_INC_NM IS NULL THEN D.ACNT_NM ELSE D.ACNT_INC_NM END 
+		            WHEN A.BAL_DIV = '20' THEN CASE WHEN D.ACNT_EXP_NM = '' OR D.ACNT_EXP_NM IS NULL THEN D.ACNT_NM ELSE D.ACNT_EXP_NM END 
+		            ELSE D.ACNT_NM END AS MOK_ACNT_NM
+		     ,  A.ACNT_CD
+		     , CASE WHEN A.BAL_DIV = '10' THEN CASE WHEN C.ACNT_INC_NM = '' OR C.ACNT_INC_NM IS NULL THEN C.ACNT_NM ELSE C.ACNT_INC_NM END 
+		            WHEN A.BAL_DIV = '20' THEN CASE WHEN C.ACNT_EXP_NM = '' OR C.ACNT_EXP_NM IS NULL THEN C.ACNT_NM ELSE C.ACNT_EXP_NM END 
+		            ELSE C.ACNT_NM END AS ACNT_NM
+		     , A.SLIP_CFM_DT
+		     , A.ACNT_UNT
+		     , ( SELECT ACNT_UNT_NM FROM BG_UNT WHERE ACNT_UNT = A.ACNT_UNT ) AS ACNT_UNT_NM
+		     , CASE WHEN A.DRCR_CD = '10' THEN A.SLIP_AMT ELSE 0 END AS DRCR10_SLIP_AMT
+		     , CASE WHEN A.DRCR_CD = '20' THEN A.SLIP_AMT ELSE 0 END AS DRCR20_SLIP_AMT
+		     , A.ABSTR
+		     , SUBSTRING(B.SLIP_NO,1,8) AS SLIP_DT
+		     , B.SLIP_NO
+		     , B.SD_VENDOR_DESC
+		  FROM AC_SLIP_DET A
+		    INNER JOIN AC_SLIP B
+		     ON A.ACNT_YY = B.ACNT_YY
+		    AND A.ACNT_UNT = B.ACNT_UNT
+		    AND A.SLIP_NO = B.SLIP_NO
+		    LEFT OUTER JOIN BG_ACNT_CD C
+		     ON A.ACNT_YY = C.ACNT_YY
+		    AND A.ACNT_UNT = C.ACNT_UNT
+		    AND A.ACNT_CD = C.ACNT_CD
+		    LEFT OUTER JOIN BG_ACNT_CD D
+		     ON D.ACNT_YY = C.ACNT_YY
+		    AND D.ACNT_UNT = C.ACNT_UNT
+		    AND D.ACNT_CD = C.UPR_ACNT_CD
+		  WHERE A.ACNT_UNT IN (SELECT ACNT_UNT
+				                      FROM BG_UNT
+				                     WHERE ACNT_UNT = #acntUnt#
+				                       AND ADD_YN = '0'
+		
+				                    UNION
+		
+				                    SELECT ADD_ACNT_UNT
+				                      FROM BG_UNT_ADD
+				                     WHERE ACNT_UNT = #acntUnt#)
+		    AND A.ACNT_YY = #acntYy#
+		    <isNotEmpty property="slipCfmFrDt">
+		    AND A.SLIP_CFM_DT >= #slipCfmFrDt#  
+		    </isNotEmpty>
+		    <isNotEmpty property="slipCfmDt">
+		    AND #slipCfmDt# >= A.SLIP_CFM_DT 
+		    </isNotEmpty>
+		    AND B.STA_CD = '51'
+		ORDER BY A.ACNT_UNT, A.ACNT_CD, A.SLIP_CFM_DT, B.SLIP_CFM_SEQ, A.SLIP_SEQ
+    </select>
+    
+    <select id="ac03DAO.selectAc03080_20List"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac03DAO.selectAc03080_20List 결산재무제표통계 - 자금원장(엑셀) 조회 */
+	    SELECT D.ACNT_CD AS MOK_ACNT_CD
+		     , CASE WHEN A.BAL_DIV = '10' THEN CASE WHEN D.ACNT_INC_NM = '' OR D.ACNT_INC_NM IS NULL THEN D.ACNT_NM ELSE D.ACNT_INC_NM END 
+		            WHEN A.BAL_DIV = '20' THEN CASE WHEN D.ACNT_EXP_NM = '' OR D.ACNT_EXP_NM IS NULL THEN D.ACNT_NM ELSE D.ACNT_EXP_NM END 
+		            ELSE D.ACNT_NM END AS MOK_ACNT_NM
+		     ,  A.ACNT_CD
+		     , CASE WHEN A.BAL_DIV = '10' THEN CASE WHEN C.ACNT_INC_NM = '' OR C.ACNT_INC_NM IS NULL THEN C.ACNT_NM ELSE C.ACNT_INC_NM END 
+		            WHEN A.BAL_DIV = '20' THEN CASE WHEN C.ACNT_EXP_NM = '' OR C.ACNT_EXP_NM IS NULL THEN C.ACNT_NM ELSE C.ACNT_EXP_NM END 
+		            ELSE C.ACNT_NM END AS ACNT_NM
+		     , A.SLIP_CFM_DT
+		     , A.ACNT_UNT
+		     , ( SELECT ACNT_UNT_NM FROM BG_UNT WHERE ACNT_UNT = A.ACNT_UNT ) AS ACNT_UNT_NM
+		     , A.SLIP_AMT
+		     , A.ABSTR
+		     , SUBSTRING(B.SLIP_NO,1,8) AS SLIP_DT
+		     , B.SLIP_NO
+		     , B.SD_VENDOR_DESC
+		     , A.BIZ_CD
+		     , E.BIZ_NM
+		     , F.FINC_NM
+		  FROM AC_SLIP_DET A
+		    INNER JOIN AC_SLIP B
+		     ON A.ACNT_YY = B.ACNT_YY
+		    AND A.ACNT_UNT = B.ACNT_UNT
+		    AND A.SLIP_NO = B.SLIP_NO
+		    LEFT OUTER JOIN BG_ACNT_CD C
+		     ON A.ACNT_YY = C.ACNT_YY
+		    AND A.ACNT_UNT = C.ACNT_UNT
+		    AND A.ACNT_CD = C.ACNT_CD
+		    LEFT OUTER JOIN BG_ACNT_CD D
+		     ON D.ACNT_YY = C.ACNT_YY
+		    AND D.ACNT_UNT = C.ACNT_UNT
+		    AND D.ACNT_CD = C.UPR_ACNT_CD
+		    LEFT OUTER JOIN BG_BIZ E
+		     ON A.ACNT_UNT = E.ACNT_UNT
+		    AND A.BIZ_CD = E.BIZ_CD
+		    LEFT OUTER JOIN BG_FINC F
+		     ON E.ACNT_UNT = F.ACNT_UNT
+		    AND E.FINC_CD = F.FINC_CD
+		  WHERE A.ACNT_UNT IN (SELECT ACNT_UNT
+				                      FROM BG_UNT
+				                     WHERE ACNT_UNT = #acntUnt#
+				                       AND ADD_YN = '0'
+		
+				                    UNION
+		
+				                    SELECT ADD_ACNT_UNT
+				                      FROM BG_UNT_ADD
+				                     WHERE ACNT_UNT = #acntUnt#)
+		    AND A.ACNT_YY = #acntYy#
+		    <isNotEmpty property="slipCfmFrDt">
+		    AND A.SLIP_CFM_DT >= #slipCfmFrDt#  
+		    </isNotEmpty>
+		    <isNotEmpty property="slipCfmDt">
+		    AND #slipCfmDt# >= A.SLIP_CFM_DT 
+		    </isNotEmpty>
+		    AND B.STA_CD = '51'
+			AND A.BAL_DIV IN ('10', '20')
+			AND CASE WHEN A.BAL_DIV = '10' THEN C.ACNT_INC_NM
+	                 WHEN A.BAL_DIV = '20' THEN C.ACNT_EXP_NM END IS NOT NULL
+	        AND CASE WHEN A.BAL_DIV = '10' THEN C.ACNT_INC_NM
+	                 WHEN A.BAL_DIV = '20' THEN C.ACNT_EXP_NM END != ''
+		ORDER BY A.ACNT_UNT, A.ACNT_CD, A.SLIP_CFM_DT, B.SLIP_CFM_SEQ, A.SLIP_SEQ
+    </select>
+    
+    <!--
+    #########################################################################################################################################
+    # 결산부속명세서통계(admi/ac/ac03/ac03090.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="ac03DAO.selectAc03090MainList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac03DAO.selectAc03090MainList 결산부속명세서통계 main 조회 */
+		SELECT 'ac03090' ac
+    </select>
+    
+    <!--
+    #########################################################################################################################################
+    # 현금및예금명세(admi/ac/ac03/ac03100.xfdl)                                                                                                             
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="ac03DAO.selectAc03100MainList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac03DAO.selectAc03100MainList 현금및예금명세 main 조회 */
+			select SUBSTRING(a.acnt_cd,1,2) fg        /* -- '11' 유동자금,  '12' 기금 */
+			     , a.acnt_cd
+			     , a.acnt_nm
+			     , '' as semok_nm
+			     , ISNULL(b.ytd_amt,0) ytd_amt
+			     , ISNULL(b.in_amt,0) in_amt
+			     , ISNULL(b.out_amt,0) out_amt
+			     , ISNULL(b.tod_amt,0) tod_amt
+			  from (select *
+					  from BG_ACNT_CD WITH(NOLOCK)
+					 where acnt_unt = #acntUnt#
+					   and acnt_yy = #acntYy#
+					   and acnt_lvl = '40' ) a
+			      left
+			     outer
+			      join
+			       (select SUBSTRING(acnt_cd,1,4)+'00' acnt_cd
+					     , sum(ytd_amt) ytd_amt
+					     , sum(in_amt) in_amt
+					     , sum(out_amt) out_amt
+					     , sum(tod_amt) tod_amt
+					  from (select a.acnt_cd
+							     , trans_amt ytd_amt
+							     , 0 in_amt
+							     , 0 out_amt
+							     , trans_amt tod_amt
+							  from AC_BASE a WITH(NOLOCK)
+							 inner
+							  join BG_ACNT_CD b WITH(NOLOCK)
+							    on a.acnt_unt = b.acnt_unt
+							   and a.acnt_yy = b.acnt_yy
+							   and a.acnt_cd = b.acnt_cd
+							 where a.acnt_unt IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+						
+								                    UNION
+						
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+							   and a.acnt_yy = #acntYy#
+							   and b.usage_cd in ('10','60','130')
+			
+							union all
+			
+							select a.acnt_cd
+							     , sum(CASE WHEN a.slip_cfm_dt = #slipCfmDt# THEN 0 ELSE CASE WHEN a.drcr_cd = '10' THEN slip_amt ELSE -1*slip_amt END END) ytd_amt
+							     , sum(CASE WHEN a.slip_cfm_dt = #slipCfmDt# THEN CASE WHEN a.drcr_cd = '10' and ISNULL(c.minus_disp_yn,'0') = '1' THEN slip_amt
+							                                                           WHEN a.drcr_cd = '10' and slip_amt >= 0 THEN slip_amt
+							                                                           WHEN a.drcr_cd = '20' and 0 > slip_amt AND ISNULL(c.minus_disp_yn,'0') = '0' THEN slip_amt * -1
+							                                                           ELSE 0 END ELSE 0 END) in_amt
+							     , sum(CASE WHEN a.slip_cfm_dt = #slipCfmDt# THEN CASE WHEN a.drcr_cd = '20' and ISNULL(c.minus_disp_yn,'0') = '1' THEN slip_amt
+							                                                           WHEN a.drcr_cd = '20' and slip_amt >= 0 THEN slip_amt
+							                                                           WHEN a.drcr_cd = '10' and 0 > slip_amt AND ISNULL(c.minus_disp_yn,'0') = '0' THEN slip_amt * -1
+							                                                           ELSE 0 END ELSE 0 END) out_amt
+							     , sum(CASE WHEN a.drcr_cd = '10' THEN slip_amt ELSE -1*slip_amt END) tod_amt
+							  from AC_SLIP_DET a WITH(NOLOCK)
+							 inner
+							  join BG_ACNT_CD b WITH(NOLOCK)
+							    on a.acnt_unt = b.acnt_unt
+							   and a.acnt_yy = b.acnt_yy
+							   and a.acnt_cd = b.acnt_cd
+							 inner
+							  join AC_SLIP c
+							    on a.acnt_unt = c.acnt_unt
+							   and a.acnt_yy = c.acnt_yy
+							   and a.slip_no = c.slip_no
+							 where a.acnt_unt IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+						
+								                    UNION
+						
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+							   and a.acnt_yy = #acntYy#
+							   and #slipCfmDt# >= a.slip_cfm_dt 
+							   and b.usage_cd in ('10','60','130')
+							 group by a.acnt_cd ) TA
+					 group by SUBSTRING(acnt_cd,1,4)+'00' ) b
+			    on a.acnt_cd = b.acnt_cd
+			 where ( b.ytd_amt != 0 or b.in_amt != 0 or b.out_amt != 0 or b.tod_amt != 0 or a.usage_cd = '60' )
+			
+			union all
+			
+			select '0' fg
+			     , a.acnt_cd
+			     , d.acnt_nm as acnt_nm
+			     , a.acnt_nm as semok_nm
+			     , ISNULL(b.ytd_amt,0) ytd_amt
+			     , ISNULL(b.in_amt,0) in_amt
+			     , ISNULL(b.out_amt,0) out_amt
+			     , ISNULL(b.tod_amt,0) tod_amt
+			  from (select *
+					  from BG_ACNT_CD WITH(NOLOCK)
+					 where acnt_unt = #acntUnt#
+					   and acnt_yy = #acntYy#
+					   and acnt_lvl = '50'
+					   and usage_cd in ('10','60') ) a
+			     left
+			    outer
+			     join
+			       (select acnt_cd
+					     , sum(ytd_amt) ytd_amt
+					     , sum(in_amt) in_amt
+					     , sum(out_amt) out_amt
+					     , sum(tod_amt) tod_amt
+					  from (select a.acnt_cd
+							     , trans_amt ytd_amt
+							     , 0 in_amt
+							     , 0 out_amt
+							     , trans_amt tod_amt
+							  from AC_BASE a WITH(NOLOCK)
+							     , BG_ACNT_CD b WITH(NOLOCK)
+							 where a.acnt_unt = b.acnt_unt
+							   and a.acnt_yy = b.acnt_yy
+							   and a.acnt_cd = b.acnt_cd
+							   and a.acnt_unt IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+						
+								                    UNION
+						
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+							   and a.acnt_yy = #acntYy#
+							   and b.usage_cd in ('10','60','130')
+			
+							union all
+			
+							select a.acnt_cd
+							     , sum(CASE WHEN a.slip_cfm_dt = #slipCfmDt# THEN 0 ELSE CASE WHEN a.drcr_cd = '10' THEN slip_amt ELSE -1*slip_amt END END) ytd_amt
+							     , sum(CASE WHEN a.slip_cfm_dt = #slipCfmDt# THEN CASE WHEN a.drcr_cd = '10' and ISNULL(c.minus_disp_yn,'0') = '1' THEN slip_amt
+							                                                           WHEN a.drcr_cd = '10' and slip_amt >= 0 THEN slip_amt
+							                                                           WHEN a.drcr_cd = '20' and 0 > slip_amt AND ISNULL(c.minus_disp_yn,'0') = '0' THEN slip_amt * -1
+							                                                           ELSE 0 END ELSE 0 END) in_amt
+							     , sum(CASE WHEN a.slip_cfm_dt = #slipCfmDt# THEN CASE WHEN a.drcr_cd = '20' and ISNULL(c.minus_disp_yn,'0') = '1' THEN slip_amt
+							                                                           WHEN a.drcr_cd = '20' and slip_amt >= 0 THEN slip_amt
+							                                                           WHEN a.drcr_cd = '10' and 0 > slip_amt AND ISNULL(c.minus_disp_yn,'0') = '0' THEN slip_amt * -1
+							                                                           ELSE 0 END ELSE 0 END) out_amt
+							     , sum(CASE WHEN a.drcr_cd = '10' THEN slip_amt ELSE -1*slip_amt END) tod_amt
+							  from AC_SLIP_DET a WITH(NOLOCK)
+							   inner join BG_ACNT_CD b WITH(NOLOCK)
+							     on a.acnt_unt = b.acnt_unt
+							    and a.acnt_yy = b.acnt_yy
+							    and a.acnt_cd = b.acnt_cd
+							   inner join AC_SLIP c
+							     on a.acnt_unt = c.acnt_unt
+							    and a.acnt_yy = c.acnt_yy
+							    and a.slip_no = c.slip_no
+							 where a.acnt_unt IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+						
+								                    UNION
+						
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+							   and a.acnt_yy = #acntYy#
+							   and #slipCfmDt# >= a.slip_cfm_dt 
+							   and b.usage_cd in ('10','60','130')
+							 group by a.acnt_cd ) TB
+					 group by acnt_cd ) b
+				 on a.acnt_cd = b.acnt_cd	 
+			    inner
+			     join 
+			       (select SUBSTRING(acnt_cd,1,4) acnt_cd
+			          from BG_ACNT_CD WITH(NOLOCK)
+			         where acnt_unt = #acntUnt#
+			           and acnt_yy = #acntYy#
+			           and usage_cd in ('10','60','130')
+			         group by SUBSTRING(acnt_cd,1,4)
+			         having count(1) > 1 ) c
+			   on SUBSTRING(a.acnt_cd,1,4) = c.acnt_cd
+			   inner
+			    join bg_acnt_cd d with(nolock)
+			      on a.acnt_yy = d.acnt_yy
+			     and a.acnt_unt = d.acnt_unt
+			     and a.upr_acnt_cd = d.acnt_cd 
+			 where ( b.ytd_amt != 0 or b.in_amt != 0 or b.out_amt != 0 or b.tod_amt != 0 )
+			   and a.acnt_nm != d.acnt_nm
+			 order by acnt_cd  
+  
+  
+
+    </select>
+    
+    <!--
+    #########################################################################################################################################
+    # 자금원장(admi/ac/ac03/ac03110.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    <select id="ac03DAO.selectAc03110MainList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac03DAO.selectAc03110MainList 자금원장 main 조회 */
+		  SELECT GB
+		        ,SLIP_CFM_DT
+		        ,CASE WHEN SUBSTRING(SLIP_CFM_DT, 7, 2) = '34' THEN '' ELSE SUBSTRING(SLIP_CFM_DT, 5, 2) END AS SLIP_CFM_MM
+		        ,CASE WHEN SUBSTRING(SLIP_CFM_DT, 7, 2) IN ('33','34') THEN '' ELSE SUBSTRING(SLIP_CFM_DT, 7, 2) END AS SLIP_CFM_DD
+		        ,CASE WHEN LEN(VOU_NO) > 0 THEN SUBSTRING(VOU_NO,1,8) + '-' + SUBSTRING(VOU_NO,9,4) ELSE '' END AS VOU_NO
+		        ,CASE WHEN LEN(SLIP_NO) > 0 THEN SUBSTRING(SLIP_NO,1,8) + '-' + SUBSTRING(SLIP_NO,9,4) ELSE '' END AS SLIP_NO_DISP
+		        ,SLIP_NO
+		        ,SLIP_SEQ
+		        ,TB.ACNT_CD
+		        ,SLIP_DESC
+		        ,VEND_NM
+		        ,AMT_SUM_TOT
+		        ,AMT_SUM_M
+		        ,RE_AMT
+		        ,BUDG_ORG_ID
+		        ,CASE WHEN dbo.F_AC_GET_ACNT_INFO(#acntYy#, #acntUnt#, BAC.UPR_ACNT_CD, '50', CASE WHEN #balDiv# = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) = TB.ACNT_NM
+		                       THEN TB.ACNT_NM
+		              ELSE dbo.F_AC_GET_ACNT_INFO(#acntYy#, #acntUnt#, BAC.UPR_ACNT_CD, '50', CASE WHEN #balDiv# = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END)
+		            		+ '(' + TB.ACNT_NM +')' END AS ACNT_NM
+		    FROM
+		    (
+		     SELECT  '1' AS GB
+		          , ISNULL(#slipCfmFrMm#,#acntYy#+'03') + '01' AS SLIP_CFM_DT
+		          , '' AS VOU_NO
+		          , '' AS SLIP_NO
+		          , null AS SLIP_SEQ
+		          , TA.ACNT_CD AS ACNT_CD
+		          , '전 월 이 월' AS SLIP_DESC
+		          , '' AS VEND_NM
+		          , SUM(ISNULL(AMT_SUM_TOT,0)) AS AMT_SUM_TOT
+		          , SUM(ISNULL(AMT_SUM_M,0)) AS AMT_SUM_M
+		          , '' AS BUDG_ORG_ID
+		          , dbo.F_AC_GET_ACNT_INFO(TA.ACNT_YY, #acntUnt#, TA.ACNT_CD, '50', CASE WHEN TA.BAL_DIV = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) AS ACNT_NM
+		          , SUM(ISNULL(AMT_SUM_TOT,0)) - SUM(ISNULL(AMT_SUM_M,0)) AS RE_AMT
+		     FROM (
+				     SELECT A.ACNT_YY
+				          , A.BAL_DIV
+				          , A.ACNT_CD AS ACNT_CD
+				          , ISNULL((SELECT SUM(BUDG_AMT) 
+				                FROM BG_ASGN BA WITH(NOLOCK)
+				               WHERE BA.ACNT_UNT IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+						
+								                    UNION
+						
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+				                 AND BA.ACNT_YY = A.ACNT_YY
+				                 AND BA.ACNT_CD = A.ACNT_CD
+				                 AND BA.BAL_DIV = A.BAL_DIV
+				                 AND BA.BUDG_ORG_ID = CASE WHEN LEN(#budgOrgId#) > 0 THEN #budgOrgId# ELSE BA.BUDG_ORG_ID END
+				                 AND ( BA.BUDG_CD = '10'
+				                      OR ISNULL(#slipCfmFrMm#,#acntYy#+'03') >= SUBSTRING(BA.CFM_DT,1,6) )) ,0) AS AMT_SUM_TOT
+				          , ( SELECT SUM(ASD.SLIP_AMT) SLIP_AMT
+							    FROM AC_SLIP ASL WITH(NOLOCK)
+							         INNER JOIN AC_SLIP_DET ASD
+							           ON ASL.ACNT_YY = ASD.ACNT_YY
+									     AND ASL.ACNT_UNT = ASD.ACNT_UNT
+									     AND ASL.SLIP_NO = ASD.SLIP_NO      
+							   WHERE ASL.ACNT_YY  = A.ACNT_YY
+							     AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+						
+								                    UNION
+						
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+							     AND ASD.BAL_DIV  = A.BAL_DIV 
+							     AND ASD.ACNT_CD  = A.ACNT_CD
+							     AND ASD.BUDG_ORG_ID = CASE WHEN LEN(#budgOrgId#) > 0 THEN #budgOrgId# ELSE ASD.BUDG_ORG_ID END
+							     AND ISNULL(#slipCfmFrMm#,#acntYy#+'03') + '01' > ASD.SLIP_CFM_DT 
+				                 AND ASL.STA_CD   = '51'
+							     ) AS AMT_SUM_M
+				      FROM BG_ASGN A WITH(NOLOCK)
+					       INNER JOIN BG_ACNT_CD B WITH(NOLOCK)
+					          ON A.ACNT_UNT = B.ACNT_UNT
+					         AND A.ACNT_YY = B.ACNT_YY
+					         AND A.ACNT_CD = B.ACNT_CD
+				     WHERE A.ACNT_YY  = #acntYy#
+				       AND A.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+		               AND A.BAL_DIV  = #balDiv#
+		               AND ( A.BUDG_CD = '10'
+		                    OR ISNULL(#slipCfmFrMm#,#acntYy#+'03') >= SUBSTRING(A.CFM_DT,1,6) )
+				       AND CASE WHEN #balDiv# = '10' THEN B.ACNT_INC_NM
+				                WHEN #balDiv# = '20' THEN B.ACNT_EXP_NM END IS NOT NULL
+				       AND CASE WHEN #balDiv# = '10' THEN B.ACNT_INC_NM
+				                WHEN #balDiv# = '20' THEN B.ACNT_EXP_NM END != ''
+				       AND A.BUDG_ORG_ID = CASE WHEN LEN(#budgOrgId#) > 0 THEN #budgOrgId# ELSE A.BUDG_ORG_ID END
+				       AND A.ACNT_CD BETWEEN #acntCdFr# AND #acntCdTo#    
+				    GROUP BY A.ACNT_YY, A.BAL_DIV,A.ACNT_CD
+				) TA
+			GROUP BY TA.ACNT_YY, TA.BAL_DIV, TA.ACNT_CD
+
+		    UNION
+		    
+			SELECT  '1' AS GB
+		          , SLIP_CFM_DT + '01' AS SLIP_CFM_DT
+		          , '' AS VOU_NO
+		          , '' AS SLIP_NO
+		          , null AS SLIP_SEQ
+		          , TA.ACNT_CD AS ACNT_CD
+		          , '전 월 이 월' AS SLIP_DESC
+		          , '' AS VEND_NM
+		          , SUM(ISNULL(AMT_SUM_TOT,0)) AS AMT_SUM_TOT
+		          , SUM(ISNULL(AMT_SUM_M,0)) AS AMT_SUM_M
+		          , '' AS BUDG_ORG_ID
+		          , dbo.F_AC_GET_ACNT_INFO(TA.ACNT_YY, #acntUnt#, TA.ACNT_CD, '50', CASE WHEN TA.BAL_DIV = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) AS ACNT_NM
+		          , SUM(ISNULL(AMT_SUM_TOT,0)) - SUM(ISNULL(AMT_SUM_M,0)) AS RE_AMT
+		      FROM (
+				     SELECT A.ACNT_YY
+				          , A.BAL_DIV
+				          , SUBSTRING(C.SLIP_CFM_DT,1,6) AS SLIP_CFM_DT
+				          , A.ACNT_CD AS ACNT_CD
+				          , ( SELECT SUM(BUDG_AMT) 
+				                FROM BG_ASGN BA WITH(NOLOCK)
+				               WHERE BA.ACNT_UNT IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+						
+								                    UNION
+						
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+				                 AND BA.ACNT_YY = A.ACNT_YY
+				                 AND BA.ACNT_CD = A.ACNT_CD
+				                 AND BA.BAL_DIV = A.BAL_DIV
+				                 AND BA.BUDG_ORG_ID = CASE WHEN LEN(#budgOrgId#) > 0 THEN #budgOrgId# ELSE BA.BUDG_ORG_ID END
+				                 AND ( BA.BUDG_CD = '10'
+				                      OR SUBSTRING(C.SLIP_CFM_DT,1,6) >= SUBSTRING(BA.CFM_DT,1,6) )
+				            ) AS AMT_SUM_TOT
+				          , ( SELECT SUM(ASD.SLIP_AMT) SLIP_AMT
+							    FROM AC_SLIP ASL WITH(NOLOCK)
+							         INNER JOIN AC_SLIP_DET ASD
+							           ON ASL.ACNT_YY = ASD.ACNT_YY
+									     AND ASL.ACNT_UNT = ASD.ACNT_UNT
+									     AND ASL.SLIP_NO = ASD.SLIP_NO     
+							   WHERE ASL.ACNT_YY  = A.ACNT_YY
+							     AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+						
+								                    UNION
+						
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+							     AND ASD.BAL_DIV  = A.BAL_DIV 
+							     AND ASD.ACNT_CD  = A.ACNT_CD
+							     AND ASD.BUDG_ORG_ID = CASE WHEN LEN(#budgOrgId#) > 0 THEN #budgOrgId# ELSE ASD.BUDG_ORG_ID END
+							     AND SUBSTRING(C.SLIP_CFM_DT,1,6) + '01' > ASD.SLIP_CFM_DT 
+				                 AND ASL.STA_CD   = '51'
+							     ) AS AMT_SUM_M
+				      FROM BG_ASGN A WITH(NOLOCK)
+					       INNER JOIN BG_ACNT_CD B WITH(NOLOCK)
+					          ON A.ACNT_UNT = B.ACNT_UNT
+					         AND A.ACNT_YY = B.ACNT_YY
+					         AND A.ACNT_CD = B.ACNT_CD
+					       INNER JOIN AC_SLIP_DET C WITH(NOLOCK)
+					          ON A.ACNT_UNT = C.ACNT_UNT
+					         AND A.ACNT_YY = C.ACNT_YY
+					         AND A.ACNT_CD = C.ACNT_CD
+					         AND A.BAL_DIV = C.BAL_DIV
+					       INNER JOIN AC_SLIP D WITH(NOLOCK)
+					          ON C.ACNT_UNT = D.ACNT_UNT
+					         AND C.ACNT_YY = D.ACNT_YY
+					         AND C.SLIP_NO = D.SLIP_NO
+				     WHERE A.ACNT_YY  = #acntYy#
+				       AND A.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+		               AND A.BAL_DIV  = #balDiv#
+				       AND SUBSTRING(C.SLIP_CFM_DT,1,6) BETWEEN #slipCfmFrMm# AND #slipCfmToMm#
+		
+		               AND D.STA_CD   = '51'
+				       AND CASE WHEN #balDiv# = '10' THEN B.ACNT_INC_NM
+				                WHEN #balDiv# = '20' THEN B.ACNT_EXP_NM END IS NOT NULL
+				       AND CASE WHEN #balDiv# = '10' THEN B.ACNT_INC_NM
+				                WHEN #balDiv# = '20' THEN B.ACNT_EXP_NM END != ''
+				       AND A.BUDG_ORG_ID = CASE WHEN LEN(#budgOrgId#) > 0 THEN #budgOrgId# ELSE A.BUDG_ORG_ID END
+				       AND A.ACNT_CD BETWEEN #acntCdFr# AND #acntCdTo#    
+				    GROUP BY A.ACNT_YY, A.BAL_DIV,A.ACNT_CD, SUBSTRING(C.SLIP_CFM_DT,1,6)
+				) TA
+			GROUP BY TA.ACNT_YY, TA.BAL_DIV, TA.ACNT_CD, TA.SLIP_CFM_DT
+			   
+		    UNION
+		    
+		    SELECT '2' AS GB
+		          ,ASL.SLIP_CFM_DT AS SLIP_CFM_DT
+		          ,ASL.VOU_NO AS VOU_NO
+		          ,ASD.SLIP_NO AS SLIP_NO
+		          ,ASD.SLIP_SEQ AS SLIP_SEQ
+		          ,ASD.ACNT_CD
+		          ,ISNULL(ASD.ABSTR, ASL.SLIP_DESC ) AS SLIP_DESC
+		          ,ASL.SD_VENDOR_DESC VEND_NM
+		          ,null AS AMT_SUM_TOT
+		          ,ASD.SLIP_AMT AS AMT_SUM_M
+		          ,ASD.BUDG_ORG_ID
+		          ,CASE WHEN #balDiv# = '10' THEN B.ACNT_INC_NM ELSE B.ACNT_EXP_NM END
+		          , (  ISNULL((SELECT SUM(BUDG_AMT) 
+		                FROM BG_ASGN BA WITH(NOLOCK)
+		               WHERE BA.ACNT_UNT IN (SELECT ACNT_UNT
+							                      FROM BG_UNT WITH(NOLOCK)
+							                     WHERE ACNT_UNT = #acntUnt#
+							                       AND ADD_YN = '0'
+					
+							                    UNION
+					
+							                    SELECT ADD_ACNT_UNT
+							                      FROM BG_UNT_ADD WITH(NOLOCK)
+							                     WHERE ACNT_UNT = #acntUnt#)
+		                 AND BA.ACNT_YY = ASD.ACNT_YY
+		                 AND BA.ACNT_CD = ASD.ACNT_CD
+		                 AND BA.BAL_DIV = ASD.BAL_DIV
+		                 AND ( BA.BUDG_CD = '10'
+		                      OR SUBSTRING(ASL.SLIP_CFM_DT,1,6) >= SUBSTRING(BA.CFM_DT,1,6) )) ,0)
+		               - ISNULL(( SELECT SUM(RASD.SLIP_AMT)
+		                     FROM AC_SLIP_DET RASD WITH(NOLOCK)
+		                          INNER JOIN AC_SLIP RAS WITH(NOLOCK)
+		                            ON RAS.ACNT_UNT= RASD.ACNT_UNT
+		                            AND RAS.ACNT_YY = RASD.ACNT_YY
+		                            AND RAS.SLIP_NO = RASD.SLIP_NO
+		                    WHERE RASD.ACNT_UNT IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+						
+								                    UNION
+						
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+		                      AND RASD.ACNT_YY = ASD.ACNT_YY
+		                      AND RASD.ACNT_CD = ASD.ACNT_CD
+		                      AND RASD.BAL_DIV = ASD.BAL_DIV
+		                      AND ASD.SLIP_CFM_DT + ASD.SLIP_NO + dbo.FN_LPAD(CONVERT(VARCHAR,ASD.SLIP_SEQ),5,'0') >= RASD.SLIP_CFM_DT + RASD.SLIP_NO + dbo.FN_LPAD(CONVERT(VARCHAR,RASD.SLIP_SEQ),5,'0') 
+		                      AND RAS.STA_CD = '51')
+		               	  , 0))
+		      FROM AC_SLIP ASL WITH(NOLOCK)
+		           INNER JOIN AC_SLIP_DET ASD WITH(NOLOCK)
+				       ON  ASL.ACNT_YY = ASD.ACNT_YY
+				       AND ASL.ACNT_UNT = ASD.ACNT_UNT
+				       AND ASL.SLIP_NO = ASD.SLIP_NO
+				   INNER JOIN BG_ACNT_CD B WITH(NOLOCK)
+		             ON ASD.ACNT_UNT = B.ACNT_UNT
+		              AND ASD.ACNT_YY = B.ACNT_YY
+		              AND ASD.ACNT_CD = B.ACNT_CD
+		     WHERE ASL.ACNT_YY  = #acntYy#
+		       AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+				                      FROM BG_UNT WITH(NOLOCK)
+				                     WHERE ACNT_UNT = #acntUnt#
+				                       AND ADD_YN = '0'
+		
+				                    UNION
+		
+				                    SELECT ADD_ACNT_UNT
+				                      FROM BG_UNT_ADD WITH(NOLOCK)
+				                     WHERE ACNT_UNT = #acntUnt#)
+		       AND CASE WHEN #balDiv# = '10' THEN B.ACNT_INC_NM
+		                WHEN #balDiv# = '20' THEN B.ACNT_EXP_NM END IS NOT NULL
+		       AND CASE WHEN #balDiv# = '10' THEN B.ACNT_INC_NM
+		                WHEN #balDiv# = '20' THEN B.ACNT_EXP_NM END != ''
+			   AND ASD.BAL_DIV  = #balDiv#
+		       AND ASD.BUDG_ORG_ID = CASE WHEN LEN(#budgOrgId#) > 0 THEN #budgOrgId# ELSE ASD.BUDG_ORG_ID END
+		       AND ASD.ACNT_CD BETWEEN #acntCdFr# AND #acntCdTo#    
+		       AND SUBSTRING(ASD.SLIP_CFM_DT,1,6) BETWEEN #slipCfmFrMm# AND #slipCfmToMm#
+		       AND ASL.STA_CD   = '51'
+		       
+		    UNION
+		    
+		    SELECT '3' AS GB
+		          ,SUBSTRING(ASL.SLIP_CFM_DT,1,6) + '33' AS SLIP_CFM_DT
+		          ,null AS VOU_NO
+		          ,null AS SLIP_NO
+		          , null AS SLIP_SEQ
+		          ,ASD.ACNT_CD
+		          ,null
+		          ,'          월     계' VEND_NM
+		          ,null AS AMT_SUM_TOT
+		          ,SUM(ASD.SLIP_AMT) AS AMT_SUM_M
+		          ,NULL
+		          ,dbo.F_AC_GET_ACNT_INFO(ASD.ACNT_YY, #acntUnt#, ASD.ACNT_CD, '5', CASE WHEN ASD.BAL_DIV = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) AS ACNT_NM
+		          ,null
+		      FROM AC_SLIP ASL WITH(NOLOCK)
+		           INNER JOIN AC_SLIP_DET ASD WITH(NOLOCK)
+				       ON  ASL.ACNT_YY = ASD.ACNT_YY
+				       AND ASL.ACNT_UNT = ASD.ACNT_UNT
+				       AND ASL.SLIP_NO = ASD.SLIP_NO
+				   INNER JOIN BG_ACNT_CD B WITH(NOLOCK)
+		             ON ASD.ACNT_UNT = B.ACNT_UNT
+		              AND ASD.ACNT_YY = B.ACNT_YY
+		              AND ASD.ACNT_CD = B.ACNT_CD
+		     WHERE ASL.ACNT_YY  = #acntYy#
+		       AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+				                      FROM BG_UNT WITH(NOLOCK)
+				                     WHERE ACNT_UNT = #acntUnt#
+				                       AND ADD_YN = '0'
+		
+				                    UNION
+		
+				                    SELECT ADD_ACNT_UNT
+				                      FROM BG_UNT_ADD WITH(NOLOCK)
+				                     WHERE ACNT_UNT = #acntUnt#)
+		       AND ASD.BAL_DIV  = #balDiv#
+		       AND CASE WHEN #balDiv# = '10' THEN B.ACNT_INC_NM
+		                WHEN #balDiv# = '20' THEN B.ACNT_EXP_NM END IS NOT NULL
+		       AND CASE WHEN #balDiv# = '10' THEN B.ACNT_INC_NM
+		                WHEN #balDiv# = '20' THEN B.ACNT_EXP_NM END != ''
+		       AND ASD.BUDG_ORG_ID = CASE WHEN LEN(#budgOrgId#) > 0 THEN #budgOrgId# ELSE ASD.BUDG_ORG_ID END
+		       AND ASD.ACNT_CD BETWEEN #acntCdFr# AND #acntCdTo#    
+		       AND SUBSTRING(ASD.SLIP_CFM_DT,1,6) BETWEEN #slipCfmFrMm# AND #slipCfmToMm#
+		       AND ASL.STA_CD   = '51'
+		       GROUP BY ASD.ACNT_YY, ASD.ACNT_CD, ASD.BAL_DIV, SUBSTRING(ASL.SLIP_CFM_DT,1,6)
+		       
+		       
+		    UNION
+		    
+		    SELECT '4' AS GB
+		          ,'99991234' AS SLIP_CFM_DT
+		          ,null AS VOU_NO
+		          ,null AS SLIP_NO
+		          , null AS SLIP_SEQ
+		          ,TA.ACNT_CD
+		          ,null
+		          ,'          누     계' VEND_NM
+		          ,SUM(AMT_SUM_TOT) AS AMT_SUM_TOT
+		          ,SUM(AMT_SUM_M) AS AMT_SUM_M 
+		          ,NULL
+		          ,dbo.F_AC_GET_ACNT_INFO(TA.ACNT_YY, #acntUnt#, TA.ACNT_CD, '5', CASE WHEN TA.BAL_DIV = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) AS ACNT_NM
+		          ,SUM(AMT_SUM_TOT) - SUM(AMT_SUM_M) AS RE_AMT
+		     FROM (
+				    SELECT ASD.ACNT_YY
+				          ,ASD.BAL_DIV
+				          ,ASD.ACNT_CD
+				          ,ISNULL((SELECT SUM(BUDG_AMT) 
+				                FROM BG_ASGN BA WITH(NOLOCK)
+				               WHERE BA.ACNT_UNT IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+						
+								                    UNION
+						
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+				                 AND BA.ACNT_YY = ASD.ACNT_YY
+				                 AND BA.ACNT_CD = ASD.ACNT_CD
+				                 AND BA.BAL_DIV = ASD.BAL_DIV
+				                 AND ( BA.BUDG_CD = '10'
+				                      OR #slipCfmToMm# >= SUBSTRING(BA.CFM_DT,1,6) )) ,0) AS AMT_SUM_TOT
+				          , ISNULL(( SELECT SUM(RASD.SLIP_AMT)
+				                     FROM AC_SLIP_DET RASD WITH(NOLOCK)
+				                          INNER JOIN AC_SLIP RAS WITH(NOLOCK)
+				                            ON RAS.ACNT_UNT= RASD.ACNT_UNT
+				                            AND RAS.ACNT_YY = RASD.ACNT_YY
+				                            AND RAS.SLIP_NO = RASD.SLIP_NO
+				                    WHERE RASD.ACNT_UNT IN (SELECT ACNT_UNT
+										                      FROM BG_UNT WITH(NOLOCK)
+										                     WHERE ACNT_UNT = #acntUnt#
+										                       AND ADD_YN = '0'
+								
+										                    UNION
+								
+										                    SELECT ADD_ACNT_UNT
+										                      FROM BG_UNT_ADD WITH(NOLOCK)
+										                     WHERE ACNT_UNT = #acntUnt#)
+				                      AND RASD.ACNT_YY = ASD.ACNT_YY
+				                      AND RASD.ACNT_CD = ASD.ACNT_CD
+				                      AND RASD.BAL_DIV = ASD.BAL_DIV
+				                      AND #slipCfmToMm# >= SUBSTRING(RASD.SLIP_CFM_DT,1,6) 
+				                      AND RAS.STA_CD = '51'), 0) AS AMT_SUM_M
+				      FROM AC_SLIP ASL WITH(NOLOCK)
+				           INNER JOIN AC_SLIP_DET ASD WITH(NOLOCK)
+						       ON  ASL.ACNT_YY = ASD.ACNT_YY
+						       AND ASL.ACNT_UNT = ASD.ACNT_UNT
+						       AND ASL.SLIP_NO = ASD.SLIP_NO
+						   INNER JOIN BG_ACNT_CD B WITH(NOLOCK)
+				             ON ASD.ACNT_UNT = B.ACNT_UNT
+				              AND ASD.ACNT_YY = B.ACNT_YY
+				              AND ASD.ACNT_CD = B.ACNT_CD
+				     WHERE ASL.ACNT_YY  = #acntYy#
+				       AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+				       AND ASD.BAL_DIV  = #balDiv#
+				       AND CASE WHEN #balDiv# = '10' THEN B.ACNT_INC_NM
+				                WHEN #balDiv# = '20' THEN B.ACNT_EXP_NM END IS NOT NULL
+				       AND CASE WHEN #balDiv# = '10' THEN B.ACNT_INC_NM
+				                WHEN #balDiv# = '20' THEN B.ACNT_EXP_NM END != ''
+				       AND ASD.BUDG_ORG_ID = CASE WHEN LEN(#budgOrgId#) > 0 THEN #budgOrgId# ELSE ASD.BUDG_ORG_ID END
+				       AND ASD.ACNT_CD BETWEEN #acntCdFr# AND #acntCdTo#    
+				       AND SUBSTRING(ASD.SLIP_CFM_DT,1,6) BETWEEN #slipCfmFrMm# AND #slipCfmToMm#
+				       AND ASL.STA_CD   = '51'
+				       GROUP BY ASD.ACNT_YY, ASD.ACNT_CD, ASD.BAL_DIV
+				  ) TA
+			  GROUP BY TA.ACNT_YY, TA.ACNT_CD, TA.BAL_DIV
+				       
+				       
+		      ) TB
+		      LEFT OUTER JOIN BG_ACNT_CD BAC
+		       ON  BAC.ACNT_YY  = #acntYy#
+		       AND BAC.ACNT_UNT = #acntUnt#
+		       AND TB.ACNT_CD = BAC.ACNT_CD 
+		ORDER BY TB.ACNT_CD, SLIP_CFM_DT, GB, SLIP_NO, SLIP_SEQ
+    </select>
+    
+    <!--
+    #########################################################################################################################################
+    # 운영원장(admi/ac/ac03/ac03120.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    <select id="ac03DAO.selectAc03120MainList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac03DAO.selectAc03120MainList 운영원장 main 조회 */
+		  SELECT GB
+		        ,CASE WHEN SUBSTRING(SLIP_CFM_DT, 7, 2) = '34' THEN '' ELSE SUBSTRING(SLIP_CFM_DT, 5, 2) END AS SLIP_CFM_MM
+		        ,CASE WHEN SUBSTRING(SLIP_CFM_DT, 7, 2) IN ('33','34') THEN '' 
+		              WHEN GB = '3' THEN ''
+		              ELSE SUBSTRING(SLIP_CFM_DT, 7, 2) END AS SLIP_CFM_DD
+		        ,CASE WHEN LEN(VOU_NO) > 0 THEN SUBSTRING(VOU_NO,1,8) + '-' + SUBSTRING(VOU_NO,9,4) ELSE '' END AS VOU_NO
+		        ,CASE WHEN LEN(SLIP_NO) > 0 THEN SUBSTRING(SLIP_NO,1,8) + '-' + SUBSTRING(SLIP_NO,9,4) ELSE '' END AS SLIP_NO_DISP
+		        ,SLIP_NO
+		        ,SLIP_SEQ
+		        ,ACNT_CD
+		        ,ACNT_NM
+		        ,SLIP_DESC
+		        ,VEND_NM
+		        ,SLIP_AMT_10
+		        ,SLIP_AMT_20
+		        ,RE_AMT
+		        ,BAL_DIV
+
+		    FROM
+		    ( 
+		    SELECT '1' AS GB
+		          ,#slipCfmFrDt# AS SLIP_CFM_DT
+		          ,'' AS VOU_NO
+		          ,'' AS SLIP_NO
+		          ,null AS SLIP_SEQ
+		          ,TA.ACNT_CD AS ACNT_CD
+		          ,null AS BAL_DIV
+		          ,MAX(BAC.ACNT_NM) AS ACNT_NM
+		          ,'이    월' AS SLIP_DESC
+		          ,'' AS VEND_NM
+		          ,SUM(SLIP_AMT_10) AS SLIP_AMT_10
+		          ,SUM(SLIP_AMT_20) AS SLIP_AMT_20
+		          ,SUM(RE_AMT) AS RE_AMT
+		     FROM (
+				    SELECT BAC.ACNT_CD AS ACNT_CD
+				          , ( SELECT ISNULL(SUM(CASE WHEN RASD.DRCR_CD = '10' AND ISNULL(RASL.MINUS_DISP_YN, '0') = '1' THEN RASD.SLIP_AMT
+				                                     WHEN RASD.DRCR_CD = '10' AND RASD.SLIP_AMT > 0 THEN RASD.SLIP_AMT
+				                                     WHEN RASD.DRCR_CD = '20' AND 0 > RASD.SLIP_AMT AND ISNULL(RASL.MINUS_DISP_YN, '0') = '0' THEN RASD.SLIP_AMT * -1  ELSE 0 END),0)
+				               FROM AC_SLIP_DET RASD WITH(NOLOCK)
+				                     INNER JOIN AC_SLIP RASL WITH(NOLOCK)
+				                       ON RASL.ACNT_YY = RASD.ACNT_YY
+								       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+								       AND RASL.SLIP_NO = RASD.SLIP_NO
+								     INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+								       ON  RBAC.ACNT_YY = RASD.ACNT_YY
+								       AND RBAC.ACNT_UNT = RASD.ACNT_UNT
+								       AND RBAC.ACNT_CD = RASD.ACNT_CD
+							  WHERE RASL.STA_CD = '51'
+							    AND RASD.ACNT_YY = BAC.ACNT_YY
+							    AND RASD.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							    AND RASD.ACNT_CD = BAC.ACNT_CD 
+							    AND #slipCfmFrDt# > RASL.SLIP_CFM_DT ) 
+				           +  ( CASE WHEN BAC.DRCR_CD = '10' THEN ISNULL((SELECT SUM(TRANS_AMT)
+				                                                FROM AC_BASE AB WITH(NOLOCK)
+				                                               WHERE AB.ACNT_YY = BAC.ACNT_YY
+				                                                 AND AB.ACNT_UNT IN (SELECT ACNT_UNT
+																                      FROM BG_UNT WITH(NOLOCK)
+																                     WHERE ACNT_UNT = #acntUnt#
+																                       AND ADD_YN = '0'
+														
+																                    UNION
+														
+																                    SELECT ADD_ACNT_UNT
+																                      FROM BG_UNT_ADD WITH(NOLOCK)
+																                     WHERE ACNT_UNT = #acntUnt#)
+				                                                 AND AB.ACNT_CD = BAC.ACNT_CD ),0)
+				                                       ELSE 0 END )
+				              AS SLIP_AMT_10 
+				          , ( SELECT ISNULL(SUM(CASE WHEN RASD.DRCR_CD = '20' AND ISNULL(RASL.MINUS_DISP_YN, '0') = '1' THEN RASD.SLIP_AMT
+				                                     WHEN RASD.DRCR_CD = '20' AND RASD.SLIP_AMT > 0 THEN RASD.SLIP_AMT
+				                                     WHEN RASD.DRCR_CD = '10' AND 0 > RASD.SLIP_AMT AND ISNULL(RASL.MINUS_DISP_YN, '0') = '0' THEN RASD.SLIP_AMT * -1
+				                                     ELSE 0 END),0)
+				               FROM AC_SLIP_DET RASD WITH(NOLOCK)
+				                     INNER JOIN AC_SLIP RASL WITH(NOLOCK)
+				                       ON RASL.ACNT_YY = RASD.ACNT_YY
+								       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+								       AND RASL.SLIP_NO = RASD.SLIP_NO
+								     INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+								       ON  RBAC.ACNT_YY = RASD.ACNT_YY
+								       AND RBAC.ACNT_UNT = RASD.ACNT_UNT
+								       AND RBAC.ACNT_CD = RASD.ACNT_CD
+							  WHERE RASL.STA_CD = '51'
+							    AND RASD.ACNT_YY = BAC.ACNT_YY
+							    AND RASD.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							    AND RASD.ACNT_CD = BAC.ACNT_CD 
+							    AND #slipCfmFrDt# > RASL.SLIP_CFM_DT ) 
+				            + ( CASE WHEN BAC.DRCR_CD = '20' THEN ISNULL((SELECT SUM(TRANS_AMT)
+						                                                FROM AC_BASE AB WITH(NOLOCK)
+						                                               WHERE AB.ACNT_YY = BAC.ACNT_YY
+						                                                 AND AB.ACNT_UNT IN (SELECT ACNT_UNT
+																		                      FROM BG_UNT WITH(NOLOCK)
+																		                     WHERE ACNT_UNT = #acntUnt#
+																		                       AND ADD_YN = '0'
+																
+																		                    UNION
+																
+																		                    SELECT ADD_ACNT_UNT
+																		                      FROM BG_UNT_ADD WITH(NOLOCK)
+																		                     WHERE ACNT_UNT = #acntUnt#)
+						                                                 AND AB.ACNT_CD = BAC.ACNT_CD ),0)
+				                                       ELSE 0 END )
+				               AS SLIP_AMT_20 
+				          , ( SELECT ISNULL(SUM(CASE WHEN RASD.DRCR_CD = '10' THEN CASE WHEN RBAC.DRCR_CD = '10' THEN RASD.SLIP_AMT ELSE RASD.SLIP_AMT * -1 END
+					          			             WHEN RASD.DRCR_CD = '20' THEN CASE WHEN RBAC.DRCR_CD = '20' THEN RASD.SLIP_AMT ELSE RASD.SLIP_AMT * -1 END
+					                                 ELSE 0 END), 0)
+				               FROM AC_SLIP_DET RASD WITH(NOLOCK)
+				                     INNER JOIN AC_SLIP RASL WITH(NOLOCK)
+				                       ON RASL.ACNT_YY = RASD.ACNT_YY
+								       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+								       AND RASL.SLIP_NO = RASD.SLIP_NO
+								     INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+								       ON  RBAC.ACNT_YY = RASD.ACNT_YY
+								       AND RBAC.ACNT_UNT = RASD.ACNT_UNT
+								       AND RBAC.ACNT_CD = RASD.ACNT_CD
+							  WHERE RASL.STA_CD = '51'
+							    AND RASD.ACNT_YY = BAC.ACNT_YY
+							    AND RASD.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							    AND RASD.ACNT_CD = BAC.ACNT_CD 
+							    AND #slipCfmFrDt# > RASL.SLIP_CFM_DT ) 
+				            + ( CASE WHEN BAC.DRCR_CD = '10' THEN ISNULL((SELECT SUM(CASE WHEN AB.DRCR_CD = '10' THEN AB.TRANS_AMT ELSE AB.TRANS_AMT * -1 END)
+						                                                    FROM AC_BASE AB WITH(NOLOCK)
+						                                                   WHERE AB.ACNT_YY = BAC.ACNT_YY
+						                                                     AND AB.ACNT_UNT IN (SELECT ACNT_UNT
+																			                      FROM BG_UNT WITH(NOLOCK)
+																			                     WHERE ACNT_UNT = #acntUnt#
+																			                       AND ADD_YN = '0'
+																	
+																			                    UNION
+																	
+																			                    SELECT ADD_ACNT_UNT
+																			                      FROM BG_UNT_ADD WITH(NOLOCK)
+																			                     WHERE ACNT_UNT = #acntUnt#)
+						                                                     AND AB.ACNT_CD = BAC.ACNT_CD ),0)
+				            	     WHEN BAC.DRCR_CD = '20' THEN ISNULL((SELECT SUM(CASE WHEN AB.DRCR_CD = '20' THEN AB.TRANS_AMT ELSE AB.TRANS_AMT * -1 END)
+						                                                    FROM AC_BASE AB WITH(NOLOCK)
+						                                                   WHERE AB.ACNT_YY = BAC.ACNT_YY
+						                                                     AND AB.ACNT_UNT IN (SELECT ACNT_UNT
+																			                      FROM BG_UNT WITH(NOLOCK)
+																			                     WHERE ACNT_UNT = #acntUnt#
+																			                       AND ADD_YN = '0'
+																	
+																			                    UNION
+																	
+																			                    SELECT ADD_ACNT_UNT
+																			                      FROM BG_UNT_ADD WITH(NOLOCK)
+																			                     WHERE ACNT_UNT = #acntUnt#)
+						                                                     AND AB.ACNT_CD = BAC.ACNT_CD ),0)
+				                      ELSE 0 END )
+				             AS RE_AMT
+				          
+				      FROM BG_ACNT_CD BAC WITH(NOLOCK)
+				     WHERE BAC.ACNT_YY  = #acntYy#
+				       AND BAC.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+				       AND BAC.ACNT_CD BETWEEN #acntCdFr# AND #acntCdTo#  
+				       AND BAC.ACNT_LVL IN ('50' )
+				   GROUP BY BAC.ACNT_YY, BAC.ACNT_CD, BAC.DRCR_CD
+				  ) TA
+				  INNER JOIN BG_ACNT_CD BAC
+				    ON TA.ACNT_CD = BAC.ACNT_CD
+				    AND BAC.ACNT_YY = #acntYy#
+				    AND BAC.ACNT_UNT = #acntUnt#
+			GROUP BY TA.ACNT_CD
+		    
+		    UNION ALL
+		    
+		    SELECT '2' AS GB
+		          ,ASL.SLIP_CFM_DT AS SLIP_CFM_DT
+		          ,ASL.VOU_NO
+		          ,ASD.SLIP_NO AS SLIP_NO
+		          ,ASD.SLIP_SEQ AS SLIP_SEQ
+		          ,ASD.ACNT_CD
+		          ,ASD.BAL_DIV
+		          ,dbo.F_AC_GET_ACNT_INFO(ASD.ACNT_YY, ASD.ACNT_UNT, ASD.ACNT_CD, '5', 'ACNT_NM') AS ACNT_NM
+		          ,ISNULL(ASD.ABSTR, ASL.SLIP_DESC) AS SLIP_DESC
+		          ,ASL.SD_VENDOR_DESC VEND_NM
+		          ,CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+		                WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+		                WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1 ELSE NULL END AS SLIP_AMT_SUM_10 
+		          ,CASE WHEN ASD.DRCR_CD = '20' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+		                WHEN ASD.DRCR_CD = '20' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+		                WHEN ASD.DRCR_CD = '10' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1 ELSE NULL END AS SLIP_AMT_SUM_20 
+		          , ( SELECT SUM(CASE WHEN RASD.DRCR_CD = '10' THEN CASE WHEN RBAC.DRCR_CD = '10' THEN RASD.SLIP_AMT ELSE RASD.SLIP_AMT * -1 END
+		                              WHEN RASD.DRCR_CD = '20' THEN CASE WHEN RBAC.DRCR_CD = '20' THEN RASD.SLIP_AMT ELSE RASD.SLIP_AMT * -1 END
+		                              ELSE 0 END)
+		          	
+		               FROM AC_SLIP_DET RASD WITH(NOLOCK)
+		                     INNER JOIN AC_SLIP RASL WITH(NOLOCK)
+		                       ON RASL.ACNT_YY = RASD.ACNT_YY
+						       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+						       AND RASL.SLIP_NO = RASD.SLIP_NO
+						     INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+						       ON  RBAC.ACNT_YY = RASD.ACNT_YY
+						       AND RBAC.ACNT_UNT = RASD.ACNT_UNT
+						       AND RBAC.ACNT_CD = RASD.ACNT_CD
+					  WHERE RASL.STA_CD = '51'
+					    AND RASD.ACNT_YY = ASD.ACNT_YY
+					    AND RASD.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+					    AND RASD.ACNT_CD = ASD.ACNT_CD 
+					    AND ASD.SLIP_CFM_DT >= RASD.SLIP_CFM_DT 
+					    AND ASL.SLIP_CFM_DT + CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1'  THEN '1'
+					                               WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN '1'
+		                                           WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN '1' ELSE '2' END
+		                                    + ASD.ACNT_CD + ASL.VOU_NO + ASD.SLIP_NO + dbo.FN_LPAD(CONVERT(VARCHAR,ASD.SLIP_SEQ), 5, '0') >= 
+		                    RASL.SLIP_CFM_DT + CASE WHEN RASD.DRCR_CD = '10' AND ISNULL(RASL.MINUS_DISP_YN, '0') = '1' THEN '1'
+		                                            WHEN RASD.DRCR_CD = '10' AND RASD.SLIP_AMT > 0 THEN '1'
+		                                            WHEN RASD.DRCR_CD = '20' AND 0 > RASD.SLIP_AMT AND ISNULL(RASL.MINUS_DISP_YN, '0') = '0' THEN '1' ELSE '2' END
+		                                     + RASD.ACNT_CD + RASL.VOU_NO + RASD.SLIP_NO + dbo.FN_LPAD(CONVERT(VARCHAR, RASD.SLIP_SEQ),5,'0') ) 
+		          + ( CASE WHEN BAC.DRCR_CD = '10' THEN ISNULL((SELECT SUM(CASE WHEN AB.DRCR_CD = '10' THEN AB.TRANS_AMT ELSE AB.TRANS_AMT * -1 END)
+				                                                    FROM AC_BASE AB WITH(NOLOCK)
+				                                                   WHERE AB.ACNT_YY = BAC.ACNT_YY
+				                                                     AND AB.ACNT_UNT IN (SELECT ACNT_UNT
+																	                      FROM BG_UNT WITH(NOLOCK)
+																	                     WHERE ACNT_UNT = #acntUnt#
+																	                       AND ADD_YN = '0'
+															
+																	                    UNION
+															
+																	                    SELECT ADD_ACNT_UNT
+																	                      FROM BG_UNT_ADD WITH(NOLOCK)
+																	                     WHERE ACNT_UNT = #acntUnt#)
+				                                                     AND AB.ACNT_CD = BAC.ACNT_CD ),0)
+		            	     WHEN BAC.DRCR_CD = '20' THEN ISNULL((SELECT SUM(CASE WHEN AB.DRCR_CD = '20' THEN AB.TRANS_AMT ELSE AB.TRANS_AMT * -1 END)
+				                                                    FROM AC_BASE AB WITH(NOLOCK)
+				                                                   WHERE AB.ACNT_YY = BAC.ACNT_YY
+				                                                     AND AB.ACNT_UNT IN (SELECT ACNT_UNT
+																	                      FROM BG_UNT WITH(NOLOCK)
+																	                     WHERE ACNT_UNT = #acntUnt#
+																	                       AND ADD_YN = '0'
+															
+																	                    UNION
+															
+																	                    SELECT ADD_ACNT_UNT
+																	                      FROM BG_UNT_ADD WITH(NOLOCK)
+																	                     WHERE ACNT_UNT = #acntUnt#)
+				                                                     AND AB.ACNT_CD = BAC.ACNT_CD ),0)
+		                      ELSE 0 END )
+		      FROM AC_SLIP ASL WITH(NOLOCK)
+		           INNER JOIN AC_SLIP_DET ASD WITH(NOLOCK)
+				       ON  ASL.ACNT_YY = ASD.ACNT_YY
+				       AND ASL.ACNT_UNT = ASD.ACNT_UNT
+				       AND ASL.SLIP_NO = ASD.SLIP_NO
+				   INNER JOIN BG_ACNT_CD BAC WITH(NOLOCK)
+				       ON  ASD.ACNT_YY = BAC.ACNT_YY
+				       AND ASD.ACNT_UNT = BAC.ACNT_UNT
+				       AND ASD.ACNT_CD = BAC.ACNT_CD
+		     WHERE ASL.ACNT_YY  = #acntYy#
+		       AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+				                      FROM BG_UNT WITH(NOLOCK)
+				                     WHERE ACNT_UNT = #acntUnt#
+				                       AND ADD_YN = '0'
+		
+				                    UNION
+		
+				                    SELECT ADD_ACNT_UNT
+				                      FROM BG_UNT_ADD WITH(NOLOCK)
+				                     WHERE ACNT_UNT = #acntUnt#)
+		       AND ASD.ACNT_CD BETWEEN #acntCdFr# AND #acntCdTo#  
+		       AND ASD.SLIP_CFM_DT BETWEEN #slipCfmFrDt# AND #slipCfmToDt#
+		       AND ASL.STA_CD   = '51'
+		    
+		    UNION ALL
+		    
+		    SELECT '3' AS GB
+		          ,TA.SLIP_CFM_DT AS SLIP_CFM_DT
+		          ,'' AS VOU_NO
+		          ,'' AS SLIP_NO
+		          ,null AS SLIP_SEQ
+		          ,TA.ACNT_CD
+		          ,null AS BAL_DIV
+		          ,dbo.F_AC_GET_ACNT_INFO(#acntYy#, #acntUnt#, TA.ACNT_CD, '5', 'ACNT_NM') AS ACNT_NM
+		          ,'' AS SLIP_DESC
+		          ,'           일                       계' VEND_NM
+		          ,SUM(SLIP_AMT_SUM_10) AS SLIP_AMT_SUM_10 
+		          ,SUM(SLIP_AMT_SUM_20) AS SLIP_AMT_SUM_20
+		          ,null AS RE_AMT
+		     FROM ( 
+			    SELECT ASL.SLIP_CFM_DT AS SLIP_CFM_DT
+			          ,ASD.ACNT_CD
+			          ,SUM(CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+			                    WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+			                    WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1 ELSE 0 END) AS SLIP_AMT_SUM_10 
+			          ,SUM(CASE WHEN ASD.DRCR_CD = '20' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+			                    WHEN ASD.DRCR_CD = '20' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+			                    WHEN ASD.DRCR_CD = '10' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1 ELSE 0 END) AS SLIP_AMT_SUM_20 
+			      FROM AC_SLIP ASL WITH(NOLOCK)
+			           INNER JOIN AC_SLIP_DET ASD WITH(NOLOCK)
+					       ON  ASL.ACNT_YY = ASD.ACNT_YY
+					       AND ASL.ACNT_UNT = ASD.ACNT_UNT
+					       AND ASL.SLIP_NO = ASD.SLIP_NO
+					   INNER JOIN BG_ACNT_CD BAC WITH(NOLOCK)
+					       ON  ASD.ACNT_YY = BAC.ACNT_YY
+					       AND ASD.ACNT_UNT = BAC.ACNT_UNT
+					       AND ASD.ACNT_CD = BAC.ACNT_CD
+			     WHERE ASL.ACNT_YY  = #acntYy#
+			       AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+					                      FROM BG_UNT WITH(NOLOCK)
+					                     WHERE ACNT_UNT = #acntUnt#
+					                       AND ADD_YN = '0'
+			
+					                    UNION
+			
+					                    SELECT ADD_ACNT_UNT
+					                      FROM BG_UNT_ADD WITH(NOLOCK)
+					                     WHERE ACNT_UNT = #acntUnt#)
+			       AND ASD.ACNT_CD BETWEEN #acntCdFr# AND #acntCdTo#  
+			       AND ASD.SLIP_CFM_DT BETWEEN #slipCfmFrDt# AND #slipCfmToDt#
+			       AND ASL.STA_CD   = '51'
+			       AND 1 = CASE WHEN #dtSumYn# = 'true' THEN 1 ELSE 0 END
+			    GROUP BY ASD.ACNT_YY, ASD.ACNT_CD, ASL.SLIP_CFM_DT
+			   ) TA
+			GROUP BY TA.ACNT_CD, TA.SLIP_CFM_DT 
+		     
+		    UNION ALL
+		    
+		    SELECT '4' AS GB
+		          ,SUBSTRING(TA.SLIP_CFM_DT,1,6) + '33' AS SLIP_CFM_DT
+		          ,'' AS VOU_NO
+		          ,'' AS SLIP_NO
+		          ,null AS SLIP_SEQ
+		          ,TA.ACNT_CD
+		          ,null AS BAL_DIV
+		          ,dbo.F_AC_GET_ACNT_INFO(#acntYy#, #acntUnt#, TA.ACNT_CD, '5', 'ACNT_NM') AS ACNT_NM
+		          ,'' AS SLIP_DESC
+		          ,'           월                       계' VEND_NM
+		          ,SUM(SLIP_AMT_SUM_10) AS SLIP_AMT_SUM_10 
+		          ,SUM(SLIP_AMT_SUM_20) AS SLIP_AMT_SUM_20 
+		          ,null AS RE_AMT
+		      FROM (
+				    SELECT SUBSTRING(ASL.SLIP_CFM_DT,1,6) + '33' AS SLIP_CFM_DT
+				          ,ASD.ACNT_CD
+				          ,SUM(CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+				                    WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+				                    WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1 ELSE 0 END) AS SLIP_AMT_SUM_10 
+				          ,SUM(CASE WHEN ASD.DRCR_CD = '20' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+				                    WHEN ASD.DRCR_CD = '20' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+				                    WHEN ASD.DRCR_CD = '10' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1 ELSE 0 END) AS SLIP_AMT_SUM_20 
+				          
+				      FROM AC_SLIP ASL WITH(NOLOCK)
+				           INNER JOIN AC_SLIP_DET ASD WITH(NOLOCK)
+						       ON  ASL.ACNT_YY = ASD.ACNT_YY
+						       AND ASL.ACNT_UNT = ASD.ACNT_UNT
+						       AND ASL.SLIP_NO = ASD.SLIP_NO
+						   INNER JOIN BG_ACNT_CD BAC WITH(NOLOCK)
+						       ON  ASD.ACNT_YY = BAC.ACNT_YY
+						       AND ASD.ACNT_UNT = BAC.ACNT_UNT
+						       AND ASD.ACNT_CD = BAC.ACNT_CD
+				     WHERE ASL.ACNT_YY  = #acntYy#
+				       AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+				       AND ASD.ACNT_CD BETWEEN #acntCdFr# AND #acntCdTo#  
+				       AND ASD.SLIP_CFM_DT BETWEEN #slipCfmFrDt# AND #slipCfmToDt#
+				       AND ASL.STA_CD   = '51'
+				    GROUP BY ASD.ACNT_YY, ASD.ACNT_CD, SUBSTRING(ASL.SLIP_CFM_DT,1,6)
+		     		) TA
+		     GROUP BY TA.ACNT_CD, SUBSTRING(TA.SLIP_CFM_DT,1,6)
+		     
+		    UNION ALL
+		    
+		    SELECT '5' AS GB
+		          ,'99991234' AS SLIP_CFM_DT
+		          ,'' AS VOU_NO
+		          ,'' AS SLIP_NO
+		          ,null AS SLIP_SEQ
+		          ,TA.ACNT_CD
+		          ,null AS BAL_DIV
+		          ,dbo.F_AC_GET_ACNT_INFO(#acntYy#, #acntUnt#, TA.ACNT_CD, '5', 'ACNT_NM') AS ACNT_NM
+		          ,'' AS SLIP_DESC
+		          ,'           당       기     합     계' VEND_NM
+		          ,SUM(SLIP_AMT_SUM_10) AS SLIP_AMT_SUM_10 
+		          ,SUM(SLIP_AMT_SUM_20) AS SLIP_AMT_SUM_20 
+		          ,null AS RE_AMT
+		      FROM (
+				    SELECT ASD.ACNT_CD
+				    	  , ( SELECT SUM(CASE WHEN RASD.DRCR_CD = '10' AND ISNULL(RASL.MINUS_DISP_YN, '0') = '1' THEN RASD.SLIP_AMT
+				    	                      WHEN RASD.DRCR_CD = '10' AND RASD.SLIP_AMT > 0 THEN RASD.SLIP_AMT
+				    	                      WHEN RASD.DRCR_CD = '20' AND 0 > RASD.SLIP_AMT AND ISNULL(RASL.MINUS_DISP_YN, '0') = '0' THEN RASD.SLIP_AMT * -1 ELSE 0 END)  
+							      FROM AC_SLIP RASL WITH(NOLOCK)
+							           INNER JOIN AC_SLIP_DET RASD WITH(NOLOCK)
+									       ON  RASL.ACNT_YY = RASD.ACNT_YY
+									       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+									       AND RASL.SLIP_NO = RASD.SLIP_NO
+									   INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+									       ON  RASD.ACNT_YY = RBAC.ACNT_YY
+									       AND RASD.ACNT_UNT = RBAC.ACNT_UNT
+									       AND RASD.ACNT_CD = RBAC.ACNT_CD
+							     WHERE RASL.ACNT_YY  = ASD.ACNT_YY
+							       AND RASL.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							       AND RASD.ACNT_CD = ASD.ACNT_CD  
+							       AND #slipCfmToDt# >= RASD.SLIP_CFM_DT
+							       AND RASL.STA_CD   = '51'
+				    	  
+				    	  ) AS SLIP_AMT_SUM_10
+				    	  , ( SELECT SUM(CASE WHEN RASD.DRCR_CD = '20' AND ISNULL(RASL.MINUS_DISP_YN, '0') = '1' THEN RASD.SLIP_AMT
+				    	                      WHEN RASD.DRCR_CD = '20' AND RASD.SLIP_AMT > 0 THEN RASD.SLIP_AMT
+				    	                      WHEN RASD.DRCR_CD = '10' AND 0 > RASD.SLIP_AMT AND ISNULL(RASL.MINUS_DISP_YN, '0') = '0' THEN RASD.SLIP_AMT * -1 ELSE 0 END)  
+							      FROM AC_SLIP RASL WITH(NOLOCK)
+							           INNER JOIN AC_SLIP_DET RASD WITH(NOLOCK)
+									       ON  RASL.ACNT_YY = RASD.ACNT_YY
+									       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+									       AND RASL.SLIP_NO = RASD.SLIP_NO
+									   INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+									       ON  RASD.ACNT_YY = RBAC.ACNT_YY
+									       AND RASD.ACNT_UNT = RBAC.ACNT_UNT
+									       AND RASD.ACNT_CD = RBAC.ACNT_CD
+							     WHERE RASL.ACNT_YY  = ASD.ACNT_YY
+							       AND RASL.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							       AND RASD.ACNT_CD = ASD.ACNT_CD  
+							       AND #slipCfmToDt# >= RASD.SLIP_CFM_DT
+							       AND RASL.STA_CD   = '51'
+				    	  
+				    	  ) AS SLIP_AMT_SUM_20
+				      FROM AC_SLIP ASL WITH(NOLOCK)
+				           INNER JOIN AC_SLIP_DET ASD WITH(NOLOCK)
+						       ON  ASL.ACNT_YY = ASD.ACNT_YY
+						       AND ASL.ACNT_UNT = ASD.ACNT_UNT
+						       AND ASL.SLIP_NO = ASD.SLIP_NO
+						   INNER JOIN BG_ACNT_CD BAC WITH(NOLOCK)
+						       ON  ASD.ACNT_YY = BAC.ACNT_YY
+						       AND ASD.ACNT_UNT = BAC.ACNT_UNT
+						       AND ASD.ACNT_CD = BAC.ACNT_CD
+				     WHERE ASL.ACNT_YY  = #acntYy#
+				       AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+				       AND ASD.ACNT_CD BETWEEN #acntCdFr# AND #acntCdTo#  
+				       AND ASD.SLIP_CFM_DT BETWEEN #slipCfmFrDt# AND #slipCfmToDt#
+				       AND ASL.STA_CD   = '51'
+				    GROUP BY ASD.ACNT_YY, ASD.ACNT_CD
+		     		) TA
+		     GROUP BY ACNT_CD
+		     
+		    UNION ALL
+		    
+		    SELECT '6' AS GB
+		          ,'99991234' AS SLIP_CFM_DT
+		          ,'' AS VOU_NO
+		          ,'' AS SLIP_NO
+		          ,null AS SLIP_SEQ
+		          ,TA.ACNT_CD
+		          ,null AS BAL_DIV
+		          ,dbo.F_AC_GET_ACNT_INFO(#acntYy#, #acntUnt#, TA.ACNT_CD, '5', 'ACNT_NM') AS ACNT_NM
+		          ,'' AS SLIP_DESC
+		          ,'           누                       계' VEND_NM
+		          ,SUM(SLIP_AMT_SUM_10) AS SLIP_AMT_SUM_10 
+		          ,SUM(SLIP_AMT_SUM_20) AS SLIP_AMT_SUM_20 
+		          ,SUM(RE_AMT) AS RE_AMT
+		      FROM (
+				    SELECT ASD.ACNT_CD
+				          , ( SELECT SUM(CASE WHEN RASD.DRCR_CD = '10' AND ISNULL(RASL.MINUS_DISP_YN, '0') = '1' THEN RASD.SLIP_AMT
+				                              WHEN RASD.DRCR_CD = '10' AND RASD.SLIP_AMT > 0 THEN RASD.SLIP_AMT
+				                              WHEN RASD.DRCR_CD = '20' AND 0 > RASD.SLIP_AMT AND ISNULL(RASL.MINUS_DISP_YN, '0') = '0' THEN RASD.SLIP_AMT * -1 ELSE 0 END)  
+							      FROM AC_SLIP RASL WITH(NOLOCK)
+							           INNER JOIN AC_SLIP_DET RASD WITH(NOLOCK)
+									       ON  RASL.ACNT_YY = RASD.ACNT_YY
+									       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+									       AND RASL.SLIP_NO = RASD.SLIP_NO
+									   INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+									       ON  RASD.ACNT_YY = RBAC.ACNT_YY
+									       AND RASD.ACNT_UNT = RBAC.ACNT_UNT
+									       AND RASD.ACNT_CD = RBAC.ACNT_CD
+							     WHERE RASL.ACNT_YY  = ASD.ACNT_YY
+							       AND RASL.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							       AND RASD.ACNT_CD = ASD.ACNT_CD  
+							       AND #slipCfmToDt# >= RASD.SLIP_CFM_DT
+							       AND RASL.STA_CD   = '51'
+				    	  )  
+						+ ( CASE WHEN BAC.DRCR_CD = '10' THEN ISNULL((SELECT SUM(TRANS_AMT)
+						                                                FROM AC_BASE AB WITH(NOLOCK)
+						                                               WHERE AB.ACNT_YY = ASD.ACNT_YY
+						                                                 AND AB.ACNT_UNT IN (SELECT ACNT_UNT
+																		                      FROM BG_UNT WITH(NOLOCK)
+																		                     WHERE ACNT_UNT = #acntUnt#
+																		                       AND ADD_YN = '0'
+																
+																		                    UNION
+																
+																		                    SELECT ADD_ACNT_UNT
+																		                      FROM BG_UNT_ADD WITH(NOLOCK)
+																		                     WHERE ACNT_UNT = #acntUnt#)
+						                                                 AND AB.ACNT_CD = ASD.ACNT_CD ),0)
+				                                       ELSE 0 END )
+				    	   AS SLIP_AMT_SUM_10
+				    	  , ( SELECT SUM(CASE WHEN RASD.DRCR_CD = '20' AND ISNULL(RASL.MINUS_DISP_YN, '0') = '1' THEN RASD.SLIP_AMT
+				    	                      WHEN RASD.DRCR_CD = '20' AND RASD.SLIP_AMT > 0 THEN RASD.SLIP_AMT
+				    	                      WHEN RASD.DRCR_CD = '10' AND 0 > RASD.SLIP_AMT AND ISNULL(RASL.MINUS_DISP_YN, '0') = '0' THEN RASD.SLIP_AMT * -1 ELSE 0 END)  
+							      FROM AC_SLIP RASL WITH(NOLOCK)
+							           INNER JOIN AC_SLIP_DET RASD WITH(NOLOCK)
+									       ON  RASL.ACNT_YY = RASD.ACNT_YY
+									       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+									       AND RASL.SLIP_NO = RASD.SLIP_NO
+									   INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+									       ON  RASD.ACNT_YY = RBAC.ACNT_YY
+									       AND RASD.ACNT_UNT = RBAC.ACNT_UNT
+									       AND RASD.ACNT_CD = RBAC.ACNT_CD
+							     WHERE RASL.ACNT_YY  = ASD.ACNT_YY
+							       AND RASL.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							       AND RASD.ACNT_CD = ASD.ACNT_CD  
+							       AND #slipCfmToDt# >= RASD.SLIP_CFM_DT
+							       AND RASL.STA_CD   = '51'
+				    	  )
+				    	+ ( CASE WHEN BAC.DRCR_CD = '20' THEN ISNULL((SELECT SUM(TRANS_AMT)
+						                                                FROM AC_BASE AB WITH(NOLOCK)
+						                                               WHERE AB.ACNT_YY = ASD.ACNT_YY
+						                                                 AND AB.ACNT_UNT IN (SELECT ACNT_UNT
+																		                      FROM BG_UNT WITH(NOLOCK)
+																		                     WHERE ACNT_UNT = #acntUnt#
+																		                       AND ADD_YN = '0'
+																
+																		                    UNION
+																
+																		                    SELECT ADD_ACNT_UNT
+																		                      FROM BG_UNT_ADD WITH(NOLOCK)
+																		                     WHERE ACNT_UNT = #acntUnt#)
+						                                                 AND AB.ACNT_CD = ASD.ACNT_CD ),0)
+				                                       ELSE 0 END )
+				             AS SLIP_AMT_SUM_20
+				          , ISNUll(( SELECT SUM(CASE WHEN RASD.DRCR_CD = '10' THEN CASE WHEN RBAC.DRCR_CD = '10' THEN RASD.SLIP_AMT ELSE RASD.SLIP_AMT * -1 END
+				                              WHEN RASD.DRCR_CD = '20' THEN CASE WHEN RBAC.DRCR_CD = '20' THEN RASD.SLIP_AMT ELSE RASD.SLIP_AMT * -1 END
+				                              ELSE 0 END)
+				          	
+				               FROM AC_SLIP_DET RASD WITH(NOLOCK)
+				                     INNER JOIN AC_SLIP RASL WITH(NOLOCK)
+				                       ON RASL.ACNT_YY = RASD.ACNT_YY
+								       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+								       AND RASL.SLIP_NO = RASD.SLIP_NO
+								     INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+								       ON  RBAC.ACNT_YY = RASD.ACNT_YY
+								       AND RBAC.ACNT_UNT = RASD.ACNT_UNT
+								       AND RBAC.ACNT_CD = RASD.ACNT_CD
+							  WHERE RASL.STA_CD = '51'
+							    AND RASD.ACNT_YY = ASD.ACNT_YY
+							    AND RASD.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							    AND RASD.ACNT_CD = ASD.ACNT_CD 
+							    AND #slipCfmToDt# >= RASL.SLIP_CFM_DT) , 0)
+				            + ISNULL((SELECT SUM(CASE WHEN RBAC.DRCR_CD = '10' THEN CASE WHEN AB.DRCR_CD = '10' THEN AB.TRANS_AMT ELSE AB.TRANS_AMT * -1 END
+							                          WHEN RBAC.DRCR_CD = '20' THEN CASE WHEN AB.DRCR_CD = '20' THEN AB.TRANS_AMT ELSE AB.TRANS_AMT * -1 END
+													  ELSE 0 END)
+						            FROM AC_BASE AB WITH(NOLOCK)
+										 INNER JOIN BG_ACNT_CD RBAC
+										   ON  RBAC.ACNT_YY = AB.ACNT_YY
+										   AND RBAC.ACNT_UNT = AB.ACNT_UNT
+										   AND RBAC.ACNT_CD = AB.ACNT_CD
+						            WHERE AB.ACNT_YY = ASD.ACNT_YY
+						                AND AB.ACNT_UNT IN (SELECT ACNT_UNT
+										                      FROM BG_UNT WITH(NOLOCK)
+										                     WHERE ACNT_UNT = #acntUnt#
+										                       AND ADD_YN = '0'
+								
+										                    UNION
+								
+										                    SELECT ADD_ACNT_UNT
+										                      FROM BG_UNT_ADD WITH(NOLOCK)
+										                     WHERE ACNT_UNT = #acntUnt#)
+						                AND AB.ACNT_CD = ASD.ACNT_CD ),0) RE_AMT
+				      FROM AC_SLIP ASL WITH(NOLOCK)
+				           INNER JOIN AC_SLIP_DET ASD WITH(NOLOCK)
+						       ON  ASL.ACNT_YY = ASD.ACNT_YY
+						       AND ASL.ACNT_UNT = ASD.ACNT_UNT
+						       AND ASL.SLIP_NO = ASD.SLIP_NO
+				           INNER JOIN AC_VOU AV WITH(NOLOCK)
+						       ON  ASL.ACNT_YY = AV.ACNT_YY
+						       AND ASL.ACNT_UNT = AV.ACNT_UNT
+						       AND ASL.VOU_NO = AV.VOU_NO
+						   INNER JOIN BG_ACNT_CD BAC WITH(NOLOCK)
+						       ON  ASD.ACNT_YY = BAC.ACNT_YY
+						       AND ASD.ACNT_UNT = BAC.ACNT_UNT
+						       AND ASD.ACNT_CD = BAC.ACNT_CD
+				     WHERE ASL.ACNT_YY  = #acntYy#
+				       AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+				       AND ASD.ACNT_CD BETWEEN #acntCdFr# AND #acntCdTo#  
+				       AND ASD.SLIP_CFM_DT BETWEEN #slipCfmFrDt# AND #slipCfmToDt#
+				       AND ASL.STA_CD   = '51'
+				    GROUP BY ASD.ACNT_YY, ASD.ACNT_CD, BAC.DRCR_CD
+				   ) TA
+		     GROUP BY TA.ACNT_CD 
+		     
+		      ) TA
+		   ORDER BY ACNT_CD, SLIP_CFM_DT, GB, CASE WHEN SLIP_AMT_10 IS NULL THEN 2 ELSE 1 END, VOU_NO, SLIP_NO, SLIP_SEQ
+    </select>
+    
+    <select id="ac03DAO.selectAc03120MainListMok"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac03DAO.selectAc03120MainListMok 운영원장 main 조회 */
+		  SELECT GB
+		        ,CASE WHEN SUBSTRING(SLIP_CFM_DT, 7, 2) = '34' THEN '' ELSE SUBSTRING(SLIP_CFM_DT, 5, 2) END AS SLIP_CFM_MM
+		        ,CASE WHEN SUBSTRING(SLIP_CFM_DT, 7, 2) IN ('33','34') THEN ''
+		              WHEN GB = '3' THEN ''
+		              ELSE SUBSTRING(SLIP_CFM_DT, 7, 2) END AS SLIP_CFM_DD
+		        ,CASE WHEN LEN(VOU_NO) > 0 THEN SUBSTRING(VOU_NO,1,8) + '-' + SUBSTRING(VOU_NO,9,4) ELSE '' END AS VOU_NO
+		        ,CASE WHEN LEN(SLIP_NO) > 0 THEN SUBSTRING(SLIP_NO,1,8) + '-' + SUBSTRING(SLIP_NO,9,4) ELSE '' END AS SLIP_NO_DISP
+		        ,SLIP_NO
+		        ,SLIP_SEQ
+		        ,ACNT_CD
+		        ,ACNT_NM
+		        ,SLIP_DESC
+		        ,VEND_NM
+		        ,SLIP_AMT_10
+		        ,SLIP_AMT_20
+		        ,RE_AMT
+		        ,BAL_DIV
+
+		    FROM
+		    ( 
+		    SELECT '1' AS GB
+		          ,#slipCfmFrDt# AS SLIP_CFM_DT
+		          ,'' AS VOU_NO
+		          ,'' AS SLIP_NO
+		          ,null AS SLIP_SEQ
+		          ,SUBSTRING(TA.ACNT_CD,1,4)+'00' AS ACNT_CD
+		          ,null AS BAL_DIV
+		          ,MAX(BAC.ACNT_NM) AS ACNT_NM
+		          ,'이    월' AS SLIP_DESC
+		          ,'' AS VEND_NM
+		          ,SUM(SLIP_AMT_10) AS SLIP_AMT_10
+		          ,SUM(SLIP_AMT_20) AS SLIP_AMT_20
+		          ,SUM(RE_AMT) AS RE_AMT
+		     FROM (
+				    SELECT SUBSTRING(BAC.ACNT_CD,1,4)+'00' AS ACNT_CD
+				          , ( SELECT ISNULL(SUM(CASE WHEN RASD.DRCR_CD = '10' AND ISNULL(RASL.MINUS_DISP_YN, '0') = '1' THEN RASD.SLIP_AMT
+				                                     WHEN RASD.DRCR_CD = '10' AND RASD.SLIP_AMT > 0 THEN RASD.SLIP_AMT
+				                                     WHEN RASD.DRCR_CD = '20' AND 0 > RASD.SLIP_AMT AND ISNULL(RASL.MINUS_DISP_YN, '0') = '0' THEN RASD.SLIP_AMT * -1  ELSE 0 END),0)
+				               FROM AC_SLIP_DET RASD WITH(NOLOCK)
+				                     INNER JOIN AC_SLIP RASL WITH(NOLOCK)
+				                       ON RASL.ACNT_YY = RASD.ACNT_YY
+								       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+								       AND RASL.SLIP_NO = RASD.SLIP_NO
+								     INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+								       ON  RBAC.ACNT_YY = RASD.ACNT_YY
+								       AND RBAC.ACNT_UNT = RASD.ACNT_UNT
+								       AND RBAC.ACNT_CD = RASD.ACNT_CD
+							  WHERE RASL.STA_CD = '51'
+							    AND RASD.ACNT_YY = BAC.ACNT_YY
+							    AND RASD.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							    AND SUBSTRING(RASD.ACNT_CD,1,4) = SUBSTRING(BAC.ACNT_CD,1,4) 
+							    AND #slipCfmFrDt# > RASL.SLIP_CFM_DT ) 
+				           +  ( CASE WHEN BAC.DRCR_CD = '10' THEN ISNULL((SELECT SUM(TRANS_AMT)
+				                                                FROM AC_BASE AB WITH(NOLOCK)
+				                                               WHERE AB.ACNT_YY = BAC.ACNT_YY
+				                                                 AND AB.ACNT_UNT IN (SELECT ACNT_UNT
+																                      FROM BG_UNT WITH(NOLOCK)
+																                     WHERE ACNT_UNT = #acntUnt#
+																                       AND ADD_YN = '0'
+														
+																                    UNION
+														
+																                    SELECT ADD_ACNT_UNT
+																                      FROM BG_UNT_ADD WITH(NOLOCK)
+																                     WHERE ACNT_UNT = #acntUnt#)
+				                                                 AND SUBSTRING(AB.ACNT_CD,1,4) = SUBSTRING(BAC.ACNT_CD,1,4) ),0)
+				                                       ELSE 0 END )
+				              AS SLIP_AMT_10 
+				          , ( SELECT ISNULL(SUM(CASE WHEN RASD.DRCR_CD = '20' AND ISNULL(RASL.MINUS_DISP_YN, '0') = '1' THEN RASD.SLIP_AMT
+				                                     WHEN RASD.DRCR_CD = '20' AND RASD.SLIP_AMT > 0 THEN RASD.SLIP_AMT
+				                                     WHEN RASD.DRCR_CD = '10' AND 0 > RASD.SLIP_AMT AND ISNULL(RASL.MINUS_DISP_YN, '0') = '0' THEN RASD.SLIP_AMT * -1
+				                                     ELSE 0 END),0)
+				               FROM AC_SLIP_DET RASD WITH(NOLOCK)
+				                     INNER JOIN AC_SLIP RASL WITH(NOLOCK)
+				                       ON RASL.ACNT_YY = RASD.ACNT_YY
+								       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+								       AND RASL.SLIP_NO = RASD.SLIP_NO
+								     INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+								       ON  RBAC.ACNT_YY = RASD.ACNT_YY
+								       AND RBAC.ACNT_UNT = RASD.ACNT_UNT
+								       AND RBAC.ACNT_CD = RASD.ACNT_CD
+							  WHERE RASL.STA_CD = '51'
+							    AND RASD.ACNT_YY = BAC.ACNT_YY
+							    AND RASD.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							    AND SUBSTRING(RASD.ACNT_CD,1,4) = SUBSTRING(BAC.ACNT_CD,1,4) 
+							    AND #slipCfmFrDt# > RASL.SLIP_CFM_DT ) 
+				            + ( CASE WHEN BAC.DRCR_CD = '20' THEN ISNULL((SELECT SUM(TRANS_AMT)
+						                                                FROM AC_BASE AB WITH(NOLOCK)
+						                                               WHERE AB.ACNT_YY = BAC.ACNT_YY
+						                                                 AND AB.ACNT_UNT IN (SELECT ACNT_UNT
+																		                      FROM BG_UNT WITH(NOLOCK)
+																		                     WHERE ACNT_UNT = #acntUnt#
+																		                       AND ADD_YN = '0'
+																
+																		                    UNION
+																
+																		                    SELECT ADD_ACNT_UNT
+																		                      FROM BG_UNT_ADD WITH(NOLOCK)
+																		                     WHERE ACNT_UNT = #acntUnt#)
+						                                                 AND SUBSTRING(AB.ACNT_CD,1,4) = SUBSTRING(BAC.ACNT_CD,1,4) ),0)
+				                                       ELSE 0 END )
+				               AS SLIP_AMT_20 
+				          , ( SELECT ISNULL(SUM(CASE WHEN RASD.DRCR_CD = '10' THEN CASE WHEN RBAC.DRCR_CD = '10' THEN RASD.SLIP_AMT ELSE RASD.SLIP_AMT * -1 END
+				          			          WHEN RASD.DRCR_CD = '20' THEN CASE WHEN RBAC.DRCR_CD = '20' THEN RASD.SLIP_AMT ELSE RASD.SLIP_AMT * -1 END
+				                              ELSE 0 END), 0)
+				               FROM AC_SLIP_DET RASD WITH(NOLOCK)
+				                     INNER JOIN AC_SLIP RASL WITH(NOLOCK)
+				                       ON RASL.ACNT_YY = RASD.ACNT_YY
+								       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+								       AND RASL.SLIP_NO = RASD.SLIP_NO
+								     INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+								       ON  RBAC.ACNT_YY = RASD.ACNT_YY
+								       AND RBAC.ACNT_UNT = RASD.ACNT_UNT
+								       AND RBAC.ACNT_CD = RASD.ACNT_CD
+							  WHERE RASL.STA_CD = '51'
+							    AND RASD.ACNT_YY = BAC.ACNT_YY
+							    AND RASD.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							    AND SUBSTRING(RASD.ACNT_CD,1,4) = SUBSTRING(BAC.ACNT_CD,1,4) 
+							    AND #slipCfmFrDt# > RASL.SLIP_CFM_DT ) 
+				            + ( CASE WHEN BAC.DRCR_CD = '10' THEN ISNULL((SELECT SUM(CASE WHEN AB.DRCR_CD = '10' THEN AB.TRANS_AMT ELSE AB.TRANS_AMT * -1 END)
+						                                                    FROM AC_BASE AB WITH(NOLOCK)
+						                                                   WHERE AB.ACNT_YY = BAC.ACNT_YY
+						                                                     AND AB.ACNT_UNT IN (SELECT ACNT_UNT
+																			                      FROM BG_UNT WITH(NOLOCK)
+																			                     WHERE ACNT_UNT = #acntUnt#
+																			                       AND ADD_YN = '0'
+																	
+																			                    UNION
+																	
+																			                    SELECT ADD_ACNT_UNT
+																			                      FROM BG_UNT_ADD WITH(NOLOCK)
+																			                     WHERE ACNT_UNT = #acntUnt#)
+						                                                     AND SUBSTRING(AB.ACNT_CD,1,4) = SUBSTRING(BAC.ACNT_CD,1,4) ),0)
+				            	     WHEN BAC.DRCR_CD = '20' THEN ISNULL((SELECT SUM(CASE WHEN AB.DRCR_CD = '20' THEN AB.TRANS_AMT ELSE AB.TRANS_AMT * -1 END)
+						                                                    FROM AC_BASE AB WITH(NOLOCK)
+						                                                   WHERE AB.ACNT_YY = BAC.ACNT_YY
+						                                                     AND AB.ACNT_UNT IN (SELECT ACNT_UNT
+																			                      FROM BG_UNT WITH(NOLOCK)
+																			                     WHERE ACNT_UNT = #acntUnt#
+																			                       AND ADD_YN = '0'
+																	
+																			                    UNION
+																	
+																			                    SELECT ADD_ACNT_UNT
+																			                      FROM BG_UNT_ADD WITH(NOLOCK)
+																			                     WHERE ACNT_UNT = #acntUnt#)
+						                                                     AND SUBSTRING(AB.ACNT_CD,1,4) = SUBSTRING(BAC.ACNT_CD,1,4) ),0)
+				                      ELSE 0 END )
+				             AS RE_AMT
+				          
+				      FROM BG_ACNT_CD BAC WITH(NOLOCK)
+				     WHERE BAC.ACNT_YY  = #acntYy#
+				       AND BAC.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+				       AND BAC.ACNT_CD BETWEEN #acntCdFr# AND #acntCdTo#  
+				       AND BAC.ACNT_LVL IN ('40' )
+				   GROUP BY BAC.ACNT_YY, SUBSTRING(BAC.ACNT_CD,1,4), BAC.DRCR_CD
+				  ) TA
+				  INNER JOIN BG_ACNT_CD BAC
+				    ON TA.ACNT_CD = BAC.ACNT_CD
+				    AND BAC.ACNT_YY = #acntYy#
+				    AND BAC.ACNT_UNT = #acntUnt#
+			GROUP BY SUBSTRING(TA.ACNT_CD,1,4)
+		    
+		    UNION ALL
+		    
+		    SELECT '2' AS GB
+		          ,ASL.SLIP_CFM_DT AS SLIP_CFM_DT
+		          ,ASL.VOU_NO
+		          ,ASD.SLIP_NO AS SLIP_NO
+		          ,ASD.SLIP_SEQ AS SLIP_SEQ
+		          ,SUBSTRING(ASD.ACNT_CD,1,4) + '00' AS ACNT_CD
+		          ,ASD.BAL_DIV
+		          ,dbo.F_AC_GET_ACNT_INFO(ASD.ACNT_YY, ASD.ACNT_UNT, SUBSTRING(ASD.ACNT_CD,1,4)+'00', '4', 'ACNT_NM') AS ACNT_NM
+		          ,ISNULL(ASD.ABSTR, ASL.SLIP_DESC) AS SLIP_DESC
+		          ,ASL.SD_VENDOR_DESC VEND_NM
+		          ,CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+		                WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+		                WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1 ELSE NULL END AS SLIP_AMT_10 
+		          ,CASE WHEN ASD.DRCR_CD = '20' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+		                WHEN ASD.DRCR_CD = '20' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+		                WHEN ASD.DRCR_CD = '10' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1 ELSE NULL END AS SLIP_AMT_20 
+		          , ( SELECT SUM(CASE WHEN RASD.DRCR_CD = '10' THEN CASE WHEN RBAC.DRCR_CD = '10' THEN RASD.SLIP_AMT ELSE RASD.SLIP_AMT * -1 END
+		                              WHEN RASD.DRCR_CD = '20' THEN CASE WHEN RBAC.DRCR_CD = '20' THEN RASD.SLIP_AMT ELSE RASD.SLIP_AMT * -1 END
+		                              ELSE 0 END)
+		          	
+		               FROM AC_SLIP_DET RASD WITH(NOLOCK)
+		                     INNER JOIN AC_SLIP RASL WITH(NOLOCK)
+		                       ON RASL.ACNT_YY = RASD.ACNT_YY
+						       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+						       AND RASL.SLIP_NO = RASD.SLIP_NO
+						     INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+						       ON  RBAC.ACNT_YY = RASD.ACNT_YY
+						       AND RBAC.ACNT_UNT = RASD.ACNT_UNT
+						       AND RBAC.ACNT_CD = RASD.ACNT_CD
+					  WHERE RASL.STA_CD = '51'
+					    AND RASD.ACNT_YY = ASD.ACNT_YY
+					    AND RASD.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+					    AND SUBSTRING(RASD.ACNT_CD,1,4) = SUBSTRING(ASD.ACNT_CD,1,4) 
+					    AND ASD.SLIP_CFM_DT >= RASD.SLIP_CFM_DT 
+					    AND ASL.SLIP_CFM_DT + CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN '1'
+					                               WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN '1'
+		                                           WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN '1' ELSE '2' END
+		                                    + SUBSTRING(ASD.ACNT_CD,1,4) + ASL.VOU_NO + ASD.SLIP_NO + dbo.FN_LPAD(CONVERT(VARCHAR,ASD.SLIP_SEQ), 5, '0') >= 
+		                    RASL.SLIP_CFM_DT + CASE WHEN RASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN '1'
+		                                            WHEN RASD.DRCR_CD = '10' AND RASD.SLIP_AMT > 0 THEN '1'
+		                                            WHEN RASD.DRCR_CD = '20' AND 0 > RASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN '1' ELSE '2' END
+		                                     + SUBSTRING(RASD.ACNT_CD,1,4) + RASL.VOU_NO + RASD.SLIP_NO + dbo.FN_LPAD(CONVERT(VARCHAR, RASD.SLIP_SEQ),5,'0') ) 
+		          + ( CASE WHEN BAC.DRCR_CD = '10' THEN ISNULL((SELECT SUM(CASE WHEN AB.DRCR_CD = '10' THEN AB.TRANS_AMT ELSE AB.TRANS_AMT * -1 END)
+				                                                    FROM AC_BASE AB WITH(NOLOCK)
+				                                                   WHERE AB.ACNT_YY = BAC.ACNT_YY
+				                                                     AND AB.ACNT_UNT IN (SELECT ACNT_UNT
+																	                      FROM BG_UNT WITH(NOLOCK)
+																	                     WHERE ACNT_UNT = #acntUnt#
+																	                       AND ADD_YN = '0'
+															
+																	                    UNION
+															
+																	                    SELECT ADD_ACNT_UNT
+																	                      FROM BG_UNT_ADD WITH(NOLOCK)
+																	                     WHERE ACNT_UNT = #acntUnt#)
+				                                                     AND SUBSTRING(AB.ACNT_CD,1,4) = SUBSTRING(BAC.ACNT_CD,1,4) ),0)
+		            	     WHEN BAC.DRCR_CD = '20' THEN ISNULL((SELECT SUM(CASE WHEN AB.DRCR_CD = '20' THEN AB.TRANS_AMT ELSE AB.TRANS_AMT * -1 END)
+				                                                    FROM AC_BASE AB WITH(NOLOCK)
+				                                                   WHERE AB.ACNT_YY = BAC.ACNT_YY
+				                                                     AND AB.ACNT_UNT IN (SELECT ACNT_UNT
+																	                      FROM BG_UNT WITH(NOLOCK)
+																	                     WHERE ACNT_UNT = #acntUnt#
+																	                       AND ADD_YN = '0'
+															
+																	                    UNION
+															
+																	                    SELECT ADD_ACNT_UNT
+																	                      FROM BG_UNT_ADD WITH(NOLOCK)
+																	                     WHERE ACNT_UNT = #acntUnt#)
+				                                                     AND SUBSTRING(AB.ACNT_CD,1,4) = SUBSTRING(BAC.ACNT_CD,1,4) ),0)
+		                      ELSE 0 END ) RE_AMT
+		      FROM AC_SLIP ASL WITH(NOLOCK)
+		           INNER JOIN AC_SLIP_DET ASD WITH(NOLOCK)
+				       ON  ASL.ACNT_YY = ASD.ACNT_YY
+				       AND ASL.ACNT_UNT = ASD.ACNT_UNT
+				       AND ASL.SLIP_NO = ASD.SLIP_NO
+				   INNER JOIN BG_ACNT_CD BAC WITH(NOLOCK)
+				       ON  ASD.ACNT_YY = BAC.ACNT_YY
+				       AND ASD.ACNT_UNT = BAC.ACNT_UNT
+				       AND ASD.ACNT_CD = BAC.ACNT_CD
+		     WHERE ASL.ACNT_YY  = #acntYy#
+		       AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+				                      FROM BG_UNT WITH(NOLOCK)
+				                     WHERE ACNT_UNT = #acntUnt#
+				                       AND ADD_YN = '0'
+		
+				                    UNION
+		
+				                    SELECT ADD_ACNT_UNT
+				                      FROM BG_UNT_ADD WITH(NOLOCK)
+				                     WHERE ACNT_UNT = #acntUnt#)
+		       AND SUBSTRING(ASD.ACNT_CD,1,4)+'00' BETWEEN #acntCdFr# AND #acntCdTo#  
+		       AND ASD.SLIP_CFM_DT BETWEEN #slipCfmFrDt# AND #slipCfmToDt#
+		       AND ASL.STA_CD   = '51'
+		    
+		    UNION ALL
+		    
+		    SELECT '3' AS GB
+		          ,TA.SLIP_CFM_DT AS SLIP_CFM_DT
+		          ,'' AS VOU_NO
+		          ,'' AS SLIP_NO
+		          ,null AS SLIP_SEQ
+		          ,SUBSTRING(TA.ACNT_CD,1,4)+'00' AS ACNT_CD
+		          ,null AS BAL_DIV
+		          ,dbo.F_AC_GET_ACNT_INFO(#acntYy#, #acntUnt#, SUBSTRING(TA.ACNT_CD,1,4)+'00', '4', 'ACNT_NM') AS ACNT_NM
+		          ,'' AS SLIP_DESC
+		          ,'           일                       계' VEND_NM
+		          ,SUM(SLIP_AMT_SUM_10) AS SLIP_AMT_SUM_10 
+		          ,SUM(SLIP_AMT_SUM_20) AS SLIP_AMT_SUM_20
+		          ,null AS RE_AMT
+		     FROM ( 
+			    SELECT ASL.SLIP_CFM_DT AS SLIP_CFM_DT
+			          ,SUBSTRING(ASD.ACNT_CD,1,4) + '00' AS ACNT_CD
+			          ,SUM(CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+			                    WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+			                    WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1 ELSE 0 END) AS SLIP_AMT_SUM_10 
+			          ,SUM(CASE WHEN ASD.DRCR_CD = '20' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+			                    WHEN ASD.DRCR_CD = '20' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+			                    WHEN ASD.DRCR_CD = '10' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1 ELSE 0 END) AS SLIP_AMT_SUM_20 
+			      FROM AC_SLIP ASL WITH(NOLOCK)
+			           INNER JOIN AC_SLIP_DET ASD WITH(NOLOCK)
+					       ON  ASL.ACNT_YY = ASD.ACNT_YY
+					       AND ASL.ACNT_UNT = ASD.ACNT_UNT
+					       AND ASL.SLIP_NO = ASD.SLIP_NO
+					   INNER JOIN BG_ACNT_CD BAC WITH(NOLOCK)
+					       ON  ASD.ACNT_YY = BAC.ACNT_YY
+					       AND ASD.ACNT_UNT = BAC.ACNT_UNT
+					       AND ASD.ACNT_CD = BAC.ACNT_CD
+			     WHERE ASL.ACNT_YY  = #acntYy#
+			       AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+					                      FROM BG_UNT WITH(NOLOCK)
+					                     WHERE ACNT_UNT = #acntUnt#
+					                       AND ADD_YN = '0'
+			
+					                    UNION
+			
+					                    SELECT ADD_ACNT_UNT
+					                      FROM BG_UNT_ADD WITH(NOLOCK)
+					                     WHERE ACNT_UNT = #acntUnt#)
+			       AND SUBSTRING(ASD.ACNT_CD,1,4)+'00' BETWEEN #acntCdFr# AND #acntCdTo#  
+			       AND ASD.SLIP_CFM_DT BETWEEN #slipCfmFrDt# AND #slipCfmToDt#
+			       AND ASL.STA_CD   = '51'
+			       AND 1 = CASE WHEN #dtSumYn# = 'true' THEN 1 ELSE 0 END
+			    GROUP BY ASD.ACNT_YY, SUBSTRING(ASD.ACNT_CD,1,4), ASL.SLIP_CFM_DT
+			   ) TA
+			GROUP BY SUBSTRING(TA.ACNT_CD,1,4), TA.SLIP_CFM_DT 
+		     
+		    UNION ALL
+		    
+		    SELECT '4' AS GB
+		          ,SUBSTRING(TA.SLIP_CFM_DT,1,6) + '33' AS SLIP_CFM_DT
+		          ,'' AS VOU_NO
+		          ,'' AS SLIP_NO
+		          ,null AS SLIP_SEQ
+		          ,SUBSTRING(TA.ACNT_CD,1,4) +'00' AS ACNT_CD
+		          ,null AS BAL_DIV
+		          ,dbo.F_AC_GET_ACNT_INFO(#acntYy#, #acntUnt#, SUBSTRING(TA.ACNT_CD,1,4)+'00', '4', 'ACNT_NM') AS ACNT_NM
+		          ,'' AS SLIP_DESC
+		          ,'           월                       계' VEND_NM
+		          ,SUM(SLIP_AMT_SUM_10) AS SLIP_AMT_SUM_10 
+		          ,SUM(SLIP_AMT_SUM_20) AS SLIP_AMT_SUM_20 
+		          ,null AS RE_AMT
+		      FROM (
+				    SELECT SUBSTRING(ASL.SLIP_CFM_DT,1,6) + '33' AS SLIP_CFM_DT
+				          ,SUBSTRING(ASD.ACNT_CD,1,4)+'00' AS ACNT_CD
+				          ,SUM(CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+				                    WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+				                    WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1 ELSE 0 END) AS SLIP_AMT_SUM_10 
+				          ,SUM(CASE WHEN ASD.DRCR_CD = '20' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+				                    WHEN ASD.DRCR_CD = '20' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+				                    WHEN ASD.DRCR_CD = '10' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1 ELSE 0 END) AS SLIP_AMT_SUM_20 
+				          
+				      FROM AC_SLIP ASL WITH(NOLOCK)
+				           INNER JOIN AC_SLIP_DET ASD WITH(NOLOCK)
+						       ON  ASL.ACNT_YY = ASD.ACNT_YY
+						       AND ASL.ACNT_UNT = ASD.ACNT_UNT
+						       AND ASL.SLIP_NO = ASD.SLIP_NO
+						   INNER JOIN BG_ACNT_CD BAC WITH(NOLOCK)
+						       ON  ASD.ACNT_YY = BAC.ACNT_YY
+						       AND ASD.ACNT_UNT = BAC.ACNT_UNT
+						       AND ASD.ACNT_CD = BAC.ACNT_CD
+				     WHERE ASL.ACNT_YY  = #acntYy#
+				       AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+				       AND SUBSTRING(ASD.ACNT_CD,1,4)+'00' BETWEEN #acntCdFr# AND #acntCdTo#  
+				       AND ASD.SLIP_CFM_DT BETWEEN #slipCfmFrDt# AND #slipCfmToDt#
+				       AND ASL.STA_CD   = '51'
+				    GROUP BY ASD.ACNT_YY, SUBSTRING(ASD.ACNT_CD,1,4), SUBSTRING(ASL.SLIP_CFM_DT,1,6)
+		     		) TA
+		     GROUP BY SUBSTRING(TA.ACNT_CD,1,4), SUBSTRING(TA.SLIP_CFM_DT,1,6)
+		     
+		    UNION ALL
+		    
+		    SELECT '5' AS GB
+		          ,'99991234' AS SLIP_CFM_DT
+		          ,'' AS VOU_NO
+		          ,'' AS SLIP_NO
+		          ,null AS SLIP_SEQ
+		          ,SUBSTRING(TA.ACNT_CD,1,4)+'00' AS ACNT_CD
+		          ,null AS BAL_DIV
+		          ,dbo.F_AC_GET_ACNT_INFO(#acntYy#, #acntUnt#, SUBSTRING(TA.ACNT_CD,1,4)+'00', '4', 'ACNT_NM') AS ACNT_NM
+		          ,'' AS SLIP_DESC
+		          ,'           당       기     합     계' VEND_NM
+		          ,SUM(SLIP_AMT_SUM_10) AS SLIP_AMT_SUM_10 
+		          ,SUM(SLIP_AMT_SUM_20) AS SLIP_AMT_SUM_20 
+		          ,null AS RE_AMT
+		      FROM (
+				    SELECT ASD.ACNT_CD
+				    	  , ( SELECT SUM(CASE WHEN RASD.DRCR_CD = '10' AND ISNULL(RASL.MINUS_DISP_YN, '0') = '1' THEN RASD.SLIP_AMT
+				    	                      WHEN RASD.DRCR_CD = '10' AND RASD.SLIP_AMT > 0 THEN RASD.SLIP_AMT
+				    	                      WHEN RASD.DRCR_CD = '20' AND 0 > RASD.SLIP_AMT AND ISNULL(RASL.MINUS_DISP_YN, '0') = '0' THEN RASD.SLIP_AMT * -1 ELSE 0 END)  
+							      FROM AC_SLIP RASL WITH(NOLOCK)
+							           INNER JOIN AC_SLIP_DET RASD WITH(NOLOCK)
+									       ON  RASL.ACNT_YY = RASD.ACNT_YY
+									       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+									       AND RASL.SLIP_NO = RASD.SLIP_NO
+									   INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+									       ON  RASD.ACNT_YY = RBAC.ACNT_YY
+									       AND RASD.ACNT_UNT = RBAC.ACNT_UNT
+									       AND RASD.ACNT_CD = RBAC.ACNT_CD
+							     WHERE RASL.ACNT_YY  = ASD.ACNT_YY
+							       AND RASL.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							       AND RASD.ACNT_CD = ASD.ACNT_CD  
+							       AND #slipCfmToDt# >= RASD.SLIP_CFM_DT
+							       AND RASL.STA_CD   = '51'
+				    	  
+				    	  ) AS SLIP_AMT_SUM_10
+				    	  , ( SELECT SUM(CASE WHEN RASD.DRCR_CD = '20' AND ISNULL(RASL.MINUS_DISP_YN, '0') = '1' THEN RASD.SLIP_AMT
+				    	                      WHEN RASD.DRCR_CD = '20' AND RASD.SLIP_AMT > 0 THEN RASD.SLIP_AMT
+				    	                      WHEN RASD.DRCR_CD = '10' AND 0 > RASD.SLIP_AMT AND ISNULL(RASL.MINUS_DISP_YN, '0') = '0' THEN RASD.SLIP_AMT * -1 ELSE 0 END)  
+							      FROM AC_SLIP RASL WITH(NOLOCK)
+							           INNER JOIN AC_SLIP_DET RASD WITH(NOLOCK)
+									       ON  RASL.ACNT_YY = RASD.ACNT_YY
+									       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+									       AND RASL.SLIP_NO = RASD.SLIP_NO
+									   INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+									       ON  RASD.ACNT_YY = RBAC.ACNT_YY
+									       AND RASD.ACNT_UNT = RBAC.ACNT_UNT
+									       AND RASD.ACNT_CD = RBAC.ACNT_CD
+							     WHERE RASL.ACNT_YY  = ASD.ACNT_YY
+							       AND RASL.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							       AND RASD.ACNT_CD = ASD.ACNT_CD  
+							       AND #slipCfmToDt# >= RASD.SLIP_CFM_DT
+							       AND RASL.STA_CD   = '51'
+				    	  
+				    	  ) AS SLIP_AMT_SUM_20
+				      FROM AC_SLIP ASL WITH(NOLOCK)
+				           INNER JOIN AC_SLIP_DET ASD WITH(NOLOCK)
+						       ON  ASL.ACNT_YY = ASD.ACNT_YY
+						       AND ASL.ACNT_UNT = ASD.ACNT_UNT
+						       AND ASL.SLIP_NO = ASD.SLIP_NO
+						   INNER JOIN BG_ACNT_CD BAC WITH(NOLOCK)
+						       ON  ASD.ACNT_YY = BAC.ACNT_YY
+						       AND ASD.ACNT_UNT = BAC.ACNT_UNT
+						       AND ASD.ACNT_CD = BAC.ACNT_CD
+				     WHERE ASL.ACNT_YY  = #acntYy#
+				       AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+				       AND SUBSTRING(ASD.ACNT_CD,1,4) + '00' BETWEEN #acntCdFr# AND #acntCdTo#  
+				       AND ASD.SLIP_CFM_DT BETWEEN #slipCfmFrDt# AND #slipCfmToDt#
+				       AND ASL.STA_CD   = '51'
+				    GROUP BY ASD.ACNT_YY, ASD.ACNT_CD
+		     		) TA
+		     GROUP BY SUBSTRING(ACNT_CD,1,4)
+		     
+		    UNION ALL
+		    
+		    SELECT '6' AS GB
+		          ,'99991234' AS SLIP_CFM_DT
+		          ,'' AS VOU_NO
+		          ,'' AS SLIP_NO
+		          ,null AS SLIP_SEQ
+		          ,SUBSTRING(TA.ACNT_CD,1,4)+'00' AS ACNT_CD
+		          ,null AS BAL_DIV
+		          ,dbo.F_AC_GET_ACNT_INFO(#acntYy#, #acntUnt#, SUBSTRING(TA.ACNT_CD,1,4)+'00', '4', 'ACNT_NM') AS ACNT_NM
+		          ,'' AS SLIP_DESC
+		          ,'           누                       계' VEND_NM
+		          ,SUM(SLIP_AMT_SUM_10) AS SLIP_AMT_SUM_10 
+		          ,SUM(SLIP_AMT_SUM_20) AS SLIP_AMT_SUM_20 
+		          ,SUM(RE_AMT) AS RE_AMT
+		      FROM (
+				    SELECT SUBSTRING(ASD.ACNT_CD,1,4)+'00' AS ACNT_CD
+				          , ( SELECT SUM(CASE WHEN RASD.DRCR_CD = '10' AND ISNULL(RASL.MINUS_DISP_YN, '0') = '1' THEN RASD.SLIP_AMT
+				                              WHEN RASD.DRCR_CD = '10' AND RASD.SLIP_AMT > 0 THEN RASD.SLIP_AMT
+				                              WHEN RASD.DRCR_CD = '20' AND 0 > RASD.SLIP_AMT AND ISNULL(RASL.MINUS_DISP_YN, '0') = '0' THEN RASD.SLIP_AMT * -1 ELSE 0 END)  
+							      FROM AC_SLIP RASL WITH(NOLOCK)
+							           INNER JOIN AC_SLIP_DET RASD WITH(NOLOCK)
+									       ON  RASL.ACNT_YY = RASD.ACNT_YY
+									       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+									       AND RASL.SLIP_NO = RASD.SLIP_NO
+									   INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+									       ON  RASD.ACNT_YY = RBAC.ACNT_YY
+									       AND RASD.ACNT_UNT = RBAC.ACNT_UNT
+									       AND RASD.ACNT_CD = RBAC.ACNT_CD
+							     WHERE RASL.ACNT_YY  = ASD.ACNT_YY
+							       AND RASL.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							       AND SUBSTRING(RASD.ACNT_CD,1,4) = SUBSTRING(ASD.ACNT_CD,1,4)  
+							       AND #slipCfmToDt# >= RASD.SLIP_CFM_DT
+							       AND RASL.STA_CD   = '51'
+				    	  )  
+						+ ( CASE WHEN BAC.DRCR_CD = '10' THEN ISNULL((SELECT SUM(TRANS_AMT)
+						                                                FROM AC_BASE AB WITH(NOLOCK)
+						                                               WHERE AB.ACNT_YY = ASD.ACNT_YY
+						                                                 AND AB.ACNT_UNT IN (SELECT ACNT_UNT
+																		                      FROM BG_UNT WITH(NOLOCK)
+																		                     WHERE ACNT_UNT = #acntUnt#
+																		                       AND ADD_YN = '0'
+																
+																		                    UNION
+																
+																		                    SELECT ADD_ACNT_UNT
+																		                      FROM BG_UNT_ADD WITH(NOLOCK)
+																		                     WHERE ACNT_UNT = #acntUnt#)
+						                                                 AND SUBSTRING(AB.ACNT_CD,1,4) = SUBSTRING(ASD.ACNT_CD,1,4) ),0)
+				                                       ELSE 0 END )
+				    	   AS SLIP_AMT_SUM_10
+				    	  , ( SELECT SUM(CASE WHEN RASD.DRCR_CD = '20' AND ISNULL(RASL.MINUS_DISP_YN, '0') = '1' THEN RASD.SLIP_AMT
+				    	                      WHEN RASD.DRCR_CD = '20' AND RASD.SLIP_AMT > 0 THEN RASD.SLIP_AMT
+				    	                      WHEN RASD.DRCR_CD = '10' AND 0 > RASD.SLIP_AMT AND ISNULL(RASL.MINUS_DISP_YN, '0') = '0' THEN RASD.SLIP_AMT * -1 ELSE 0 END)  
+							      FROM AC_SLIP RASL WITH(NOLOCK)
+							           INNER JOIN AC_SLIP_DET RASD WITH(NOLOCK)
+									       ON  RASL.ACNT_YY = RASD.ACNT_YY
+									       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+									       AND RASL.SLIP_NO = RASD.SLIP_NO
+									   INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+									       ON  RASD.ACNT_YY = RBAC.ACNT_YY
+									       AND RASD.ACNT_UNT = RBAC.ACNT_UNT
+									       AND RASD.ACNT_CD = RBAC.ACNT_CD
+							     WHERE RASL.ACNT_YY  = ASD.ACNT_YY
+							       AND RASL.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							       AND SUBSTRING(RASD.ACNT_CD,1,4) = SUBSTRING(ASD.ACNT_CD,1,4)  
+							       AND #slipCfmToDt# >= RASD.SLIP_CFM_DT
+							       AND RASL.STA_CD   = '51'
+				    	  )
+				    	+ ( CASE WHEN BAC.DRCR_CD = '20' THEN ISNULL((SELECT SUM(TRANS_AMT)
+						                                                FROM AC_BASE AB WITH(NOLOCK)
+						                                               WHERE AB.ACNT_YY = ASD.ACNT_YY
+						                                                 AND AB.ACNT_UNT IN (SELECT ACNT_UNT
+																		                      FROM BG_UNT WITH(NOLOCK)
+																		                     WHERE ACNT_UNT = #acntUnt#
+																		                       AND ADD_YN = '0'
+																
+																		                    UNION
+																
+																		                    SELECT ADD_ACNT_UNT
+																		                      FROM BG_UNT_ADD WITH(NOLOCK)
+																		                     WHERE ACNT_UNT = #acntUnt#)
+						                                                 AND SUBSTRING(AB.ACNT_CD,1,4) = SUBSTRING(ASD.ACNT_CD,1,4) ),0)
+				                                       ELSE 0 END )
+				             AS SLIP_AMT_SUM_20
+				          , ISNUll(( SELECT SUM(CASE WHEN RASD.DRCR_CD = '10' THEN CASE WHEN RBAC.DRCR_CD = '10' THEN RASD.SLIP_AMT ELSE RASD.SLIP_AMT * -1 END
+				                              WHEN RASD.DRCR_CD = '20' THEN CASE WHEN RBAC.DRCR_CD = '20' THEN RASD.SLIP_AMT ELSE RASD.SLIP_AMT * -1 END
+				                              ELSE 0 END)
+				          	
+				               FROM AC_SLIP_DET RASD WITH(NOLOCK)
+				                     INNER JOIN AC_SLIP RASL WITH(NOLOCK)
+				                       ON RASL.ACNT_YY = RASD.ACNT_YY
+								       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+								       AND RASL.SLIP_NO = RASD.SLIP_NO
+								     INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+								       ON  RBAC.ACNT_YY = RASD.ACNT_YY
+								       AND RBAC.ACNT_UNT = RASD.ACNT_UNT
+								       AND RBAC.ACNT_CD = RASD.ACNT_CD
+							  WHERE RASL.STA_CD = '51'
+							    AND RASD.ACNT_YY = ASD.ACNT_YY
+							    AND RASD.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							    AND SUBSTRING(RASD.ACNT_CD,1,4) = SUBSTRING(ASD.ACNT_CD,1,4) 
+							    AND #slipCfmToDt# >= RASL.SLIP_CFM_DT) , 0)
+				            + ISNULL((SELECT SUM(CASE WHEN RBAC.DRCR_CD = '10' THEN CASE WHEN AB.DRCR_CD = '10' THEN AB.TRANS_AMT ELSE AB.TRANS_AMT * -1 END
+							                          WHEN RBAC.DRCR_CD = '20' THEN CASE WHEN AB.DRCR_CD = '20' THEN AB.TRANS_AMT ELSE AB.TRANS_AMT * -1 END
+													  ELSE 0 END)
+						            FROM AC_BASE AB WITH(NOLOCK)
+										 INNER JOIN BG_ACNT_CD RBAC
+										   ON  RBAC.ACNT_YY = AB.ACNT_YY
+										   AND RBAC.ACNT_UNT = AB.ACNT_UNT
+										   AND RBAC.ACNT_CD = AB.ACNT_CD
+						            WHERE AB.ACNT_YY = ASD.ACNT_YY
+						                AND AB.ACNT_UNT IN (SELECT ACNT_UNT
+										                      FROM BG_UNT WITH(NOLOCK)
+										                     WHERE ACNT_UNT = #acntUnt#
+										                       AND ADD_YN = '0'
+								
+										                    UNION
+								
+										                    SELECT ADD_ACNT_UNT
+										                      FROM BG_UNT_ADD WITH(NOLOCK)
+										                     WHERE ACNT_UNT = #acntUnt#)
+						                AND SUBSTRING(AB.ACNT_CD,1,4) = SUBSTRING(ASD.ACNT_CD,1,4) ),0) RE_AMT
+				      FROM AC_SLIP ASL WITH(NOLOCK)
+				           INNER JOIN AC_SLIP_DET ASD WITH(NOLOCK)
+						       ON  ASL.ACNT_YY = ASD.ACNT_YY
+						       AND ASL.ACNT_UNT = ASD.ACNT_UNT
+						       AND ASL.SLIP_NO = ASD.SLIP_NO
+				           INNER JOIN AC_VOU AV WITH(NOLOCK)
+						       ON  ASL.ACNT_YY = AV.ACNT_YY
+						       AND ASL.ACNT_UNT = AV.ACNT_UNT
+						       AND ASL.VOU_NO = AV.VOU_NO
+						   INNER JOIN BG_ACNT_CD BAC WITH(NOLOCK)
+						       ON  ASD.ACNT_YY = BAC.ACNT_YY
+						       AND ASD.ACNT_UNT = BAC.ACNT_UNT
+						       AND ASD.ACNT_CD = BAC.ACNT_CD
+				     WHERE ASL.ACNT_YY  = #acntYy#
+				       AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+				       AND SUBSTRING(ASD.ACNT_CD,1,4)+'00' BETWEEN #acntCdFr# AND #acntCdTo#  
+				       AND ASD.SLIP_CFM_DT BETWEEN #slipCfmFrDt# AND #slipCfmToDt#
+				       AND ASL.STA_CD   = '51'
+				    GROUP BY ASD.ACNT_YY, SUBSTRING(ASD.ACNT_CD,1,4), BAC.DRCR_CD
+				   ) TA
+		     GROUP BY SUBSTRING(TA.ACNT_CD,1,4)
+		     
+		      ) TA
+		   ORDER BY ACNT_CD, SLIP_CFM_DT, GB, CASE WHEN SLIP_AMT_10 IS NULL THEN 2 ELSE 1 END, VOU_NO, SLIP_NO, SLIP_SEQ
+    </select>
+    
+    <select id="ac03DAO.selectAc03120MainListAfd"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac03DAO.selectAc03120MainListAfd 발전기금사업 운영원장 main 조회 */
+		  SELECT GB
+		        ,CASE WHEN SUBSTRING(SLIP_CFM_DT, 7, 2) = '34' THEN '' ELSE SUBSTRING(SLIP_CFM_DT, 5, 2) END AS SLIP_CFM_MM
+		        ,CASE WHEN SUBSTRING(SLIP_CFM_DT, 7, 2) IN ('33','34') THEN ''
+		              WHEN GB = '3' THEN ''
+		              ELSE SUBSTRING(SLIP_CFM_DT, 7, 2) END AS SLIP_CFM_DD
+		        ,CASE WHEN LEN(VOU_NO) > 0 THEN SUBSTRING(VOU_NO,1,8) + '-' + SUBSTRING(VOU_NO,9,4) ELSE '' END AS VOU_NO
+		        ,CASE WHEN LEN(SLIP_NO) > 0 THEN SUBSTRING(SLIP_NO,1,8) + '-' + SUBSTRING(SLIP_NO,9,4) ELSE '' END AS SLIP_NO
+		        ,SLIP_SEQ
+		        ,ACNT_CD
+		        ,ACNT_NM
+		        ,SLIP_DESC
+		        ,VEND_NM
+		        ,SLIP_AMT_10
+		        ,SLIP_AMT_20
+		        ,BAL_DIV
+
+		    FROM
+		    ( 
+		    SELECT '1' AS GB
+		          ,#slipCfmFrDt# AS SLIP_CFM_DT
+		          ,'' AS VOU_NO
+		          ,'' AS SLIP_NO
+		          ,null AS SLIP_SEQ
+		          ,SUBSTRING(TA.ACNT_CD,1,4)+'00' AS ACNT_CD
+		          ,null AS BAL_DIV
+		          ,MAX(BAC.ACNT_NM) AS ACNT_NM
+		          ,'이    월' AS SLIP_DESC
+		          ,'' AS VEND_NM
+		          ,SUM(SLIP_AMT_10) AS SLIP_AMT_10
+		          ,SUM(SLIP_AMT_20) AS SLIP_AMT_20
+		     FROM (
+				    SELECT SUBSTRING(BAC.ACNT_CD,1,4)+'00' AS ACNT_CD
+				          , ( SELECT ISNULL(SUM(CASE WHEN RASD.DRCR_CD = '10' AND ISNULL(RASL.MINUS_DISP_YN, '0') = '1' THEN RASD.SLIP_AMT
+				                                     WHEN RASD.DRCR_CD = '10' AND RASD.SLIP_AMT > 0 THEN RASD.SLIP_AMT
+				                                     WHEN RASD.DRCR_CD = '20' AND 0 > RASD.SLIP_AMT AND ISNULL(RASL.MINUS_DISP_YN, '0') = '0' THEN RASD.SLIP_AMT * -1  ELSE 0 END),0)
+				               FROM AC_SLIP_DET RASD WITH(NOLOCK)
+				                     INNER JOIN AC_SLIP RASL WITH(NOLOCK)
+				                       ON RASL.ACNT_YY = RASD.ACNT_YY
+								       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+								       AND RASL.SLIP_NO = RASD.SLIP_NO
+								     INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+								       ON  RBAC.ACNT_YY = RASD.ACNT_YY
+								       AND RBAC.ACNT_UNT = RASD.ACNT_UNT
+								       AND RBAC.ACNT_CD = RASD.ACNT_CD
+							  WHERE RASL.STA_CD = '51'
+							    AND RASD.BIZ_CD = '57'
+							    AND RASD.ACNT_YY = BAC.ACNT_YY
+							    AND RASD.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							    AND SUBSTRING(RASD.ACNT_CD,1,4) = SUBSTRING(BAC.ACNT_CD,1,4) 
+							    AND #slipCfmFrDt# > RASL.SLIP_CFM_DT ) 
+				              AS SLIP_AMT_10 
+				          , ( SELECT ISNULL(SUM(CASE WHEN RASD.DRCR_CD = '20' AND ISNULL(RASL.MINUS_DISP_YN, '0') = '1' THEN RASD.SLIP_AMT
+				                                     WHEN RASD.DRCR_CD = '20' AND RASD.SLIP_AMT > 0 THEN RASD.SLIP_AMT
+				                                     WHEN RASD.DRCR_CD = '10' AND 0 > RASD.SLIP_AMT AND ISNULL(RASL.MINUS_DISP_YN, '0') = '0' THEN RASD.SLIP_AMT * -1
+				                                     ELSE 0 END),0)
+				               FROM AC_SLIP_DET RASD WITH(NOLOCK)
+				                     INNER JOIN AC_SLIP RASL WITH(NOLOCK)
+				                       ON RASL.ACNT_YY = RASD.ACNT_YY
+								       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+								       AND RASL.SLIP_NO = RASD.SLIP_NO
+								     INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+								       ON  RBAC.ACNT_YY = RASD.ACNT_YY
+								       AND RBAC.ACNT_UNT = RASD.ACNT_UNT
+								       AND RBAC.ACNT_CD = RASD.ACNT_CD
+							  WHERE RASL.STA_CD = '51'
+							    AND RASD.BIZ_CD = '57'
+							    AND RASD.ACNT_YY = BAC.ACNT_YY
+							    AND RASD.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							    AND SUBSTRING(RASD.ACNT_CD,1,4) = SUBSTRING(BAC.ACNT_CD,1,4) 
+							    AND #slipCfmFrDt# > RASL.SLIP_CFM_DT ) 
+				               AS SLIP_AMT_20 			          
+				      FROM BG_ACNT_CD BAC WITH(NOLOCK)
+				     WHERE BAC.ACNT_YY  = #acntYy#
+				       AND BAC.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+				       AND BAC.ACNT_CD BETWEEN #acntCdFr# AND #acntCdTo#  
+				       AND BAC.ACNT_LVL IN ('40' )
+				       AND EXISTS ( SELECT 1
+				                      FROM AC_SLIP_DET A
+				                     WHERE A.ACNT_YY = BAC.ACNT_YY
+				                       AND A.ACNT_UNT = BAC.ACNT_UNT
+				                       AND A.ACNT_CD = BAC.ACNT_CD 
+				                       AND A.BIZ_CD = '57' )
+				   GROUP BY BAC.ACNT_YY, SUBSTRING(BAC.ACNT_CD,1,4), BAC.DRCR_CD
+				  ) TA
+				  INNER JOIN BG_ACNT_CD BAC
+				    ON TA.ACNT_CD = BAC.ACNT_CD
+				    AND BAC.ACNT_YY = #acntYy#
+				    AND BAC.ACNT_UNT = #acntUnt#
+			GROUP BY SUBSTRING(TA.ACNT_CD,1,4)
+		    
+		    UNION ALL
+		    
+		    SELECT '2' AS GB
+		          ,ASL.SLIP_CFM_DT AS SLIP_CFM_DT
+		          ,ASL.VOU_NO
+		          ,ASD.SLIP_NO AS SLIP_NO
+		          ,ASD.SLIP_SEQ AS SLIP_SEQ
+		          ,SUBSTRING(ASD.ACNT_CD,1,4) + '00' AS ACNT_CD
+		          ,ASD.BAL_DIV
+		          ,dbo.F_AC_GET_ACNT_INFO(ASD.ACNT_YY, ASD.ACNT_UNT, SUBSTRING(ASD.ACNT_CD,1,4)+'00', '4', 'ACNT_NM') AS ACNT_NM
+		          ,ISNULL(ASD.ABSTR, ASL.SLIP_DESC ) AS SLIP_DESC
+		          ,ASL.SD_VENDOR_DESC VEND_NM
+		          ,CASE WHEN ASD.DRCR_CD = '10' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+		                WHEN ASD.DRCR_CD = '10' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+		                WHEN ASD.DRCR_CD = '20' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1 ELSE NULL END AS SLIP_AMT_10 
+		          ,CASE WHEN ASD.DRCR_CD = '20' AND ISNULL(ASL.MINUS_DISP_YN, '0') = '1' THEN ASD.SLIP_AMT
+		                WHEN ASD.DRCR_CD = '20' AND ASD.SLIP_AMT > 0 THEN ASD.SLIP_AMT
+		                WHEN ASD.DRCR_CD = '10' AND 0 > ASD.SLIP_AMT AND ISNULL(ASL.MINUS_DISP_YN, '0') = '0' THEN ASD.SLIP_AMT * -1 ELSE NULL END AS SLIP_AMT_20 
+		      FROM AC_SLIP ASL WITH(NOLOCK)
+		           INNER JOIN AC_SLIP_DET ASD WITH(NOLOCK)
+				       ON  ASL.ACNT_YY = ASD.ACNT_YY
+				       AND ASL.ACNT_UNT = ASD.ACNT_UNT
+				       AND ASL.SLIP_NO = ASD.SLIP_NO
+				   INNER JOIN BG_ACNT_CD BAC WITH(NOLOCK)
+				       ON  ASD.ACNT_YY = BAC.ACNT_YY
+				       AND ASD.ACNT_UNT = BAC.ACNT_UNT
+				       AND ASD.ACNT_CD = BAC.ACNT_CD
+		     WHERE ASL.ACNT_YY  = #acntYy#
+		       AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+				                      FROM BG_UNT WITH(NOLOCK)
+				                     WHERE ACNT_UNT = #acntUnt#
+				                       AND ADD_YN = '0'
+		
+				                    UNION
+		
+				                    SELECT ADD_ACNT_UNT
+				                      FROM BG_UNT_ADD WITH(NOLOCK)
+				                     WHERE ACNT_UNT = #acntUnt#)
+		       AND SUBSTRING(ASD.ACNT_CD,1,4)+'00' BETWEEN #acntCdFr# AND #acntCdTo#  
+		       AND ASD.SLIP_CFM_DT BETWEEN #slipCfmFrDt# AND #slipCfmToDt#
+		       AND ASD.BIZ_CD = '57'
+		       AND ASL.STA_CD   = '51'
+		    
+		    UNION ALL
+		    
+		    SELECT '6' AS GB
+		          ,'99991234' AS SLIP_CFM_DT
+		          ,'' AS VOU_NO
+		          ,'' AS SLIP_NO
+		          ,null AS SLIP_SEQ
+		          ,SUBSTRING(TA.ACNT_CD,1,4)+'00' AS ACNT_CD
+		          ,null AS BAL_DIV
+		          ,dbo.F_AC_GET_ACNT_INFO(#acntYy#, #acntUnt#, SUBSTRING(TA.ACNT_CD,1,4)+'00', '4', 'ACNT_NM') AS ACNT_NM
+		          ,'' AS SLIP_DESC
+		          ,'           누                       계' VEND_NM
+		          ,SUM(SLIP_AMT_SUM_10) AS SLIP_AMT_SUM_10 
+		          ,SUM(SLIP_AMT_SUM_20) AS SLIP_AMT_SUM_20 
+		      FROM (
+				    SELECT SUBSTRING(ASD.ACNT_CD,1,4)+'00' AS ACNT_CD
+				          , ( SELECT SUM(CASE WHEN RASD.DRCR_CD = '10' AND ISNULL(RASL.MINUS_DISP_YN, '0') = '1' THEN RASD.SLIP_AMT
+				                              WHEN RASD.DRCR_CD = '10' AND RASD.SLIP_AMT > 0 THEN RASD.SLIP_AMT
+				                              WHEN RASD.DRCR_CD = '20' AND 0 > RASD.SLIP_AMT AND ISNULL(RASL.MINUS_DISP_YN, '0') = '0' THEN RASD.SLIP_AMT * -1 ELSE 0 END)  
+							      FROM AC_SLIP RASL WITH(NOLOCK)
+							           INNER JOIN AC_SLIP_DET RASD WITH(NOLOCK)
+									       ON  RASL.ACNT_YY = RASD.ACNT_YY
+									       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+									       AND RASL.SLIP_NO = RASD.SLIP_NO
+									   INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+									       ON  RASD.ACNT_YY = RBAC.ACNT_YY
+									       AND RASD.ACNT_UNT = RBAC.ACNT_UNT
+									       AND RASD.ACNT_CD = RBAC.ACNT_CD
+							     WHERE RASL.ACNT_YY  = ASD.ACNT_YY
+							       AND RASL.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							       AND SUBSTRING(RASD.ACNT_CD,1,4) = SUBSTRING(ASD.ACNT_CD,1,4)  
+							       AND #slipCfmToDt# >= RASD.SLIP_CFM_DT
+							       AND RASD.BIZ_CD = '57'
+							       AND RASL.STA_CD   = '51'
+				    	  )  
+				    	   AS SLIP_AMT_SUM_10
+				    	  , ( SELECT SUM(CASE WHEN RASD.DRCR_CD = '20' AND ISNULL(RASL.MINUS_DISP_YN, '0') = '1' THEN RASD.SLIP_AMT
+				    	                      WHEN RASD.DRCR_CD = '20' AND RASD.SLIP_AMT > 0 THEN RASD.SLIP_AMT
+				    	                      WHEN RASD.DRCR_CD = '10' AND 0 > RASD.SLIP_AMT AND ISNULL(RASL.MINUS_DISP_YN, '0') = '0' THEN RASD.SLIP_AMT * -1 ELSE 0 END)  
+							      FROM AC_SLIP RASL WITH(NOLOCK)
+							           INNER JOIN AC_SLIP_DET RASD WITH(NOLOCK)
+									       ON  RASL.ACNT_YY = RASD.ACNT_YY
+									       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+									       AND RASL.SLIP_NO = RASD.SLIP_NO
+									   INNER JOIN BG_ACNT_CD RBAC WITH(NOLOCK)
+									       ON  RASD.ACNT_YY = RBAC.ACNT_YY
+									       AND RASD.ACNT_UNT = RBAC.ACNT_UNT
+									       AND RASD.ACNT_CD = RBAC.ACNT_CD
+							     WHERE RASL.ACNT_YY  = ASD.ACNT_YY
+							       AND RASL.ACNT_UNT IN (SELECT ACNT_UNT
+									                      FROM BG_UNT WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#
+									                       AND ADD_YN = '0'
+							
+									                    UNION
+							
+									                    SELECT ADD_ACNT_UNT
+									                      FROM BG_UNT_ADD WITH(NOLOCK)
+									                     WHERE ACNT_UNT = #acntUnt#)
+							       AND SUBSTRING(RASD.ACNT_CD,1,4) = SUBSTRING(ASD.ACNT_CD,1,4)  
+							       AND #slipCfmToDt# >= RASD.SLIP_CFM_DT
+							       AND RASD.BIZ_CD = '57'
+							       AND RASL.STA_CD   = '51'
+				    	  )
+				             AS SLIP_AMT_SUM_20
+				      FROM AC_SLIP ASL WITH(NOLOCK)
+				           INNER JOIN AC_SLIP_DET ASD WITH(NOLOCK)
+						       ON  ASL.ACNT_YY = ASD.ACNT_YY
+						       AND ASL.ACNT_UNT = ASD.ACNT_UNT
+						       AND ASL.SLIP_NO = ASD.SLIP_NO
+				           INNER JOIN AC_VOU AV WITH(NOLOCK)
+						       ON  ASL.ACNT_YY = AV.ACNT_YY
+						       AND ASL.ACNT_UNT = AV.ACNT_UNT
+						       AND ASL.VOU_NO = AV.VOU_NO
+						   INNER JOIN BG_ACNT_CD BAC WITH(NOLOCK)
+						       ON  ASD.ACNT_YY = BAC.ACNT_YY
+						       AND ASD.ACNT_UNT = BAC.ACNT_UNT
+						       AND ASD.ACNT_CD = BAC.ACNT_CD
+				     WHERE ASL.ACNT_YY  = #acntYy#
+				       AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+				       AND SUBSTRING(ASD.ACNT_CD,1,4)+'00' BETWEEN #acntCdFr# AND #acntCdTo#  
+				       AND ASD.SLIP_CFM_DT BETWEEN #slipCfmFrDt# AND #slipCfmToDt#
+				       AND ASL.STA_CD   = '51'
+				       AND ASD.BIZ_CD = '57'
+				    GROUP BY ASD.ACNT_YY, SUBSTRING(ASD.ACNT_CD,1,4), BAC.DRCR_CD
+				   ) TA
+		     GROUP BY SUBSTRING(TA.ACNT_CD,1,4)
+		     
+		      ) TA
+		   ORDER BY ACNT_CD, SLIP_CFM_DT, GB, CASE WHEN SLIP_AMT_10 IS NULL THEN 2 ELSE 1 END, VOU_NO, SLIP_NO, SLIP_SEQ
+    </select>
+    
+    <!--
+    #########################################################################################################################################
+    # 미결원장(admi/ac/ac03/ac03130.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    <select id="ac03DAO.selectAc03130MainList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac03DAO.selectAc03130MainList 미결원장 main 조회 */
+		  SELECT GB
+		        ,VOU_NO
+		        ,SLIP_NO
+		        ,CASE WHEN LEN(SLIP_NO) > 0 THEN SUBSTRING(SLIP_NO,1,8) + '-' + SUBSTRING(SLIP_NO,9,4) ELSE '' END AS SLIP_NO_DISP
+		        ,SLIP_SEQ
+		        ,ACNT_CD
+		        ,dbo.F_AC_GET_ACNT_INFO(#acntYy#, #acntUnt#, TB.ACNT_CD, '5', 'ACNT_NM') AS ACNT_NM
+		        ,SLIP_DESC
+		        ,VEND_NM
+		        ,AMT_SUM_TOT
+		        ,AMT_SUM_M
+		        ,RE_AMT
+		    FROM
+		    (	
+		    SELECT '1' AS GB
+		          ,'집행 누계' AS VOU_NO
+		          ,'' AS SLIP_NO
+		          , null AS SLIP_SEQ
+		          ,TA.ACNT_CD AS ACNT_CD
+		          ,'' AS SLIP_DESC
+		          ,'' AS VEND_NM
+		          ,SUM(TA.AMT_SUM_TOT) AS AMT_SUM_TOT
+		          ,SUM(TA.AMT_SUM_M) AS AMT_SUM_M
+		          ,SUM(TA.RE_AMT) AS RE_AMT
+		      FROM (	       
+				    SELECT ASD.ACNT_CD AS ACNT_CD
+				          ,( SELECT SUM(BUDG_AMT)
+				               FROM BG_ASGN BA
+				              WHERE BA.ACNT_UNT IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+						
+								                    UNION
+						
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+				                AND BA.ACNT_YY = ASD.ACNT_YY
+				                AND BA.ACNT_CD = ASD.ACNT_CD
+				                AND BA.BAL_DIV = #balDiv#
+				           ) AS AMT_SUM_TOT
+				          ,( SELECT ISNULL(SUM(RASD.SLIP_AMT),0)
+				 	           FROM AC_SLIP RASL WITH(NOLOCK)
+						          INNER JOIN AC_SLIP_DET RASD WITH(NOLOCK)
+								       ON  RASL.ACNT_YY = RASD.ACNT_YY
+								       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+								       AND RASL.SLIP_NO = RASD.SLIP_NO
+						     WHERE RASL.ACNT_YY  = #acntYy#
+						       AND RASL.ACNT_UNT IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+						
+								                    UNION
+						
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+						       AND RASD.ACNT_CD = ASD.ACNT_CD
+						       AND RASD.BAL_DIV = #balDiv#
+						       AND RASL.STA_CD = '51' ) AS AMT_SUM_M
+				          ,( SELECT SUM(BUDG_AMT)
+				               FROM BG_ASGN BA
+				              WHERE BA.ACNT_UNT IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+						
+								                    UNION
+						
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+				                AND BA.ACNT_YY = ASD.ACNT_YY
+				                AND BA.ACNT_CD = ASD.ACNT_CD
+				                AND BA.BAL_DIV = #balDiv#
+				           )
+				           - ( SELECT ISNULL(SUM(RASD.SLIP_AMT),0)
+				 	           FROM AC_SLIP RASL WITH(NOLOCK)
+						          INNER JOIN AC_SLIP_DET RASD WITH(NOLOCK)
+								       ON  RASL.ACNT_YY = RASD.ACNT_YY
+								       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+								       AND RASL.SLIP_NO = RASD.SLIP_NO
+						     WHERE RASL.ACNT_YY  = #acntYy#
+						       AND RASL.ACNT_UNT IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+						
+								                    UNION
+						
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+						       AND RASD.ACNT_CD = ASD.ACNT_CD
+						       AND RASD.BAL_DIV = #balDiv#
+						       AND RASL.STA_CD = '51' ) AS RE_AMT
+				      FROM AC_SLIP ASL WITH(NOLOCK)
+				           INNER JOIN AC_SLIP_DET ASD WITH(NOLOCK)
+						       ON  ASL.ACNT_YY = ASD.ACNT_YY
+						       AND ASL.ACNT_UNT = ASD.ACNT_UNT
+						       AND ASL.SLIP_NO = ASD.SLIP_NO
+				     WHERE ASL.ACNT_YY  = #acntYy#
+				       AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+				       AND ASD.ACNT_CD BETWEEN #acntCdFr# AND #acntCdTo#
+				       AND ASD.BAL_DIV = #balDiv#
+				       AND ASL.STA_CD IN ('41', '61', '62', '63')
+				    GROUP BY ASD.ACNT_YY, ASD.ACNT_CD
+				    ) TA
+			GROUP BY TA.ACNT_CD
+		    
+		    UNION ALL
+		    
+		    SELECT '2' AS GB
+		          ,SUBSTRING(ASL.VOU_NO,1,8) + '-' + SUBSTRING(ASL.VOU_NO,9,4) AS VOU_NO
+		          ,ASL.SLIP_NO
+		          ,ASD.SLIP_SEQ
+		          ,ASD.ACNT_CD
+		          ,ISNULL(ASD.ABSTR, ASL.SLIP_DESC) AS SLIP_DESC
+		          ,ASL.SD_VENDOR_DESC VEND_NM
+		          ,null AS AMT_SUM_TOT
+		          ,ASD.SLIP_AMT AS AMT_SUM_M
+		          ,( SELECT SUM(BUDG_AMT)
+		               FROM BG_ASGN BA
+		              WHERE BA.ACNT_YY = ASD.ACNT_YY
+		                AND BA.ACNT_CD = ASD.ACNT_CD
+		                AND BA.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+						AND BA.BAL_DIV = #balDiv# )
+				   - ( SELECT ISNULL(SUM(RASD.SLIP_AMT),0)
+				 	           FROM AC_SLIP RASL WITH(NOLOCK)
+						          INNER JOIN AC_SLIP_DET RASD WITH(NOLOCK)
+								       ON  RASL.ACNT_YY = RASD.ACNT_YY
+								       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+								       AND RASL.SLIP_NO = RASD.SLIP_NO
+						     WHERE RASL.ACNT_YY  = #acntYy#
+						       AND RASL.ACNT_UNT IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+						
+								                    UNION
+						
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+						       AND RASD.ACNT_CD = ASD.ACNT_CD
+						       AND RASD.BAL_DIV = #balDiv#
+						       AND RASL.STA_CD = '51' )
+				   - ( SELECT ISNULL(SUM(RASD.SLIP_AMT),0)
+				 	           FROM AC_SLIP RASL WITH(NOLOCK)
+						          INNER JOIN AC_SLIP_DET RASD WITH(NOLOCK)
+								       ON  RASL.ACNT_YY = RASD.ACNT_YY
+								       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+								       AND RASL.SLIP_NO = RASD.SLIP_NO
+						     WHERE RASL.ACNT_YY  = #acntYy#
+						       AND RASL.ACNT_UNT IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+						
+								                    UNION
+						
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+						       AND RASD.ACNT_CD = ASD.ACNT_CD
+						       AND RASD.BAL_DIV = #balDiv#
+						       AND RASL.STA_CD IN ('41', '61', '62', '63')
+						       AND ASL.VOU_NO > RASL.VOU_NO )
+					- ASD.SLIP_AMT   AS RE_AMT
+		      FROM AC_SLIP ASL WITH(NOLOCK)
+		           INNER JOIN AC_SLIP_DET ASD WITH(NOLOCK)
+				       ON  ASL.ACNT_YY = ASD.ACNT_YY
+				       AND ASL.ACNT_UNT = ASD.ACNT_UNT
+				       AND ASL.SLIP_NO = ASD.SLIP_NO
+		     WHERE ASL.ACNT_YY  = #acntYy#
+		       AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+		       AND ASD.ACNT_CD BETWEEN #acntCdFr# AND #acntCdTo#
+		       AND ASL.STA_CD IN ('41', '61', '62', '63')
+		       AND ASD.BAL_DIV = #balDiv#
+		    
+		    UNION ALL
+		    
+		    SELECT '3' AS GB
+		          ,NULL AS VOU_NO
+		          ,NULL AS SLIP_NO
+		          ,NULL AS SLIP_SEQ
+		          ,ASD.ACNT_CD
+		          ,NULL AS SLIP_DESC
+		          ,'합        계' AS VEND_NM
+		          ,null AS AMT_SUM_TOT
+		          ,SUM(ASD.SLIP_AMT) AS AMT_SUM_M
+		          ,NULL AS RE_AMT
+		      FROM AC_SLIP ASL WITH(NOLOCK)
+		           INNER JOIN AC_SLIP_DET ASD WITH(NOLOCK)
+				       ON  ASL.ACNT_YY = ASD.ACNT_YY
+				       AND ASL.ACNT_UNT = ASD.ACNT_UNT
+				       AND ASL.SLIP_NO = ASD.SLIP_NO
+		     WHERE ASL.ACNT_YY  = #acntYy#
+		       AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+		       AND ASD.ACNT_CD BETWEEN #acntCdFr# AND #acntCdTo#
+		       AND ASL.STA_CD IN ('41', '61', '62', '63')
+		       AND ASD.BAL_DIV = #balDiv#
+		     GROUP BY ASD.ACNT_CD
+		     
+		    UNION ALL
+		    
+		    SELECT '4' AS GB
+		          ,NULL AS VOU_NO
+		          ,NULL AS SLIP_NO
+		          ,NULL AS SLIP_SEQ
+		          ,ASD.ACNT_CD
+		          ,NULL AS SLIP_DESC
+		          ,'누        계' AS VEND_NM
+		          , ( SELECT SUM(BUDG_AMT)
+		               FROM BG_ASGN BA
+		              WHERE BA.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+		                AND BA.ACNT_YY = ASD.ACNT_YY
+		                AND BA.ACNT_CD = ASD.ACNT_CD
+		                AND BA.BAL_DIV = #balDiv#   ) AS AMT_SUM_TOT
+		          ,( SELECT ISNULL(SUM(RASD.SLIP_AMT),0)
+				 	           FROM AC_SLIP RASL WITH(NOLOCK)
+						          INNER JOIN AC_SLIP_DET RASD WITH(NOLOCK)
+								       ON  RASL.ACNT_YY = RASD.ACNT_YY
+								       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+								       AND RASL.SLIP_NO = RASD.SLIP_NO
+						     WHERE RASL.ACNT_YY  = #acntYy#
+						       AND RASL.ACNT_UNT IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+						
+								                    UNION
+						
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+						       AND RASD.ACNT_CD = ASD.ACNT_CD
+						       AND RASD.BAL_DIV = #balDiv#
+						       AND RASL.STA_CD IN ( '51', '41', '61', '62', '63' )) AS AMT_SUM_M
+		          ,( SELECT SUM(BUDG_AMT)
+		               FROM BG_ASGN BA
+		              WHERE BA.ACNT_YY = ASD.ACNT_YY
+		                AND BA.ACNT_CD = ASD.ACNT_CD
+		                AND BA.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+						AND BA.BAL_DIV = #balDiv# )
+				   - ( SELECT ISNULL(SUM(RASD.SLIP_AMT),0)
+				 	           FROM AC_SLIP RASL WITH(NOLOCK)
+						          INNER JOIN AC_SLIP_DET RASD WITH(NOLOCK)
+								       ON  RASL.ACNT_YY = RASD.ACNT_YY
+								       AND RASL.ACNT_UNT = RASD.ACNT_UNT
+								       AND RASL.SLIP_NO = RASD.SLIP_NO
+						     WHERE RASL.ACNT_YY  = #acntYy#
+						       AND RASL.ACNT_UNT IN (SELECT ACNT_UNT
+								                      FROM BG_UNT WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#
+								                       AND ADD_YN = '0'
+						
+								                    UNION
+						
+								                    SELECT ADD_ACNT_UNT
+								                      FROM BG_UNT_ADD WITH(NOLOCK)
+								                     WHERE ACNT_UNT = #acntUnt#)
+						       AND RASD.ACNT_CD = ASD.ACNT_CD
+						       AND RASD.BAL_DIV = #balDiv#
+						       AND RASL.STA_CD IN ('51', '41', '61', '62', '63') )  AS RE_AMT
+		      FROM AC_SLIP ASL WITH(NOLOCK)
+		           INNER JOIN AC_SLIP_DET ASD WITH(NOLOCK)
+				       ON  ASL.ACNT_YY = ASD.ACNT_YY
+				       AND ASL.ACNT_UNT = ASD.ACNT_UNT
+				       AND ASL.SLIP_NO = ASD.SLIP_NO
+		     WHERE ASL.ACNT_YY  = #acntYy#
+		       AND ASL.ACNT_UNT IN (SELECT ACNT_UNT
+						                      FROM BG_UNT WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#
+						                       AND ADD_YN = '0'
+				
+						                    UNION
+				
+						                    SELECT ADD_ACNT_UNT
+						                      FROM BG_UNT_ADD WITH(NOLOCK)
+						                     WHERE ACNT_UNT = #acntUnt#)
+		       AND ASD.ACNT_CD BETWEEN #acntCdFr# AND #acntCdTo#
+		       AND ASL.STA_CD IN ('41', '61', '62', '63')
+		       AND ASD.BAL_DIV = #balDiv#
+		     GROUP BY ASD.ACNT_YY, ASD.ACNT_CD
+		      
+		  ) TB
+		  ORDER BY ACNT_CD, GB, SLIP_NO, SLIP_SEQ
+    </select>
+    
+</sqlMap>

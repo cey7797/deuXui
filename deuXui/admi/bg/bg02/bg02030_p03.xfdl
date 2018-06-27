@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="bg02040_p03" classname="Component_Guide" inheritanceid="" position="absolute" scrollbars="none" left="0" top="0" width="790" height="200" titletext="변경사유" onload="bg02040_p03_onload">
+    <Layouts>
+      <Layout>
+        <Static id="Static08" taborder="68" cssclass="detail_bg" left="15" top="48" right="16" height="93" style="border:1 solid #c7c9ccff,0 none #808080ff;"/>
+        <Static id="Static00" taborder="31" text="예산 변경 사유" cssclass="sta_WF_Title" left="15" top="9" width="170" height="29"/>
+        <Static id="Static34" taborder="32" text="h45" cssclass="tipGuide" visible="false" left="198" top="0" width="74" height="45"/>
+        <Static id="Static02" taborder="33" text="w15" cssclass="tipGuide" visible="false" left="0" top="6" width="15" height="135"/>
+        <Static id="Static06" taborder="34" text="w15" cssclass="tipGuide" visible="false" top="6" right="0" width="15" height="135"/>
+        <Static id="bg" taborder="36" cssclass="sta_POP_bottomBg" left="15" height="41" positionstep="-1" top="156" width="760"/>
+        <Button id="btn_close" taborder="39" text="닫기" onclick="btn_close_onclick" cssclass="btn_POP_Common" left="715" top="166" width="60" height="21"/>
+        <Static id="Static03" taborder="40" text="h10" cssclass="tipGuide" visible="false" left="741" top="0" width="34" height="10"/>
+        <Static id="Static04" taborder="42" text="h10" cssclass="tipGuide" visible="false" left="741" top="35" width="34" height="10"/>
+        <Static id="Static05" taborder="43" text="h15" cssclass="tipGuide" visible="false" right="15" bottom="366" width="760" height="15"/>
+        <Static id="Static28" taborder="44" text="10" cssclass="tipGuide" visible="false" right="15" bottom="356" width="136" height="10"/>
+        <Static id="Static01" taborder="45" text="10" cssclass="tipGuide" visible="false" right="15" bottom="325" width="136" height="10"/>
+        <Static id="Static22" taborder="46" text="h17" cssclass="tipGuide" visible="false" left="36" top="0" width="74" height="17"/>
+        <Static id="Static23" taborder="47" text="h14" cssclass="tipGuide" visible="false" left="36" top="31" width="74" height="14"/>
+        <Button id="btn_confirm" taborder="48" text="확인" cssclass="btn_POP_Common" left="650" top="166" width="60" height="21" onclick="btn_confirm_onclick" visible="false"/>
+        <Static id="Static12" taborder="58" text="사유" cssclass="detail_title" left="15" top="49" width="100" height="91" style="align:left;"/>
+        <TextArea id="txt_chgDesc" taborder="70" left="15.57%" top="52" right="2.91%" height="85" imemode="hangul"/>
+      </Layout>
+    </Layouts>
+    <Objects/>
+    <Bind/>
+    <Script type="xscript5.0"><![CDATA[// [프로젝트]	동의대학교 예산회계시스템 구축
+// [시스템명]	행정
+// [부시스템]	예산관리
+// [프로그램]	예산편성관리등록 반려팝업
+// [설명] 
+//	         
+// [작성자명]	라병수
+// [작성일자]	2015.12.29
+//////////////////////////////////[수정이력]//////////////////////////////////
+// [수정일자] 
+// [수 정 자] 
+// [수정내용]
+
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+
+var strChgDesc;		//변경사유
+var strModYn;		//변경가능여부
+
+this.bg02040_p03_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	strChgDesc = this.parent.chgDesc;
+	strModYn = this.parent.modYn;
+	
+	if ( strModYn == "Y" ) {
+		this.txt_chgDesc.set_readonly(false);
+		this.btn_confirm.set_visible(true);
+	} else {
+		this.txt_chgDesc.set_readonly(true);
+		this.btn_confirm.set_visible(false);
+	}
+	
+	
+	this.txt_chgDesc.set_value(strChgDesc);
+	
+	this.txt_chgDesc.setFocus();
+}
+
+
+/*********************************************************************
+ * 함 수 명 	: btn_confirm_onclick
+ * 함수설명 	: 확인
+ *********************************************************************/
+this.btn_confirm_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_confirm();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_confirm
+ * 함수설명 	: 부모로 리턴
+ *********************************************************************/
+this.fn_confirm = function()
+{
+	if ( this.gfn_isNull(this.txt_chgDesc.value) ) {
+		this.gfn_message("A", "사유를 입력하세요.")
+		this.txt_chgDesc.setFocus();
+		return;
+	}
+
+	this.close(this.txt_chgDesc.value);
+}
+
+this.btn_close_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.close("close");
+}
+]]></Script>
+  </Form>
+</FDL>

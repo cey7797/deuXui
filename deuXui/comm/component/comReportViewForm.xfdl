@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="comReportViewForm" classname="reportTest" left="0" top="0" width="1000" height="700" titletext="레포트뷰어(폼)" onload="comReportViewForm_onload">
+    <Layouts>
+      <Layout>
+        <WebBrowser id="WebBrowser00" left="0" top="0" taborder="0" onloadcompleted="WebBrowser00_onloadcompleted" onusernotify="WebBrowser00_onusernotify" right="0" bottom="0"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="Dataset00" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : comReportViewForm.xfdl
+* 화면설명     : 리포트뷰어 form
+* 작성자       : 라병수
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.06.04     라병수         최초생성
+******************************************************************************/
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+// Plugin classid = microSoft Webbrowser 사용
+// Plugin & Webbrowser 차이점
+// Plugin active x 사용할수있는 컴포넌트
+// Webbrowser active x 가 구현되어있는 컴포넌트
+
+this.comReportViewForm_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.WebBrowser00.set_url(application.gv_svrUrl+"ClipReport4/reportview.jsp"); 
+}
+
+this.WebBrowser00_onloadcompleted = function(obj:WebBrowser, e:nexacro.WebLoadCompEventInfo)
+{
+
+		var doc = this.WebBrowser00.getProperty("document");
+		
+		var strCallType = this.parent.fv_argumentsList['callType'];   //"param";
+		var strCrfName =  this.parent.fv_argumentsList['crfName'];	  //"test";
+		var strCrfParams = this.parent.fv_argumentsList['crfParams']; //"test:값";
+		var strCrfDbName = this.parent.fv_argumentsList['crfDbName']; //"oracle1";
+		var strFormYn = this.parent.fv_argumentsList['crfFormYn']; //"Y/N";
+		var strCrfRole = this.parent.fv_argumentsList['crfRole']; //"권한함수에 따라";
+		
+		if(strCallType == "")strCallType="param";
+		if(strCrfDbName == "")strCrfDbName="oracle1";
+		//param  매개변수(파라미터)받아오는방식
+		var callType   = doc.callMethod("getElementById", "callType"); // 매개변수(파라미터)받아오는방식
+		callType.setProperty("value", strCallType);
+
+		var crfName   = doc.callMethod("getElementById", "crfName"); //파일명
+		crfName.setProperty("value", strCrfName);
+		
+		var crfParams = doc.callMethod("getElementById", "crfParams"); // 파라미터 {키:값|키:값|키:값}
+		crfParams.setProperty("value", strCrfParams);
+		
+		var crfDbName = doc.callMethod("getElementById", "crfDbName"); // 데이터셋명 매개변수타입은 ""로 던지게함
+		crfDbName.setProperty("value", strCrfDbName);
+		
+		var crfFormYn = doc.callMethod("getElementById", "crfFormYn"); // 호출하는화면 폼인지 아닌지 (Y/N)
+		crfFormYn.setProperty("value", strFormYn);
+		
+		var crfRole = doc.callMethod("getElementById", "crfRole"); // 권한함수에 따라서 
+		crfRole.setProperty("value", strCrfRole);
+		
+		var docBtn = doc.callMethod("getElementById", "btnClick"); // 데이터셋명 매개변수타입은 ""로 던지게함
+		
+		docBtn.callMethod("click");	
+}
+
+this.WebBrowser00_onusernotify = function(obj:WebBrowser, e:nexacro.WebTitleChangeEventInfo)
+{
+	if(e.userdata == "close")
+	{
+		//alert("1111ddddd1"+e.userdata);
+		this.close();
+	}
+}
+]]></Script>
+  </Form>
+</FDL>

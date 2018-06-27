@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="ac03080" classname="aac01001_001" left="0" top="0" width="1038" height="855" titletext="결산재무재표통계" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Static id="Static76" taborder="12" text="출력물 목록" cssclass="page_stitle" left="0" top="56" width="220" height="20"/>
+        <Static id="Static22" taborder="17" text="h5" visible="false" left="0" top="76" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static20" taborder="18" text="h15" visible="false" left="0" top="39" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static01" taborder="22" text="출력조건" cssclass="page_stitle" left="504" top="57" width="220" height="20"/>
+        <Div id="div_search" taborder="26" left="0" top="0" right="15" height="39" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static12" taborder="24" text="H9" cssclass="tipGuide" visible="false" left="117" top="2" width="30" height="9"/>
+              <Static id="Static11" taborder="25" text="H9" cssclass="tipGuide" visible="false" left="117" top="32" width="30" height="9"/>
+              <Static id="Static04" taborder="28" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="182" top="0" width="20" height="39"/>
+              <Static id="Static14" taborder="30" text="W10" cssclass="tipGuide" visible="false" left="68" top="2" width="14" height="37"/>
+              <Static id="Static33" taborder="31" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="0" top="2" width="20" height="39"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static33" taborder="29" text="W&#13;&#10;15" cssclass="tipGuide" visible="false" left="1023" top="7" width="15" height="846"/>
+        <Static id="Static04" taborder="30" text="H5" cssclass="tipGuide" visible="false" left="930" top="834" width="93" height="5"/>
+        <Static id="Static06" taborder="31" text="H5" cssclass="tipGuide" visible="false" left="930" top="850" width="93" height="5"/>
+        <Static id="Static00" taborder="32" text="H5" cssclass="tipGuide" visible="false" left="402" top="834" width="93" height="5"/>
+        <Static id="Static02" taborder="33" text="H5" cssclass="tipGuide" visible="false" left="402" top="850" width="93" height="5"/>
+        <Static id="Static31" taborder="34" text="w&#13;&#10;10" cssclass="tipGuide" visible="false" left="510" top="119" bottom="689" width="10"/>
+        <Static id="Static35" taborder="35" text="W&#13;&#10;10" cssclass="tipGuide" visible="false" left="500" top="85" width="10" height="311"/>
+        <Grid id="grd_main" taborder="37" binddataset="ds_printList" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="col" onkeydown="grd_acnt_onkeydown" onheadclick="grd_acnt_onheadclick" left="0" top="81" bottom="21" width="500">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="35" band="left"/>
+                <Column size="367"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell displaytype="number" text="순번"/>
+                <Cell col="1" text="출력물"/>
+              </Band>
+              <Band id="body">
+                <Cell edittype="none" text="expr:currow+1" expandsize="13"/>
+                <Cell col="1" displaytype="normal" edittype="none" style="align:left;" text="bind:title" calendardisplay="edit" calendardisplaynulltype="none"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Div id="div_form" taborder="38" left="520" top="97" bottom="20" width="503" scrollbars="none"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_printList" onrowposchanged="ds_printList_onrowposchanged">
+        <ColumnInfo>
+          <Column id="title" type="STRING" size="256"/>
+          <Column id="divUrl" type="STRING" size="256"/>
+          <Column id="clipFileNm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="title">합계잔액시산표</Col>
+            <Col id="divUrl">ac03::ac03080_d01.xfdl</Col>
+            <Col id="clipFileNm">ac03080_r01</Col>
+          </Row>
+          <Row>
+            <Col id="title">대차대조표</Col>
+            <Col id="divUrl">ac03::ac03080_d02.xfdl</Col>
+            <Col id="clipFileNm">ac03080_r02</Col>
+          </Row>
+          <Row>
+            <Col id="title">운영계산서</Col>
+            <Col id="divUrl">ac03::ac03080_d02.xfdl</Col>
+            <Col id="clipFileNm">ac03080_r03</Col>
+          </Row>
+          <Row>
+            <Col id="title">자금계산서</Col>
+            <Col id="divUrl">ac03::ac03080_d02.xfdl</Col>
+            <Col id="clipFileNm">ac03080_r04</Col>
+          </Row>
+          <Row>
+            <Col id="title">대차대조표(연결)</Col>
+            <Col id="divUrl">ac03::ac03080_d05.xfdl</Col>
+            <Col id="clipFileNm">ac03080_r05</Col>
+          </Row>
+          <Row>
+            <Col id="title">운영계산서(연결)</Col>
+            <Col id="divUrl">ac03::ac03080_d05.xfdl</Col>
+            <Col id="clipFileNm">ac03080_r06</Col>
+          </Row>
+          <Row>
+            <Col id="title">자금계산서(연결)</Col>
+            <Col id="divUrl">ac03::ac03080_d05.xfdl</Col>
+            <Col id="clipFileNm">ac03080_r07</Col>
+          </Row>
+          <Row>
+            <Col id="title">합계잔액시산표(당기)</Col>
+            <Col id="divUrl">ac03::ac03080_d01.xfdl</Col>
+            <Col id="clipFileNm">ac03080_r08</Col>
+          </Row>
+          <Row>
+            <Col id="title">자금계산서(당기)</Col>
+            <Col id="divUrl">ac03::ac03080_d09.xfdl</Col>
+            <Col id="clipFileNm">ac03080_r09</Col>
+          </Row>
+          <Row>
+            <Col id="title">계정별원장(엑셀)</Col>
+            <Col id="divUrl">ac03::ac03080_d10.xfdl</Col>
+          </Row>
+          <Row>
+            <Col id="title">자금원장(엑셀)</Col>
+            <Col id="divUrl">ac03::ac03080_d11.xfdl</Col>
+            <Col id="clipFileNm">[Undefined]</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Bind>
+      <BindItem id="item1" compid="Div01.spn_acntYy" propid="value" datasetid="ds_bgFrmn" columnid="acntYy"/>
+      <BindItem id="item4" compid="Div01.cmb_pfmAcntUnt" propid="value" datasetid="ds_bgFrmn" columnid="acntUnt"/>
+      <BindItem id="item0" compid="Div01.cmb_pfmAcntUnt00" propid="value" datasetid="ds_bgFrmn" columnid="acntUnt"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[
+/* ====================================================================
+ * 01. 업무구분	: 장부관리
+ * 02. 화면명		: ac03080.xfdl
+ * 03. 화면설명	: 결산재무재표통계 관리하는 화면이다.
+ * 04. 작성일		: 2015.12.07
+ * 05. 작성자		: 이현욱
+ * 06. 수정이력	: 
+ * ====================================================================
+ *     수정일     수정자   내용
+ * ====================================================================
+ *
+ * ==================================================================== */
+ 
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+	
+/******************************************************************************
+* 함 수 명 	: from_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.bg03030_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	
+	
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{	
+
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.gfn_message("A", errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		} 
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: ds_printList_onrowposchanged
+ * 함수설명 	: 출력물종류에 따라서 출력조건 호출
+ *********************************************************************/
+this.ds_printList_onrowposchanged = function(obj:Dataset, e:nexacro.DSRowPosChangeEventInfo)
+{
+	this.div_form.set_url(obj.getColumn(e.newrow, 'divUrl'));
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_print
+ * 함수설명 	: 레포트호출
+ *********************************************************************/
+this.fn_print = function(objParams)
+{
+	var title;
+	var objParam = {};
+	
+	for (var i in objParams) {
+        objParam[i] = objParams[i];
+    }
+	
+	
+	title = this.ds_printList.getColumn(this.ds_printList.rowposition,"clipFileNm");
+	
+	
+
+    var strArg  = "ACNT_YY:"  + objParam["acntYy"];		 // 회계년도
+ 		strArg += "|ACNT_UNT:" + objParam["acntUnt"];    // 회계연도
+ 		strArg += "|CUR_DT:" + objParam["curDt"];     // 기준일
+ 		strArg += "|ACNT_UNT_NM:" + objParam["acntUntNm"]; 
+ 		strArg += "|SUB_TITLE:" + objParam["subTitle"]; 
+ 		strArg += "|GV_USERID:" + application.gds_user.getColumn(application.gds_user.rowposition,"memberNo"); // login userid
+ 		strArg += "|GV_USERNM:" + application.gds_user.getColumn(application.gds_user.rowposition,"nm"); // login usernm
+ 		strArg += "|GV_MENUID:" + "ac03020"; // menuId
+ 		strArg += "|GV_USER:" + application.gds_user.getColumn(application.gds_user.rowposition,"nm")+"("+application.gds_user.getColumn(application.gds_user.rowposition,"memberNo")+")"; // login usernm(userid)
+    
+    var callType = ""; 
+    var crfName = "com/"+title; 
+    
+    if ( objParam["paperGb"] == "2" ) {
+		crfName = crfName + "_2";
+    }
+    
+    var crfParams = strArg; //예) 키:값|키:값|키:값
+    var crfDbName = ""; // null 값이나 "oracle1" 값으로 던질것
+	this.gfn_openClipReport(callType,crfName,crfParams,crfDbName);
+	
+	
+
+}
+
+
+	]]></Script>
+  </Form>
+</FDL>

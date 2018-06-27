@@ -1,0 +1,882 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Ac01SQL">
+
+    <typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>    
+    
+    <!--
+    #########################################################################################################################################
+    # 계좌등록(admi/ac/ac01/ac01010.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+	
+	<select id="ac01DAO.selectAc01010MainList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		
+		SELECT '0' AS CHK
+		     , '' AS ROW_STATUS
+			 , ACNT_UNT
+			 , ACNT_NO
+			 , NEW_ACNT_NO
+			 , BANK_CD
+			 , dbo.F_COM_CODE_NM('CS005', BANK_CD, 'KOR') AS BANK_CD_NM
+			 , DEPOSR
+			 , BANK_REG_NO
+			 , ACNT_ALIAS
+			 , ACNT_KND
+			 , OP_DT
+			 , EXPIR_DT
+			 , ACNT_DIV
+			 , CONTR_AMT
+			 , INT_RT
+			 , TERMN_YN
+			 , TERMN_DT
+			 , ACNT_CD
+			 , dbo.F_AC_GET_ACNT_INFO(#acntYy#, ACNT_UNT, ACNT_CD, '50', 'ACNT_NM') AS ACNT_CD_NM
+			 , AUTO_YN
+			 , AUTO_ACNT_CD
+			 , dbo.F_AC_GET_ACNT_INFO(#acntYy#, ACNT_UNT, AUTO_ACNT_CD, '50', 'ACNT_NM') AS AUTO_ACNT_CD_NM
+			 , MGT_ORG_ID
+			 , dbo.F_COM_DEPT_NM(MGT_ORG_ID, 'DEPT_NM_KOR') AS MGT_ORG_ID_NM
+			 , USAGE_CD
+			 , RMK 
+		  FROM AC_BANK_NO WITH(NOLOCK)
+		 WHERE ACNT_UNT = #acntUnt#
+		 
+		 <isNotEmpty property = "acntNo"> 
+		   AND (    REPLACE(ACNT_NO, '-', '') LIKE '%' + REPLACE(#acntNo#, '-', '') + '%'
+		         OR REPLACE(NEW_ACNT_NO, '-', '') LIKE '%' + REPLACE(#acntNo#, '-', '') + '%' )
+		 </isNotEmpty>
+		 
+		 <isNotEmpty property = "bankCd"> 
+		   AND BANK_CD = #bankCd#
+		 </isNotEmpty>
+		 
+		 <isNotEmpty property = "termnYn"> 
+		   AND TERMN_YN = #termnYn#
+		 </isNotEmpty>
+		 
+	  ORDER BY ACNT_UNT, OP_DT
+    </select>
+	
+	
+	<insert id="ac01DAO.insertAc01010MainList" parameterClass="java.util.HashMap">
+		
+		INSERT INTO AC_BANK_NO
+			      (
+			        ACNT_UNT
+				  , ACNT_NO
+				  , NEW_ACNT_NO
+				  , BANK_CD
+				  , DEPOSR
+				  , BANK_REG_NO
+				  , ACNT_ALIAS
+				  , ACNT_KND
+				  , OP_DT
+				  , EXPIR_DT
+				  , ACNT_DIV
+				  , CONTR_AMT
+				  , INT_RT
+				  , TERMN_YN
+				  , TERMN_DT
+				  , ACNT_CD
+				  , AUTO_YN
+				  , AUTO_ACNT_CD
+				  , MGT_ORG_ID
+				  , USAGE_CD
+				  , RMK  
+				  , INSERT_DT
+				  , INSERT_ID
+				  , INSERT_IP
+				  , INSERT_PGM
+				  ) 
+			VALUES 
+				  (
+				    #acntUnt#
+				  , #acntNo#
+				  , #newAcntNo#
+				  , #bankCd#
+				  , #deposr#
+				  , REPLACE(#bankRegNo#, '-', '')
+				  , #acntAlias#
+				  , #acntKnd#
+				  , #opDt#
+				  , #expirDt#
+				  , #acntDiv#
+				  , CONVERT(BIGINT, #contrAmt#)
+				  , CASE WHEN #intRt# IS NULL OR #intRt# = '' THEN NULL ELSE CONVERT(NUMERIC(5,2), CASE WHEN #intRt# = '' THEN null ELSE #intRt# END) END
+				  , #termnYn#
+				  , #termnDt#
+				  , #acntCd#
+				  , #autoYn#
+				  , #autoAcntCd#
+				  , #mgtOrgId#
+				  , #usageCd#
+				  , #rmk#
+				  , GETDATE()
+				  , #insertId#
+				  , #insertIp#
+				  , 'ac01010.xfdl'
+				 )
+	</insert>
+	
+	<update id="ac01DAO.updateAc01010MainList" parameterClass="java.util.HashMap">
+		
+		UPDATE AC_BANK_NO
+		   SET NEW_ACNT_NO = #newAcntNo#
+		     , BANK_CD = #bankCd#
+			 , DEPOSR = #deposr#
+			 , BANK_REG_NO = REPLACE(#bankRegNo#, '-', '')
+			 , ACNT_ALIAS = #acntAlias#
+			 , ACNT_KND = #acntKnd#
+			 , OP_DT = #opDt#
+			 , EXPIR_DT = #expirDt#
+			 , ACNT_DIV = #acntDiv#
+			 , CONTR_AMT = CONVERT(BIGINT, #contrAmt#)
+			 , INT_RT = CASE WHEN #intRt# IS NULL OR #intRt# = '' THEN NULL ELSE CONVERT(NUMERIC(5,2), CASE WHEN #intRt# = '' THEN null ELSE #intRt# END) END
+			 , TERMN_YN = #termnYn#
+			 , TERMN_DT = #termnDt#
+			 , ACNT_CD = #acntCd#
+			 , AUTO_YN = #autoYn#
+			 , AUTO_ACNT_CD = #autoAcntCd#
+			 , MGT_ORG_ID = #mgtOrgId#
+			 , USAGE_CD = #usageCd#
+			 , RMK = #rmk#
+			 , UPDATE_DT = GETDATE()
+			 , UPDATE_ID = #updateId#
+			 , UPDATE_IP = #updateIp#
+			 , UPDATE_PGM = 'ac01010.xfdl'
+		 WHERE 1=1
+		   AND ACNT_UNT = #acntUnt# 
+		   AND ACNT_NO = #acntNo#
+		   
+	</update>
+	
+	<delete id="ac01DAO.deleteAc01010MainList" parameterClass="java.util.HashMap">
+		
+		DELETE 
+		  FROM AC_BANK_NO 
+		 WHERE ACNT_UNT = #acntUnt# 
+		   AND ACNT_NO = #acntNo#
+	
+	</delete>
+    
+	<select id="ac01DAO.selectCardAcntNoCombo"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		SELECT ACNT_NO AS CODE
+			 , ACNT_NO AS NAME
+		  FROM AC_BANK_NO WITH(NOLOCK)
+		 WHERE ACNT_DIV = '30'
+	  ORDER BY ACNT_NO
+    </select>
+    
+    <!--
+    #########################################################################################################################################
+    # 법인카드관리(admi/ac/ac01/ac01030.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    <select id="ac01DAO.selectAcCorpCardList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		SELECT '' AS ROW_STATUS
+		     , '0' AS CHK
+		     , CARD_NO 
+		     , CARD_NO AS CARD_NO_KEY
+			 , CARD_DIV       
+			 , CARD_PUBLISH_DT
+			 , VALI_DT		  
+			 , CARD_ALIAS	  
+			 , CARD_ACNT_NO
+			 , MGT_ORG_ID
+			 ,(SELECT dbo.F_COM_DEPT_NM(MGT_ORG_ID, 'DEPT_NM_KOR')) AS MGT_ORG_NM
+			 , STA_CD
+			 , BIGO
+		  FROM AC_CORP_CARD WITH(NOLOCK)
+		 WHERE 1=1
+		   <isNotEmpty property = "cardDiv">
+		   AND CARD_DIV = #cardDiv#
+		   </isNotEmpty>
+		   <isNotEmpty property = "cardAcntNo">
+		   AND REPLACE(CARD_ACNT_NO,'-','') = REPLACE(#cardAcntNo#,'-','')
+		   </isNotEmpty>
+		 ORDER BY CARD_DIV
+    </select>
+    
+    <insert id="ac01DAO.insertAcCorpCardList" parameterClass="java.util.HashMap">
+    	
+    	INSERT INTO AC_CORP_CARD
+    		 	  ( 
+    		 	    CARD_NO        
+				  , CARD_DIV       
+				  , CARD_PUBLISH_DT
+				  , VALI_DT		  
+				  , CARD_ALIAS	  
+				  , CARD_ACNT_NO    
+	    		  , INSERT_DT
+	    		  , INSERT_ID
+	    		  , INSERT_IP
+	    		  , INSERT_PGM
+	    		  , MGT_ORG_ID
+				  , STA_CD
+				  , BIGO
+	    		  ) 
+				VALUES 
+				  ( 
+	    		    #cardNo#
+	    		  , #cardDiv#
+	    		  , #cardPublishDt#
+	    		  , #valiDt#
+	    		  , #cardAlias#
+	    		  , #cardAcntNo#
+	    		  , GETDATE()
+	    		  , #insertId#
+	    		  , #insertIp#
+	    		  , #insertPgm#
+	    		  , #mgtOrgId#
+	    		  , #staCd#
+	    		  , #bigo#
+	    		 )
+    </insert>
+    
+    <update id="ac01DAO.updateAcCorpCardList" parameterClass="java.util.HashMap">
+    	
+    	UPDATE AC_CORP_CARD
+    	   SET CARD_NO         = #cardNo# 
+    		 , CARD_DIV        = #cardDiv#
+    		 , CARD_PUBLISH_DT = #cardPublishDt#
+    		 , VALI_DT		   = #valiDt#
+    		 , CARD_ALIAS	   = #cardAlias#
+    		 , CARD_ACNT_NO    = #cardAcntNo#
+    		 , UPDATE_DT       = GETDATE()
+    		 , UPDATE_ID 	   = #updateId#
+    		 , UPDATE_IP 	   = #updateIp#
+    		 , UPDATE_PGM      = #updatePgm#
+    		 , MGT_ORG_ID      = #mgtOrgId#
+    		 , STA_CD          = #staCd#
+    		 , BIGO            = #bigo#
+    	 WHERE CARD_NO         = #cardNoKey#
+	    	 
+    </update>
+    
+    <delete id="ac01DAO.deleteAcCorpCardList" parameterClass="java.util.HashMap">
+    	
+    	DELETE 
+    	  FROM AC_CORP_CARD
+    	 WHERE CARD_NO = #cardNo#
+    	   
+    </delete>
+    
+    <select id="ac01DAO.selectAcCorpCardDetList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		SELECT '' AS ROW_STATUS
+		     , '0' AS CHK
+		     , CARD_NO  
+		     , CARD_NO AS CARD_NO_KEY      
+			 , CARD_SEQ       
+			 , MGT_ORG_ID
+			 ,(SELECT dbo.F_COM_DEPT_NM(MGT_ORG_ID, 'DEPT_NM_KOR')) AS MGT_ORG_NM
+			 , USE_FR_DT		  
+			 , USE_TO_DT	  
+		  FROM AC_CORP_CARD_DET WITH(NOLOCK)
+		 WHERE CARD_NO = #cardNo#
+		 ORDER BY CARD_SEQ
+    </select>
+    
+    <insert id="ac01DAO.insertAcCorpCardDetList" parameterClass="java.util.HashMap">
+    	
+    	INSERT INTO AC_CORP_CARD_DET
+    		 	  ( 
+    		 	    CARD_NO        
+				  , CARD_SEQ      
+				  , MGT_ORG_ID
+				  , USE_FR_DT		  
+				  , USE_TO_DT	  
+	    		  , INSERT_DT
+	    		  , INSERT_ID
+	    		  , INSERT_IP
+	    		  , INSERT_PGM
+	    		  ) 
+				VALUES 
+				  ( 
+	    		    #cardNo#
+	    		  , (SELECT ISNULL(MAX(CARD_SEQ),0)+1
+	    		       FROM AC_CORP_CARD_DET
+	    		      WHERE CARD_NO = #cardNo# )
+	    		  , #mgtOrgId#
+	    		  , #useFrDt#
+	    		  , #useToDt#
+	    		  , GETDATE()
+	    		  , #insertId#
+	    		  , #insertIp#
+	    		  , #insertPgm#
+	    		 )
+    </insert>
+    
+    <update id="ac01DAO.updateAcCorpCardDetList" parameterClass="java.util.HashMap">
+    	
+    	UPDATE AC_CORP_CARD_DET
+    	   SET CARD_NO    = #cardNo# 
+    		 , MGT_ORG_ID = #mgtOrgId#
+    		 , USE_FR_DT  = #useFrDt#
+    		 , USE_TO_DT  = #useToDt#
+    		 , UPDATE_DT  = GETDATE()
+    		 , UPDATE_ID  = #updateId#
+    		 , UPDATE_IP  = #updateIp#
+    		 , UPDATE_PGM = #updatePgm#
+    	 WHERE CARD_NO    = #cardNoKey#
+    	   AND CARD_SEQ   = CONVERT(INT, #cardSeq#)
+    </update>
+    
+    <delete id="ac01DAO.deleteAcCorpCardDetList" parameterClass="java.util.HashMap">
+    	
+    	DELETE 
+    	  FROM AC_CORP_CARD_DET
+    	 WHERE CARD_NO  = #cardNo#
+    	   AND CARD_SEQ = CONVERT(INT, #cardSeq#)
+    	   
+    </delete>
+    
+    <select id="ac01DAO.selectAcCorpCardUseList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		
+	  SELECT   A.ROW_STATUS
+		     , A.CHK
+		     , A.CARD_ENPC
+			 , B.CARD_ENPNM
+			 , A.CDNO
+			 , A.APVL_DT
+			 , A.BIC_APVL_SEQ
+			 , A.USE_SEQ
+			 , A.USE_AMT
+			 , A.MEMBER_NO
+			 , dbo.F_COM_USER_NM(A.MEMBER_NO, 'NM') AS MEMBER_NM
+			 , A.USE_DT	
+			 , A.VOU_NO
+			 , A.VOU_TTL
+			 , A.TABLE_GB	
+			 , CASE WHEN A.TABLE_GB = '1' THEN 'Y'
+                    WHEN A.TABLE_GB = '2' THEN 'N'
+                    ELSE ''
+                    END TABLE_GB_NM
+		FROM
+		(
+		SELECT '' AS ROW_STATUS
+		     , '0' AS CHK
+		     , CARD_ENPC
+			 , CDNO
+			 , APVL_DT
+			 , BIC_APVL_SEQ
+			 , USE_SEQ
+			 , USE_AMT
+			 , MEMBER_NO
+			 , USE_DT	
+			 , '' AS VOU_NO
+			 , '' AS VOU_TTL
+			 , '1' AS TABLE_GB  
+		  FROM AC_CORP_CARD_USE WITH(NOLOCK)
+		
+		UNION ALL
+		
+		SELECT '' AS ROW_STATUS
+		     , '0' AS CHK
+		     , A.CARD_ENPC
+			 , A.CDNO
+			 , A.APVL_DT
+			 , A.BIC_APVL_SEQ
+			 , 0 AS USE_SEQ
+			 , A.BUDG_AMT AS USE_AMT
+			 , '' AS MEMBER_NO
+			 , CASE WHEN ISNULL(B.PRE_EXP_YN, '0') = '0' THEN C.SLIP_CFM_DT
+			        ELSE CASE WHEN ISNULL(B.PRE_EXP_CFM_YN, '0') = '0' THEN '' ELSE B.PRE_EXP_CFM_DT END END AS USE_DT	 
+			 , A.VOU_NO
+			 , B.VOU_TTL
+			 , '2' AS TABLE_GB
+		  FROM AC_BILL_EVDC A WITH(NOLOCK)
+		   LEFT OUTER JOIN AC_VOU B WITH(NOLOCK)
+		    ON A.ACNT_YY = B.ACNT_YY
+		   AND A.ACNT_UNT = B.ACNT_UNT
+		   AND A.VOU_NO = B.VOU_NO
+		   LEFT OUTER JOIN AC_SLIP C WITH(NOLOCK)
+		    ON A.ACNT_YY = C.ACNT_YY
+		   AND A.ACNT_UNT = C.ACNT_UNT
+		   AND A.SLIP_NO = C.SLIP_NO
+		  ) A
+		  LEFT 
+         OUTER 
+          JOIN IF_APVL_ITMZ_INQ B WITH(NOLOCK)
+            ON  A.CARD_ENPC     = B.CARD_ENPC
+			AND A.CDNO          = B.CDNO
+			AND A.APVL_DT       = B.APVL_DT
+			AND A.BIC_APVL_SEQ  = B.BIC_APVL_SEQ
+		 WHERE A.CARD_ENPC    = #cardEnpc#
+   	       AND A.CDNO         = #cdno#
+   	       AND A.APVL_DT      = #apvlDt#
+   	       AND A.BIC_APVL_SEQ = CONVERT(BIGINT, #bicApvlSeq#)
+		 ORDER BY A.CARD_ENPC, B.CARD_ENPNM, A.CDNO, A.APVL_DT, A.BIC_APVL_SEQ, A.USE_SEQ
+    </select>
+    
+    <insert id="ac01DAO.insertAcCorpCardUseList" parameterClass="java.util.HashMap">
+    	
+    	INSERT INTO AC_CORP_CARD_USE
+    		 	  ( 
+    		 	    CARD_ENPC
+				  , CDNO
+				  , APVL_DT
+				  , BIC_APVL_SEQ
+				  , USE_SEQ
+				  , USE_AMT
+				  , MEMBER_NO
+				  , USE_DT	  
+	    		  , INSERT_DT
+	    		  , INSERT_ID
+	    		  , INSERT_IP
+	    		  , INSERT_PGM
+	    		  ) 
+				VALUES 
+				  ( 
+	    		    #cardEnpc#
+				  , #cdno#
+				  , #apvlDt#
+				  , CONVERT(BIGINT, #bicApvlSeq#)
+				  , (SELECT ISNULL(MAX(USE_SEQ),0)+1
+	    		       FROM AC_CORP_CARD_USE
+	    		      WHERE CARD_ENPC    = #cardEnpc#
+			    	    AND CDNO         = #cdno#
+			    	    AND APVL_DT      = #apvlDt#
+			    	    AND BIC_APVL_SEQ = CONVERT(BIGINT, #bicApvlSeq#) )
+				  , CONVERT(BIGINT,#useAmt#)
+				  , #memberNo#
+				  , #useDt#	
+	    		  , GETDATE()
+	    		  , #insertId#
+	    		  , #insertIp#
+	    		  , #insertPgm#
+	    		 )
+    </insert>
+    
+    <update id="ac01DAO.updateAcCorpCardUseList" parameterClass="java.util.HashMap">
+    	
+    	UPDATE AC_CORP_CARD_USE
+    	   SET USE_AMT      = CONVERT(BIGINT,#useAmt# )
+    		 , MEMBER_NO    = #memberNo#
+    		 , USE_DT       = #useDt#
+    		 , UPDATE_DT    = GETDATE()
+    		 , UPDATE_ID    = #updateId#
+    		 , UPDATE_IP    = #updateIp#
+    		 , UPDATE_PGM   = #updatePgm#
+    	 WHERE CARD_ENPC    = #cardEnpc#
+    	   AND CDNO         = #cdno#
+    	   AND APVL_DT      = #apvlDt#
+    	   AND BIC_APVL_SEQ = CONVERT(BIGINT,#bicApvlSeq#)
+    	   AND USE_SEQ      = CONVERT(INT,#useSeq#)
+    </update>
+    
+    <delete id="ac01DAO.deleteAcCorpCardUseList" parameterClass="java.util.HashMap">
+    	
+    	DELETE 
+    	  FROM AC_CORP_CARD_USE
+    	 WHERE CARD_ENPC    = #cardEnpc#
+    	   AND CDNO         = #cdno#
+    	   AND APVL_DT      = #apvlDt#
+    	   AND BIC_APVL_SEQ = CONVERT(BIGINT,#bicApvlSeq#)
+    	   AND USE_SEQ      = CONVERT(INT,#useSeq#)
+    	   
+    </delete>
+    
+    <delete id="ac01DAO.deleteAcCardApvlList" parameterClass="java.util.HashMap">
+    	
+    	DELETE 
+    	  FROM IF_APVL_ITMZ_INQ
+    	 WHERE CARD_ENPC    = #cardEnpc#
+    	   AND CDNO         = #cdno#
+    	   AND APVL_DT      = #apvlDt#
+    	   AND BIC_APVL_SEQ = CONVERT(BIGINT,#bicApvlSeq#)
+    	   
+    </delete>
+    
+    <select id="ac01DAO.selectNoIncAcntNoCnt"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac01DAO.selectIncAcntNoCnt - 미정산 입금내역, 카드내역 CNT 조회 */
+		
+		SELECT (
+				SELECT COUNT(1) AS CNT
+				FROM (
+						SELECT A.BNKCD /* 은행코드 */
+						     , A.ACNO /* 계좌번호 */
+						     , A.TDT /* 거래일자 */
+						     , A.TRNF_SEQ /* 거래일련번호 */
+						     , A.TRNS_HR /* 거래시간 */
+						     , A.DEPS_AMT /* 입금액 */
+						     , CASE WHEN A.TRNS_CNTN IS NULL OR A.TRNS_CNTN = '' THEN CASE WHEN A.SYNP = '이자' THEN '이자' ELSE '' END
+						            ELSE A.TRNS_CNTN END AS TRNS_CNTN 
+						     , ISNULL(( SELECT SUM(ISNULL(RCPT_AMT,0))
+						           FROM AC_RCPT_DESC ARD
+						          WHERE ARD.BNKCD = A.BNKCD
+						            AND ARD.ACNO = A.ACNO
+						            AND ARD.TDT = A.TDT
+						            AND ARD.TRNF_SEQ = A.TRNF_SEQ ),0) AS INC_AMT
+						     , B.DC_YN
+						  FROM IF_TRNS_ITMZ_INQ_WO A  WITH(NOLOCK) /* 거래내역조회(은행)-전체	*/
+						       LEFT OUTER JOIN AC_TRNS_ITMZ B WITH(NOLOCK)
+						        ON A.BNKCD = B.BNKCD
+						        AND A.ACNO = B.ACNO
+						        AND A.TDT = B.TDT
+						        AND A.TRNF_SEQ = B.TRNF_SEQ 
+						       LEFT OUTER JOIN AC_BANK_NO D
+						        ON REPLACE(A.ACNO, '-', '') = REPLACE(CASE WHEN D.NEW_ACNT_NO IS NULL OR D.NEW_ACNT_NO = '' THEN D.ACNT_NO
+						                                                   ELSE D.NEW_ACNT_NO END, '-', '')
+						 WHERE A.DEPS_AMT > 0
+						   AND A.TRNS_STCD = '01' /* 01 - 준비상태 */  
+						   AND (   ( D.ACNT_DIV = '10' AND ( B.DEPT_CD = #deptCd#  OR D.MGT_ORG_ID = #deptCd# ) )
+				                OR ( D.ACNT_DIV = '20' AND ( B.DEPT_CD = #deptCd# ) ) )
+					) TA
+			 WHERE ( DEPS_AMT - INC_AMT ) > 0
+			   AND ISNULL(DC_YN, 0) = 0
+			   ) AS CNT
+		  , (SELECT COUNT(1)
+	          FROM IF_APVL_ITMZ_INQ A WITH(NOLOCK)
+	          	   JOIN AC_CORP_CARD D WITH(NOLOCK)
+	          	     ON A.CDNO = D.CARD_NO
+	               LEFT OUTER JOIN ( SELECT CARD_ENPC, CDNO, APVL_DT, BIC_APVL_SEQ, SUM(AMT) AMT
+					                   FROM ( SELECT CARD_ENPC, CDNO, APVL_DT, BIC_APVL_SEQ, BUDG_AMT AS AMT
+					                            FROM AC_BILL_EVDC WITH(NOLOCK)
+					                           WHERE CARD_ENPC IS NOT NULL
+					
+					                          UNION ALL
+					
+					                          SELECT CARD_ENPC, CDNO, APVL_DT, BIC_APVL_SEQ, USE_AMT AS AMT
+					                            FROM AC_CORP_CARD_USE  WITH(NOLOCK)) TA
+					                 GROUP BY CARD_ENPC, CDNO, APVL_DT, BIC_APVL_SEQ ) C
+			          ON  A.CARD_ENPC = C.CARD_ENPC
+			          AND A.CDNO = C.CDNO 
+			          AND A.APVL_DT = C.APVL_DT 
+			          AND A.BIC_APVL_SEQ = C.BIC_APVL_SEQ             
+	         WHERE 1 = 1
+	           AND (    D.MGT_ORG_ID IN ( SELECT UP_DEPT_CD
+	                                        FROM VW_COMM_DEPT_ALL
+	                                       WHERE DEPT_CD = #deptCd#
+	                                       UNION
+	                                      SELECT #deptCd# )
+	                 OR EXISTS ( SELECT 1
+	                               FROM AC_CORP_CARD_DET B WITH(NOLOCK)
+	                              WHERE B.CARD_NO = A.CDNO
+	                                AND B.MGT_ORG_ID IN ( SELECT UP_DEPT_CD
+					                                        FROM VW_COMM_DEPT_ALL
+					                                       WHERE DEPT_CD = #deptCd#
+					                                       UNION
+					                                      SELECT #deptCd# )
+	                                AND A.APVL_DT BETWEEN B.USE_FR_DT AND CASE WHEN B.USE_TO_DT IS NULL OR B.USE_TO_DT = '' THEN '99991231' ELSE B.USE_TO_DT END)
+	                 )
+	           AND A.APVL_AMT_DOM > ISNULL(C.AMT,0)
+	           AND A.APRNO IN ( SELECT APRNO
+	                              FROM IF_APVL_ITMZ_INQ WITH(NOLOCK)
+	                             GROUP BY APRNO
+	                             HAVING SUM(APVL_AMT_DOM) > 0 )
+		     ) AS CARD_CNT
+    </select>
+    
+    <select id="ac01DAO.selectNoIncAcntNoList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac01DAO.selectNoIncAcntNoList - 미정산 입금내역조회 */
+		SELECT '' AS ROW_STATUS
+		     , '0' AS CHK
+		     , BNKCD /* 은행코드 */
+		     , ACNO /* 계좌번호 */
+		     , TDT /* 거래일자 */
+		     , TRNF_SEQ /* 거래일련번호 */
+		     , TRNS_HR /* 거래시간 */
+		     , TDT_TRNS_HR /* 거래일시 */
+		     , TRNS_STCD /* 거래상태코드 */
+		     , BNK_NM /* 은행명 */
+		     , DEPS_AMT /* 입금액 */
+		     , EPCO_NM /* 예금주 */
+		     , TRNS_CNTN
+		     , INC_AMT
+		     , DEPS_AMT - INC_AMT AS JAN_AMT
+		     , ( SELECT ACNT_UNT_NM
+		           FROM BG_UNT
+		          WHERE ACNT_UNT = TA.ACNT_UNT  ) ACNT_UNT_NM
+		     , ACNT_ALIAS
+		     , ACNT_KND_NM
+		FROM (
+				SELECT A.BNKCD /* 은행코드 */
+				     , A.ACNO /* 계좌번호 */
+				     , A.TDT /* 거래일자 */
+				     , A.TRNF_SEQ /* 거래일련번호 */
+				     , A.TRNS_HR /* 거래시간 */
+				     , SUBSTRING(A.TDT,1,4) + '.' + SUBSTRING(A.TDT,5,2) + '.' + SUBSTRING(A.TDT,7,2) + ' ' + SUBSTRING(A.TRNS_HR,1,2) + ':' + SUBSTRING(A.TRNS_HR,3,2) + ':' + SUBSTRING(A.TRNS_HR,3,2) AS TDT_TRNS_HR /* 거래일시 */
+				     , A.TRNS_STCD /* 거래상태코드 */
+				     , A.BNK_NM /* 은행명 */
+				     , A.DEPS_AMT /* 입금액 */
+				     , A.EPCO_NM /* 예금주 */
+				     , CASE WHEN A.TRNS_CNTN IS NULL OR A.TRNS_CNTN = '' THEN CASE WHEN A.SYNP = '이자' THEN '이자' ELSE '' END
+				            ELSE A.TRNS_CNTN END AS TRNS_CNTN 
+				     , ISNULL(( SELECT SUM(ISNULL(RCPT_AMT,0))
+				           FROM AC_RCPT_DESC ARD
+				          WHERE ARD.BNKCD = A.BNKCD
+				            AND ARD.ACNO = A.ACNO
+				            AND ARD.TDT = A.TDT
+				            AND ARD.TRNF_SEQ = A.TRNF_SEQ ),0) AS INC_AMT
+				     , D.ACNT_UNT
+				     , B.DC_YN
+				     , D.ACNT_ALIAS
+				     , dbo.F_COM_CODE_NM('AC007', D.ACNT_KND, '') AS ACNT_KND_NM
+				  FROM IF_TRNS_ITMZ_INQ_WO A  WITH(NOLOCK) /* 거래내역조회(은행)-전체	*/
+				       LEFT OUTER JOIN AC_TRNS_ITMZ B WITH(NOLOCK)
+				        ON A.BNKCD = B.BNKCD
+				        AND A.ACNO = B.ACNO
+				        AND A.TDT = B.TDT
+				        AND A.TRNF_SEQ = B.TRNF_SEQ
+				       LEFT OUTER JOIN AC_BANK_NO D
+				        ON REPLACE(A.ACNO, '-', '') = REPLACE(CASE WHEN D.NEW_ACNT_NO IS NULL OR D.NEW_ACNT_NO = '' THEN D.ACNT_NO
+				                                                   ELSE D.NEW_ACNT_NO END, '-', '')
+				 WHERE A.DEPS_AMT > 0
+				   AND A.TRNS_STCD = '01' /* 01 - 준비상태 */  
+				   AND (   ( D.ACNT_DIV = '10' AND ( B.DEPT_CD = #deptCd#  OR D.MGT_ORG_ID = #deptCd# ) )
+				        OR ( D.ACNT_DIV = '20' AND ( B.DEPT_CD = #deptCd# ) ) )
+			) TA
+	 WHERE ( DEPS_AMT - INC_AMT ) > 0
+	   AND ISNULL(DC_YN, 0) = 0
+	 ORDER BY TDT DESC, TRNF_SEQ DESC, ACNO
+    </select>
+    
+    <select id="ac01DAO.selectNoBillCardList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac01DAO.selectNoBillCardList - 미정산 카드사용내역조회 */
+		SELECT A.CARD_ENPC                    /* 카드업체코드 */
+             , A.CDNO                         /* 카드번호 */
+             , A.APVL_DT                      /* 승인일자 */
+             , A.BIC_APVL_SEQ                 /* BIC승인일련번호 */
+             , A.APVL_HR                      /* 승인시간 */
+             , A.TRNS_STCD                    /* 거래상태코드 */
+             , A.BZNO                         /* 사업자등록번호 */
+             , A.EPCO_NM                      /* 기업명 */
+             , A.CARD_ENPNM                   /* 카드업체명 */
+             , A.CARD_AN                      /* 카드별칭 */
+             , A.APRNO                        /* 승인번호 */
+             , A.CAN_YN                       /* 취소여부 */
+             , A.CANDT                        /* 취소일자 */
+             , A.ISTM_MM                      /* 할부개월 */
+             , A.SALE_TYPE                    /* 매출유형 */
+             , A.APVL_AMT_DOM                 /* 승인금액(국내) */
+             , ISNULL(C.AMT,0) AS CALC_AMT          /* 정산금액 */
+             , A.APVL_AMT_DOM - ISNULL(C.AMT,0) AS CALC_REMAIN_AMT /*정산잔액 */
+             , A.TRNS_AMT_WC                  /* 거래금액(원화) */
+             , A.STXAT                        /* 부가세 */
+             , A.SVFE                         /* 봉사료 */
+             , A.CURCD                        /* 통화코드 */
+             , A.APVL_AMT_OVRS                /* 승인금액(해외) */
+             , A.TRNS_DVCD                    /* 거래구분코드 */
+             , A.TRNS_DVNM                    /* 거래구분명 */
+             , A.MC_NM                        /* 가맹점명 */
+          FROM IF_APVL_ITMZ_INQ A WITH(NOLOCK)
+          	   JOIN AC_CORP_CARD D WITH(NOLOCK)
+          	     ON A.CDNO = D.CARD_NO
+               LEFT OUTER JOIN ( SELECT CARD_ENPC, CDNO, APVL_DT, BIC_APVL_SEQ, SUM(AMT) AMT
+				                   FROM ( SELECT CARD_ENPC, CDNO, APVL_DT, BIC_APVL_SEQ, BUDG_AMT AS AMT
+				                            FROM AC_BILL_EVDC WITH(NOLOCK)
+				                           WHERE CARD_ENPC IS NOT NULL
+				
+				                          UNION ALL
+				
+				                          SELECT CARD_ENPC, CDNO, APVL_DT, BIC_APVL_SEQ, USE_AMT AS AMT
+				                            FROM AC_CORP_CARD_USE  WITH(NOLOCK)) TA
+				                 GROUP BY CARD_ENPC, CDNO, APVL_DT, BIC_APVL_SEQ ) C
+		          ON  A.CARD_ENPC = C.CARD_ENPC
+		          AND A.CDNO = C.CDNO 
+		          AND A.APVL_DT = C.APVL_DT 
+		          AND A.BIC_APVL_SEQ = C.BIC_APVL_SEQ             
+         WHERE 1 = 1
+           AND (    D.MGT_ORG_ID IN ( SELECT UP_DEPT_CD
+                                        FROM VW_COMM_DEPT_ALL
+                                       WHERE DEPT_CD = #deptCd#
+                                       UNION
+                                      SELECT #deptCd# )
+                 OR EXISTS ( SELECT 1
+                               FROM AC_CORP_CARD_DET B WITH(NOLOCK)
+                              WHERE B.CARD_NO = A.CDNO
+                                AND B.MGT_ORG_ID IN ( SELECT UP_DEPT_CD
+				                                        FROM VW_COMM_DEPT_ALL
+				                                       WHERE DEPT_CD = #deptCd#
+				                                       UNION
+				                                      SELECT #deptCd# )
+                                AND A.APVL_DT BETWEEN B.USE_FR_DT AND CASE WHEN B.USE_TO_DT IS NULL OR B.USE_TO_DT = '' THEN '99991231' ELSE B.USE_TO_DT END)
+                 )
+           AND A.APVL_AMT_DOM > ISNULL(C.AMT,0)
+           AND A.APRNO IN ( SELECT APRNO
+                              FROM IF_APVL_ITMZ_INQ WITH(NOLOCK)
+                             GROUP BY APRNO
+                             HAVING SUM(APVL_AMT_DOM) > 0 )
+    </select>
+    
+    <select id="ac01DAO.selectIncAcntNoList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac01DAO.selectIncAcntNoList - 입금내역조회(admi01050.xfdl) */
+		SELECT '' AS ROW_STATUS
+		     , '0' AS CHK
+		     , BNKCD /* 은행코드 */
+		     , ACNO /* 계좌번호 */
+		     , TDT /* 거래일자 */
+		     , TRNF_SEQ /* 거래일련번호 */
+		     , TRNS_HR /* 거래시간 */
+		     , TDT_TRNS_HR /* 거래일시 */
+		     , TRNS_STCD /* 거래상태코드 */
+		     , BNK_NM /* 은행명 */
+		     , DEPS_AMT /* 입금액 */
+		     , USER_MEMO /* 사용자메모 */
+		     , EPCO_NM /* 예금주 */
+		     , DEPT_CD
+		     , DEPT_NM_KOR
+		     , TRNS_CNTN
+		     , INC_AMT
+		     , DEPS_AMT - INC_AMT AS JAN_AMT
+		     , ( SELECT ACNT_UNT_NM
+		           FROM BG_UNT
+		          WHERE ACNT_UNT = TA.ACNT_UNT
+		           ) AS ACNT_UNT_NM
+		     , MGT_ORG_ID
+		     , ( SELECT DEPT_NM_KOR
+		           FROM VW_COMM_DEPT_ALL
+		          WHERE DEPT_CD = MGT_ORG_ID 
+		       ) AS MGT_ORG_NM
+		     , DC_YN
+		     , BIGO
+		FROM (
+				SELECT A.BNKCD /* 은행코드 */
+				     , A.ACNO /* 계좌번호 */
+				     , A.TDT /* 거래일자 */
+				     , A.TRNF_SEQ /* 거래일련번호 */
+				     , A.TRNS_HR /* 거래시간 */
+				     , SUBSTRING(A.TDT,1,4) + '.' + SUBSTRING(A.TDT,5,2) + '.' + SUBSTRING(A.TDT,7,2) + ' ' + SUBSTRING(A.TRNS_HR,1,2) + ':' + SUBSTRING(A.TRNS_HR,3,2) + ':' + SUBSTRING(A.TRNS_HR,3,2) AS TDT_TRNS_HR /* 거래일시 */
+				     , A.TRNS_STCD /* 거래상태코드 */
+				     , A.BNK_NM /* 은행명 */
+				     , A.DEPS_AMT /* 입금액 */
+				     , A.USER_MEMO /* 사용자메모 */
+				     , A.EPCO_NM /* 예금주 */
+				     , B.DEPT_CD
+				     , C.DEPT_NM_KOR
+				     , CASE WHEN A.TRNS_CNTN IS NULL OR A.TRNS_CNTN = '' THEN CASE WHEN A.SYNP = '이자' THEN '이자' ELSE '' END
+				            ELSE A.TRNS_CNTN END AS TRNS_CNTN 
+				     , ISNULL(( SELECT SUM(ISNULL(RCPT_AMT,0))
+				           FROM AC_RCPT_DESC ARD
+				          WHERE ARD.BNKCD = A.BNKCD
+				            AND ARD.ACNO = A.ACNO
+				            AND ARD.TDT = A.TDT
+				            AND ARD.TRNF_SEQ = A.TRNF_SEQ ),0) AS INC_AMT
+				     , D.ACNT_UNT
+				     , D.MGT_ORG_ID
+				     , B.DC_YN
+				     , B.BIGO
+				  FROM IF_TRNS_ITMZ_INQ_WO A  WITH(NOLOCK) /* 거래내역조회(은행)-전체	*/
+				       LEFT OUTER JOIN AC_TRNS_ITMZ B WITH(NOLOCK)
+				        ON A.BNKCD = B.BNKCD
+				        AND A.ACNO = B.ACNO
+				        AND A.TDT = B.TDT
+				        AND A.TRNF_SEQ = B.TRNF_SEQ 
+				       LEFT OUTER JOIN VW_COMM_DEPT_ALL C WITH(NOLOCK)
+				        ON B.DEPT_CD = C.DEPT_CD
+				       LEFT OUTER JOIN AC_BANK_NO D
+				        ON REPLACE(A.ACNO, '-', '') = REPLACE(CASE WHEN D.NEW_ACNT_NO IS NULL OR D.NEW_ACNT_NO = '' THEN D.ACNT_NO
+				                                                   ELSE D.NEW_ACNT_NO END, '-', '')
+				 WHERE A.DEPS_AMT > 0
+				   AND A.TRNS_STCD = '01' /* 01 - 준비상태 */  
+				 <isNotEmpty property="tdtFr">
+				   AND A.TDT >= #tdtFr# /* 입금일자 */
+				 </isNotEmpty>
+				 <isNotEmpty property="tdtTo">
+				   AND #tdtTo# >= A.TDT /* 입금일자 */
+				 </isNotEmpty>
+				 <isNotEmpty property="acno">		 
+				   AND REPLACE(A.ACNO, '-', '') LIKE '%' + REPLACE(#acno#, '-', '') + '%' /* 계좌번호 */
+				 </isNotEmpty>
+				 <isNotEmpty property="trnsCntn">
+				   AND CASE WHEN A.TRNS_CNTN IS NULL OR A.TRNS_CNTN = '' THEN CASE WHEN A.SYNP = '이자' THEN '이자' ELSE '' END
+				            ELSE A.TRNS_CNTN END AS TRNS_CNTN  LIKE '%' + #userMemo# + '%' /* 입금메시지 */
+				 </isNotEmpty>
+				 <isNotEmpty property="acntKnd">
+				   AND D.ACNT_KND = #acntKnd#
+				 </isNotEmpty>
+				 <isNotEmpty property="acntDiv">
+				   AND D.ACNT_DIV = #acntDiv#
+				 </isNotEmpty>
+			) TA
+	 WHERE 1=1
+	 	<isNotEqual property="includeZero" compareValue="1">
+	 		AND  ( DEPS_AMT - INC_AMT ) > 0 
+	 		AND  ISNULL(DC_YN, 0) = 0
+	 	</isNotEqual>
+	ORDER BY TDT DESC, TRNF_SEQ DESC, ACNO
+    </select>
+    
+    <update id="ac01DAO.updateIncAcntNoList" parameterClass="java.util.HashMap">
+		 MERGE INTO AC_TRNS_ITMZ A
+	          USING (SELECT #bnkcd# AS BNKCD
+	                      , #acno# AS ACNO
+	                      , #tdt# AS TDT
+	                      , #trnfSeq# AS TRNF_SEQ) B
+	             ON  A.BNKCD = B.BNKCD
+	             AND A.ACNO = B.ACNO
+	             AND A.TDT = B.TDT
+	             AND A.TRNF_SEQ = B.TRNF_SEQ
+	           WHEN MATCHED THEN
+		     UPDATE 
+		        SET DEPT_CD = #deptCd#
+		          , DC_YN = #dcYn#
+		          , BIGO = #bigo#
+			   WHEN NOT MATCHED THEN
+			 INSERT ( BNKCD
+			        , ACNO
+			        , TDT
+			        , TRNF_SEQ
+			        , DEPT_CD
+			        , DC_YN
+			        , BIGO
+			        )
+		            VALUES
+		            (#bnkcd#
+		            , #acno#
+		            , #tdt#
+		            , #trnfSeq#
+		            , #deptCd#
+		            , #dcYn#
+		            , #bigo#
+		            );
+    </update>
+    
+    
+	<select id="ac01DAO.selectAc01100MainList"  parameterClass="java.util.HashMap" resultClass="egovMap">		
+		SELECT '0' AS CHK
+		     , '' AS ROW_STATUS
+			 , A.DEPT_CD
+			 , C.DEPT_CD AS UP_DEPT_CD
+			 , B.DEPT_NM_KOR AS DEPT_NM
+			 , C.DEPT_NM_KOR AS UP_DEPT_NM
+		  FROM AC_DC_DEPT A
+		   LEFT OUTER JOIN VW_COMM_DEPT_ALL B
+		    ON A.DEPT_CD = B.DEPT_CD
+		   LEFT OUTER JOIN VW_COMM_DEPT_ALL C
+		    ON B.UP_DEPT_CD = C.DEPT_CD
+	  ORDER BY C.DEPT_CD, A.DEPT_CD
+    </select>
+	
+	
+	<insert id="ac01DAO.insertAc01100MainList" parameterClass="java.util.HashMap">
+		INSERT INTO AC_DC_DEPT
+			      (
+			        DEPT_CD
+				  ) 
+			VALUES 
+				  (
+				    #deptCd#
+				  )
+	</insert>
+	
+	<update id="ac01DAO.updateAc01100MainList" parameterClass="java.util.HashMap">
+		
+		UPDATE AC_DC_DEPT
+		   SET DEPT_CD = #deptCd# 
+		 WHERE DEPT_CD = #deptCd# 
+		   
+	</update>
+	
+	<delete id="ac01DAO.deleteAc01100MainList" parameterClass="java.util.HashMap">
+		
+		DELETE 
+		  FROM AC_DC_DEPT 
+		 WHERE DEPT_CD = #deptCd# 
+	
+	</delete>
+</sqlMap>

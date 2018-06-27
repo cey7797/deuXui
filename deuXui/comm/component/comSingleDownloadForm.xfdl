@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="comSingleDownloadForm" classname="comSingleUpload" left="0" top="0" width="810" height="150" titletext="파일다운로드(폼)" onload="comSingleDownloadForm_onload" dragscrolltype="none">
+    <Layouts>
+      <Layout>
+        <WebBrowser id="WebBrowser00" left="0" top="0" right="0" bottom="3" taborder="0" style="border:1 solid #808080ff ;"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_rtnVal" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="originalName" type="STRING" size="256"/>
+          <Column id="uploadName" type="STRING" size="256"/>
+          <Column id="guid" type="STRING" size="256"/>
+          <Column id="size" type="STRING" size="256"/>
+          <Column id="uploadPath" type="STRING" size="256"/>
+          <Column id="logicalPath" type="STRING" size="256"/>
+          <Column id="fileExtension" type="STRING" size="256"/>
+          <Column id="localPath" type="STRING" size="256"/>
+          <Column id="mark" type="STRING" size="256"/>
+          <Column id="responseCustomValue" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_fileNo" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="fileMasterNo" type="BIGDECIMAL" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : comSingleDownloadForm.xfdl
+* 화면설명     : 싱글다운로드 Form
+* 작성자       : 라병수
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.06.04     라병수         최초생성
+******************************************************************************/
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+var fileMstNo = this.gfn_nvl(this.parent.fileMstNo, "0");
+
+this.comSingleDownloadForm_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	
+	this.WebBrowser00.set_url(application.gv_svrUrl+"dext5Upload/ust_download.jsp?fileMstNo="+fileMstNo);
+	//this.WebBrowser00.set_url("http://localhost/com/dext5Upload/ust_download.jsp?fileMstNo="+fileMstNo);
+}
+
+this.fn_reload = function(fileMstNo)
+{
+	this.WebBrowser00.set_url(application.gv_svrUrl+"dext5Upload/ust_download.jsp?fileMstNo="+fileMstNo);
+}]]></Script>
+  </Form>
+</FDL>

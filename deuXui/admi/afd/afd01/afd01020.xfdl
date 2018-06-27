@@ -1,0 +1,427 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd01020" classname="aac01001_001" left="0" top="0" width="1038" height="855" titletext="회원구분정보관리" onload="afd01020_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="12" left="-1" top="0" right="15" height="43" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static00" taborder="46" text="회원등급명" cssclass="search" left="15" top="10" width="60" height="22"/>
+              <Static id="Static03" taborder="47" text="w8" visible="false" left="77" top="10" width="8" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static08" taborder="93" text="금액" cssclass="search" left="205" top="10" width="25" height="22"/>
+              <Static id="Static11" taborder="95" text="w&#13;20" visible="false" left="185" top="10" width="20" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static12" taborder="96" text="w8" visible="false" left="231" top="10" width="8" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Edit id="edt_sMemberDivNm" taborder="0" left="85" top="10" width="100" height="22" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static01" taborder="103" text="~" left="375" top="10" right="62.4%" height="22"/>
+              <MaskEdit id="msk_sAmtFrom" taborder="1" mask="#,###" maskchar=" " left="239" top="10" width="130" height="22"/>
+              <MaskEdit id="msk_sAmtTo" taborder="2" mask="#,###" maskchar=" " left="389" top="10" width="130" height="22"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static05" taborder="5" text="h10" visible="false" left="0" top="32" width="1023" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static03" taborder="6" text="h10" visible="false" left="0" top="0" width="1023" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static14" taborder="10" text="h15" visible="false" left="0" top="43" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static00" taborder="13" text="w&#13;&#10;15" visible="false" left="0" top="10" width="15" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static76" taborder="14" text="회원등급 목록" cssclass="page_stitle" left="0" top="58" width="324" height="20"/>
+        <Static id="Static04" taborder="7" text="w&#13;&#10;15" visible="false" top="-1" right="0" width="15" height="856" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static50" taborder="373" text="회원등급 상세" cssclass="page_stitle" left="1" top="690" width="324" height="20"/>
+        <Static id="Static51" taborder="374" text="h15" visible="false" left="-1" top="355" width="866" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static52" taborder="489" text="h5" visible="false" left="2" top="710" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static49" taborder="494" text="w&#13;&#10;5" visible="false" left="652" top="712" width="5" height="57" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static47" taborder="496" text="w&#13;&#10;5" visible="false" left="537" top="712" width="5" height="57" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static02" taborder="623" cssclass="detail_bg" left="0" top="872" height="88" right="15" visible="false"/>
+        <Static id="Static08" taborder="626" cssclass="detail_bg" left="0" top="718" width="1023" height="30"/>
+        <Button id="btn_excel" taborder="637" text="엑셀" cssclass="btn_WF_Common" top="58" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="Excel" userBtnAuth="D" onclick="btn_excel_onclick"/>
+        <Button id="btn_search" taborder="639" text="조회" cssclass="search" top="58" right="263" width="60" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R" onclick="btn_search_onclick"/>
+        <Button id="btn_new" taborder="640" text="추가" cssclass="new" top="58" right="201" width="60" height="22" tooltiptype="hover" tooltiptext="추가" userBtnAuth="S" onclick="btn_new_onclick"/>
+        <Button id="btn_del" taborder="641" text="삭제" cssclass="del" top="58" right="139" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" userBtnAuth="S" onclick="btn_del_onclick"/>
+        <Button id="btn_save" taborder="642" text="저장" cssclass="save" top="58" right="77" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S" onclick="btn_save_onclick"/>
+        <Static id="Static26" taborder="643" cssclass="detail_bg" left="0" top="715" height="30" right="15"/>
+        <Static id="Static27" taborder="644" text="회원등급코드" cssclass="detail_title" left="0" top="715" width="110" height="30" style="align:right middle;"/>
+        <Static id="Static30" taborder="645" text="회원등급명" cssclass="detail_title_req" left="342" top="715" width="110" height="30" style="background:#f7f7f7ff;align:right middle;"/>
+        <Static id="Static31" taborder="646" cssclass="detail_bg" left="0" top="744" height="30" right="15"/>
+        <Edit id="edt_memberDivNm" taborder="1" cssclass="essential" left="459" top="719" width="222" height="22" style="border:1 solid #ccccccff ;"/>
+        <Static id="Static28" taborder="654" text="시작금액" cssclass="detail_title" left="0" top="744" width="110" height="30" style="align:right middle;"/>
+        <Static id="Static37" taborder="656" text="종료금액" cssclass="detail_title_req" left="342" top="744" width="110" height="30" style="background:#f7f7f7ff;align:right middle;"/>
+        <Static id="Static38" taborder="657" text="정렬순서" cssclass="detail_title" left="686" top="744" width="110" height="30" style="align:right middle;"/>
+        <Edit id="edt_sortSeq" taborder="4" cssclass="essential" left="801" top="748" width="222" height="22" style="border:1 solid #ccccccff ;"/>
+        <TextArea id="txt" taborder="674" left="115" top="876" width="908" height="80" visible="false"/>
+        <Static id="Static06" taborder="675" text="상세예우정보" cssclass="detail_title" left="0" top="873" width="110" height="87" style="align:right middle;" visible="false"/>
+        <Static id="Static01" taborder="676" text="h10" visible="false" left="866" top="369" width="157" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Grid id="grd_membas" taborder="129" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="col" left="0" top="85" height="270" right="14" binddataset="ds_membas">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="30" band="left"/>
+                <Column size="24" band="left"/>
+                <Column size="40" band="left"/>
+                <Column size="110"/>
+                <Column size="110"/>
+                <Column size="110"/>
+                <Column size="110"/>
+                <Column size="74"/>
+              </Columns>
+              <Rows>
+                <Row size="26" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox"/>
+                <Cell col="2" text="순번"/>
+                <Cell col="3" text="등급코드"/>
+                <Cell col="4" text="등급명"/>
+                <Cell col="5" text="시작금액"/>
+                <Cell col="6" text="종료금액"/>
+                <Cell col="7" text="정렬순서"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="image" text="bind:rowStatus" expr="expr:rowStatus==2?&quot;URL('theme://images/ico_i.png')&quot;:rowStatus==4?&quot;URL('theme://images/ico_u.png')&quot;:rowStatus==8?&quot;URL('theme://images/ico_d.png')&quot;:&quot;&quot;"/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox" text="bind:chk"/>
+                <Cell col="2" text="expr:currow+1"/>
+                <Cell col="3" text="bind:memberDivCd"/>
+                <Cell col="4" displaytype="normal" text="bind:memberDivNm"/>
+                <Cell col="5" displaytype="number" style="align:right;" text="bind:amtFrom" mask="#,###"/>
+                <Cell col="6" style="align:right;" text="bind:amtTo" mask="#,###"/>
+                <Cell col="7" text="bind:sortSeq"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Grid id="grd_comAfd02" taborder="671" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="col" top="411" right="14" height="264" left="0" binddataset="ds_eventHlrtCd">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="24" band="left"/>
+                <Column size="26" band="left"/>
+                <Column size="40" band="left"/>
+                <Column size="97"/>
+                <Column size="835"/>
+              </Columns>
+              <Rows>
+                <Row size="26" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox"/>
+                <Cell col="2" text="순번"/>
+                <Cell col="3" text="코드"/>
+                <Cell col="4" text="예우명"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="image" text="bind:rowStatus" expr="expr:rowStatus==2?&quot;URL('theme://images/icon/status_n.png')&quot;:rowStatus==4?&quot;URL('theme://images/icon/status_u.png')&quot;:rowStatus==8?&quot;URL('theme://images/icon/status_d.png')&quot;:&quot;&quot;"/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox" text="bind:chk"/>
+                <Cell col="2" text="expr:currow+1"/>
+                <Cell col="3" text="bind:eventHlrtCd"/>
+                <Cell col="4" style="align:left middle;" text="bind:eventHlrtNm"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="sta_count00" taborder="677" text="Count &lt;b v='true'&gt;999&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" top="355" right="1.45%" width="60" height="20" style="align:right middle;"/>
+        <MaskEdit id="msk_amtFrom" taborder="2" mask="#,###" maskchar=" " left="115" top="748" width="222" height="22"/>
+        <Edit id="edt_memberDivCd" taborder="0" cssclass="essential" left="115" top="719" width="222" height="22" displaynulltext="(자동생성)" readonly="true" enable="false"/>
+        <MaskEdit id="msk_amtTo" taborder="3" mask="#,###" maskchar=" " left="459" top="748" width="222" height="22"/>
+        <Static id="Static09" taborder="681" text="h5" visible="false" left="0" top="80" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static07" taborder="682" text="예우목록" cssclass="page_stitle" left="0%" top="385" width="118" height="20"/>
+        <Static id="Static10" taborder="683" text="h15" visible="false" left="7" top="675" width="866" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_newSub" taborder="684" text="추가" cssclass="new" top="384" right="139" width="60" height="22" tooltiptype="hover" tooltiptext="추가" userBtnAuth="S" onclick="btn_newSub_onclick"/>
+        <Button id="btn_delSub" taborder="685" text="삭제" cssclass="del" top="384" right="77" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" userBtnAuth="S" onclick="btn_delSub_onclick"/>
+        <Button id="btn_saveSub" taborder="686" text="저장" cssclass="save" top="384" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S" onclick="btn_saveSub_onclick"/>
+        <Static id="Static11" taborder="687" text="h10" visible="false" left="866" top="406" width="157" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_count01" taborder="688" text="Count &lt;b v='true'&gt;999&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" top="680" right="15" width="60" height="20" style="align:right middle;"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_membas" onrowposchanged="ds_membas_onrowposchanged">
+        <ColumnInfo>
+          <Column id="chk" type="string" size="32"/>
+          <Column id="rowStatus" type="string" size="32"/>
+          <Column id="memberDivCd" type="string" size="32"/>
+          <Column id="memberDivNm" type="string" size="32"/>
+          <Column id="amtFrom" type="bigdecimal" size="16"/>
+          <Column id="amtTo" type="bigdecimal" size="16"/>
+          <Column id="sortSeq" type="bigdecimal" size="16"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_eventHlrtCd">
+        <ColumnInfo>
+          <Column id="chk" type="string" size="32"/>
+          <Column id="rowStatus" type="string" size="32"/>
+          <Column id="memberDivCd" type="string" size="32"/>
+          <Column id="eventHlrtCd" type="string" size="32"/>
+          <Column id="eventHlrtNm" type="string" size="32"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_dummy"/>
+    </Objects>
+    <Bind>
+      <BindItem id="item0" compid="edt_memberDivCd" propid="value" datasetid="ds_membas" columnid="memberDivCd"/>
+      <BindItem id="item1" compid="edt_memberDivNm" propid="value" datasetid="ds_membas" columnid="memberDivNm"/>
+      <BindItem id="item4" compid="edt_sortSeq" propid="value" datasetid="ds_membas" columnid="sortSeq"/>
+      <BindItem id="item2" compid="msk_amtFrom" propid="value" datasetid="ds_membas" columnid="amtFrom"/>
+      <BindItem id="item3" compid="msk_amtTo" propid="value" datasetid="ds_membas" columnid="amtTo"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::frameUtils.xjs";
+include "commJs::lib_String.xjs";
+
+this.afd01020_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+ 	var essGrd = new Array();
+		essGrd[0] = this.grd_membas;
+		essGrd[1] = this.grd_comAfd02;	
+ 	
+ 	this.gfn_essDataset(essGrd);//그리드헤더처리
+	this.gfn_bindCmmnFunction();
+	
+	this.gfn_getDatasetCount(this.ds_membas, this.sta_count00);
+	this.gfn_getDatasetCount(this.ds_eventHlrtCd, this.sta_count01);
+}
+
+/******************************************************************************
+* 함 수 명 	: btn_search_onclick
+* 함수설명 	: 조회 버튼
+*****************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_retrieveMembas();
+}
+
+this.fn_retrieveMembas = function() 
+{
+	var strArg  = "memberDivNm=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_sMemberDivNm.value, ""));
+	    strArg += " amtFrom=" +  nexacro.wrapQuote(this.gfn_nvl(this.div_search.msk_sAmtFrom.value, ""));
+	    strArg += " amtTo=" +  nexacro.wrapQuote(this.gfn_nvl(this.div_search.msk_sAmtTo.value, ""));
+	    
+	this.gfn_transaction("SEARCH"
+						 ,"txAdmUrl::com/admi/afd/afd01/retrieveMembas.do"
+						 ,""
+						 ,"ds_membas=resultList"
+						 ,strArg
+						 ,"");
+}
+
+/******************************************************************************
+* 함 수 명 	: btn_new_onclick
+* 함수설명 	: 추가 버튼
+*****************************************************************************/
+this.btn_new_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_addRow(this.ds_membas);
+	
+}
+
+/******************************************************************************
+* 함 수 명 	: btn_del_onclick
+* 함수설명 	: 삭제 버튼
+*****************************************************************************/
+this.btn_del_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_deleteRow(this.ds_membas, "this.fn_saveMembas()");
+}
+
+this.btn_save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_saveMembas();
+}
+
+this.fn_preSave = function() 
+{
+	if(!this.gfn_isUpdate(this.ds_membas)){
+		this.gfn_message("A", "변경된 데이터가 없습니다.");
+		return false;
+	}
+
+	/*
+	 * 필수값 입력 체크
+	 */
+	var colNm = "memberDivNm$amtFrom$amtTo";
+	var korNm = "회원등급명$시작금액$종료금액";
+	var cmpNm = "$";
+	var result = this.gfn_chkEssItem("ds_membas", colNm, korNm, cmpNm);
+	if (result[0] != "success") {
+		this.gfn_message("A", result[0]);
+		this.ds_membas.set_rowposition(result[1]);
+		if(result[3] != ""){
+		
+			this.objects[result[3]].set_focus();
+			
+		}
+		return false;	
+	}
+	
+	return true;
+	
+}
+
+this.fn_saveMembas = function() 
+{
+	this.gfn_transaction("SAVE"
+						 ,"txAdmUrl::com/admi/afd/afd01/saveMembas.do"
+						 ,"resultList=ds_membas:u"
+						 ,""
+						 ,""
+						 ,"");
+}
+
+this.ds_membas_onrowposchanged = function(obj:Dataset, e:nexacro.DSRowPosChangeEventInfo)
+{
+		this.fn_retrieveHonortreat();
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_retrieveHonortreat
+* 함수설명 	: 회원구분별 상세예우 조회 함수
+*****************************************************************************/
+this.fn_retrieveHonortreat = function() 
+{
+	var strArg  = "memberDivCd=" + nexacro.wrapQuote(this.gfn_nvl(this.ds_membas.getColumn(this.ds_membas.rowposition, "memberDivCd"), ""));
+	this.gfn_transaction("SEARCH_HLRT"
+						 ,"txAdmUrl::com/admi/afd/afd01/retrieveHonortreat.do"
+						 ,""
+						 ,"ds_eventHlrtCd=resultList"
+						 ,strArg
+						 ,"");
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_delSub_onclick
+* 함수설명 	: 예우목록 삭제버튼 클릭 이벤트
+*****************************************************************************/
+this.btn_delSub_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_deleteRow(this.ds_eventHlrtCd, "this.fn_saveHonortreat()");
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_saveSub_onclick
+* 함수설명 	: 예우목록 저장버튼 클릭 이벤트
+*****************************************************************************/
+this.btn_saveSub_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_saveHonortreat();
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_saveHonortreat
+* 함수설명 	: 예우목록 저장 함수
+*****************************************************************************/
+this.fn_saveHonortreat = function() 
+{
+	this.gfn_transaction("SAVE_SUB"
+						 ,"txAdmUrl::com/admi/afd/afd01/saveHonortreat.do"
+						 ,"resultList=ds_eventHlrtCd:u"
+						 ,""
+						 ,""
+						 ,"");
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_newSub_onclick
+* 함수설명 	: 예우목록 추가버튼 클릭 이벤트
+*****************************************************************************/
+this.btn_newSub_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	//신규행이면
+	if(this.ds_membas.getRowType(this.ds_membas.rowposition) == 2)
+	{
+		this.gfn_message("A", "회원등급목록에 신규행을 저장후 추가가 가능합니다.");
+		return false;
+	}
+	
+	var popupId = "afd01020_p01";
+	var popupUrl = "afd01::afd01020_p01.xfdl";
+	var popupCallback = "fn_popCallBack";
+	
+	this.gfn_popupOpen(popupId, "", popupUrl, popupCallback, this);
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_excel_onclick
+* 함수설명 	: 엑셀버튼 클릭 이벤트
+*****************************************************************************/
+this.btn_excel_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var excelGrd = new Array();
+		excelGrd[0] = this.grd_membas;	//다운로드 대상 grid
+	var excelFileNm = "회원등급목록";	// 엑셀 파일명		
+	this.gfn_excelDown(excelGrd, excelFileNm);
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_callBack
+* 함수설명 	: 트랜잭션 콜백 함수
+*****************************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg) 
+{
+	if(errCd < 0 )
+	{
+		this.gfn_message("A", errMsg);
+		return;
+	}
+	
+	if("LOAD" == trId) 
+	{
+		
+	}
+	else if("SEARCH" == trId) 
+	{
+		this.gfn_getDatasetCount(this.ds_membas, this.sta_count00);
+		
+		if(this.ds_membas.getRowCount() == 0) 
+		{	
+			for(var i = 0; i < this.ds_comAfd02.getRowCount(); i++ ) 
+			{
+				this.ds_comAfd02.setColumn(i, "chk", "");
+			}
+		}
+	}
+	else if("SEARCH_HLRT" == trId) 
+	{
+		this.gfn_getDatasetCount(this.ds_eventHlrtCd, this.sta_count01);
+	}
+	else if("SAVE" == trId) 
+	{
+		this.gfn_message("A", "정상적으로 처리되었습니다.");	
+		this.fn_retrieveMembas();
+	}
+	else if("SAVE_SUB" == trId) 
+	{
+		this.gfn_message("A", "정상적으로 처리되었습니다.");
+		this.fn_retrieveHonortreat();
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_popCallBack
+* 함수설명 	: 트랜잭션 콜백 함수
+*****************************************************************************/
+this.fn_popCallBack = function(strID, rtnVal) 
+{
+	if("close" == rtnVal) 
+	{
+		return;
+	}
+	else 
+	{	
+		this.ds_dummy.loadXML(rtnVal);
+		
+		for(var i = 0; i < this.ds_dummy.getRowCount(); i++ ) 
+		{
+			if(this.ds_eventHlrtCd.findRow("eventHlrtCd", this.ds_dummy.getColumn(i, "comCd")) == -1) 
+			{
+				this.gfn_addRow(this.ds_eventHlrtCd);
+				this.ds_eventHlrtCd.setColumn(this.ds_eventHlrtCd.rowposition, "memberDivCd", this.ds_membas.getColumn(this.ds_membas.rowposition, "memberDivCd"));
+				this.ds_eventHlrtCd.setColumn(this.ds_eventHlrtCd.rowposition, "eventHlrtCd", this.ds_dummy.getColumn(i, "comCd"));
+				this.ds_eventHlrtCd.setColumn(this.ds_eventHlrtCd.rowposition, "eventHlrtNm", this.ds_dummy.getColumn(i, "comCdNm"));
+			}
+		}
+	}
+}]]></Script>
+  </Form>
+</FDL>

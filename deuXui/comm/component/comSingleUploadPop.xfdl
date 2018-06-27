@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="comSingleUploadPop" classname="comSingleUpload" left="0" top="0" width="810" height="250" titletext="파일업로드(팝업)" oninit="comSingleUpload_oninit">
+    <Layouts>
+      <Layout>
+        <WebBrowser id="WebBrowser00" left="0" top="0" right="0" bottom="0" taborder="0" onloadcompleted="WebBrowser00_onloadcompleted" onusernotify="WebBrowser00_onusernotify"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_rtnVal" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="originalName" type="STRING" size="256"/>
+          <Column id="uploadName" type="STRING" size="256"/>
+          <Column id="guid" type="STRING" size="256"/>
+          <Column id="size" type="STRING" size="256"/>
+          <Column id="uploadPath" type="STRING" size="256"/>
+          <Column id="logicalPath" type="STRING" size="256"/>
+          <Column id="fileExtension" type="STRING" size="256"/>
+          <Column id="localPath" type="STRING" size="256"/>
+          <Column id="mark" type="STRING" size="256"/>
+          <Column id="responseCustomValue" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_fileNo" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="fileMasterNo" type="BIGDECIMAL" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="fileMasterNo">11111</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_attachFileList" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" oncolumnchanged="ds_attachFileList_oncolumnchanged">
+        <ColumnInfo>
+          <Column id="fileMasterNo" type="INT" size="256"/>
+          <Column id="fileNm" type="STRING" size="256"/>
+          <Column id="fileUrl" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : comSingleUpload.xfdl
+* 화면설명     : 싱글업로드 popup
+* 작성자       : 라병수
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.06.04     라병수         최초생성
+******************************************************************************/
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+this.fileMstNo = nexacro.toNumber(this.parent.mstNo);
+this.fileCnt   = this.parent.fileCnt;
+this.callback   = this.parent.callback;
+
+//업로드화면   조회로직 추가할것
+this.WebBrowser00_onloadcompleted = function(obj:WebBrowser, e:nexacro.WebLoadCompEventInfo)
+{	
+	var doc = this.WebBrowser00.getProperty("document");
+
+	var subId   = doc.callMethod("getElementById", "subId"); // 매개변수(파라미터)받아오는방식
+		subId.setProperty("value", "MNG");
+	
+	var menuId   = doc.callMethod("getElementById", "menuId"); // 매개변수(파라미터)받아오는방식
+		menuId.setProperty("value", "LOG");
+		
+	var progId   = doc.callMethod("getElementById", "progId"); // 매개변수(파라미터)받아오는방식
+		progId.setProperty("value", "com_03009");
+	
+	var numNo   = doc.callMethod("getElementById", "numNo"); // 매개변수(파라미터)받아오는방식
+		numNo.setProperty("value", this.fileMstNo);
+
+	var docBtn = doc.callMethod("getElementById", "btnClick"); // 데이터셋명 매개변수타입은 ""로 던지게함
+		docBtn.callMethod("click");
+}
+
+//업로드화면   저장로직 추가할것
+this.WebBrowser00_onusernotify = function(obj:WebBrowser, e:nexacro.WebTitleChangeEventInfo)
+{
+	if(e.userdata != "title" && e.userdata.indexOf(application.gv_svrUrl+"dext5Upload/ust_upload.jsp") < 0){
+		var rtnVal = new Array();
+			rtnVal = e.userdata.split("&");
+		
+		if(rtnVal[0].trim() == "reg" || rtnVal[0].trim() == "mod"){
+			var addRow = this.ds_attachFileList.addRow();
+			this.ds_attachFileList.setColumn(addRow,"fileMasterNo",rtnVal[1]);
+			this.ds_attachFileList.setColumn(addRow,"fileNm",rtnVal[2]);
+			this.ds_attachFileList.setColumn(addRow,"fileUrl",rtnVal[3]);
+			this.close(this.ds_attachFileList.saveXML());
+		}else if(rtnVal[0].trim() == "del"){
+			if(rtnVal[1] == 0){
+				var addRow = this.ds_attachFileList.addRow();
+				this.ds_attachFileList.setColumn(addRow,"fileMasterNo","");
+				this.close(this.ds_attachFileList.saveXML());
+			}else{
+				var cmd = "this.parent.parent.form." + this.callback + "(rtnVal[1])";
+				eval(cmd);
+			}
+		}else{
+			//
+			
+		}
+	}
+}
+
+
+
+this.comSingleUpload_oninit = function(obj:Form, e:nexacro.InitEventInfo)
+{
+	if(this.fileCnt == "single"){
+		this.WebBrowser00.set_url(application.gv_svrUrl+"dext5Upload/ust_upload_single.jsp");
+	}else{
+		this.WebBrowser00.set_url(application.gv_svrUrl+"dext5Upload/ust_upload.jsp");
+	}
+}]]></Script>
+  </Form>
+</FDL>

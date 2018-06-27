@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="smsSendPop" classname="com030008" left="0" top="0" width="721" height="593" titletext="SMS 전송팝업" onload="smsSendPop_onload">
+    <Layouts>
+      <Layout>
+        <Static id="Static01" taborder="46" left="0" top="518" width="244" height="24" style="border:1 solid #808080ff ;"/>
+        <Static id="Static03" taborder="48" left="0" top="471" width="244" height="25" style="border:1 solid #808080ff ;"/>
+        <Static id="Static05" taborder="47" left="0" top="495" width="244" height="24" style="border:1 solid #808080ff ;"/>
+        <Static id="Static06" taborder="20" top="32" width="234" height="435" style="background:transparent URL('theme://images/bg_SMSPhone.png');" onclick="Static06_onclick" left="0"/>
+        <Button id="btn_new" taborder="3" text="추가" cssclass="new" top="6" width="66" height="22" tooltiptype="hover" tooltiptext="추가" onclick="btn_new_onclick" left="495" userBtnAuth="T"/>
+        <Static id="Static10" taborder="5" text="w&#13;&#10;15" visible="false" top="0" right="0" width="15" height="592" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Grid id="grd_sms" taborder="6" binddataset="ds_sms" useinputpanel="false" autofittype="col" autosizingtype="none" left="248" top="31" width="459" height="489" onheadclick="grd_sms_onheadclick">
+          <Formats>
+            <Format id="default"/>
+          </Formats>
+        </Grid>
+        <Static id="sta_grdSms" taborder="7" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" left="618" top="522" height="20" style="border:0 none #808080ff ;align:right middle;" width="86"/>
+        <Static id="Static09" taborder="8" text="h5" visible="false" left="610" top="464" right="335" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static00" taborder="9" text="h5" visible="false" left="610" top="482" right="335" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static76" taborder="10" text="SMS전송목록" cssclass="page_stitle" left="248" top="8" width="204" height="20"/>
+        <Button id="btn_sms" taborder="12" text="SMS전송" cssclass="btn_WF_Common" top="6" width="74" height="22" tooltiptype="hover" tooltiptext="저장" onclick="btn_sms_onclick" left="631" userBtnAuth="T"/>
+        <Static id="Static04" taborder="16" text="발신자 전화번호" cssclass="detail_title" left="0" top="471" width="96" height="25" style="border:1 solid #808080ff ;align:right middle;"/>
+        <TextArea id="ta_smsDsc" taborder="21" left="19" top="104" width="200" height="291" imemode="hangul" wordwrap="char" maxlength="80" onkeyup="ta_smsDsc_onkeyup" style="background:white;"/>
+        <Static id="st_byteCnt" taborder="28" text="&lt;b v='true'&gt; 0 /80 bytes (SMS)&lt;/b&gt;" onclick="st_bytecnt_onclick" left="33" top="397" width="187" height="12" style="color:white;align:right middle;" cssclass="inquiry_icon" usedecorate="true"/>
+        <Button id="btn_search_close" taborder="34" text="닫기" onclick="btn_search_close_onclick" top="560" right="350" width="64" height="22" tooltiptype="hover" tooltiptext="닫기" userBtnAuth="R"/>
+        <Button id="btn_del" taborder="36" text="삭제" left="563" top="6" width="66" height="22" userBtnAuth="T" onclick="btn_del_onclick" style="bordertype:normal 0 0 ;" cssclass="del"/>
+        <Static id="Static02" taborder="39" text="예약전송여부" cssclass="detail_title" left="0" top="495" width="96" height="24" style="border:1 solid #808080ff ;align:right middle;"/>
+        <Static id="Static07" taborder="42" text="예약전송일자" cssclass="detail_title" left="0" top="518" width="96" height="24" style="border:1 solid #808080ff ;align:right middle;"/>
+        <Radio id="rdo_schedGb" taborder="44" index="0" innerdataset="@ds_schedGb" codecolumn="cd" datacolumn="nm" value="1" direction="vertical" onitemchanged="rdo_schedGb_onitemchanged" left="98" top="500" width="146" height="18"/>
+        <Calendar id="cal_send" taborder="45" dateformat="yyyy-MM-dd HH:mm" editformat="yyyy-MM-dd HH:mm" left="98" top="520" width="141" height="20" style="usetrailingday:true;viewmonthspin:true;"/>
+        <Edit id="edt_sendNo" taborder="49" left="98" top="473" width="141" height="20"/>
+      </Layout>
+    </Layouts>
+    <Bind/>
+    <Objects>
+      <Dataset id="ds_sms" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" onrowposchanged="ds_sms_onrowposchanged"/>
+      <Dataset id="ds_schedGb" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="cd" type="STRING" size="256"/>
+          <Column id="nm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="cd">1</Col>
+            <Col id="nm">즉시전송</Col>
+          </Row>
+          <Row>
+            <Col id="cd">2</Col>
+            <Col id="nm">예약전송</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_rtnVal">
+        <ColumnInfo>
+          <Column id="dmSndngDt" type="STRING" size="256"/>
+          <Column id="dmSndngCntn" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[include "commJs::commonUtils.xjs";
+
+var smsList;
+var fv_mobileIdx = "";
+var fv_nmIdx = "";
+var fv_content = "";
+/*********************************************************************
+ * 함 수 명 	: com03008_p02_onload()
+ * 함수설명 	: 폼 로드 함수
+ *********************************************************************/
+this.smsSendPop_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	smsList = this.parent.smsList;
+	fv_mobileIdx = this.parent.mobileIdx;
+	fv_nmIdx = this.parent.nmIdx;
+	fv_content = this.parent.smsContent;
+	
+	//성명 index가 없을 경우 전화번호 index로 성명 대체
+	if(this.gfn_isNull(fv_nmIdx)){
+		fv_nmIdx = fv_mobileIdx;
+	}
+	
+	smsList.addColumn("chk", "string");
+	this.grd_sms.appendContentsRow("Head");
+	this.grd_sms.appendContentsRow("Body");
+	
+	this.grd_sms.setCellProperty("Head", 0, "displaytype", "checkbox");
+	this.grd_sms.setCellProperty("Head", 0, "edittype", "checkbox");
+	this.grd_sms.setFormatColProperty(0,"band","left");
+	this.grd_sms.setFormatColProperty(0,"size","30");
+	this.grd_sms.setCellProperty("Body", 0, "text", "bind:chk");
+	this.grd_sms.setCellProperty("Body", 0, "displaytype", "checkbox");
+	this.grd_sms.setCellProperty("Body", 0, "edittype", "checkbox");
+	
+	for(var i=0; i < smsList.getColCount()-1; i++){
+		this.grd_sms.appendContentsCol(); 
+		
+		this.grd_sms.setCellProperty("Head", i+1, "text", smsList.getColID(i)+" ( $"+(i+1)+" )");
+		this.grd_sms.setCellProperty("Body", i+1, "text", "bind:"+smsList.getColID(i));
+		this.grd_sms.setCellProperty("Body", i+1, "edittype", "normal");
+	}
+	this.grd_sms.deleteContentsCol(smsList.getColCount());
+	
+	//파라미터로 넘어온 dataset copy
+	this.ds_sms.copyData(smsList);
+	
+	//SMS전송에 필요한 컬럼추가
+	this.ds_sms.addColumn("rowStatus", "string");
+	this.ds_sms.addColumn("receiver", "string");
+	this.ds_sms.addColumn("memberNm", "string");
+	this.ds_sms.addColumn("userId", "string");
+	this.ds_sms.addColumn("scheduleType", "string");
+	this.ds_sms.addColumn("subject", "string");
+	this.ds_sms.addColumn("smsMsg", "string");
+	this.ds_sms.addColumn("sender", "string");
+	this.ds_sms.addColumn("destCount", "string");
+	this.ds_sms.addColumn("destInfo", "string");
+	this.ds_sms.addColumn("sendDate", "string");
+	
+	//grid 항목 조정
+	this.grd_sms.autoSizeCol("col", fv_mobileIdx);
+	this.grd_sms.set_cellsizingtype("both");
+	this.grd_sms.set_autoenter("select");
+	
+	//컴포넌트 설정
+	this.edt_sendNo.set_value("0518901039");
+	this.cal_send.set_enable(false);
+	
+	//dataset 총 건수 조회
+	this.gfn_getDatasetCount(this.ds_sms, this.sta_grdSms);
+	
+	if(!this.gfn_isNull(fv_content)){
+		this.ta_smsDsc.set_value(fv_content);
+		this.ta_smsDsc_onkeyup();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_save
+ * 함수설명 	: DataSet을 저장한다.
+ *********************************************************************/
+this.fn_save = function()
+{
+	this.gfn_transaction("SMS",
+						 "txComUrl::com/sendSms.do",
+						 "resultList=ds_sms:n",
+						 "",
+						 "");
+}
+
+/*********************************************************************
+ * 함 수 명 	: grd_sms_onheadclick
+ * 함수설명 	: grid header 클릭 함수
+ *********************************************************************/
+this.grd_sms_onheadclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	var gu1 = obj.getCellProperty("Head",e.cell,"text");
+	var gu = obj.getCellProperty("Head",e.cell,"text");
+	
+	if ( gu == 0 ){
+		obj.setCellProperty("Head",e.cell,"text",1);
+		gu1 = 1;
+	}else{
+		obj.setCellProperty("Head",e.cell,"text",0);
+		gu1 = 0;
+	}
+	
+	for( i=0; i<this.ds_sms.getRowCount(); i++){
+		this.ds_sms.setColumn(i, "chk", gu1);		
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSave
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postSave = function()
+{
+	//
+	this.alert("전송이 완료되었습니다.");
+	this.fn_ok();
+	//this.close("success");
+}
+
+this.fn_ok = function() 
+{	
+	//this.ds_rtnVal.copyData(this.ds_sms);
+		
+	this.ds_rtnVal.clearData();
+	var addRow = this.ds_rtnVal.addRow();
+	
+	//this.ds_rtnVal.setColumn(1, "dmSndngDt", this.gfn_nvl(sendDate.substring(0,8), ""));
+	this.ds_rtnVal.setColumn(this.ds_rtnVal.rowposition, "dmSndngCntn", this.ta_smsDsc.value);
+	
+	this.close(this.ds_rtnVal.saveXML());
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		}else if(trId == "SMS"){
+			this.fn_postSave();
+		}
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_new_onclick
+ * 함수설명 	: 선택번호추가 버튼 클릭 함수
+********************************************************************************/
+this.btn_new_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{	
+	var addRow = this.ds_sms.addRow();
+	this.ds_sms.setColumn(addRow, "rowStatus", "2");
+}
+
+/********************************************************************************
+ * 함 수 명 	: ta_smsDsc_onkeyup
+ * 함수설명 	: 문자메시지 입력 함수
+********************************************************************************/
+this.ta_smsDsc_onkeyup = function(obj:TextArea, e:nexacro.KeyEventInfo)
+{
+	var cnt = this.ta_smsDsc.getLength("ascii");
+	
+	if(cnt > 80){
+		this.gfn_message("A", "내용을 80Byte 이상 입력하실수 없습니다.");
+	}
+	
+	this.st_byteCnt.set_text("<b v='true'> "+cnt+" /80 Bytes (SMS) </b>");
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_sms_onclick
+ * 함수설명 	: SMS전송버튼 클릭 함수
+********************************************************************************/
+this.btn_sms_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.ta_smsDsc.getLength()== 0){
+		this.alert("메시지가 입력되지 않았습니다.");
+		return false;
+	}
+	
+	if(this.ds_sms.getRowCount()== 0){
+		this.alert("SMS 전송목록이 없습니다.");
+		return false;
+	}
+	
+	if(this.ta_smsDsc.getLength("ascii") > 80){
+		this.alert("80 Bytes 이상은 전송할 수 없습니다.");
+		return false;
+	}
+	
+	if(this.confirm("SMS메시지를 전송하시겠습니까?")){
+		for(var i=0; i<this.ds_sms.getRowCount(); i++){
+			var memberNm = this.ds_sms.getColumn(i, fv_nmIdx);
+			var receiver = this.ds_sms.getColumn(i, fv_mobileIdx);
+			
+			this.ds_sms.setColumn(i, "smsMsg", this.ta_smsDsc.value);
+			var rowSmsMsg = this.ds_sms.getColumn(i, "smsMsg");
+			
+			
+			if(receiver.indexOf("-")>0){
+				receiver = receiver.replace(/-/g, "");
+			}
+			
+			if(receiver.indexOf(".")>0){
+				receiver = receiver.replace(/\./g, "");
+			}
+			
+			for(var j=0; j<this.grd_sms.getCellCount("Head"); j++){
+				var findVal = "$"+j;
+				var newVal = this.grd_sms.getCellText(i, j);
+
+				for(var k=0; k<=rowSmsMsg.lastIndexOf(findVal); k++){					
+					rowSmsMsg = rowSmsMsg.replace(findVal, newVal);
+				}
+			}
+			
+			this.ds_sms.setColumn(i, "userId", application.gds_user.getColumn(0, "memberNo"));	//로그인아이디
+			this.ds_sms.setColumn(i, "scheduleType", 0); 	//즉시전송
+			this.ds_sms.setColumn(i, "subject", ""); 		//메시지 제목
+			this.ds_sms.setColumn(i, "smsMsg", rowSmsMsg);	//메시지 내용
+			this.ds_sms.setColumn(i, "sender", this.edt_sendNo.value);//발신자 전화번호
+			this.ds_sms.setColumn(i, "destCount", 1);					//수신자수 (1고정)
+			
+			if(this.gfn_isNull(memberNm)){
+				this.ds_sms.setColumn(i, "destInfo", +receiver);	//수신자전화번호^수신자전화번호
+			}else{
+				this.ds_sms.setColumn(i, "destInfo", receiver);	//수신자성명^수신자전화번호
+			}
+			
+			if(this.rdo_schedGb.value == "2"){	//예약전송일 경우
+				var sendDate = this.cal_send.value;
+				sendDate = sendDate.toString();
+				this.ds_sms.setColumn(i, "sendDate", sendDate.substring(0,14));	//전송일자(yyyymmddhhmiss)
+				this.ds_sms.setColumn(i, "scheduleType", 1);	//예약전송
+			}
+		}
+		
+		this.fn_save();	
+	}	
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_search_close_onclick
+ * 함수설명 	: 닫기 버튼 클릭 함수
+********************************************************************************/
+this.btn_search_close_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.close("close");
+}
+
+/********************************************************************************
+ * 함 수 명 	: rdo_schedGb_onitemchanged
+ * 함수설명 	: 전송 버튼에 따른 날짜 컴포넌트 컨트롤 함수
+********************************************************************************/
+this.rdo_schedGb_onitemchanged = function(obj:Radio, e:nexacro.ItemChangeEventInfo)
+{
+	if(obj.value == 1){
+		this.cal_send.set_value("");
+		this.cal_send.set_enable(false);
+	}else{
+		this.cal_send.set_enable(true);
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_del_onclick
+ * 함수설명 	: 삭제 버튼 클릭 함수
+********************************************************************************/
+this.btn_del_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.confirm("선택된 데이터를 삭제하시겠습니까?")){
+		for(i=this.ds_sms.getRowCount(); i>=0; i--){
+			if(this.ds_sms.getColumn(i, "chk")== 1){
+				this.ds_sms.deleteRow(i);
+			}
+		}
+		this.grd_sms.setCellProperty("Head", 0, "text", 0);
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: ds_sms_onrowposchanged
+ * 함수설명 	: 총 건수 조회 함수
+********************************************************************************/
+this.ds_sms_onrowposchanged = function(obj:Dataset, e:nexacro.DSRowPosChangeEventInfo)
+{
+	//dataset 총 건수 조회
+	this.gfn_getDatasetCount(this.ds_sms, this.sta_grdSms);
+}
+]]></Script>
+  </Form>
+</FDL>

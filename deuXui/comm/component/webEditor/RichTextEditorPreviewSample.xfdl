@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="RichTextEditorPreviewSample" classname="RichTextEditorPreviewSample" left="0" top="0" width="800" height="600" titletext="미리보기" onload="RichTextEditorPreviewSample_onload">
+    <Layouts>
+      <Layout>
+        <WebBrowser id="web_preview" left="5" top="8" width="790" height="560" taborder="0" style="border:1px solid gray ;" onloadcompleted="web_preview_onloadcompleted" onusernotify="web_preview_onusernotify"/>
+        <Button id="Button00" taborder="1" text="닫기" left="731" top="571" width="64" height="26" onclick="Button00_onclick"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.0"><![CDATA[
+this.previewUrl = application.gv_svrUrl+"webEditor/preview.html";
+
+this.RichTextEditorPreviewSample_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.web_preview.set_url(this.previewUrl);
+}
+
+this.web_preview_onloadcompleted = function(obj:WebBrowser, e:nexacro.WebLoadCompEventInfo)
+{
+	if ( e.url == this.previewUrl )
+	{
+		var content = this.getOwnerFrame().content;
+		
+		obj.callMethod("setContent", this.getOwnerFrame().content);
+	}
+}
+
+this.web_preview_onusernotify = function(obj:WebBrowser, e:nexacro.WebTitleChangeEventInfo)
+{
+	if ( e.userdata == "loadContent" )
+	{
+		var w = obj.getProperty("document").getProperty("body").getProperty("offsetWidth");		
+		var h = obj.getProperty("document").getProperty("body").getProperty("offsetHeight");
+		
+		if ( w > this.web_preview.getOffsetWidth() || h > this.web_preview.getOffsetHeight() )
+		{
+			//this.web_preview.resize(w, h);
+			//this.resetScroll();
+		}
+	}
+}
+
+this.Button00_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	//system.print(this.web_preview, false, "top");
+	this.close();
+}
+]]></Script>
+  </Form>
+</FDL>

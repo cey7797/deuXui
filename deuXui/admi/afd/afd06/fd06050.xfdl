@@ -1,0 +1,541 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd06010" classname="bg01030" left="0" top="0" width="1038" height="855" titletext="월별이월금관리" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Static id="Static76" taborder="1" text="이월금내역" cssclass="page_stitle" left="0" top="55" width="324" height="20"/>
+        <Grid id="grd_mainList" taborder="7" binddataset="ds_ac_bank_no" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="none" left="0" top="81" right="15" bottom="29" onexpandup="grd_mainList_onexpandup" autoupdatetype="comboselect">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="35" band="left"/>
+                <Column size="25" band="left"/>
+                <Column size="45" band="left"/>
+                <Column size="132"/>
+                <Column size="190"/>
+                <Column size="130"/>
+                <Column size="120"/>
+                <Column size="120"/>
+                <Column size="120"/>
+                <Column size="120"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox"/>
+                <Cell col="2" text="순번"/>
+                <Cell col="3" text="대상월"/>
+                <Cell col="4" text="구분"/>
+                <Cell col="5" text="표시일자"/>
+                <Cell col="6" text="수입"/>
+                <Cell col="7" text="지출"/>
+                <Cell col="8" text="잔액"/>
+                <Cell col="9" text="누계"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="image" text="bind:rowStatus" expr="expr:rowStatus==2?&quot;URL('theme://images/ico_i.png')&quot;:rowStatus==4?&quot;URL('theme://images/ico_u.png')&quot;:rowStatus==8?&quot;URL('theme://images/ico_d.png')&quot;:&quot;&quot;"/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox" text="bind:chk"/>
+                <Cell col="2" displaytype="normal" edittype="none" text="expr:currow + 1"/>
+                <Cell col="3" displaytype="normal" edittype="expr:rowStatus == 2 ? &quot;mask&quot; : &quot;none&quot;" editfilter="number" style="align:center;" text="bind:yymm" mask="####-##" editlimit="3" editimemode="alpha" editdisplay="expr:rowStatus == 2 ? &quot;display&quot; : &quot;edit&quot;" editlimitbymask="integer"/>
+                <Cell col="4" displaytype="combo" edittype="expr:rowStatus ==2 ? &quot;combo&quot; : &quot;none&quot;" editfilter="number" style="align: ;" text="bind:amtDiv" editlimit="3" editimemode="alpha" editdisplay="display" editlimitbymask="integer" combodataset="ds_amtDiv" combocodecol="comCd" combodatacol="comCdNm" combodisplay="expr:rowStatus==2 ? &quot;display&quot; : &quot;edit&quot;"/>
+                <Cell col="5" displaytype="date" edittype="date" style="align:left;" text="bind:dispDt" editdisplay="expr:rowStatus==2?&quot;display&quot;:&quot;edit&quot;" calendardisplay="display" calendardisplaynulltype="none"/>
+                <Cell col="6" displaytype="number" edittype="expr:amtDiv == '10' || amtDiv == '20' || amtDiv == '60' || amtDiv == '70' || amtDiv == '80' || amtDiv == '90'? 'masknumber' : 'none'" style="align:right;" text="bind:inAmt" mask="###,###,###,##0" editdisplay="expr:amtDiv == '10' || amtDiv == '20' || amtDiv == '60' || amtDiv == '70' || amtDiv == '80' || amtDiv == '90'? 'display' : 'edit'"/>
+                <Cell col="7" displaytype="number" edittype="expr:amtDiv == '10' || amtDiv == '20' || amtDiv == '60' || amtDiv == '70' || amtDiv == '80' || amtDiv == '90'? 'masknumber' : 'none'" style="align:right;" text="bind:outAmt" mask="###,###,###,##0" editdisplay="expr:amtDiv == '10' || amtDiv == '20' || amtDiv == '60' || amtDiv == '70' || amtDiv == '80' || amtDiv == '90'? 'display' : 'edit'"/>
+                <Cell col="8" displaytype="number" edittype="expr:amtDiv == '10' || amtDiv == '20' || amtDiv == '60' || amtDiv == '70' || amtDiv == '80' || amtDiv == '90'? 'masknumber' : 'none'" style="align:right;" text="bind:aftAmt" mask="###,###,###,##0" editdisplay="expr:amtDiv == '10' || amtDiv == '20' || amtDiv == '60' || amtDiv == '70' || amtDiv == '80' || amtDiv == '90'? 'display' : 'edit'"/>
+                <Cell col="9" displaytype="number" edittype="expr:amtDiv == '40' || amtDiv == '50' ? 'masknumber' : 'none'" style="align:right;" text="bind:totAmt" mask="###,###,###,##0" editdisplay="expr:amtDiv == '40' || amtDiv == '50' ? 'display' : 'edit'"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static20" taborder="9" text="h15" visible="false" left="0" top="39" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static22" taborder="10" text="h5" visible="false" left="0" top="76" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static06" taborder="11" text="h5" visible="false" left="930" top="826" width="8.96%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="ds_ac_bank_no_cnt" taborder="12" text="&lt;b v='true'&gt;총 [0] 건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" right="15" width="414" height="20" style="border:0 none #808080ff ;align:right middle;" bottom="8"/>
+        <Static id="Static01" taborder="14" text="h15" visible="false" left="0" top="843" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_search00" taborder="17" text="조회" onclick="btn_search_onClick" cssclass="search" top="54" right="200" width="60" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R" tabstop="false"/>
+        <Button id="btn_new" taborder="18" text="추가" onclick="btn_new_onclick" cssclass="new" top="54" right="138" width="60" height="22" tooltiptype="hover" tooltiptext="추가" userBtnAuth="S" defaultbutton="false" tabstop="false"/>
+        <Button id="btn_save" taborder="19" text="저장" onclick="btn_save_onclick" cssclass="save" top="54" right="14" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S" tabstop="false"/>
+        <Button id="btn_del" taborder="20" text="삭제" onclick="btn_del_onclick" cssclass="del" top="54" right="76" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" userBtnAuth="S" tabstop="false"/>
+        <Static id="Static21" taborder="25" text="w&#13;&#10;15" visible="false" top="25" right="0" width="15" height="827" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static04" taborder="26" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="0" top="0" width="20" height="39"/>
+        <Static id="Static16" taborder="27" text="H9" cssclass="tipGuide" visible="false" left="121" top="0" width="38" height="9"/>
+        <Static id="Static09" taborder="28" text="H9" cssclass="tipGuide" visible="false" left="121" top="30" width="38" height="9"/>
+        <Div id="div_search" taborder="29" left="0" top="0" right="14" height="39" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static05" taborder="20" text="대상월" onclick="div_search_Static00_onclick" cssclass="search" left="20" top="8" width="57" height="22"/>
+              <Static id="Static07" taborder="21" text="w8" visible="false" left="70" top="8" width="8" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static08" taborder="22" text="w&#13;20" visible="false" left="202" top="8" width="20" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Div id="div_Yymm" taborder="25" url="component::monthCalendar.xfdl" left="75" top="9" width="82" height="22" style="background:transparent;"/>
+            </Layout>
+          </Layouts>
+        </Div>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_ac_bank_no" onrowposchanged="ds_ac_bank_no_onrowposchanged" oncolumnchanged="ds_ac_bank_no_oncolumnchanged"/>
+      <Dataset id="ds_dummy"/>
+      <Dataset id="ds_amtDiv"/>
+    </Objects>
+    <Bind>
+      <BindItem id="item5" compid="edt_bizNm" propid="value" datasetid="ds_acntList" columnid="acntIncNm"/>
+      <BindItem id="item18" compid="Div01.cmb_pfmAcntUnt" propid="value" datasetid="ds_mainList" columnid="acntUnt"/>
+      <BindItem id="item19" compid="Div01.edt_pfmFincCd" propid="value" datasetid="ds_mainList" columnid="bankCd"/>
+      <BindItem id="item20" compid="Div01.edt_pfmUprBizCdNm" propid="value" datasetid="ds_mainList" columnid="uprBizCdNm"/>
+      <BindItem id="item21" compid="Div01.cmb_pfmAcntDiv" propid="value" datasetid="ds_mainList" columnid="acntDiv"/>
+      <BindItem id="item23" compid="Div01.cmb_pfmUsageCd" propid="value" datasetid="ds_mainList" columnid="usageCd"/>
+      <BindItem id="item24" compid="Div01.edt_pfmAcntNo" propid="value" datasetid="ds_mainList" columnid="acntNo"/>
+      <BindItem id="item25" compid="Div01.edt_pfmDeposr" propid="value" datasetid="ds_mainList" columnid="deposr"/>
+      <BindItem id="item28" compid="Div01.cmb_pfmacntUnt02" propid="value" datasetid="ds_mainList"/>
+      <BindItem id="item29" compid="Div01.edt_pfmRmk" propid="value" datasetid="ds_mainList" columnid="rmk"/>
+      <BindItem id="item30" compid="Div01.edt_pfmUprBizCdNm00" propid="value" datasetid="ds_mainList"/>
+      <BindItem id="item31" compid="Div01.edt_pfmUprBizCdNm04" propid="value" datasetid="ds_mainList"/>
+      <BindItem id="item32" compid="Div01.edt_pfmFincCd00" propid="value" datasetid="ds_mainList"/>
+      <BindItem id="item33" compid="Div01.edt_pfmUprBizCdNm07" propid="value" datasetid="ds_mainList" columnid="newAcntNo"/>
+      <BindItem id="item0" compid="Div01.CheckBox00" propid="value" datasetid="ds_mainList" columnid=""/>
+      <BindItem id="item1" compid="Div01.CheckBox_pfmAutoYn" propid="value" datasetid="ds_mainList" columnid="autoYn"/>
+      <BindItem id="item2" compid="Div01.CheckBox_pfmTermnYn" propid="value" datasetid="ds_mainList" columnid="termnYn"/>
+      <BindItem id="item3" compid="Div01.Calendar_pfmOpDt" propid="value" datasetid="ds_mainList" columnid="opDt"/>
+      <BindItem id="item4" compid="Div01.Calendar_pfmExpirDt" propid="value" datasetid="ds_mainList" columnid="expirDt"/>
+      <BindItem id="item6" compid="Div01.Calendar_pfmTermnDt" propid="value" datasetid="ds_mainList" columnid="termnDt"/>
+      <BindItem id="item7" compid="Div01.CheckBox_pfmUseYn" propid="value" datasetid="ds_mainList" columnid="useYn"/>
+      <BindItem id="item8" compid="Div01.cmb_pfmAcntKnd" propid="value" datasetid="ds_mainList" columnid="acntKnd"/>
+      <BindItem id="item9" compid="Div01.CheckBox01" propid="" datasetid="ds_pfmUseYn" columnid=""/>
+      <BindItem id="item10" compid="Div01.pfm_fstPayAmt" propid="value" datasetid="ds_aacBankaccount" columnid="fstPayAmt"/>
+      <BindItem id="item11" compid="Div01.msk_pfmIntRt" propid="value" datasetid="ds_mainList" columnid="intRt"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[
+/* ====================================================================
+ * 01. 업무구분	: 계좌정보등록
+ * 02. 화면명		: ac01010.xfdl
+ * 03. 화면설명	: 계좌정보등록을 관리하는 화면이다.
+ * 04. 작성일		: 2015.12.07
+ * 05. 작성자		: 이현욱
+ * 06. 수정이력	: 2016.01.27 박태희
+					  - 리뉴얼
+ * ====================================================================
+ *     수정일     수정자   내용
+ * ====================================================================
+ *
+ * ==================================================================== */
+ 
+/* ====================================================================
+ * 1. 공통 라이브러리
+ * ==================================================================== */
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+
+ 
+/******************************************************************************
+* 함 수 명 	: form_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	var arrDataSet = Array(1);
+		arrDataSet[0]  = "ds_amtDiv";
+		
+ 	var arrGrpCd = Array(1);
+ 		arrGrpCd[0]  = "AFD13";
+		
+ 	// 사용여부	지정할 아큐먼트를 넘긴다.
+ 	var arrUseYn =	Array(1);
+ 		arrUseYn[0]  =	"Y";
+
+ 	// T:전체,S:선택,X:없음 
+ 	var arrModeFg =	Array(1);
+ 		arrModeFg[0]  =	"X";
+
+ 	// WHERE절 내용 "X":없음
+ 	var arrWhere =	Array(1);
+ 		arrWhere[0]  =	"X";
+ 		
+	/* 메소드명     : ComboLoad
+	 * 설명			 : 공통코드 테이블을 조회하여 콤보박스를 생성한다.
+	 * 메소드인수1  : DataSet명의 배열
+	 * 메소드인수2  : 그룹코드번호의 배열
+	 * 메소드인수3  : 캠퍼스구분 배열 ("T":전체, "C":공통만, "S":서울, "K":경주)
+	 * 메소드인수4  : 조건문의 배열 (1:사용, 0:사용안함)
+	 * 메소드인수5  : 전체공란 첨부여부 "T": 전체, "S":선택, "X" : 데이터시작
+	 * 메소드인수6  : WHERE절 내용 "X":없음
+	 */
+
+   	 this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+}
+
+
+this.fn_postLoad = function()
+{
+	this.gfn_bindCmmnFunction();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.gfn_message("A", errMsg);
+ 	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+ 		}
+ 		
+ 		else if(trId == "SEARCH"){
+ 			this.fn_postSearch();
+ 		}
+ 		
+ 		else if(trId == "SAVE"){
+ 			this.fn_postSave();
+ 		}
+ 		
+ 		else if(trId == "DEL"){
+ 			this.fn_postDel();
+		}
+ 		
+		else if(trId == "ACNTUNTCOMBO"){
+			this.div_search.S_ACNT_UNT.set_index(0)
+			this.ds_acntUnt_cmb.assign(this.ds_acntUntCmb);
+		}
+ 	}
+}
+
+//회계년도 스핀
+this.div_search_S_ACNT_YY_onspin = function(obj:Spin, e:nexacro.SpinEventInfo)
+{
+	this.cfn_acntUntCombo("ds_acntUntCmb", this.div_search.S_ACNT_YY.value, "", "", "0", "ac01010");
+}
+
+
+//(SEARCH_DIV)은행조회 팝업
+this.div_search_btn_bank_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var strParam = {bankCdNm:this.div_search.S_BANK_CD_NM.value
+				   ,autoClose:false
+				   ,autoSearch:true
+				   };
+	this.cfn_bankPopup(strParam,"fn_div_serach_popCallback");
+}
+
+//(SEARCH_DIV)팝업 콜백
+this.fn_div_serach_popCallback = function(strID, rtnVal)
+{
+	if(rtnVal == "close") {
+		return;
+	}
+	
+	//Dataset을 return 할 경우
+	this.ds_dummy.clear();
+	this.ds_dummy.loadXML(rtnVal);
+	
+	//은행조회 팝업
+	if(strID == "admi01010_p13") {	
+ 		this.div_search.S_BANK_CD_NM.set_value(this.ds_dummy.getColumn(0, "comCdNm"));
+ 		this.div_search.S_BANK_CD.set_value(this.ds_dummy.getColumn(0, "comCd"));
+	}
+}
+
+
+
+
+// (DETAIL_DIV)은행조회 팝업
+this.div_detail_btn_d_bank_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var strParam = {bankCdNm:""
+				   ,autoClose:true
+				   ,autoSearch:true
+				   };
+				   
+	this.cfn_bankPopup(strParam,"fn_popCallback");
+}
+
+// (DETAIL_DIV)계정코드조회(자동분개계정과목) 팝업
+this.div_detail_btn_d_auto_acnt_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var strParam = {acntYy:this.div_search.S_ACNT_YY.value
+	               ,acntUnt:this.ds_ac_bank_no.getColumn(this.ds_ac_bank_no.rowposition, "acntUnt")
+	               ,acntLvl:"50"
+	               ,acntNm:""
+	               ,balDiv:""
+				   ,autoClose:true
+				   ,autoSearch:true
+				   };
+	
+	this.cfn_bgAcntPopup(strParam,"fn_popCallback", "AUTO_ACNT_POP");
+}
+
+// (DETAIL_DIV)계정코드조회 팝업
+this.div_detail_btn_d_acnt_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var strParam = {acntYy:this.div_search.S_ACNT_YY.value
+	               ,acntUnt:this.ds_ac_bank_no.getColumn(this.ds_ac_bank_no.rowposition, "acntUnt")
+	               ,acntLvl:"50"
+	               ,acntNm:""
+	               ,balDiv:""
+	               ,usageCd:"10130"
+	               ,autoClose:true
+				   ,autoSearch:true
+				   };
+	
+	this.cfn_bgAcntPopup(strParam,"fn_popCallback", "ACNT_POP");
+}
+
+// (DETAIL_DIV)관리부서조회 팝업
+this.div_detail_btn_d_mgt_org_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var strParam = {
+					 jojikCdNm:""
+				   , autoSearch:true
+				   };
+		
+	this.cfn_deptPopup(strParam,"fn_popCallback");
+}
+
+this.fn_popCallback = function (strID, rtnVal)
+{
+	if(rtnVal == "close" || rtnVal == "" || rtnVal == "undefined" || rtnVal == null) {
+		return;
+	}
+	
+	//Dataset을 return 할 경우
+	this.ds_dummy.clear();
+	this.ds_dummy.loadXML(rtnVal);
+	
+	//은행조회 팝업
+	if(strID == "admi01010_p13"){
+		
+		this.ds_ac_bank_no.setColumn(this.ds_ac_bank_no.rowposition, "bankCd", this.ds_dummy.getColumn(0, "comCd"));		//은행코드
+		this.ds_ac_bank_no.setColumn(this.ds_ac_bank_no.rowposition, "bankCdNm", this.ds_dummy.getColumn(0, "comCdNm"));	//은행명
+	} 
+	//계정코드조회(자동분개계정과목) 팝업
+	else if(strID == "AUTO_ACNT_POP"){
+		this.ds_ac_bank_no.setColumn(this.ds_ac_bank_no.rowposition, "autoAcntCd", this.ds_dummy.getColumn(0, "acntCd"));		//계정코드
+		this.ds_ac_bank_no.setColumn(this.ds_ac_bank_no.rowposition, "autoAcntCdNm", this.ds_dummy.getColumn(0, "semokNm"));	//계정명(세목)
+	} 
+	//계정코드조회 팝업
+	else if(strID == "ACNT_POP"){
+		this.ds_ac_bank_no.setColumn(this.ds_ac_bank_no.rowposition, "acntCd", this.ds_dummy.getColumn(0, "acntCd"));		//계정코드
+		this.ds_ac_bank_no.setColumn(this.ds_ac_bank_no.rowposition, "acntCdNm", this.ds_dummy.getColumn(0, "semokNm"));	//계정명(세목)
+	} 
+	//관리부서조회 팝업
+	else if(strID == "admi01010_p07"){
+		this.ds_ac_bank_no.setColumn(this.ds_ac_bank_no.rowposition, "mgtOrgId", this.ds_dummy.getColumn(0, "deptCd"));		//부서코드
+		this.ds_ac_bank_no.setColumn(this.ds_ac_bank_no.rowposition, "mgtOrgIdNm", this.ds_dummy.getColumn(0, "deptNmKor"));	//부서명
+	} 
+	
+}
+
+
+
+
+
+//조회 버튼 이벤트
+this.btn_search_onClick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();	
+}
+
+//조회 전처리
+this.fn_preSearch = function()
+{
+	return true;
+}
+
+//조회 액션
+this.fn_search = function()
+{
+	if(this.fn_preSearch()){		
+		var strArg  = " yymm=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.div_Yymm.getData())); 
+
+		this.gfn_transaction("SEARCH",
+							 "txComUrl::com/admi/afd/afd06/selectAFD06050.do",
+							 "",
+							 "ds_ac_bank_no=resultList",
+							 strArg,
+							 "fn_callBack"
+							 );
+	}
+}
+
+//조회 후처리
+this.fn_postSearch = function()
+{
+	this.fn_getDatasetCount(this.ds_ac_bank_no, this.ds_ac_bank_no_cnt);
+}
+
+
+this.fn_getDatasetCount = function(objDs, objSta)
+{
+	var rowCnt = objDs.getRowCount();
+	if(this.gfn_getNullToEmpty(objSta) != ''){
+		objSta.set_text("<b v='true'>총 ["+rowCnt+"] 건</b>");
+	}
+}
+
+
+
+
+//추가 버튼 이벤트
+this.btn_new_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_New();
+}
+
+//추가 전처리
+this.fn_preNew = function()
+{
+	return true;
+}
+
+//추가 액션
+this.fn_New = function()
+{
+	if(this.fn_preNew()) 
+	{
+ 		this.gfn_addRow(this.ds_ac_bank_no);
+ 	 	
+ 		this.ds_ac_bank_no.setColumn(this.ds_ac_bank_no.rowposition, "rowStatus", 2);
+ 		this.ds_ac_bank_no.setColumn(this.ds_ac_bank_no.rowposition, "gb", "10");
+	}
+}
+
+
+//삭제 버튼 이벤트
+this.btn_del_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	//계정내역 데이터 체크
+	if(this.ds_ac_bank_no.rowcount <= 0)
+	{
+		this.gfn_message("A", "조회된 내역이 없습니다.");
+		return false;
+	}
+	
+	if(this.ds_ac_bank_no.getCaseCount("chk==1") == 0 ) {
+		this.gfn_message("A", "선택된 항목이 없습니다.");
+		return false;
+	}
+	
+	for(var i=this.ds_ac_bank_no.rowcount -1; i >= 0 ; i-- ) {
+		if ( this.ds_ac_bank_no.getColumn(i, "rowStatus") == "2" && this.ds_ac_bank_no.getColumn(i, "chk") == "1"  ) {
+			this.ds_ac_bank_no.deleteRow(i);
+		}
+	}
+	
+	if(this.ds_ac_bank_no.getCaseCount("chk==1") == 0 ) {
+		return false;
+	}
+	
+	
+	if(this.ds_ac_bank_no.getCaseCount("rowStatus == 2 || rowStatus == 4") != 0)
+	{
+		this.gfn_message("A", "이월금 내역을 먼저 저장 하십시오.");
+		return false;
+	}
+	
+	
+	this.gfn_deleteRow(this.ds_ac_bank_no, "this.fn_Del()");
+}
+
+//삭제 전처리
+this.fn_preDel = function()
+{
+	return true;
+}
+
+//삭제 액션
+this.fn_Del = function()
+{
+	if(this.fn_preDel()) 
+	{
+ 		if(this.fn_preSave()){
+		this.gfn_transaction("DEL",
+							 "txAdmUrl::com/admi/afd/afd06/saveAFD06050.do",
+							 "resultList=ds_ac_bank_no:u",
+							 "",
+							 "",
+							 "fn_callBack");
+		}
+	}
+}
+
+//삭제 후처리
+this.fn_postDel = function()
+{
+	this.gfn_message("A", "삭제가 완료되었습니다.");
+	
+	this.fn_search();
+}
+
+
+//저장 버튼 이벤트
+this.btn_save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{	
+	this.fn_save();
+}
+
+//저장 전처리
+this.fn_preSave = function()
+{
+	if(!this.gfn_isUpdate(this.ds_ac_bank_no)){
+		this.gfn_message("A", "변경된 데이터가 없습니다.");
+		return false;
+	}
+		
+ 	//필수값 입력 체크
+	var colNm = "yymm$amtDiv";
+	var korNm = "대상월$구분";
+	var cmpNm = "$";
+
+	var result = this.gfn_chkEssItem("ds_ac_bank_no", colNm, korNm, cmpNm);
+	if (result[0] != "success") {
+		this.gfn_message("A", result[0]);
+		/*
+		this.ds_ac_bank_no.set_rowposition(result[1]);
+		if(result[3] != ""){
+			this.objects[result[3]].setFocus();
+		}
+		*/
+		
+		return false;	
+	}
+	
+	return true;
+}
+
+//저장 액선
+this.fn_save = function()
+{
+	if(this.fn_preSave()){
+		this.gfn_transaction("SAVE",
+							 "txAdmUrl::com/admi/afd/afd06/saveAFD06050.do",
+							 "resultList=ds_ac_bank_no:u",
+							 "",
+							 "",
+							 "fn_callBack");
+	}
+
+}
+
+//저장 후처리
+this.fn_postSave = function()
+{
+	this.gfn_message("A", "저장이 완료되었습니다.");
+	
+	this.fn_search();
+}
+
+this.ds_ac_bank_no_oncolumnchanged = function(obj:Dataset, e:nexacro.DSColChangeEventInfo)
+{
+	if ( e.columnid == "inAmt" || e.columnid == "outAmt" ) {
+		obj.setColumn(e.row, "aftAmt", ( obj.getColumn(e.row, "inAmt") == null ? 0 :  obj.getColumn(e.row, "inAmt") ) - ( obj.getColumn(e.row, "outAmt") == null ? 0 : obj.getColumn(e.row, "outAmt") ) );
+	} 
+}
+]]></Script>
+  </Form>
+</FDL>

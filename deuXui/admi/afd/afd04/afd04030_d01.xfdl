@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd04030_d01" classname="cte02002" left="0" top="0" width="1040" height="800" onload="form_onload" titletext="동의대학교 발전기금시스템 로그인">
+    <Layouts>
+      <Layout>
+        <Div id="divBg" taborder="1" left="0%" top="281" right="0%" height="294" style="background:transparent URL('theme://images\login\login_bg.png') repeat-x;" cssclass="loginBody" text="마우스로 이동시 한글이 없어지는 현상이 발생하므로 Tab 또는 Enter 키로 이도해 주시기 바랍니다.">
+          <Layouts>
+            <Layout>
+              <Div id="div_info_kr" taborder="0" left="475" top="111" width="541" height="91" style="border:0 none #808080ff ;">
+                <Layouts>
+                  <Layout>
+                    <Static id="Static00" taborder="6" text="약정자의 성명/생년월일(6자리)/핸드폰으로 로그인 하시기 바랍니다." cssclass="login_info" left="3.14%" top="4" right="1.66%" height="12" style="color:#ffffffff;"/>
+                    <Static id="Static01" taborder="7" text="약정자 성명/생년월일(6자리)/핸드폰이 다른 경우," left="3.14%" top="21" right="1.66%" height="12" style="color:#ffffffff;"/>
+                    <Static id="Static02" taborder="8" text="대외협력팀 관리자(051-890-1039)로 문의하시기 바랍니다." left="3.14%" top="38" right="1.66%" height="12" style="color:#ffffffff;"/>
+                    <Static id="Static03" taborder="9" text="발전기금시스템에 접속하면 나의기부현황/기부금영수증출력 서비스를 이용할 수 있습니다." left="3.14%" top="55" right="1.66%" height="12" style="color:#e5b700ff;"/>
+                    <Static id="Static05" taborder="11" left="6" top="4" width="1" height="76" style="background:#4da19fff;"/>
+                  </Layout>
+                </Layouts>
+              </Div>
+              <Static id="Static04" taborder="1" text="마우스로 이동시 한글이 없어지는 현상이 발생하므로 Tab 또는 Enter 키로 이동해 주시기 바랍니다." left="47.4%" top="183" right="1.25%" height="12" style="color:red;"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Div id="div_footer" taborder="3" left="238" top="548" width="542" height="46">
+          <Layouts>
+            <Layout>
+              <Static id="Static00" taborder="2" text="(47340) 부산광역시 부산진구 엄광로 176 동의대학교 TEL : 051-890-1037~9 Fax : 0505-182-6818" left="2" top="5" width="527" height="13" style="color:#707070ff;"/>
+              <Static id="Static01" taborder="3" text="Copyright 2012 university of science and technology. all right reserved." visible="false" left="2" top="30" right="28" height="13" style="color:#707070ff;"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <ImageViewer id="ivLogo" taborder="4" image="URL('theme://images\login\txt_login_fd.png')" cssclass="logo" left="265" top="139" width="504" height="141" style="background:transparent;border:1 none #e5e5e5ff ;" visible="true"/>
+        <Div id="div_idLogin" taborder="5" left="170" top="389" width="309" height="109" scrollbars="none">
+          <Layouts>
+            <Layout>
+              <Edit id="edt_name" taborder="11" autoselect="false" left="52" top="1" width="158" height="25" tooltiptext="성명을 입력하세요" imemode="none"/>
+              <Edit id="edt_birth" taborder="12" password="false" autoselect="false" left="52" top="34" width="158" height="25" tooltiptext="생년월일을 입력하세요"/>
+              <Button id="btn_login" taborder="14" onclick="btn_login_onclick" left="221" top="0" width="80" height="74" style="background:transparent URL('theme://images\login\btn_login.png');border:0 none #999999ff ;cursor:hand;"/>
+              <Edit id="edt_hp" taborder="15" password="false" autoselect="false" left="52" top="67" width="158" height="25" tooltiptext="핸드폰번호를 입력하세요"/>
+              <Static id="Static00" taborder="16" text="성명" left="1" top="1" width="48" height="25" style="color:white;"/>
+              <Static id="Static01" taborder="17" text="생년월일" left="1" top="34" width="48" height="25" style="color:white;"/>
+              <Static id="Static02" taborder="18" text="핸드폰" left="1" top="67" width="48" height="25" style="color:white;"/>
+            </Layout>
+          </Layouts>
+        </Div>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_loginYn"/>
+    </Objects>
+    <Bind/>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::lib_String.xjs";
+
+/******************************************************************************
+* 함 수 명 	: form_onload
+* 함수설명 	: 화면로드 이벤트
+******************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+
+}
+
+/******************************************************************************
+* 함 수 명 	: btn_login_onclick
+* 함수설명 	: 로그인 이벤트
+******************************************************************************/
+this.btn_login_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.gfn_isNull(this.div_idLogin.edt_name.value))
+	{
+		this.gfn_message("A", "성명을 입력해주세요.");
+		return false;
+	}
+	if(this.gfn_isNull(this.div_idLogin.edt_birth.value))
+	{
+		this.gfn_message("A", "생년월일을 입력해주세요.");
+		return false;
+	}
+	if(this.gfn_isNull(this.div_idLogin.edt_hp.value))
+	{
+		this.gfn_message("A", "핸드폰번호를 입력해주세요.");
+		return false;
+	}
+	
+	var strArg = "param1=" + nexacro.wrapQuote(this.div_idLogin.edt_name.value);//;
+		strArg += " param2=" + nexacro.wrapQuote(this.div_idLogin.edt_birth.value);//;
+		strArg += " param3=" + nexacro.wrapQuote(this.div_idLogin.edt_hp.value);//;
+		
+	this.gfn_transaction("LOGIN_CHK"
+						,"txAdmUrl::com/admi/afd/afd04/selectAFDMemberYn.do"
+						,""
+						,"ds_loginYn=resultList"
+						,strArg
+						,"");	
+
+	
+	//this.parent.fn_url_navigation("success");
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_callBack
+* 함수설명 	: callback함수
+*****************************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg) 
+{
+	if(errCd < 0 ) 
+	{
+		this.gfn_message("A", errMsg);
+		return false;
+	}
+	else
+	{
+		if(trId == "LOGIN_CHK") 
+		{		
+			if(this.ds_loginYn.getColumn(0,"chkYn") == "Y")
+			{
+				this.close(this.ds_loginYn.saveXML());
+			}
+			else 
+			{
+				this.gfn_message("A", "일치하는 회원이없습니다.");
+				return false;
+			}			
+		}
+	}
+}
+]]></Script>
+  </Form>
+</FDL>

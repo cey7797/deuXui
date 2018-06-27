@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="ac03020" classname="bg01030" left="0" top="0" width="1038" height="855" titletext="월계표" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="0" left="0" top="0" right="14" height="39" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static00" taborder="1" text="회계단위" cssclass="search" left="192" top="10" width="60" height="22" onclick="div_search_Static00_onclick"/>
+              <Static id="Static03" taborder="4" text="w8" visible="false" left="241" top="10" width="8" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static06" taborder="6" text="w&#13;20" visible="false" left="373" top="10" width="20" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static02" taborder="9" text="w8" visible="false" left="437" top="10" width="8" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static01" taborder="11" text="회계연도" cssclass="search" left="20" top="10" width="48" height="22"/>
+              <Static id="Static04" taborder="12" text="기준월" onclick="div_search_Static00_onclick" cssclass="search" left="396" top="10" width="60" height="22"/>
+              <Static id="Static05" taborder="14" text="w8" visible="false" left="65" top="10" width="8" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Spin id="spn_acntYy" taborder="15" value="0" onspin="div_search_spn_acntYy_onspin" left="73" top="10" width="100" height="21"/>
+              <Combo id="cmb_schAcntUnt" taborder="16" innerdataset="@ds_schAcntUnt" codecolumn="cd" datacolumn="nm" onitemchanged="div_search_cmb_schAcntUnt_onitemchanged" left="249" top="10" width="124" height="21" class="essential"/>
+              <Static id="Static07" taborder="18" text="w&#13;20" visible="false" left="173" top="10" width="20" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Div id="div_Yymm" taborder="19" url="component::monthCalendar.xfdl" left="443" top="9" width="82" height="22" style="background:transparent;"/>
+              <CheckBox id="chk_semokYn" taborder="20" text="세목포함" value="0" truevalue="1" falsevalue="0" left="546" top="10" width="78" height="20"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static76" taborder="1" text="월계표" cssclass="page_stitle" left="0" top="55" width="324" height="20"/>
+        <Static id="Static20" taborder="9" text="h15" visible="false" left="0" top="39" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static22" taborder="10" text="h5" visible="false" left="0" top="76" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static06" taborder="11" text="h5" visible="false" left="930" top="836" width="8.96%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_search00" taborder="17" text="조회" onclick="btn_search_onClick" cssclass="search" top="54" right="81" width="60" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R" tabstop="false"/>
+        <Static id="Static21" taborder="25" text="w&#13;&#10;15" visible="false" top="17" right="0" width="15" height="831" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static00" taborder="26" text="h5" visible="false" left="930" top="852" width="8.96%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static01" taborder="28" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="-1" top="0" width="20" height="39"/>
+        <Static id="Static16" taborder="29" text="H9" cssclass="tipGuide" visible="false" left="240" top="1" width="38" height="9"/>
+        <Static id="Static09" taborder="30" text="H9" cssclass="tipGuide" visible="false" left="233" top="31" width="38" height="9"/>
+        <Grid id="grd_mainList" taborder="31" binddataset="ds_mainList" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="col" onkeydown="grd_bgBiz_onkeydown" left="0" top="81" right="15" bottom="19">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="45" band="left"/>
+                <Column size="225"/>
+                <Column size="40"/>
+                <Column size="125"/>
+                <Column size="326"/>
+                <Column size="40"/>
+                <Column size="225"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell rowspan="2" text="순번"/>
+                <Cell col="1" rowspan="2" text="차     변"/>
+                <Cell col="2" rowspan="2" text="건수"/>
+                <Cell col="3" colspan="2" text="계정과목"/>
+                <Cell col="5" rowspan="2" text="건수"/>
+                <Cell col="6" rowspan="2" style="align: ;" text="대     변"/>
+                <Cell row="1" col="3" text="계정코드"/>
+                <Cell row="1" col="4" text="계정명"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="normal" edittype="none" text="expr:currow + 1"/>
+                <Cell col="1" displaytype="number" style="align:right;" text="bind:slipAmtSum10"/>
+                <Cell col="2" text="bind:cnt10"/>
+                <Cell col="3" text="bind:acntCd"/>
+                <Cell col="4" style="align:center;" text="bind:acntNm"/>
+                <Cell col="5" text="bind:cnt20"/>
+                <Cell col="6" style="align:right;" text="bind:slipAmtSum20"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1" displaytype="number" style="align:right;" text="expr:dataset.getSum(&quot;slipAmtSum10Sum&quot;)"/>
+                <Cell col="2" displaytype="number" text="expr:dataset.getSum(&quot;cnt10Sum&quot;)"/>
+                <Cell col="3" colspan="2" text="합                계"/>
+                <Cell col="5" displaytype="number" text="expr:dataset.getSum(&quot;cnt20Sum&quot;)"/>
+                <Cell col="6" displaytype="number" style="align:right;" text="expr:dataset.getSum(&quot;slipAmtSum20Sum&quot;)"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="btn_print" taborder="32" text="출력" onclick="btn_print_onclick" cssclass="print" top="54" right="15" width="64" height="22" tooltiptype="hover" tooltiptext="출력" userBtnAuth="P" tabstop="false"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_mainList"/>
+      <Dataset id="ds_schAcntUnt"/>
+      <Dataset id="ds_schAcntYy" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+    </Objects>
+    <Bind>
+      <BindItem id="item5" compid="edt_bizNm" propid="value" datasetid="ds_acntList" columnid="acntIncNm"/>
+      <BindItem id="item0" compid="div_search.spn_acntYy" propid="value" datasetid="ds_schAcntYy" columnid="acntYy"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[// [프로젝트]	동의대학교 예산회계시스템 구축
+// [시스템명]	행정
+// [부시스템]	회계관리
+// [프로그램]	장부관리-월계표
+// [설명] 
+//	         
+// [작성자명]	라병수
+// [작성일자]	2016.06.27
+//////////////////////////////////[수정이력]//////////////////////////////////
+// [수정일자] 
+// [수 정 자] 
+// [수정내용]
+
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+ 
+/******************************************************************************
+* 함 수 명 	: ac03020_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.fn_postLoad();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{
+	this.gfn_bindCmmnFunction();
+
+	var currYy = this.gfn_getCurrentDate("YYYY");
+	
+	this.cfn_acntYy("ds_schAcntYy");
+	
+	this.cfn_acntUntCombo("ds_schAcntUnt",currYy,"","","1","ac03010"); //회계단위콤보호출
+	
+	this.div_search.div_Yymm.setData(this.gfn_getCurrentDate("YYYYMM"));
+	
+}
+ 
+/********************************************************************************
+ * 함 수 명 	: btn_search_onclick
+ * 함수설명 	: 조회버튼 클릭이벤트
+********************************************************************************/
+this.btn_search_onClick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();
+	
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preSearch
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preSearch = function()
+{
+	if(this.div_search.div_Yymm.getData() == "" || this.div_search.div_Yymm.getData() == null){
+		this.gfn_message("A","기준월를 입력해주세요.");
+		return false;
+	}
+	
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_search = function()
+{
+	if(this.fn_preSearch()){	
+		
+		var strArg  = "acntYy=" +  nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.spn_acntYy.value));
+			strArg += " acntUnt=" +  nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.cmb_schAcntUnt.value));
+			strArg += " slipCfmYYMM=" +  nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.div_Yymm.getData()));
+			strArg += " semokYn=" +  nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.chk_semokYn.value));
+		this.gfn_transaction("SEARCH",
+							 "txComUrl::com/admi/ac03/selectAc03020MainList.do",
+							 "",
+							 "ds_mainList=resultList",
+							 strArg,
+							 "fn_callBack"
+							 );
+		}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postSearch
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearch = function()
+{
+	this.gfn_getDatasetCount(this.ds_mainList, this.sta_mainList);
+}
+/* ====================================================================
+ * 4. fn_callBack 처리 부분
+ * ==================================================================== */
+ 
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.gfn_message("A", errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		} else if(trId == "SEARCH"){
+			this.fn_postSearch();
+		} else if(trId == "SAVE"){
+			this.fn_postSave();
+		} else if(trId == "ACNTUNTCOMBO") {
+			this.div_search.cmb_schAcntUnt.set_index(0);
+		}
+	}
+}
+
+this.btn_print_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	/*
+    1.callType = // null 값으로 던질것
+    2.crfName = //  업무명/레포트명
+    3.crfParams = 파라미터 //예) 키:값|키:값|키:값
+    4.crfDbName = // null 값으로 던질것
+    */     
+    
+	if(this.div_search.div_Yymm.getData() == "" || this.div_search.div_Yymm.getData() == null){
+		this.gfn_message("A","기준월를 입력해주세요.");
+		return;
+	}
+    
+    var strArg  = "ACNT_YY:"  + this.gfn_getNullToEmpty(this.div_search.spn_acntYy.value);		 // 회계년도
+ 		strArg += "|ACNT_UNT:" + this.gfn_getNullToEmpty(this.div_search.cmb_schAcntUnt.value); // 회계단위
+ 		strArg += "|ACNT_UNT_NM:" + "(" +this.gfn_getNullToEmpty(this.div_search.cmb_schAcntUnt.text) + ")"; // 회계단위명
+ 		strArg += "|SLIP_CFM_YYMM:" + this.gfn_getNullToEmpty(this.div_search.div_Yymm.getData()); // 기준일자
+ 		strArg += "|YYMM:" + this.gfn_getNullToEmpty(this.div_search.div_Yymm.getData().substring(0,4) + " 년 " + this.div_search.div_Yymm.getData().substring(4,6) + " 월"); // 기준일자
+ 		strArg += "|SEMOK_YN:" + this.gfn_getNullToEmpty(this.div_search.chk_semokYn.value); // 세목포함여부
+ 		strArg += "|GV_USERID:" + application.gds_user.getColumn(application.gds_user.rowposition,"memberNo"); // login userid
+ 		strArg += "|GV_USERNM:" + application.gds_user.getColumn(application.gds_user.rowposition,"nm"); // login usernm
+ 		strArg += "|GV_MENUID:" + "ac03020"; // menuId
+ 		strArg += "|GV_USER:" + application.gds_user.getColumn(application.gds_user.rowposition,"nm")+"("+application.gds_user.getColumn(application.gds_user.rowposition,"memberNo")+")"; // login usernm(userid)
+
+    var callType = ""; 
+    var crfName = "com/ac03020_r01"; 
+    var crfParams = strArg; //예) 키:값|키:값|키:값
+    var crfDbName = ""; // null 값이나 "oracle1" 값으로 던질것
+	this.gfn_openClipReport(callType,crfName,crfParams,crfDbName);
+}
+
+this.div_search_spn_acntYy_onspin = function(obj:Spin, e:nexacro.SpinEventInfo)
+{
+	this.cfn_acntUntCombo("ds_schAcntUnt",e.postvalue,"","","1","ac03010"); //회계단위콤보호출
+}
+]]></Script>
+  </Form>
+</FDL>

@@ -1,0 +1,1875 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="AdcomSQL">
+
+    <typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>   
+    
+    <!--
+    #########################################################################################################################################
+    # 권한조회팝업(admi01010_p01.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.selectComRolePopList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+    	/* adcomDAO.selectComRolePopList 권한팝업 조회 */
+		SELECT '0' as chk
+		     , '' as row_status 
+		     , a.role_id /* 권한ID */
+		     , a.role_nm /* 권한명 */
+		     , a.role_gb /* 권한구분 */
+		     , (SELECT COUNT(1)
+		          FROM COM_ROLE_USER
+		         WHERE role_id = a.role_id ) as cnt /* 권한사용자cnt */
+		  FROM COM_ROLE a WITH(NOLOCK)
+		 WHERE 1 = 1
+         <isNotEmpty property="roleNm">
+			<![CDATA[  
+           AND (   a.role_id LIKE '%' + #roleNm# + '%'
+                OR a.role_nm LIKE '%' + #roleNm# + '%')
+			]]>
+         </isNotEmpty>
+		 ORDER BY a.role_gb
+		     , a.role_id 
+    </select>
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 계정코드팝업(admi01010_p02.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.selectBgAcntCdPopList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		<isEqual property="acntLvl" compareValue="10">
+			/* adcomDAO.selectBgAcntCdPopList 계정코드조회팝업 조회(1레벨) */    
+	        SELECT ba1.acnt_unt /* 회계단위ID */
+	             , ba1.acnt_yy /* 회계년도 */
+	             , ba1.acnt_cd /* 계정과목코드 */
+	             , ba1.acnt_nm as jang_nm /* 장명 */
+	             , '' as gwan_nm /* 관명 */
+	             , '' as hang_nm /* 항명 */
+	             , '' as mok_nm /* 목명 */
+	             , '' as semok_nm /* 세목명 */
+	             , '' as acnt_nm
+	          FROM BG_ACNT_CD ba1 WITH(NOLOCK)
+	         WHERE ba1.use_yn = '1'
+	           AND ba1.acnt_unt = #acntUnt#
+	           AND ba1.acnt_yy = #acntYy#
+	           AND ba1.acnt_lvl = #acntLvl#
+	           <isNotEmpty property="usageCd">
+	           		<isEqual property="usageCd" compareValue="10130">
+	           			AND ba1.usage_cd IN ('10', '130')
+	           		</isEqual>
+	           		<isNotEqual property="usageCd" compareValue="10130">
+	           			AND ba1.usage_cd = #usageCd#		
+	           		</isNotEqual>
+	           </isNotEmpty>
+	         <isNotEmpty property="acntNm">
+				<![CDATA[  
+	           AND (   ba1.acnt_cd LIKE '%' + #acntNm# + '%'
+	                OR ba1.acnt_nm LIKE '%' + #acntNm# + '%')
+				]]>
+	         </isNotEmpty>
+	         ORDER BY ba1.acnt_unt, ba1.acnt_yy, ba1.acnt_cd
+        </isEqual>
+        
+		<isEqual property="acntLvl" compareValue="20">
+			/* adcomDAO.selectBgAcntCdPopList 계정코드조회팝업 조회(2레벨) */    
+	        SELECT ba1.acnt_unt /* 회계단위ID */
+	             , ba1.acnt_yy /* 회계년도 */
+	             , ba1.acnt_cd /* 계정과목코드 */
+	             , ba2.acnt_nm as jang_nm /* 장명 */
+	             , ba1.acnt_nm as gwan_nm /* 관명 */
+	             , '' as hang_nm /* 항명 */
+	             , '' as mok_nm /* 목명 */
+	             , '' as semok_nm /* 세목명 */
+	             , '' as acnt_nm
+	          FROM BG_ACNT_CD ba1 WITH(NOLOCK)
+	               LEFT OUTER JOIN BG_ACNT_CD ba2 WITH(NOLOCK)
+	                 ON  ba1.acnt_unt = ba2.acnt_unt
+	                 AND ba1.acnt_yy = ba2.acnt_yy
+	                 AND ba1.upr_acnt_cd = ba2.acnt_cd
+	         WHERE ba1.use_yn = '1'
+	           AND ba1.acnt_unt = #acntUnt#
+	           AND ba1.acnt_yy = #acntYy#
+	           AND ba1.acnt_lvl = #acntLvl#
+	           <isNotEmpty property="usageCd">
+	           		<isEqual property="usageCd" compareValue="10130">
+	           			AND ba1.usage_cd IN ('10', '130')
+	           		</isEqual>
+	           		<isNotEqual property="usageCd" compareValue="10130">
+	           			AND ba1.usage_cd = #usageCd#		
+	           		</isNotEqual>
+	           </isNotEmpty>
+	           <isNotEmpty property="upAcntCd">
+	           AND ba1.upr_acnt_cd = #upAcntCd#
+	           </isNotEmpty>
+	         <isNotEmpty property="acntNm">
+				<![CDATA[    
+	           AND (   ba1.acnt_cd LIKE '%' + #acntNm# + '%'
+	                OR ba1.acnt_nm LIKE '%' + #acntNm# + '%')
+				]]>
+	           </isNotEmpty>
+	         ORDER BY ba2.acnt_cd, CASE WHEN ba1.acnt_cd IS NOT NULL THEN 1 ELSE 2 END
+        </isEqual>
+        
+		<isEqual property="acntLvl" compareValue="30">
+			/* adcomDAO.selectBgAcntCdPopList 계정코드조회팝업 조회(3레벨) */    
+	        SELECT ba1.acnt_unt /* 회계단위ID */
+	             , ba1.acnt_yy /* 회계년도 */
+	             , ba1.acnt_cd /* 계정과목코드 */
+	             , '' as jang_nm /* 장명 */
+	             , ba2.acnt_nm as gwan_nm   /* 관명 */
+	             , ba1.acnt_nm as hang_nm /* 항명 */
+	             , '' as mok_nm /* 목명 */
+	             , '' as semok_nm /* 세목명 */
+	             , '' as acnt_nm
+	          FROM BG_ACNT_CD ba1 WITH(NOLOCK)
+	               LEFT OUTER JOIN BG_ACNT_CD ba2 WITH(NOLOCK)
+	                   ON  ba1.acnt_unt = ba2.acnt_unt
+			           AND ba1.acnt_yy = ba2.acnt_yy
+			           AND ba1.upr_acnt_cd = ba2.acnt_cd
+	               LEFT OUTER JOIN BG_ACNT_CD ba3 WITH(NOLOCK)
+			           ON  ba2.acnt_unt = ba3.acnt_unt
+			           AND ba2.acnt_yy = ba3.acnt_yy
+			           AND ba2.upr_acnt_cd = ba3.acnt_cd
+	         WHERE ba1.use_yn = '1'
+	           AND ba1.acnt_unt = #acntUnt#
+	           AND ba1.acnt_yy = #acntYy#
+	           AND ba1.acnt_lvl = #acntLvl#
+	           <isNotEmpty property="usageCd">
+	           		<isEqual property="usageCd" compareValue="10130">
+	           			AND ba1.usage_cd IN ('10', '130')
+	           		</isEqual>
+	           		<isNotEqual property="usageCd" compareValue="10130">
+	           			AND ba1.usage_cd = #usageCd#		
+	           		</isNotEqual>
+	           </isNotEmpty>
+	           <isNotEmpty property="upAcntCd">
+	           AND ba1.upr_acnt_cd = #upAcntCd#
+	           </isNotEmpty>
+	         <isNotEmpty property="acntNm">
+				<![CDATA[    
+	           AND (   ba1.acnt_cd LIKE '%' + #acntNm# + '%'
+	                OR ba1.acnt_nm LIKE '%' + #acntNm# + '%' )
+				]]>
+	         </isNotEmpty>
+	         ORDER BY ba2.acnt_cd, CASE WHEN ba1.acnt_cd IS NOT NULL THEN 1 ELSE 2 END
+        </isEqual>
+        
+		<isEqual property="acntLvl" compareValue="40">
+			/* adcomDAO.selectBgAcntCdPopList 계정코드조회팝업 조회(4레벨) */    
+	        SELECT ba1.acnt_unt /* 회계단위ID */
+	             , ba1.acnt_yy /* 회계년도 */
+	             , ba1.acnt_cd /* 계정과목코드 */
+	             , '' as jang_nm /* 장명 */
+	             , ba3.acnt_nm as gwan_nm   /* 관명 */
+	             , ba2.acnt_nm as hang_nm   /* 항명 */
+	             , ba1.acnt_nm as mok_nm /* 목명 */
+	             , '' as semok_nm /* 세목명 */
+	             , '' as acnt_nm
+	          FROM BG_ACNT_CD ba1 WITH(NOLOCK)
+	               LEFT OUTER JOIN BG_ACNT_CD ba2 WITH(NOLOCK)
+					   ON  ba1.acnt_unt = ba2.acnt_unt
+			           AND ba1.acnt_yy = ba2.acnt_yy
+			           AND ba1.upr_acnt_cd = ba2.acnt_cd
+	               LEFT OUTER JOIN BG_ACNT_CD ba3 WITH(NOLOCK)
+			           ON  ba2.acnt_unt = ba3.acnt_unt
+			           AND ba2.acnt_yy = ba3.acnt_yy
+			           AND ba2.upr_acnt_cd = ba3.acnt_cd
+	         WHERE ba1.use_yn = '1'
+	           AND ba1.acnt_unt = #acntUnt#
+	           AND ba1.acnt_yy = #acntYy#
+	           AND ba1.acnt_lvl = #acntLvl#
+	           AND CASE WHEN #balDiv# = '10' THEN ba1.acnt_inc_nm
+	                    WHEN #balDiv# = '20' THEN ba1.acnt_exp_nm
+	                    ELSE ba1.acnt_nm END IS NOT NULL
+	           <isNotEmpty property="usageCd">
+	           		<isEqual property="usageCd" compareValue="10130">
+	           			AND ba1.usage_cd IN ('10', '130')
+	           		</isEqual>
+	           		<isNotEqual property="usageCd" compareValue="10130">
+	           			AND ba1.usage_cd = #usageCd#		
+	           		</isNotEqual>
+	           </isNotEmpty>
+	           <isNotEmpty property="upAcntCd">
+	           AND ba1.upr_acnt_cd = #upAcntCd#
+	           </isNotEmpty>
+	         <isNotEmpty property="acntNm">
+				<![CDATA[    
+	           AND (   ba1.acnt_cd LIKE '%' + #acntNm# + '%'
+	                OR ba1.acnt_nm LIKE '%' + #acntNm# + '%' )
+				]]>
+	         </isNotEmpty>
+	         ORDER BY ba3.acnt_cd, ba2.acnt_cd, CASE WHEN ba1.acnt_cd IS NOT NULL THEN 1 ELSE 2 END
+        </isEqual>
+        
+		<isEqual property="acntLvl" compareValue="50">
+			/* adcomDAO.selectBgAcntCdPopList 계정코드조회팝업 조회(5레벨) */    
+	        SELECT ba1.acnt_unt             /* 회계단위ID */
+	             , ba1.acnt_yy                 /* 회계년도 */
+	             , ba1.acnt_cd              /* 계정과목코드 */
+	             , '' as jang_nm
+	             , ba4.acnt_nm as gwan_nm   /* 관명 */
+	             , ba3.acnt_nm as hang_nm   /* 항명 */
+	             , ba2.acnt_nm as mok_nm    /* 목명 */
+	             , CASE WHEN #balDiv# IS NOT NULL AND LEN(#balDiv#) > 0 THEN CASE WHEN #balDiv# = '10' THEN ba1.acnt_inc_nm ELSE ba1.acnt_exp_nm END
+	                    WHEN #balDiv# IS NULL OR LEN(#balDiv#) = 0 THEN ba1.acnt_nm END as semok_nm /* 세목명 */
+	             , '' as acnt_nm
+	          FROM BG_ACNT_CD ba1 WITH(NOLOCK)
+	               LEFT OUTER JOIN BG_ACNT_CD ba2 WITH(NOLOCK)
+			           ON  ba1.acnt_unt = ba2.acnt_unt
+			           AND ba1.acnt_yy = ba2.acnt_yy
+			           AND ba1.upr_acnt_cd = ba2.acnt_cd 
+	               LEFT OUTER JOIN BG_ACNT_CD ba3 WITH(NOLOCK)
+			           ON  ba2.acnt_unt = ba3.acnt_unt
+			           AND ba2.acnt_yy = ba3.acnt_yy
+			           AND ba2.upr_acnt_cd = ba3.acnt_cd
+	               LEFT OUTER JOIN BG_ACNT_CD ba4 WITH(NOLOCK)
+			           ON  ba3.acnt_unt = ba4.acnt_unt
+			           AND ba3.acnt_yy = ba4.acnt_yy
+			           AND ba3.upr_acnt_cd = ba4.acnt_cd
+	         WHERE ba1.use_yn = '1'
+	           AND ba1.acnt_unt = #acntUnt#
+	           AND ba1.acnt_yy = #acntYy#
+	           AND ba1.acnt_lvl = #acntLvl#
+	           AND CASE WHEN #balDiv# = '10' THEN ba1.acnt_inc_nm
+	                    WHEN #balDiv# = '20' THEN ba1.acnt_exp_nm
+	                    ELSE ba1.acnt_nm END IS NOT NULL
+	           <isNotEmpty property="usageCd">
+	           		<isEqual property="usageCd" compareValue="10130">
+	           			AND ba1.usage_cd IN ('10', '130')
+	           		</isEqual>
+	           		<isNotEqual property="usageCd" compareValue="10130">
+	           			AND ba1.usage_cd = #usageCd#		
+	           		</isNotEqual>
+	           </isNotEmpty>
+	           <isNotEmpty property="upAcntCd">
+	           AND ba1.upr_acnt_cd = #upAcntCd#
+	           </isNotEmpty>
+	         <isNotEmpty property="acntNm">
+				<![CDATA[    
+	           AND (   ba1.acnt_cd LIKE '%' + #acntNm# + '%'
+	                OR CASE WHEN #balDiv# = '10' THEN ba1.acnt_inc_nm
+	                    WHEN #balDiv# = '20' THEN ba1.acnt_exp_nm
+	                    ELSE ba1.acnt_nm END LIKE '%' + #acntNm# + '%'
+	                OR ba2.acnt_cd LIKE '%' + #acntNm# + '%'
+	                OR ba2.acnt_nm LIKE '%' + #acntNm# + '%')
+				]]>
+			 </isNotEmpty>
+	         ORDER BY ba4.acnt_cd, ba3.acnt_cd, ba2.acnt_cd, CASE WHEN ba1.acnt_cd IS NOT NULL THEN 1 ELSE 2 END
+        </isEqual>
+    </select>
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 사업팝업(admi01010_p03.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.selectBgBizPopList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* adcomDAO.selectBgBizPopList 사업팝업 조회 */
+        SELECT a.acnt_unt 							/* 회계단위ID */
+             , a.biz_cd 							/* 사업코드 */
+             , a.biz_nm 							/* 사업명 */
+             , a.biz_lvl 							/* 사업레벨코드 */
+             , dbo.F_COM_CODE_NM('BG013', A.BIZ_LVL, 'KOR') AS BIZ_LVL_NM 		/* 사업레벨명 */
+             , a.upr_biz_cd 						/* 상위사업코드 */
+             , (SELECT sa.biz_nm 
+                 FROM BG_BIZ sa
+                WHERE sa.acnt_unt = #acntUnt#
+                  AND sa.biz_cd = a.upr_biz_cd) as upr_biz_nm /* 상위사업명 */
+             , a.purp_profit_div_cd 				/* 목적수익구분코드 */
+             , a.biz_div_cd 						/* 사업구분코드 */
+             , a.use_yn 							/* 사용여부 */
+             , a.finc_cd 							/* 재원코드 */
+             , b.finc_nm 							/* 재원명 */
+             , a.beg_yy 							/* 개시년도 */
+             , a.bf_biz_cd 							/* 이전사업코드 */
+             , (SELECT sa.biz_nm 
+                 FROM BG_BIZ sa WITH(NOLOCK)
+                WHERE sa.acnt_unt = #acntUnt#
+                  AND sa.biz_cd = a.bf_biz_cd) as bef_biz_nm /* 이전사업명 */
+          FROM BG_BIZ a  WITH(NOLOCK)
+          		LEFT OUTER JOIN BG_FINC b WITH(NOLOCK)
+                   ON  a.acnt_unt = b.acnt_unt    
+                   AND a.finc_cd = b.finc_cd
+         WHERE a.acnt_unt = #acntUnt#       
+		 <isNotEmpty property="useYn">   
+           AND a.use_yn = #useYn#
+         </isNotEmpty>
+         <isNotEmpty property="bizLvlCd">  
+           AND a.biz_lvl = #bizLvlCd#
+         </isNotEmpty>
+         <isNotEmpty property="uprBizCd">           
+           AND a.biz_lvl = #uprBizCd#
+         </isNotEmpty>
+         <isNotEmpty property="befBizCd">
+           AND a.biz_lvl = '3'
+         </isNotEmpty>
+         <isNotEmpty property="bizNm">   
+			<![CDATA[    
+           AND (    a.biz_cd LIKE '%'+#bizNm#+'%'
+                OR  a.biz_nm LIKE '%'+#bizNm#+'%')
+			]]>
+         </isNotEmpty>   
+         ORDER BY upr_biz_nm
+             , a.biz_nm
+    </select>
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 재원팝업(admi01010_p04.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.selectBgFincPopList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* adcomDAO.selectBgFincPopList 재원팝업 조회 */
+        SELECT acnt_unt /* 회계단위ID */
+             , finc_cd /* 재원코드 */
+             , finc_nm /* 재원명 */
+             , finc_div_cd /* 재원구분코드 */
+             , mgt_acnt_no /* 관리계좌번호 */
+             , supt_org_nm /* 지원기관명 */
+             , beg_yy /* 개시년도 */
+          FROM BG_FINC WITH(NOLOCK)
+         WHERE 1 = 1
+           AND acnt_unt = #acntUnt#
+         <isNotEmpty property="fincNm">
+			<![CDATA[    
+           AND (   finc_nm LIKE '%'+#fincNm#+'%'
+                OR finc_cd LIKE '%'+#fincNm#+'%')
+			]]>
+         </isNotEmpty>
+         ORDER BY finc_cd
+    </select>
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 예산조회팝업(admi01010_p05.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 우편번호조회팝업(admi01010_p06.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.selectZipPopList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* adcomDAO.selectZipPopList 우편번호조회팝업 조회 */
+    	SELECT zip
+	         , sido_nm +' '+ CASE WHEN sigungu IS NULL OR sigungu = '' THEN '' ELSE sigungu END +' '+doro_nm+CASE WHEN bldg1 IS NULL OR bldg1 = '' THEN '' WHEN bldg1 = 0 THEN '' ELSE ' ' + bldg1 END +CASE WHEN  bldg2 IS NULL OR bldg2 = '' THEN '' WHEN bldg2 = 0 THEN '' ELSE  '-'+bldg2 END +CASE WHEN bldg_nm IS NULL OR bldg_nm = '' THEN '' ELSE ' '+bldg_nm END as addr
+	         , sido_nm +' '+ CASE WHEN sigungu IS NULL OR sigungu = '' THEN '' ELSE sigungu END +' '+doro_nm+CASE WHEN bldg1 IS NULL OR bldg1 = '' THEN '' WHEN bldg1 = 0 THEN '' ELSE ' ' + bldg1 END +CASE WHEN  bldg2 IS NULL OR bldg2 = '' THEN '' WHEN bldg2 = 0 THEN '' ELSE  '-'+bldg2 END  as addr1
+	         , CASE WHEN bldg_nm IS NULL OR bldg_nm = '' THEN '' ELSE ' '+bldg_nm END as addr2
+	         , sido_nm
+	         , sigungu
+	         , doro_nm
+	         , bldg1
+	         , bldg2
+	         , bldg_nm
+	         , CASE WHEN bub_dong_nm IS NULL OR bub_dong_nm = '' THEN '' WHEN bub_dong_nm = '' THEN '' ELSE bub_dong_nm END + CASE WHEN hang_ri IS NULL OR hang_ri = '' THEN '' ELSE hang_ri END+CASE WHEN ji_num IS NULL OR ji_num = '' THEN '' ELSE ' '+ji_num END+CASE WHEN ji_num_bu IS NULL OR ji_num_bu = '' OR ji_num_bu = 0 THEN '' ELSE '-'+ji_num_bu END as addr_jibeun
+	         , bub_dong_nm
+	         , hang_ri
+	         , ji_num
+     	     , ji_num_bu
+	         , old_zip
+	    FROM COM_ZIP_NEW WITH(NOLOCK)
+	   WHERE 1 = 1
+	   <isNotEmpty property="sidoGb">
+	     AND sido_code = #sidoGb#
+	   </isNotEmpty>
+	   <isNotEmpty property="doroZipNm">
+	     AND (zip LIKE '%'+#doroZipNm#+'%'
+	          OR sido_nm LIKE '%'+#doroZipNm#+'%'
+	          OR sigungu LIKE '%'+#doroZipNm#+'%'
+	          OR doro_nm LIKE '%'+#doroZipNm#+'%'
+	          OR bldg_nm LIKE '%'+#doroZipNm#+'%'
+	          OR sido_nm +' '+CASE WHEN sigungu IS NULL OR sigungu = '' THEN '' ELSE sigungu END+' '+doro_nm+CASE WHEN bldg1 IS NULL OR bldg1= '' OR bldg1 = 0 THEN '' ELSE ' '+bldg1 END+CASE WHEN bldg2 IS NULL OR bldg2 = '' OR bldg2 = 0 THEN '' ELSE '-'+bldg2 END+CASE WHEN bldg_nm IS NULL OR bldg_nm = '' THEN '' ELSE ' '+bldg_nm END LIKE '%'+#doroZipNm#+'%'
+	          OR CASE WHEN bub_dong_nm IS NULL OR bub_dong_nm = '' THEN '' ELSE bub_dong_nm END+CASE WHEN hang_ri IS NULL OR hang_ri= '' THEN '' ELSE hang_ri END+CASE WHEN ji_num IS NULL OR ji_num = '' THEN '' ELSE ' '+ji_num END+CASE WHEN ji_num_bu IS NULL OR ji_num_bu = '' OR ji_num_bu = 0 THEN '' ELSE '-'+ji_num_bu END LIKE '%'+#doroZipNm#+'%'
+	          OR bub_dong_nm LIKE '%'+#doroZipNm#+'%'
+	          OR hang_ri LIKE '%'+#doroZipNm#+'%'
+	          OR bldg_nm LIKE '%'+#doroZipNm#+'%')
+	   </isNotEmpty>
+       ORDER BY sido_nm
+              , sigungu
+              , doro_nm
+              , CONVERT(INT, bldg1)
+              , CONVERT(INT, bldg2)
+    </select> 
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 조직도조회팝업(admi01010_p07.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.selectDeptPopList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* adcomDAO.selectDeptPopList 조직도팝업 조회 */
+		WITH CTE_DEPT
+		AS(
+                SELECT 1 AS TREE_LEVEL
+                     , DEPT_DIV DEPT_GB	/* 조직구분 */
+                     , DEPT_CD	/* 조직코드 */
+                     , CONVERT(VARCHAR(200), DEPT_CD) AS DEPT_ORD 
+                     , DEPT_NM DEPT_NM_KOR	/* 조직명(한글) */
+                     , ENG DEPT_NM_ENG	/* 조직명(영문) */
+                     , DEPT_NM DEPT_SHORT_NM_KOR	/* 조직약어명(한글) */
+                     , ENG DEPT_SHORT_NM_ENG	/* 조직약어명(영문) */
+                     , '' DEPT_LEVEL/* 조직레벨 */
+                     , PRT_ORD DEPT_SORT	/* 조직분류 */
+                     , UP_CD UP_DEPT_CD	/* 상위조직코드 */
+                     , '' STUDIES_GB	/* 학부구분 */
+                     , '' MAJOR_FIELD	/* 전공분야 */
+                     , '' NATION_ORGAN	/* 정부기관 */
+                     , '' PART_CD	/* 계열코드 */
+                     , '' DR_PART_CD	/* 등록계열코드 */
+                     , '' COURSE_CD_MASTER	/* 학위명코드_석사 */
+                     , '' COURSE_CD_DOCTOR	/* 학위명코드_박사 */
+                     , PRT_ORD SORT_SEQ	/* 편제순서 */
+                     , '' FOUND_DT	/* 신설일자 */
+                     , '' CLOSE_DT	/* 폐지일자 */
+                     , '1' USE_FLAG	/* 사용여부 */
+                     , '' DEPT_MAJOR	/* 대표전공 */
+                     , '' OLD_DEPT_CD	/* 이전조직코드 */
+                     , '' DEPT_SEQ	/* 조직트리구조순번 */
+                     , '' OLD_DZ_CD	/*  */
+                     , '' DEPT_DESC	/* 학과소개 */
+                     , '' MMA_CD	/* 병무청코드 */
+                     , '' KOSAF_CD	/* 장학재단코드 */
+                     , '' MOE_CD	/* 교육부코드 */
+                     , '' CAMPUS_TEACHER	/* 캠퍼스책임교수 */
+                     , '' DEPT_DESC_ENG	/* 학과소개영문 */
+                     , '' MOE_PART_CD	/* 교육부계열코드 */
+                  FROM urp01puc.dbo.UCOM010T TA WITH(NOLOCK)
+                 WHERE 1 = 1
+                   AND DEPT_CD = '00001'
+			
+			UNION ALL
+		
+                SELECT CONVERT(INT, B.TREE_LEVEL) + 1 TREE_LEVEL
+                     , A.DEPT_DIV DEPT_GB	/* 조직구분 */
+                     , A.DEPT_CD	/* 조직코드 */
+                     , CONVERT(VARCHAR(200),CONVERT(VARCHAR(200),B.DEPT_ORD) + CONVERT(VARCHAR(200),A.DEPT_CD)) AS DEPT_ORD
+                     , A.DEPT_NM DEPT_NM_KOR	/* 조직명(한글) */
+                     , A.ENG DEPT_NM_ENG	/* 조직명(영문) */
+                     , A.DEPT_NM DEPT_SHORT_NM_KOR	/* 조직약어명(한글) */
+                     , A.ENG DEPT_SHORT_NM_ENG	/* 조직약어명(영문) */
+                     , '' DEPT_LEVEL/* 조직레벨 */
+                     , A.PRT_ORD DEPT_SORT	/* 조직분류 */
+                     , A.UP_CD UP_DEPT_CD	/* 상위조직코드 */
+                     , '' STUDIES_GB	/* 학부구분 */
+                     , '' MAJOR_FIELD	/* 전공분야 */
+                     , '' NATION_ORGAN	/* 정부기관 */
+                     , '' PART_CD	/* 계열코드 */
+                     , '' DR_PART_CD	/* 등록계열코드 */
+                     , '' COURSE_CD_MASTER	/* 학위명코드_석사 */
+                     , '' COURSE_CD_DOCTOR	/* 학위명코드_박사 */
+                     , A.PRT_ORD SORT_SEQ	/* 편제순서 */
+                     , '' FOUND_DT	/* 신설일자 */
+                     , '' CLOSE_DT	/* 폐지일자 */
+                     , '1' USE_FLAG	/* 사용여부 */
+                     , '' DEPT_MAJOR	/* 대표전공 */
+                     , '' OLD_DEPT_CD	/* 이전조직코드 */
+                     , '' DEPT_SEQ	/* 조직트리구조순번 */
+                     , '' OLD_DZ_CD	/*  */
+                     , '' DEPT_DESC	/* 학과소개 */
+                     , '' MMA_CD	/* 병무청코드 */
+                     , '' KOSAF_CD	/* 장학재단코드 */
+                     , '' MOE_CD	/* 교육부코드 */
+                     , '' CAMPUS_TEACHER	/* 캠퍼스책임교수 */
+                     , '' DEPT_DESC_ENG	/* 학과소개영문 */
+                     , '' MOE_PART_CD	/* 교육부계열코드 */
+                  FROM urp01puc.dbo.UCOM010T A WITH(NOLOCK)
+					, CTE_DEPT B
+                 WHERE A.UP_CD = B.DEPT_CD
+		)
+		SELECT '0' AS CHK
+		     , '' AS ROW_STATUS
+		     , '0' AS TREE_CHK
+		     , '0' AS TREE_STATUS
+		     , TA.TREE_LEVEL	
+		     , TA.DEPT_ORD
+		     , TA.DEPT_GB	/* 조직구분 */
+			 , TA.DEPT_CD	/* 조직코드 */
+			 , TA.DEPT_NM_KOR	/* 조직명(한글) */
+			 , TA.DEPT_NM_ENG	/* 조직명(영문) */
+			 , TA.DEPT_SHORT_NM_KOR	/* 조직약어명(한글) */
+			 , TA.DEPT_SHORT_NM_ENG	/* 조직약어명(영문) */
+			 , TA.DEPT_LEVEL/* 조직레벨 */
+			 , TA.DEPT_SORT	/* 조직분류 */
+			 , TA.UP_DEPT_CD	/* 상위조직코드 */
+			 , dbo.F_COM_DEPT_NM(TA.UP_DEPT_CD, 'DEPT_NM_KOR') AS UP_DEPT_NM
+			 , TA.STUDIES_GB	/* 학부구분 */
+			 , TA.MAJOR_FIELD	/* 전공분야 */
+			 , TA.NATION_ORGAN	/* 정부기관 */
+			 , TA.PART_CD	/* 계열코드 */
+			 , TA.DR_PART_CD	/* 등록계열코드 */
+			 , TA.COURSE_CD_MASTER	/* 학위명코드_석사 */
+			 , TA.COURSE_CD_DOCTOR	/* 학위명코드_박사 */
+			 , TA.SORT_SEQ	/* 편제순서 */
+			 , TA.FOUND_DT	/* 신설일자 */
+			 , TA.CLOSE_DT	/* 폐지일자 */
+			 , TA.USE_FLAG	/* 사용여부 */
+			 , TA.DEPT_MAJOR	/* 대표전공 */
+			 , TA.OLD_DEPT_CD	/* 이전조직코드 */
+			 , TA.DEPT_SEQ	/* 조직트리구조순번 */
+			 , TA.OLD_DZ_CD	/*  */
+			 , TA.DEPT_DESC	/* 학과소개 */
+			 , TA.MMA_CD	/* 병무청코드 */
+			 , TA.KOSAF_CD	/* 장학재단코드 */
+			 , TA.MOE_CD	/* 교육부코드 */
+			 , TA.CAMPUS_TEACHER	/* 캠퍼스책임교수 */
+			 , TA.DEPT_DESC_ENG	/* 학과소개영문 */
+			 , TA.MOE_PART_CD	/* 교육부계열코드 */
+		  FROM CTE_DEPT TA, VW_COMM_DEPT TB
+		 WHERE TA.DEPT_CD = TB.DEPT_CD
+		   <isNotEmpty property="jojikCdNm" >
+		   AND ( TA.DEPT_NM_KOR LIKE '%'+ #jojikCdNm# +'%' 
+                   OR TA.DEPT_CD     LIKE '%'+ #jojikCdNm# +'%')
+           </isNotEmpty>
+	     ORDER BY TA.DEPT_ORD 
+     </select>
+    
+    <!--
+    #########################################################################################################################################
+    # 계좌조회팝업(admiac01010_p08.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.selectAcntNoPopList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		
+		SELECT ACNT_UNT
+     		 , ACNT_NO
+     		 , ACNT_ALIAS
+     		 , NEW_ACNT_NO
+     		 , BANK_CD
+     		 , dbo.F_COM_CODE_NM('CS005', BANK_CD, 'KOR') AS BANK_CD_NM
+     		 , BANK_REG_NO
+     	  	 , ACNT_KND
+     	  	 , dbo.F_COM_CODE_NM('AC007', ACNT_KND, 'KOR') AS ACNT_KND_NM
+     		 , ACNT_DIV
+     		 , dbo.F_COM_CODE_NM('AC006', ACNT_DIV, 'KOR') AS ACNT_DIV_NM
+     		 , OP_DT
+     		 , EXPIR_DT
+     		 , DEPOSR
+     		 , ACNT_CD
+             , dbo.F_AC_GET_ACNT_INFO(#acntYy#, ACNT_UNT, ACNT_CD, '40', '') AS ACNT_CD_MOK_NM
+             , dbo.F_AC_GET_ACNT_INFO(#acntYy#, ACNT_UNT, ACNT_CD, '', '') AS ACNT_CD_SEMOK_NM
+  		  FROM AC_BANK_NO WITH(NOLOCK)
+ 		 WHERE 1=1 
+		   AND ACNT_UNT = #acntUnt#
+		<isNotEmpty property = "acntNo"> 
+		   AND ACNT_NO LIKE '%' + #acntNo# + '%'
+		</isNotEmpty>
+		<isNotEmpty property = "acntDiv"> 
+		   AND ACNT_DIV = #acntDiv#
+		</isNotEmpty>
+	  ORDER BY ACNT_UNT
+    </select>
+
+    <select id="adcomDAO.selectAfdAcntNoPopList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		SELECT ACNT_NO
+     		 , BANK_CD
+     		 , dbo.F_COM_CODE_NM('CS005', BANK_CD, 'KOR') AS BANK_CD_NM
+     		 , ACNT_KND
+     	  	 , dbo.F_COM_CODE_NM('AC007', ACNT_KND, 'KOR') AS ACNT_KND_NM
+     		 , OP_DT
+     		 , EXPIR_DT
+     		 , RMK
+  		  FROM AFD_BANK_NO WITH(NOLOCK)
+ 		 WHERE 1=1 
+		<isNotEmpty property = "acntNo"> 
+		   AND ACNT_NO LIKE '%' + #acntNo# + '%'
+		</isNotEmpty>
+		<isNotEmpty property = "acntKnd"> 
+		   AND ACNT_KND = #acntKnd#
+		</isNotEmpty>
+	  ORDER BY ACNT_NO
+    </select>
+
+
+    <select id="adcomDAO.selectAcntNoPopList30"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		
+		SELECT ACNT_UNT
+     		 , ACNT_NO
+     		 , ACNT_ALIAS
+     		 , NEW_ACNT_NO
+     		 , BANK_CD
+     		 , dbo.F_COM_CODE_NM('CS005', BANK_CD, 'KOR') AS BANK_CD_NM
+     		 , BANK_REG_NO
+     	  	 , ACNT_KND
+     	  	 , dbo.F_COM_CODE_NM('AC007', ACNT_KND, 'KOR') AS ACNT_KND_NM
+     		 , ACNT_DIV
+     		 , dbo.F_COM_CODE_NM('AC006', ACNT_DIV, 'KOR') AS ACNT_DIV_NM
+     		 , OP_DT
+     		 , EXPIR_DT
+     		 , DEPOSR
+     		 , ACNT_CD
+             , dbo.F_AC_GET_ACNT_INFO(#acntYy#, ACNT_UNT, ACNT_CD, '40', '') AS ACNT_CD_MOK_NM
+             , dbo.F_AC_GET_ACNT_INFO(#acntYy#, ACNT_UNT, ACNT_CD, '', '') AS ACNT_CD_SEMOK_NM
+  		  FROM AC_BANK_NO WITH(NOLOCK)
+ 		 WHERE 1=1 
+		<isNotEmpty property = "acntNo"> 
+		   AND ACNT_NO LIKE '%' + #acntNo# + '%'
+		</isNotEmpty> 
+		   AND ACNT_DIV = '30'
+    </select>
+    
+    <!--
+    #########################################################################################################################################
+    # 거래처조회팝업(admiac01010_p09.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.selectVendPopList" parameterClass="java.util.HashMap" resultClass="egovMap">
+    	
+        SELECT VEND_ID
+		     , BIZ_REG_NO
+		     , VEND_NM
+		     , VEND_ENM
+		     , VEND_ANM
+		     , PRSDT_NM
+		     , TEL_NO
+		     , FAX_NO
+		     , ZIP_NO
+		     , ADDR
+		     , ADDR_DET
+		     , WKTY
+		     , KND
+		     , RESP_NM
+		     , RESP_TEL_NO
+		     , RESP_MP_NO
+		     , RESP_EMAIL
+		     , CLSBIZ_YN
+		     , CLSBIZ_DT
+		     , RMK 
+		     , INSERT_ID
+		     , dbo.F_COM_USER_NM(INSERT_ID, 'NM') AS INSERT_ID_NM
+		  FROM VW_AC_VEND WITH(NOLOCK)
+		 WHERE 1=1
+	 	   AND CLSBIZ_YN = '0'
+	 	<isNotEmpty property="bizRegNoVendNm">
+           AND (   
+                   BIZ_REG_NO LIKE #bizRegNoVendNm# + '%'
+                OR VEND_NM LIKE '%' + #bizRegNoVendNm# + '%'
+                OR VEND_ENM LIKE '%' + #bizRegNoVendNm# + '%'
+                OR VEND_ANM LIKE '%' + #bizRegNoVendNm# + '%'
+               )			
+        </isNotEmpty>
+        
+        ORDER BY VEND_NM
+	</select>
+	
+	
+    <!--
+    #########################################################################################################################################
+    # 입금내역팝업조회(admi01010_p10.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 세금계산서팝업조회(admi01010_p11.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 연계결의서팝업조회(admi01010_p12.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 은행조회팝업(admiac01010_p13.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.selectBankPopList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		
+		SELECT COM_CD_DIV 
+		     , COM_CD 
+		     , COM_CD_NM
+		     , COM_CD_REF2 
+		     , SORT_SEQ 
+		     , USE_YN 
+		  FROM COM_COD WITH(NOLOCK)
+		 WHERE 1 = 1
+		   AND COM_CD != '@'
+		   AND COM_CD_DIV = 'CS005'
+		   AND USE_YN = '1'
+		<isNotEmpty property="bankCdNm">
+		   AND COM_CD_NM LIKE '%' + #bankCdNm# + '%'
+		</isNotEmpty>
+		 ORDER BY SORT_SEQ
+
+    </select>
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 교직원조회팝업(admiac01010_p14.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.selectComUserPopList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* adcomDAO.selectComUserPopList 교직원 조회 */
+		
+		SELECT '' AS CHK
+		     , '' AS ROW_STATUS
+		     , MEMBER_NO
+		     , NM
+		     , DEPT_CD
+		     , dbo.F_COM_DEPT_NM(DEPT_CD, 'DEPT_NM_KOR') AS DEPT_CD_NM
+		     , HOFC_DIV
+		     , dbo.F_COM_CODE_NM('CS006', HOFC_DIV, 'KOR') AS HOFC_DIV_NM
+		     , RESI_CNTY
+		     , dbo.F_COM_CODE_NM('CS004', RESI_CNTY, 'KOR') AS RESI_CNTY_NM
+		     , ZIP_NO
+		     , ADDR 
+		     , ADDR_DET
+		     , ADDR + ' ' + ADDR_DET AS ADDR_F
+		     , JUMIN_NO
+		  FROM VW_USER_LIST
+		 WHERE 1=1
+				 
+		   <isNotEmpty property="NM">
+		   AND ( NM LIKE '%' + #NM# + '%'
+		        OR MEMBER_NO LIKE '%' + #NM# + '%')
+		   </isNotEmpty>
+		   
+		   <isNotEmpty property="DEPTCDNM">
+		   AND dbo.F_COM_DEPT_NM(DEPT_CD, 'DEPT_NM_KOR') LIKE '%' + #DEPTCDNM# + '%'
+		   </isNotEmpty>
+		   
+		   <isNotEmpty property="HOFC_DIV">
+		   AND HOFC_DIV = #HOFC_DIV#
+		   </isNotEmpty>
+		   
+		 ORDER BY NM, HOFC_DIV
+		
+    </select>
+    
+    
+    <!--
+    #########################################################################################################################################
+    # (관리)부서검색콤보(cfn_AcntOrgIdCombo)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.selectAcntOrgIdCombo"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* adcomDAO.selectAcntOrgIdCombo (관리)부서검색콤보 */
+		
+		SELECT A.DEPT_CD
+		     , case when c.dept_nm_kor is not null and c.dept_nm_kor != '' then c.dept_nm_kor + ' - ' else '' end + A.DEPT_NM_KOR as dept_nm_kor
+		  FROM VW_COMM_DEPT A WITH(NOLOCK)
+		inner join (
+			 	SELECT dept_cd
+			           FROM VW_USER_LIST
+			          WHERE MEMBER_NO = #memberNo#
+
+			          UNION 
+			          
+					 SELECT dept_cd
+			           FROM VW_USER_ADD_DEPT
+			          WHERE EMP_ID = #memberNo#
+
+			          UNION 
+
+			         SELECT distinct org_id dept_cd
+			           FROM BG_ORG_PERM WITH(NOLOCK)
+			          WHERE acnt_unt = #ACNT_UNT#
+			            AND work_div = #WORK_DIV# 
+			            AND mgt_org_id IN ( SELECT dept_cd
+									          FROM VW_USER_LIST
+									         WHERE MEMBER_NO = #memberNo#
+						
+									          UNION 
+									          
+											 SELECT dept_cd
+									           FROM VW_USER_ADD_DEPT
+									          WHERE EMP_ID = #memberNo#)
+	           ) B
+	         on A.DEPT_CD = B.DEPT_CD
+	        left outer join VW_COMM_DEPT c WITH(NOLOCK)
+			     on a.up_dept_cd = c.dept_cd
+		 ORDER BY (case a.dept_cd 
+                      when (SELECT MAX(dept_cd)
+				           FROM VW_USER_LIST
+				          WHERE MEMBER_NO = #memberNo#) then 1
+                      when a.dept_cd  then 2
+                      else 3
+                      end ), c.dept_nm_kor, a.dept_nm_kor, a.dept_cd
+		
+    </select>
+    
+    
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 부서별예산조회팝업(admi01010_p15.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.admi01010_p15_01"  parameterClass="java.util.HashMap" resultClass="egovMap">
+			SELECT A.ACNT_YY AS ACNT_YY
+			     , A.ACNT_UNT AS ACNT_UNT
+			     , A.BIZ_CD AS BIZ_CD
+			     , (SELECT DEPT_NM_KOR FROM VW_COMM_DEPT WHERE DEPT_CD = A.BUDG_ORG_ID) AS BUDG_ORG_NM
+			     , dbo.F_AC_GET_BIZ_NM(A.ACNT_UNT, A.BIZ_CD, 'BIZ_NM') AS BIZ_CD_NM
+			     , dbo.F_AC_GET_ACNT_INFO(A.ACNT_YY, A.ACNT_UNT, A.ACNT_CD, '40', CASE WHEN A.BAL_DIV = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) AS ACNT_CD_MOK_NM
+			     , A.ACNT_CD
+			     , dbo.F_AC_GET_ACNT_INFO(A.ACNT_YY, A.ACNT_UNT, A.ACNT_CD, '50', CASE WHEN A.BAL_DIV = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) AS ACNT_CD_NM
+			     , dbo.F_AC_ASGN_AMT_SUM(A.ACNT_YY, A.ACNT_UNT, A.BUDG_ORG_ID, A.BIZ_CD, A.ACNT_CD, A.BAL_DIV, '') AS ASGN_AMT_SUM
+			     , dbo.F_AC_EXEC_AMT_SUM(A.ACNT_YY, A.ACNT_UNT, A.BUDG_ORG_ID, A.BIZ_CD, A.ACNT_CD, A.BAL_DIV, '') AS EXEC_AMT_SUM
+			     , ISNULL(dbo.F_AC_ASGN_AMT_SUM(A.ACNT_YY, A.ACNT_UNT, A.BUDG_ORG_ID, A.BIZ_CD, A.ACNT_CD, A.BAL_DIV, ''), 0)
+			        -
+			       ISNULL(dbo.F_AC_EXEC_AMT_SUM(A.ACNT_YY, A.ACNT_UNT, A.BUDG_ORG_ID, A.BIZ_CD, A.ACNT_CD, A.BAL_DIV, ''), 0) AS BUDG_BAL
+			     , dbo.F_AC_GET_BIZ_NM(A.ACNT_UNT, A.BIZ_CD, 'FINC_CD') AS FINC_CD
+			     , dbo.F_AC_GET_BIZ_NM(A.ACNT_UNT, A.BIZ_CD, 'FINC_NM') AS FINC_CD_NM
+			     , dbo.F_AC_GET_BIZ_NM(A.ACNT_UNT, A.BIZ_CD, 'MGT_ACNT_NO') AS MGT_ACNT_NO
+			     , ( SELECT B.USAGE_CD
+			           FROM BG_ACNT_CD B WITH(NOLOCK)
+			          WHERE A.ACNT_YY = B.ACNT_YY
+				        AND A.ACNT_UNT = B.ACNT_UNT
+				        AND A.ACNT_CD = B.ACNT_CD ) AS USAGE_CD
+				 , A.BUDG_ORG_ID
+				 , A.BAL_DIV
+			  FROM BG_ASGN A WITH(NOLOCK)
+			 WHERE A.ACNT_YY = #acntYy#
+			   AND A.ACNT_UNT = #acntUnt#
+			   AND ( A.BUDG_ORG_ID = #budgOrgId#
+			   		  OR EXISTS ( SELECT 1
+			   		                FROM BG_ACNT_DEPT B WITH(NOLOCK)
+			   		               WHERE B.ACNT_UNT LIKE #acntUnt#
+									 AND B.ACNT_YY = #acntYy#
+									 AND B.MGT_ORG_ID = #budgOrgId# 
+									 AND B.ACNT_UNT = A.ACNT_UNT
+									 AND B.ACNT_YY = A.ACNT_YY
+									 AND B.BUDG_ORG_ID = A.BUDG_ORG_ID
+									 AND B.BAL_DIV = A.BAL_DIV
+									 AND B.BIZ_CD = A.BIZ_CD
+									 AND B.ACNT_CD = A.ACNT_CD ) )
+			   AND BAL_DIV = #balDiv#
+			
+			<isNotEmpty property="bizCdNm">
+	   		   AND dbo.F_AC_GET_BIZ_NM(A.ACNT_UNT, A.BIZ_CD, 'BIZ_NM') LIKE '%' + #bizCdNm# + '%'
+	   		</isNotEmpty>
+	   		
+	   		<isNotEmpty property="acntCdMokNm">
+	   		   AND dbo.F_AC_GET_ACNT_INFO(A.ACNT_YY, A.ACNT_UNT, A.ACNT_CD, '40', CASE WHEN A.BAL_DIV = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) LIKE '%' + #acntCdMokNm# + '%'
+			</isNotEmpty>
+			
+			<isNotEmpty property="acntCdNm">
+			   AND dbo.F_AC_GET_ACNT_INFO(A.ACNT_YY, A.ACNT_UNT, A.ACNT_CD, '50', CASE WHEN A.BAL_DIV = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) LIKE '%' + #acntCdNm# + '%'
+			</isNotEmpty>
+			
+			<isNotEmpty property="acntCd">
+				AND A.ACNT_CD LIKE SUBSTRING(#acntCd#,1,2) + '%'
+			</isNotEmpty>
+			
+			<isNotEmpty property="bizCd">
+				AND A.BIZ_CD = #bizCd#
+			</isNotEmpty>
+			
+	   		  GROUP BY A.ACNT_YY, A.ACNT_UNT, A.ACNT_CD, A.BIZ_CD, A.BUDG_ORG_ID, A.BAL_DIV
+	   		  
+	   		<isEqual property="nonBudgYn" compareValue="1">
+	   			<isEqual property="balDiv" compareValue="20">
+	   		UNION 
+	   		
+			SELECT ACNT_YY
+			     , ACNT_UNT
+			     , '' AS BIZ_CD
+			     , '' AS BUDG_ORG_NM
+			     , '' AS BIZ_CD_NM
+			     , dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '40', 'ACNT_EXP_NM') AS ACNT_CD_MOK_NM
+			     , ACNT_CD
+			     , dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '50', 'ACNT_EXP_NM') AS ACNT_CD_NM
+			     , null AS ASGN_AMT_SUM
+			     , null AS EXEC_AMT_SUM
+			     , null AS BUDG_BAL
+			     , '' AS FINC_CD
+			     , '' AS FINC_CD_NM
+			     , '' AS MGT_ACNT_NO
+			     , '' AS USAGE_CD
+			     , '' BUDG_ORG_ID
+			     , '' BAL_DIV
+			 FROM BG_ACNT_CD
+			WHERE ACNT_YY = #acntYy#
+			  AND ACNT_UNT = #acntUnt#
+			  AND ACNT_LVL = '50'
+			  AND ( ACNT_CD LIKE '1122%' OR ACNT_CD LIKE '212%' OR ACNT_CD = '112401')
+			<isNotEmpty property="bizCdNm">
+	   		   AND 1 = 0
+	   		</isNotEmpty>
+	   		
+	   		<isNotEmpty property="acntCdMokNm">
+	   		   AND dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '40', 'ACNT_EXP_NM') LIKE '%' + #acntCdMokNm# + '%'
+			</isNotEmpty>
+			
+			<isNotEmpty property="acntCdNm">
+			   AND dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '50', 'ACNT_EXP_NM') LIKE '%' + #acntCdNm# + '%'
+			</isNotEmpty>
+			  
+			  	</isEqual>
+			  	
+	   			<isEqual property="balDiv" compareValue="10">
+	   		UNION 
+	   		
+			SELECT ACNT_YY
+			     , ACNT_UNT
+			     , '' AS BIZ_CD
+			     , '' AS BUDG_ORG_NM
+			     , '' AS BIZ_CD_NM
+			     , dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '40', 'ACNT_INC_NM') AS ACNT_CD_MOK_NM
+			     , ACNT_CD
+			     , dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '50', 'ACNT_INC_NM') AS ACNT_CD_NM
+			     , null AS ASGN_AMT_SUM
+			     , null AS EXEC_AMT_SUM
+			     , null AS BUDG_BAL
+			     , '' AS FINC_CD
+			     , '' AS FINC_CD_NM
+			     , '' AS MGT_ACNT_NO
+			     , '' AS USAGE_CD
+			     , '' BUDG_ORG_ID
+			     , '' BAL_DIV
+			 FROM BG_ACNT_CD
+			WHERE ACNT_YY = #acntYy#
+			  AND ACNT_UNT = #acntUnt#
+			  AND ACNT_LVL = '50'
+			  AND ( ACNT_CD LIKE '213%'
+			        OR ACNT_CD = '112301'
+			        OR ACNT_CD LIKE '212%'
+			        OR ACNT_CD = '112401'
+			        OR ACNT_CD LIKE '1122%' )
+			<isNotEmpty property="bizCdNm">
+	   		   AND 1 = 0
+	   		</isNotEmpty>
+	   		
+	   		<isNotEmpty property="acntCdMokNm">
+	   		   AND dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '40', 'ACNT_INC_NM') LIKE '%' + #acntCdMokNm# + '%'
+			</isNotEmpty>
+			
+			<isNotEmpty property="acntCdNm">
+			   AND dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '50', 'ACNT_INC_NM') LIKE '%' + #acntCdNm# + '%'
+			</isNotEmpty>
+			        
+			  	</isEqual>
+			  	
+	   		</isEqual>
+	   		  
+	   		  ORDER BY ACNT_YY, ACNT_UNT, ACNT_CD, BIZ_CD, BUDG_ORG_ID, BAL_DIV
+
+		
+    </select>
+    
+    <select id="adcomDAO.admi01010_p15_01_bg"  parameterClass="java.util.HashMap" resultClass="egovMap">
+    		SELECT ACNT_YY
+			     , ACNT_UNT
+			     , BIZ_CD
+			     , (SELECT DEPT_NM_KOR FROM VW_COMM_DEPT WHERE DEPT_CD = BUDG_ORG_ID) AS BUDG_ORG_NM
+			     , dbo.F_AC_GET_BIZ_NM(ACNT_UNT, BIZ_CD, 'BIZ_NM') AS BIZ_CD_NM
+			     , dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '40', CASE WHEN BAL_DIV = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) AS ACNT_CD_MOK_NM
+			     , ACNT_CD
+			     , dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '50', CASE WHEN BAL_DIV = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) AS ACNT_CD_NM
+			     
+			     , ISNULL(dbo.F_AC_ASGN_AMT_SUM(ACNT_YY, ACNT_UNT, BUDG_ORG_ID, BIZ_CD, ACNT_CD, BAL_DIV, ''),0) AS ASGN_AMT_SUM
+			     
+			     , ISNULL(dbo.F_AC_EXEC_AMT_SUM(ACNT_YY, ACNT_UNT, BUDG_ORG_ID, BIZ_CD, ACNT_CD, BAL_DIV, ''),0) AS EXEC_AMT_SUM
+			     
+			     , ISNULL((dbo.F_AC_ASGN_AMT_SUM(ACNT_YY, ACNT_UNT, BUDG_ORG_ID, BIZ_CD, ACNT_CD, BAL_DIV, '')),0)
+			        -
+			       ISNULL((dbo.F_AC_EXEC_AMT_SUM(ACNT_YY, ACNT_UNT, BUDG_ORG_ID, BIZ_CD, ACNT_CD, BAL_DIV, '')),0) AS BUDG_BAL
+			     
+			     , dbo.F_AC_GET_BIZ_NM(ACNT_UNT, BIZ_CD, 'FINC_CD') AS FINC_CD
+			     , dbo.F_AC_GET_BIZ_NM(ACNT_UNT, BIZ_CD, 'FINC_NM') AS FINC_CD_NM
+			     , dbo.F_AC_GET_BIZ_NM(ACNT_UNT, BIZ_CD, 'MGT_ACNT_NO') AS MGT_ACNT_NO
+			  FROM BG_ASGN WITH(NOLOCK)
+			 WHERE 1=1
+			   AND ACNT_YY = #acntYy#
+			   AND ACNT_UNT = #acntUnt#
+			   AND BUDG_ORG_ID = #budgOrgId#
+			   AND BAL_DIV = #balDiv#
+			
+			<isNotEmpty property="bizCdNm">
+	   		   AND dbo.F_AC_GET_BIZ_NM(ACNT_UNT, BIZ_CD, 'BIZ_NM') LIKE '%' + #bizCdNm# + '%'
+	   		</isNotEmpty>
+	   		
+	   		<isNotEmpty property="acntCdMokNm">
+	   		   AND dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '40', CASE WHEN BAL_DIV = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) LIKE '%' + #acntCdMokNm# + '%'
+			</isNotEmpty>
+			
+			<isNotEmpty property="acntCdNm">
+			   AND dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '50', CASE WHEN BAL_DIV = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) LIKE '%' + #acntCdNm# + '%'
+			</isNotEmpty>
+			
+			<isNotEmpty property="acntCd">
+				AND ACNT_CD LIKE SUBSTRING(#acntCd#,1,2) + '%'
+			</isNotEmpty>
+			
+			<isNotEmpty property="bizCd">
+				AND BIZ_CD = #bizCd#
+			</isNotEmpty>
+			
+			
+	   		 GROUP BY ACNT_YY, ACNT_UNT, BIZ_CD, ACNT_CD, BUDG_ORG_ID, BAL_DIV
+	
+	
+	
+	        UNION
+	
+	        SELECT ACNT_YY
+			     , ACNT_UNT
+			     , '' AS BIZ_CD
+			     , '' AS BIZ_CD_NM
+			     , '' AS BUDG_ORG_NM
+			     , dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '40', CASE WHEN #balDiv# = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) AS ACNT_CD_MOK_NM
+			     , ACNT_CD
+			     , dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '50', CASE WHEN #balDiv# = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) AS ACNT_CD_NM	
+			     , 0 AS ASGN_AMT_SUM
+			     , 0 AS EXEC_AMT_SUM
+			     , 0 AS BUDG_BAL
+			     , '' AS FINC_CD
+			     , '' AS FINC_CD_NM
+			     , '' AS MGT_ACNT_NO
+	          FROM BG_ACNT_CD WITH(NOLOCK)
+	         WHERE 1=1
+	           AND ACNT_YY = #acntYy#
+	           AND ACNT_UNT = #acntUnt#
+	           AND ACNT_LVL = '50'
+	           AND ACNT_CD NOT IN ( SELECT DISTINCT ACNT_CD
+		                              FROM BG_ASGN WITH(NOLOCK)
+		                             WHERE 1=1
+							           AND ACNT_YY = #acntYy#
+									   AND ACNT_UNT = #acntUnt#
+									   AND BUDG_ORG_ID = #budgOrgId#
+									   AND BAL_DIV = #balDiv# )
+	           AND CASE WHEN #balDiv# = '10' THEN ACNT_INC_NM ELSE ACNT_EXP_NM END IS NOT NULL
+	   		
+	   		<isNotEmpty property="acntCdMokNm">
+	   		   AND dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '40', CASE WHEN #balDiv# = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) LIKE '%' + #acntCdMokNm# + '%'
+			</isNotEmpty>
+			
+			<isNotEmpty property="acntCdNm">
+			   AND dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '50', CASE WHEN #balDiv# = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) LIKE '%' + #acntCdNm# + '%'
+			</isNotEmpty> 
+			
+			<isNotEmpty property="acntCd">
+				AND ACNT_CD LIKE SUBSTRING(#acntCd#,1,2) + '%'
+			</isNotEmpty>
+	
+	         ORDER BY ACNT_YY, ACNT_UNT, ACNT_CD, BIZ_CD 
+    
+    </select>
+    
+    <select id="adcomDAO.admi01010_p15_01_ac02010_p01"  parameterClass="java.util.HashMap" resultClass="egovMap">
+	    SELECT ACNT_YY
+		     , ACNT_UNT
+		     , BAL_DIV
+		     , BIZ_CD
+		     , dbo.F_AC_GET_BIZ_NM(ACNT_UNT, BIZ_CD, 'BIZ_NM') AS BIZ_CD_NM
+		     , (SELECT DEPT_NM_KOR FROM VW_COMM_DEPT WHERE DEPT_CD = BUDG_ORG_ID) AS BUDG_ORG_NM
+		     , dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '40', CASE WHEN BAL_DIV = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) AS ACNT_CD_MOK_NM
+		     , ACNT_CD
+		     , dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '50', CASE WHEN BAL_DIV = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) AS ACNT_CD_NM
+		     
+		     , dbo.F_AC_ASGN_AMT_SUM(ACNT_YY, ACNT_UNT, BUDG_ORG_ID, BIZ_CD, ACNT_CD, BAL_DIV, '') AS ASGN_AMT_SUM
+		     
+		     , dbo.F_AC_EXEC_AMT_SUM(ACNT_YY, ACNT_UNT, BUDG_ORG_ID, BIZ_CD, ACNT_CD, BAL_DIV, '') AS EXEC_AMT_SUM
+		     
+		     , (dbo.F_AC_ASGN_AMT_SUM(ACNT_YY, ACNT_UNT, BUDG_ORG_ID, BIZ_CD, ACNT_CD, BAL_DIV, ''))
+		        -
+		       (dbo.F_AC_EXEC_AMT_SUM(ACNT_YY, ACNT_UNT, BUDG_ORG_ID, BIZ_CD, ACNT_CD, BAL_DIV, '')) AS BUDG_BAL
+		     
+		     , dbo.F_AC_GET_BIZ_NM(ACNT_UNT, BIZ_CD, 'FINC_CD') AS FINC_CD
+		     , dbo.F_AC_GET_BIZ_NM(ACNT_UNT, BIZ_CD, 'FINC_NM') AS FINC_CD_NM
+		     , dbo.F_AC_GET_BIZ_NM(ACNT_UNT, BIZ_CD, 'MGT_ACNT_NO') AS MGT_ACNT_NO
+		  FROM BG_ASGN WITH(NOLOCK)
+		 WHERE 1=1
+		   AND ACNT_YY = #acntYy#
+		   AND ACNT_UNT = #acntUnt#
+		   AND BUDG_ORG_ID = #budgOrgId#
+		
+   		  GROUP BY ACNT_YY, ACNT_UNT, BIZ_CD, ACNT_CD, BUDG_ORG_ID, BAL_DIV
+   		  ORDER BY BAL_DIV
+   		  
+   		  
+    </select>
+    
+	
+	
+	
+	<!--
+    #########################################################################################################################################
+    # 기타소득자조회팝업(admi01010_p16.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.admi01010_p16_01"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		
+		SELECT DISTINCT 
+		       A.ACNT_YY
+		     , A.ACNT_UNT
+		     , A.VOU_NO
+		     , A.VOU_SEQ
+		     , A.INC_DIV
+		     , dbo.F_COM_CODE_NM('AC004', A.INC_DIV, 'KOR') AS INC_DIV_NM
+		     , A.RESI_DIV
+		     , dbo.F_COM_CODE_NM('AC005', A.RESI_DIV, 'KOR') AS RESI_DIV_NM
+		     , A.RESI_CNTY
+		     , dbo.F_COM_CODE_NM('CS004', A.RESI_CNTY, 'KOR') AS RESI_CNTY_NM
+		     , A.ZIP_NO
+		     , A.ADDR
+		     , A.ADDR_DET
+		     , A.ADDR + ' ' + A.ADDR_DET AS ADDR_F
+		     , A.REPT_USER_NM
+		     , A.RES_NO1
+		     , A.RES_NO2
+		     , A.RES_NO1 + A.RES_NO2 AS RES_NO
+		     , A.PYMT_DT
+		  FROM AC_INC_EVDC A WITH(NOLOCK)
+		 WHERE 1=1
+		   AND A.ACNT_UNT = #acntUnt#
+		   AND A.INC_DIV = #incDiv#
+		   
+		   <isNotEmpty property="reptUserNm">
+		   AND A.REPT_USER_NM LIKE #reptUserNm# + '%'
+		   </isNotEmpty>
+		   
+		   <isNotEmpty property="resNo">
+		   AND A.RES_NO LIKE REPLACE(#resNo#, ' ', '') + '%'
+		   </isNotEmpty>
+		   
+		   AND A.PYMT_DT = (
+							SELECT MIN(B.PYMT_DT)
+		                      FROM AC_INC_EVDC B
+		                     WHERE 1=1
+		                       AND B.RES_NO1 + B.RES_NO2 = A.RES_NO1 + A.RES_NO2 
+	  	                   )
+		 
+		 ORDER BY A.REPT_USER_NM
+		
+    </select>
+	
+	
+	<!--
+    #########################################################################################################################################
+    # 국가조회팝업(admi01010_p17.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.admi01010_p17_01"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		
+		SELECT COM_CD_DIV 
+		     , COM_CD 
+		     , COM_CD_NM
+		     , COM_CD_REF2 
+		     , SORT_SEQ 
+		     , USE_YN 
+		  FROM COM_COD WITH(NOLOCK)
+		 WHERE 1 = 1
+		   AND COM_CD != '@'
+		   AND COM_CD_DIV = 'CS004'
+		   AND USE_YN = '1'
+		<isNotEmpty property="resiCntyNm">
+		   AND COM_CD_NM LIKE '%' + #resiCntyNm# + '%'
+		</isNotEmpty>
+		 ORDER BY SORT_SEQ
+		
+    </select>
+    
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 거래처계좌조회팝업(admi01010_p19.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.admi01010_p19_01"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		
+		SELECT A.VEND_ID AS VEND_ID
+		     , A.BIZ_REG_NO AS BIZ_REG_NO
+		     , A.VEND_NM AS VEND_NM
+		     , A.PRSDT_NM AS PRSDT_NM
+		     , dbo.F_AC_TEL_NO(A.TEL_NO) AS TEL_NO
+		     , A.CLSBIZ_YN AS CLSBIZ_YN
+		     , dbo.F_COM_CODE_NM('CS003', A.CLSBIZ_YN, 'KOR') AS CLSBIZ_YN_NM
+		     , B.BANK_CD AS BANK_CD
+		     , dbo.F_COM_CODE_NM('CS005', B.BANK_CD, 'KOR') AS BANK_CD_NM
+		     , REPLACE(B.ACNT_NO, '-', '') AS ACNT_NO
+		     , B.DEPOSR AS DEPOSR
+		     , B.USE_YN AS USE_YN
+		     , dbo.F_COM_CODE_NM('CS002', B.USE_YN, 'KOR') AS USE_YN_NM
+		     , A.INSERT_ID AS INSERT_ID
+		     , dbo.F_COM_USER_NM(A.INSERT_ID, 'NM') AS INSERT_ID_NM
+		  FROM VW_AC_VEND A WITH(NOLOCK)
+		 INNER
+		  JOIN VW_AC_VEND_BANK B WITH(NOLOCK)
+		    ON A.VEND_ID = B.VEND_ID
+		 WHERE 1=1
+		   AND A.CLSBIZ_YN = '0'
+		
+		<isNotEmpty property="vendNm">
+		   AND A.VEND_NM LIKE '%' + #vendNm# + '%'
+		</isNotEmpty>
+		
+		<isNotEmpty property="acntNo">
+		   AND B.ACNT_NO LIKE '%' + #acntNo# + '%'
+		</isNotEmpty>
+		
+		 ORDER BY A.VEND_NM, A.VEND_ID
+    </select>
+    
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 교직원계좌조회팝업(admi01010_p20.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.admi01010_p20_01"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		
+		SELECT A.MEMBER_NO AS MEMBER_NO
+		     , B.SEQ AS SEQ
+		     , A.DEPT_CD AS DEPT_CD
+		     , dbo.F_COM_DEPT_NM(A.DEPT_CD, 'DEPT_NM_KOR') AS DEPT_CD_NM
+		     , A.NM AS NM
+		     , B.BANK_CD AS BANK_CD
+		     , dbo.F_COM_CODE_NM('CS005', B.BANK_CD, 'KOR') AS BANK_CD_NM
+		     , B.ACNT_NO AS ACNT_NO
+		     , B.DEPOSR AS DEPOSR
+		     , B.USE_YN AS USE_YN
+		     , dbo.F_COM_CODE_NM('CS002', B.USE_YN, 'KOR') AS USE_YN_NM
+		     , B.USAGE_DIV
+		  FROM VW_USER_LIST A
+		 INNER
+		  JOIN VW_USER_ACCT_NO B WITH(NOLOCK)
+		    ON A.MEMBER_NO = B.MEMBER_NO
+		 WHERE 1=1
+	   
+		<isNotEmpty property="nm">
+		   AND A.NM LIKE '%' + #nm# + '%'
+		</isNotEmpty>
+		
+		<isNotEmpty property="deposr">
+		   AND B.DEPOSR LIKE '%' + #deposr# + '%'
+		</isNotEmpty>
+		
+		<isNotEmpty property="deptCdNm">
+		   AND dbo.F_COM_DEPT_NM(A.DEPT_CD, 'DEPT_NM_KOR') LIKE '%' + #deptCdNm# + '%'
+		</isNotEmpty>
+		
+		<isNotEmpty property="useYn">
+		   AND B.USE_YN = #useYn#
+		</isNotEmpty>
+		 
+		 ORDER BY A.MEMBER_NO, A.DEPT_CD, A.NM, B.SEQ
+		
+    </select>
+    
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 기타계좌조회팝업(admi01010_p21.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.admi01010_p21_01"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		
+		SELECT DISTINCT
+		       BACCT_DIV
+		     , dbo.F_COM_CODE_NM('AC012', BACCT_DIV, 'KOR') AS BACCT_DIV_NM
+		     , BANK_CD
+		     , dbo.F_COM_CODE_NM('CS005', BANK_CD, 'KOR') AS BANK_CD_NM
+		     , REPLACE(ACNT_NO, '-', '') AS ACNT_NO
+		     , DEPOSR
+		  FROM AC_PYMT WITH(NOLOCK)
+		 WHERE 1=1
+		   AND BACCT_DIV = '90'
+		
+		<isNotEmpty property="deposr">
+		   AND DEPOSR LIKE '%' + #deposr# + '%'
+		</isNotEmpty> 
+		
+		<isNotEmpty property="acntNo">
+		   AND ANCT_NO LIKE '%' + #acntNo# + '%'
+		</isNotEmpty>   
+		   
+		 ORDER BY DEPOSR
+		
+    </select>
+	
+	
+	
+	
+	
+	
+	<!--
+    #########################################################################################################################################
+    # (원)결의서조회팝업(admi01010_p12.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.admi01010_p12_01"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		
+		SELECT '' AS CHK
+		     , '' AS ROW_STATUS
+		     , A.ACNT_YY AS ACNT_YY
+		     , A.ACNT_UNT AS ACNT_UNT
+		     , (
+		        SELECT ACNT_UNT_NM
+		          FROM BG_UNT
+		         WHERE 1=1
+		           AND ACNT_UNT = A.ACNT_UNT 
+		       ) AS ACNT_UNT_NM
+		     , A.VOU_NO AS VOU_NO
+		     , A.VOU_ORG_ID AS VOU_ORG_ID
+		     , dbo.F_COM_DEPT_NM(A.VOU_ORG_ID, 'DEPT_NM_KOR') AS VOU_ORG_ID_NM
+		     , A.VOU_KND AS VOU_KND 
+		     , dbo.F_COM_CODE_NM('AC001', A.VOU_KND, 'KOR') AS VOU_KND_NM 
+		     , A.VOU_TTL AS VOU_TTL 
+		     , A.STA_CD AS STA_CD 
+		     , dbo.F_COM_CODE_NM('AC002', A.STA_CD, 'KOR') AS STA_CD_NM 
+		     , ISNULL(C.VOU_SEQ, 0) AS VOU_SEQ_CNT
+		     , ABS(ISNULL(C.APLY_AMT, 0)) AS APLY_AMT_SUM
+		     , A.APLY_USER_ID AS APLY_USER_ID
+       		 , dbo.F_COM_USER_NM(A.APLY_USER_ID, 'NM') AS APLY_USER_ID_NM
+       		 , A.APLY_DT AS APLY_DT
+	         , A.CTRL_USER_ID AS CTRL_USER_ID
+       		 , dbo.F_COM_USER_NM(A.CTRL_USER_ID, 'NM') AS CTRL_USER_ID_NM
+       		 , A.CTRL_DT AS CTRL_DT
+       	     , A.APPRO_USER_ID AS APPRO_USER_ID
+       		 , dbo.F_COM_USER_NM(A.APPRO_USER_ID, 'NM') AS APPRO_USER_ID_NM
+             , A.APPRO_DT AS APPRO_DT
+		     , A.RECV_USER_ID AS RECV_USER_ID
+       		 , dbo.F_COM_USER_NM(A.RECV_USER_ID, 'NM') AS RECV_USER_ID_NM
+       		 , A.RECV_DT AS RECV_DT
+	         , D.SLIP_CFM_USER_ID AS SLIP_CFM_USER_ID
+             , dbo.F_COM_USER_NM(D.SLIP_CFM_USER_ID, 'NM') AS SLIP_CFM_USER_ID_NM
+             , D.SLIP_CFM_DT AS SLIP_CFM_DT
+		  FROM AC_VOU A WITH(NOLOCK)
+		 INNER 
+		  JOIN (
+		        SELECT DISTINCT A.ACNT_UNT
+		             , A.ACNT_YY
+		             , A.VOU_NO
+		          FROM AC_VOU A WITH(NOLOCK)
+		          LEFT 
+		         OUTER 
+		          JOIN AC_VOU_DET B WITH(NOLOCK)
+		            ON A.ACNT_UNT = B.ACNT_UNT
+		           AND A.ACNT_YY = B.ACNT_YY
+		           AND A.VOU_NO = B.VOU_NO
+		         WHERE 1=1
+                 
+		        <isNotEmpty property="bizCd">
+		           AND B.BIZ_CD = #bizCd#
+		        </isNotEmpty>
+		        <isNotEmpty property="acntCd">
+		           AND B.ACNT_CD = #acntCd#
+		        </isNotEmpty>
+                
+		      ) B
+		   ON A.ACNT_UNT = B.ACNT_UNT
+		  AND A.ACNT_YY = B.ACNT_YY
+		  AND A.VOU_NO = B.VOU_NO
+		 LEFT 
+		OUTER 
+		 JOIN ( 
+		        SELECT ACNT_UNT
+		             , ACNT_YY
+		             , VOU_NO
+		             , SUM(APLY_AMT) AS APLY_AMT
+		             , COUNT(1) AS VOU_SEQ
+		          FROM AC_VOU_DET WITH(NOLOCK)
+		         GROUP BY ACNT_UNT, ACNT_YY, VOU_NO 
+		      ) C
+		   ON A.ACNT_UNT = C.ACNT_UNT
+		  AND A.ACNT_YY = C.ACNT_YY
+		  AND A.VOU_NO = C.VOU_NO
+		 LEFT
+		OUTER
+		 JOIN AC_SLIP D WITH(NOLOCK)
+		   ON A.ACNT_UNT = D.ACNT_UNT
+		  AND A.ACNT_YY = D.ACNT_YY
+		  AND A.SLIP_NO = D.SLIP_NO
+		  AND A.VOU_NO = D.VOU_NO
+		WHERE 1=1
+		  AND A.ACNT_YY = #acntYy#
+		  AND A.ACNT_UNT = #acntUnt#
+          AND A.VOU_ORG_ID = #vouOrgId#
+          AND A.STA_CD IN ('51')
+          			   
+		<isNotEmpty property="vouKnd">
+		  AND A.VOU_KND = #vouKnd#
+		</isNotEmpty>
+				   
+		<isNotEmpty property="vouTtl">
+		  AND A.VOU_TTL LIKE '%' + #vouTtl# + '%'
+		</isNotEmpty>
+
+				
+     ORDER BY A.ACNT_YY, A.ACNT_UNT, A.VOU_NO, A.STA_CD
+		
+    </select>
+	
+	
+	
+	
+	
+	
+	<!--
+    #########################################################################################################################################
+    # 계정과목조회팝업(결산대체)(admi01010_p22.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.admi01010_p22_01"  parameterClass="java.util.HashMap" resultClass="egovMap">
+			
+		SELECT A.ACNT_YY AS ACNT_YY
+		     , A.ACNT_UNT AS ACNT_UNT
+		     , A.BIZ_CD AS BIZ_CD
+		     , A.BIZ_CD_NM AS BIZ_CD_NM
+		     , A.ACNT_CD_MOK_NM AS ACNT_CD_MOK_NM
+		     , A.ACNT_CD AS ACNT_CD
+		     , A.ACNT_CD_NM AS ACNT_CD_NM
+		     , A.ASGN_AMT_SUM AS ASGN_AMT_SUM
+		     , A.EXEC_AMT_SUM AS EXEC_AMT_SUM
+		     , A.BUDG_BAL AS BUDG_BAL
+		     , A.FINC_CD AS FINC_CD
+		     , A.FINC_CD_NM AS FINC_CD_NM
+		     , A.MGT_ACNT_NO AS MGT_ACNT_NO
+		     , A.BAL_DIV AS BAL_DIV 
+		  FROM (
+		        SELECT ACNT_YY AS ACNT_YY
+		             , ACNT_UNT AS ACNT_UNT
+		             , BIZ_CD AS BIZ_CD
+		             , dbo.F_AC_GET_BIZ_NM(ACNT_UNT, BIZ_CD, 'BIZ_NM') AS BIZ_CD_NM 
+		             , dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '40', CASE WHEN BAL_DIV = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) AS ACNT_CD_MOK_NM 
+		             , ACNT_CD AS ACNT_CD
+		             , dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '50', CASE WHEN BAL_DIV = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) AS ACNT_CD_NM 
+		             , dbo.F_AC_ASGN_AMT_SUM(ACNT_YY, ACNT_UNT, BUDG_ORG_ID, BIZ_CD, ACNT_CD, BAL_DIV, '') AS ASGN_AMT_SUM 
+		             , dbo.F_AC_EXEC_AMT_SUM(ACNT_YY, ACNT_UNT, BUDG_ORG_ID, BIZ_CD, ACNT_CD, BAL_DIV, '') AS EXEC_AMT_SUM 
+		             , CONVERT(VARCHAR, (dbo.F_AC_ASGN_AMT_SUM(ACNT_YY, ACNT_UNT, BUDG_ORG_ID, BIZ_CD, ACNT_CD, BAL_DIV, '')) - (dbo.F_AC_EXEC_AMT_SUM(ACNT_YY, ACNT_UNT, BUDG_ORG_ID, BIZ_CD, ACNT_CD, BAL_DIV, ''))) AS BUDG_BAL
+		             , dbo.F_AC_GET_BIZ_NM(ACNT_UNT, BIZ_CD, 'FINC_CD') AS FINC_CD 
+		             , dbo.F_AC_GET_BIZ_NM(ACNT_UNT, BIZ_CD, 'FINC_NM') AS FINC_CD_NM 
+		             , dbo.F_AC_GET_BIZ_NM(ACNT_UNT, BIZ_CD, 'MGT_ACNT_NO') AS MGT_ACNT_NO
+		             , BAL_DIV AS BAL_DIV
+		          FROM BG_ASGN WITH(NOLOCK)
+		         WHERE 1=1
+		           AND ACNT_YY = #acntYy#
+				   AND ACNT_UNT = #acntUnt#
+				   AND BUDG_ORG_ID = #budgOrgId#
+				   AND BAL_DIV = #balDiv#
+		   		
+		   		<isNotEmpty property="acntCdMokNm">
+		   		   AND dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '40', CASE WHEN BAL_DIV = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) LIKE '%' + #acntCdMokNm# + '%'
+				</isNotEmpty>
+				
+				<isNotEmpty property="acntCdNm">
+				   AND dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '50', CASE WHEN BAL_DIV = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) LIKE '%' + #acntCdNm# + '%'
+				</isNotEmpty>
+				
+				<isNotEmpty property="bizCd">
+				   AND BIZ_CD = #bizCd#
+				</isNotEmpty>
+				
+		         GROUP BY ACNT_YY, ACNT_UNT, BIZ_CD, ACNT_CD, BUDG_ORG_ID, BAL_DIV 
+		               
+		        UNION
+		               
+		        SELECT ACNT_YY AS ACNT_YY
+		             , ACNT_UNT AS ACNT_UNT
+		             , '' AS BIZ_CD
+		             , '' AS BIZ_CD_NM
+		             , dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '40', CASE WHEN #balDiv# = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) AS ACNT_CD_MOK_NM
+		             , ACNT_CD AS ACNT_CD
+		             , dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '50', CASE WHEN #balDiv# = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) AS ACNT_CD_NM
+		             , '' AS ASGN_AMT_SUM
+		             , '' AS EXEC_AMT_SUM
+		             , '' AS BUDG_BAL
+		             , '' AS FINC_CD
+		             , '' AS FINC_CD_NM
+		             , '' AS MGT_ACNT_NO
+		             , null AS BAL_DIV
+		          FROM BG_ACNT_CD WITH(NOLOCK)
+		         WHERE 1=1
+		           AND ACNT_YY = #acntYy#
+		           AND ACNT_UNT = #acntUnt#
+		           AND ACNT_LVL = '50' 
+		           AND CASE WHEN #balDiv# = '10' THEN ACNT_INC_NM ELSE ACNT_EXP_NM END IS NOT NULL
+		   		
+		   		<isNotEmpty property="acntCdMokNm">
+		   		   AND dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '40', CASE WHEN #balDiv# = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) LIKE '%' + #acntCdMokNm# + '%'
+				</isNotEmpty>
+				
+				<isNotEmpty property="acntCdNm">
+				   AND dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '50', CASE WHEN #balDiv# = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) LIKE '%' + #acntCdNm# + '%'
+				</isNotEmpty>
+		               
+		        UNION
+		               
+		        SELECT ACNT_YY AS ACNT_YY
+		             , ACNT_UNT AS ACNT_UNT
+		             , '' AS BIZ_CD
+		             , '' AS BIZ_CD_NM
+		             , dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '40', '') AS ACNT_CD_MOK_NM
+		             , ACNT_CD AS ACNT_CD
+		             , ACNT_NM AS ACNT_CD_NM
+		             , '' AS ASGN_AMT_SUM
+		             , '' AS EXEC_AMT_SUM
+		             , '' AS BUDG_BAL
+		             , '' AS FINC_CD
+		             , '' AS FINC_CD_NM
+		             , '' AS MGT_ACNT_NO
+		             , null AS BAL_DIV
+		          FROM BG_ACNT_CD WITH(NOLOCK)
+		         WHERE 1=1
+		           AND ACNT_YY = #acntYy#
+		           AND ACNT_UNT = #acntUnt#
+		           AND ACNT_LVL = '50'
+		   		
+		   		<isNotEmpty property="acntCdMokNm">
+		   		   AND dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '40', '') LIKE '%' + #acntCdMokNm# + '%'
+				</isNotEmpty>
+				
+				<isNotEmpty property="acntCdNm">
+				   AND ACNT_NM LIKE '%' + #acntCdNm# + '%'
+				</isNotEmpty>
+		       ) A
+		   WHERE 1=1
+		   ORDER BY ACNT_YY, ACNT_UNT, ACNT_CD
+    </select>
+	
+	
+	
+	
+	
+	
+	<!--
+    #########################################################################################################################################
+    # 입금내역연계팝업(admi01010_p23.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="adcomDAO.selectAdmi01010_p23_01"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* adcomDAO.selectAdmi01010_p23_01 - 입금내역연계팝업(admi01010_p23.xfdl) */
+		SELECT '' AS ROW_STATUS
+		     , '0' AS CHK
+		     , BNKCD /* 은행코드 */
+		     , ACNO /* 계좌번호 */
+		     , TDT /* 거래일자 */
+		     , TRNF_SEQ /* 거래일련번호 */
+		     , TRNS_HR /* 거래시간 */
+		     , TDT_TRNS_HR /* 거래일시 */
+		     , TRNS_STCD /* 거래상태코드 */
+		     , BNK_NM /* 은행명 */
+		     , DEPS_AMT /* 입금액 */
+		     , USER_MEMO /* 사용자메모 */
+		     , EPCO_NM /* 예금주 */
+		     , DEPT_CD
+		     , DEPT_NM_KOR
+		     , TRNS_CNTN
+		     , INC_AMT
+		     , DEPS_AMT - INC_AMT AS JAN_AMT
+		     , ( SELECT ACNT_UNT_NM
+		     	   FROM BG_UNT
+		     	  WHERE ACNT_UNT = TA.ACNT_UNT ) AS ACNT_UNT_NM
+		     , ACNT_KND_NM
+		     , ACNT_ALIAS
+		FROM (
+				SELECT A.BNKCD /* 은행코드 */
+				     , A.ACNO /* 계좌번호 */
+				     , A.TDT /* 거래일자 */
+				     , A.TRNF_SEQ /* 거래일련번호 */
+				     , A.TRNS_HR /* 거래시간 */
+				     , SUBSTRING(A.TDT,1,4) + '.' + SUBSTRING(A.TDT,5,2) + '.' + SUBSTRING(A.TDT,7,2) + ' ' + SUBSTRING(A.TRNS_HR,1,2) + ':' + SUBSTRING(A.TRNS_HR,3,2) + ':' + SUBSTRING(A.TRNS_HR,3,2) AS TDT_TRNS_HR /* 거래일시 */
+				     , A.TRNS_STCD /* 거래상태코드 */
+				     , A.BNK_NM /* 은행명 */
+				     , A.DEPS_AMT /* 입금액 */
+				     , A.USER_MEMO /* 사용자메모 */
+				     , A.EPCO_NM /* 예금주 */
+				     , B.DEPT_CD
+				     , C.DEPT_NM_KOR
+				     , D.ACNT_UNT
+				     , dbo.F_COM_CODE_NM('AC007', D.ACNT_KND, '') AS ACNT_KND_NM
+				     , D.ACNT_ALIAS
+				     , CASE WHEN A.TRNS_CNTN IS NULL OR A.TRNS_CNTN = '' THEN CASE WHEN A.SYNP = '이자' THEN '이자' ELSE '' END
+				            ELSE A.TRNS_CNTN END AS TRNS_CNTN 
+				     , ISNULL(( SELECT SUM(ISNULL(RCPT_AMT,0))
+				           FROM AC_RCPT_DESC ARD
+				          WHERE ARD.BNKCD = A.BNKCD
+				            AND ARD.ACNO = A.ACNO
+				            AND ARD.TDT = A.TDT
+				            AND ARD.TRNF_SEQ = A.TRNF_SEQ ),0) AS INC_AMT
+				  FROM IF_TRNS_ITMZ_INQ_WO A  WITH(NOLOCK) /* 거래내역조회(은행)-전체	*/
+				       LEFT OUTER JOIN AC_TRNS_ITMZ B WITH(NOLOCK)
+				        ON A.BNKCD = B.BNKCD
+				        AND A.ACNO = B.ACNO
+				        AND A.TDT = B.TDT
+				        AND A.TRNF_SEQ = B.TRNF_SEQ 
+				       LEFT OUTER JOIN VW_COMM_DEPT_ALL C WITH(NOLOCK)
+				        ON B.DEPT_CD = C.DEPT_CD
+				       LEFT OUTER JOIN AC_BANK_NO D WITH(NOLOCK)
+				        ON REPLACE(A.ACNO, '-', '') = REPLACE(CASE WHEN D.NEW_ACNT_NO IS NULL OR D.NEW_ACNT_NO = '' THEN D.ACNT_NO ELSE D.NEW_ACNT_NO END, '-', '')
+				 WHERE A.DEPS_AMT > 0
+				   AND A.TRNS_STCD = '01' /* 01 - 준비상태 */  
+				 <isNotEmpty property="tdt">
+				   AND A.TDT = #tdt# /* 입금일자 */
+				 </isNotEmpty>
+				 <isNotEmpty property="acno">		 
+				   AND REPLACE(A.ACNO, '-', '') LIKE '%' + REPLACE(#acno#, '-', '') + '%' /* 계좌번호 */
+				 </isNotEmpty>
+				 <isNotEmpty property="depsAmtFrom">
+				   AND A.DEPS_AMT <![CDATA[ >= ]]> #depsAmtFrom# /* 입금액FROM */
+				 </isNotEmpty>
+				 <isNotEmpty property="depsAmtTo">
+				   AND A.DEPS_AMT <![CDATA[ <= ]]> #depsAmtTo# /* 입금액TO */
+				 </isNotEmpty>
+				 <isNotEmpty property="trnsCntn">
+				   AND CASE WHEN A.TRNS_CNTN IS NULL OR A.TRNS_CNTN = '' THEN CASE WHEN A.SYNP = '이자' THEN '이자' ELSE '' END
+				            ELSE A.TRNS_CNTN END AS TRNS_CNTN  LIKE '%' + #userMemo# + '%' /* 입금메시지 */
+				 </isNotEmpty>
+				   AND (   ( D.ACNT_DIV = '10' AND ( B.DEPT_CD = #deptCd#  OR D.MGT_ORG_ID = #deptCd# ) )
+				        OR ( D.ACNT_DIV = '20' AND ( B.DEPT_CD = #deptCd# ) ) )
+				 <isNotEmpty property="acntUnt">
+				   AND D.ACNT_UNT = #acntUnt#
+				 </isNotEmpty>
+			   ) TA
+		 WHERE ( TA.DEPS_AMT - TA.INC_AMT ) > 0
+		ORDER BY TDT DESC, TRNF_SEQ DESC, ACNO
+    </select>
+	
+	<!--
+    #########################################################################################################################################
+    # 법인카드승인내역팝업(admi01010_p24.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+   
+    <select id="adcomDAO.selectAdmi01010_p24_01"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* adcomDAO.selectAdmi01010_p24_01 - 법인카드승인내역팝업(admi01010_p24.xfdl) */
+		SELECT '0' AS CHK
+		     , A.CARD_ENPC                    /* 카드업체코드 */
+             , A.CDNO                         /* 카드번호 */
+             , A.APVL_DT                      /* 승인일자 */
+             , A.BIC_APVL_SEQ                 /* BIC승인일련번호 */
+             , A.APVL_HR                      /* 승인시간 */
+             , A.TRNS_STCD                    /* 거래상태코드 */
+             , A.BZNO                         /* 사업자등록번호 */
+             , A.EPCO_NM                      /* 기업명 */
+             , A.CARD_ENPNM                   /* 카드업체명 */
+             , A.CARD_AN                      /* 카드별칭 */
+             , A.APRNO                        /* 승인번호 */
+             , A.CAN_YN                       /* 취소여부 */
+             , A.CANDT                        /* 취소일자 */
+             , A.ISTM_MM                      /* 할부개월 */
+             , A.SALE_TYPE                    /* 매출유형 */
+             , A.APVL_AMT_DOM                 /* 승인금액(국내) */
+             , ISNULL(C.AMT,0) AS CALC_AMT          /* 정산금액 */
+             , A.APVL_AMT_DOM - ISNULL(C.AMT,0) AS CALC_REMAIN_AMT /*정산잔액 */
+             , CASE WHEN A.TRNS_AMT_WC IS NULL THEN NULL ELSE FLOOR(A.TRNS_AMT_WC) END AS TRNS_AMT_WC                   /* 거래금액(원화) */
+             , CASE WHEN A.STXAT IS NULL THEN NULL ELSE FLOOR(A.STXAT) END AS STXAT                        /* 부가세 */
+             , A.SVFE                         /* 봉사료 */
+             , A.CURCD                        /* 통화코드 */
+             , A.APVL_AMT_OVRS                /* 승인금액(해외) */
+             , A.TRNS_DVCD                    /* 거래구분코드 */
+             , A.TRNS_DVNM                    /* 거래구분명 */
+             , A.MC_NM                        /* 가맹점명 */
+             , A.MC_BZNO                      /* 가맹점사업자등록번호 */
+             , A.MC_NO                        /* 가맹점번호 */
+             , A.MC_TLNO                      /* 가맹점전화번호 */
+             , A.MC_PSNO                      /* 가맹점우편번호 */
+             , A.MC_ADDR                      /* 가맹점주소 */
+             , A.MC_BT_NM                     /* 가맹점업종명 */
+             , A.RGPR_ID                      /* 등록자ID */
+             , A.REG_DTTI                     /* 등록일시 */
+             , A.CHPR_ID                      /* 변경자ID */
+             , A.CH_DTTI                      /* 변경일시 */
+          FROM IF_APVL_ITMZ_INQ A WITH(NOLOCK)
+          	   JOIN AC_CORP_CARD D WITH(NOLOCK)
+          	     ON A.CDNO = D.CARD_NO
+               LEFT OUTER JOIN ( SELECT CARD_ENPC, CDNO, APVL_DT, BIC_APVL_SEQ, SUM(AMT) AMT
+				                   FROM ( SELECT CARD_ENPC, CDNO, APVL_DT, BIC_APVL_SEQ, BUDG_AMT AS AMT
+				                            FROM AC_BILL_EVDC WITH(NOLOCK)
+				                           WHERE CARD_ENPC IS NOT NULL
+				
+				                          UNION ALL
+				
+				                          SELECT CARD_ENPC, CDNO, APVL_DT, BIC_APVL_SEQ, USE_AMT AS AMT
+				                            FROM AC_CORP_CARD_USE  WITH(NOLOCK)) TA
+				                 GROUP BY CARD_ENPC, CDNO, APVL_DT, BIC_APVL_SEQ ) C
+		          ON  A.CARD_ENPC = C.CARD_ENPC
+		          AND A.CDNO = C.CDNO 
+		          AND A.APVL_DT = C.APVL_DT 
+		          AND A.BIC_APVL_SEQ = C.BIC_APVL_SEQ             
+         WHERE 1 = 1
+           <isNotEmpty property="mgtOrgId">
+           AND (    D.MGT_ORG_ID IN ( SELECT UP_DEPT_CD
+                                        FROM VW_COMM_DEPT_ALL
+                                       WHERE DEPT_CD = #mgtOrgId#
+                                       UNION
+                                      SELECT #mgtOrgId# )
+                 OR EXISTS ( SELECT 1
+                               FROM AC_CORP_CARD_DET B WITH(NOLOCK)
+                              WHERE B.CARD_NO = A.CDNO
+                                AND B.MGT_ORG_ID IN ( SELECT UP_DEPT_CD
+				                                        FROM VW_COMM_DEPT_ALL
+				                                       WHERE DEPT_CD = #mgtOrgId#
+				                                       UNION
+				                                      SELECT #mgtOrgId# )
+                                AND A.APVL_DT BETWEEN B.USE_FR_DT AND CASE WHEN B.USE_TO_DT IS NULL OR B.USE_TO_DT = '' THEN '99991231' ELSE B.USE_TO_DT END)
+                 )
+           </isNotEmpty>
+           AND A.APVL_AMT_DOM > ISNULL(C.AMT,0)
+           AND A.APRNO IN ( SELECT APRNO
+                              FROM IF_APVL_ITMZ_INQ WITH(NOLOCK)
+                             GROUP BY APRNO
+                             HAVING SUM(APVL_AMT_DOM) > 0 )
+		 <isNotEmpty property="apvlFromDt">
+		   AND A.APVL_DT <![CDATA[ >= ]]> #apvlFromDt# /* 승인시작일자 */
+		 </isNotEmpty>
+		 <isNotEmpty property="apvlToDt">
+		   AND A.APVL_DT <![CDATA[ <= ]]> #apvlToDt# /* 승인종료일자 */
+		 </isNotEmpty>
+		 <isNotEmpty property="cdno">
+		   AND A.CDNO LIKE '%' + #cdno# + '%'/* 카드번호 */
+		 </isNotEmpty>
+		 <isNotEmpty property="apvlAmtDomFrom">
+		   AND A.APVL_AMT_DOM <![CDATA[ >= ]]> #apvlAmtDomFrom# /* 승인시작금액 */
+		 </isNotEmpty>
+		 <isNotEmpty property="apvlAmtDomTo">
+		   AND A.APVL_AMT_DOM <![CDATA[ <= ]]> #apvlAmtDomTo# /* 승인종료금액 */
+		 </isNotEmpty> 
+		
+    </select>
+    
+    <select id="adcomDAO.selectAc01040"  parameterClass="java.util.HashMap" resultClass="egovMap">
+ 
+		/* adcomDAO.selectAc01040 - 법인카드개인입금관리(ac01040.xfdl) */
+		SELECT '' AS ROW_STATUS
+		     , A.CARD_ENPC                    /* 카드업체코드 */
+             , A.CDNO                         /* 카드번호 */
+             , A.APVL_DT                      /* 승인일자 */
+             , A.BIC_APVL_SEQ                 /* BIC승인일련번호 */
+             , A.APVL_HR                      /* 승인시간 */
+             , A.TRNS_STCD                    /* 거래상태코드 */
+             , A.BZNO                         /* 사업자등록번호 */
+             , A.EPCO_NM                      /* 기업명 */
+             , A.CARD_ENPNM                   /* 카드업체명 */
+             , A.CARD_AN                      /* 카드별칭 */
+             , A.APRNO                        /* 승인번호 */
+             , A.CAN_YN                       /* 취소여부 */
+             , A.CANDT                        /* 취소일자 */
+             , A.ISTM_MM                      /* 할부개월 */
+             , A.SALE_TYPE                    /* 매출유형 */
+             , A.APVL_AMT_DOM                 /* 승인금액(국내) */
+             , ISNULL(C.AMT,0) AS CALC_AMT          /* 정산금액 */
+             , A.APVL_AMT_DOM - ISNULL(C.AMT,0) AS CALC_REMAIN_AMT /*정산잔액 */
+             , A.TRNS_AMT_WC                  /* 거래금액(원화) */
+             , A.STXAT                        /* 부가세 */
+             , A.SVFE                         /* 봉사료 */
+             , A.CURCD                        /* 통화코드 */
+             , A.APVL_AMT_OVRS                /* 승인금액(해외) */
+             , A.TRNS_DVCD                    /* 거래구분코드 */
+             , A.TRNS_DVNM                    /* 거래구분명 */
+             , A.MC_NM                        /* 가맹점명 */
+             , A.MC_BZNO                      /* 가맹점사업자등록번호 */
+             , A.MC_NO                        /* 가맹점번호 */
+             , A.MC_TLNO                      /* 가맹점전화번호 */
+             , A.MC_PSNO                      /* 가맹점우편번호 */
+             , A.MC_ADDR                      /* 가맹점주소 */
+             , A.MC_BT_NM                     /* 가맹점업종명 */
+             , A.RGPR_ID                      /* 등록자ID */
+             , A.REG_DTTI                     /* 등록일시 */
+             , A.CHPR_ID                      /* 변경자ID */
+             , A.CH_DTTI                      /* 변경일시 */
+          FROM IF_APVL_ITMZ_INQ A WITH(NOLOCK)
+               LEFT OUTER JOIN ( SELECT CARD_ENPC, CDNO, APVL_DT, BIC_APVL_SEQ, SUM(AMT) AMT
+				                   FROM ( SELECT CARD_ENPC, CDNO, APVL_DT, BIC_APVL_SEQ, BUDG_AMT AS AMT
+				                            FROM AC_BILL_EVDC WITH(NOLOCK)
+				                           WHERE CARD_ENPC IS NOT NULL AND CARD_ENPC != ''
+				
+				                          UNION ALL
+				
+				                          SELECT CARD_ENPC, CDNO, APVL_DT, BIC_APVL_SEQ, USE_AMT AS AMT
+				                            FROM AC_CORP_CARD_USE  WITH(NOLOCK)) TA
+				                 GROUP BY CARD_ENPC, CDNO, APVL_DT, BIC_APVL_SEQ ) C
+				      ON   A.CARD_ENPC = C.CARD_ENPC
+			           AND A.CDNO = C.CDNO
+			           AND A.APVL_DT = C.APVL_DT
+			           AND A.BIC_APVL_SEQ = C.BIC_APVL_SEQ
+         WHERE 1=1
+           AND A.APRNO IN ( SELECT APRNO
+                              FROM IF_APVL_ITMZ_INQ WITH(NOLOCK)
+                             GROUP BY APRNO
+                             HAVING SUM(APVL_AMT_DOM) > 0 )
+         <isEqual property="calcGb" compareValue="1">   
+         	AND ISNULL(A.APVL_AMT_DOM,0) = ISNULL(C.AMT,0)
+         </isEqual>    
+         
+         <isEqual property="calcGb" compareValue="2">   
+         	AND ISNULL(A.APVL_AMT_DOM,0) <![CDATA[ > ]]> ISNULL(C.AMT,0)
+         </isEqual> 
+                    
+		 <isNotEmpty property="apvlFromDt">
+		   AND A.APVL_DT <![CDATA[ >= ]]> #apvlFromDt# /* 승인시작일자 */
+		 </isNotEmpty>
+		 <isNotEmpty property="apvlToDt">
+		   AND A.APVL_DT <![CDATA[ <= ]]> #apvlToDt# /* 승인종료일자 */
+		 </isNotEmpty>
+		 <isNotEmpty property="cdno">
+		   AND A.CDNO LIKE '%' + REPLACE(#cdno#,'-','') + '%'/* 카드번호 */
+		 </isNotEmpty>
+		 <isNotEmpty property="apvlAmtDomFrom">
+		   AND A.APVL_AMT_DOM <![CDATA[ >= ]]> #apvlAmtDomFrom# /* 승인시작금액 */
+		 </isNotEmpty>
+		 <isNotEmpty property="apvlAmtDomTo">
+		   AND A.APVL_AMT_DOM <![CDATA[ <= ]]> #apvlAmtDomTo# /* 승인종료금액 */
+		 </isNotEmpty> 
+		 <isNotEmpty property = "cardAcntNo">
+		   AND EXISTS ( SELECT 1
+		                  FROM AC_CORP_CARD ACC
+		                 WHERE REPLACE(ACC.CARD_NO,'-','') = REPLACE(A.CDNO,'-','')
+		                   AND REPLACE(ACC.CARD_ACNT_NO,'-','') = REPLACE(#cardAcntNo#,'-','') )
+		 </isNotEmpty>
+	 ORDER BY A.APVL_DT DESC, A.CDNO
+    </select>
+	
+	
+	    
+</sqlMap>

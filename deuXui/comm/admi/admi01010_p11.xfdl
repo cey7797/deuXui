@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="admi01010_p11" classname="Component_Guide" inheritanceid="" position="absolute" scrollbars="none" left="0" top="0" width="790" height="522" titletext="세금계산서조회팝업" onload="form_onload">
+    <Layouts>
+      <Layout/>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_deptPopList"/>
+      <Dataset id="ds_dummy" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" onrowposchanged="ds_account_onrowposchanged"/>
+      <Dataset id="ds_schJojikGb" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" onrowposchanged="ds_account_onrowposchanged"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[/* ====================================================================
+ * 01. 업무구분	: 행정공통
+ * 02. 화면명		: admi01010_p09.xfdl
+ * 03. 화면설명	: 거래처조회 팝업화면이다.
+ * 04. 작성일		: 2015.12.04
+ * 05. 작성자		: 유남규
+ * 06. 수정이력	: 
+ * ====================================================================
+ *     수정일     수정자   내용
+ * ====================================================================
+ *
+ * ==================================================================== */
+ 
+/* ====================================================================
+ * 1. 공통 라이브러리
+ * ==================================================================== */
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+/* ====================================================================
+ * 2. 변수 선언부
+ * ==================================================================== */
+var autoClose;  //자동종료옵션
+var autoSearch; //자동조회옵션
+
+/* ====================================================================
+ * 3. Event 처리 부분
+ * ==================================================================== */
+
+/******************************************************************************
+* 함 수 명 	: admi01010_p03_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.fn_postLoad();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{
+	this.autoClose = this.gfn_nvl(this.parent.autoClose,false);		//자동선택후 종료옵션
+	this.autoSearch = this.gfn_nvl(this.parent.autoSearch,false);	//자동조회 옵션
+
+	if(this.autoSearch) {
+		fn_search();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_confirm_onclick
+ * 함수설명 	: 확인
+ *********************************************************************/
+this.btn_confirm_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_confirm();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_confirm
+ * 함수설명 	: 부모로 리턴
+ *********************************************************************/
+this.fn_confirm = function()
+{
+	this.ds_dummy.copyData(this.ds_deptPopList);
+	this.ds_dummy.clearData();
+	
+	var addRow = this.ds_dummy.addRow();
+	this.ds_dummy.copyRow(addRow, this.ds_deptPopList, this.ds_deptPopList.rowposition);
+	this.close(this.ds_dummy.saveXML());
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_close_onclick
+ * 함수설명 	: 화면 종료
+ *********************************************************************/
+this.btn_close_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.close("close");
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_search_onclick
+ * 함수설명 	: 조회 버튼 클릭 함수
+********************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preSearch
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preSearch = function()
+{
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_search = function()
+{
+	if(this.fn_preSearch()){
+		var strArg = "jojikCdNm=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_jojikNm.value,''));//조직코드/명
+		
+		this.gfn_transaction("SEARCH",
+							 //"txAdmUrl::bg/bg01/selectDeptPopList.do",
+							 "txAdmUrl::com/admi/selectDeptPopList.do",
+							 "",
+							 "ds_deptPopList=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postSearch
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearch = function()
+{
+	if(autoClose && ds_deptPopList.rowcount == 1){
+		this.fn_confirm();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		} else if(trId=="SEARCH"){
+			this.fn_postSearch();
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: grd_bgFincList_oncelldblclick
+ * 함수설명 	: 그리드 더블클릭
+ *********************************************************************/
+this.grd_bgFincList_oncelldblclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	this.fn_confirm();
+}]]></Script>
+  </Form>
+</FDL>

@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd01050_t02" classname="afd01050_t02" left="0" top="0" width="1018" height="700" titletext="DM주소관리" onload="afd01050_t02_onload" ontimer="afd01050_t02_ontimer">
+    <Layouts>
+      <Layout>
+        <Static id="Static02" taborder="1" cssclass="detail_bg" left="0" top="95" right="5" height="30"/>
+        <Static id="Static00" taborder="2" text="DM 사항" cssclass="page_stitle" left="0" top="12" width="182" height="20"/>
+        <Static id="Static29" taborder="3" cssclass="detail_bg" left="0" top="37" right="5" height="30"/>
+        <Static id="Static35" taborder="4" cssclass="detail_bg" left="0" top="66" right="5" height="30"/>
+        <Static id="Static46" taborder="5" cssclass="detail_bg" left="0" top="124" right="5" height="30"/>
+        <Static id="Static47" taborder="6" text="DM 발송 구분" cssclass="detail_title" left="0" top="66" width="110" height="30"/>
+        <Static id="Static48" taborder="7" text="직함" cssclass="detail_title" left="341" top="95" width="110" height="30"/>
+        <Static id="Static05" taborder="9" cssclass="detail_bg" left="0" top="153" right="5" height="30"/>
+        <Static id="Static06" taborder="10" text="DM 우편번호" cssclass="detail_title" left="0" top="124" width="110" height="30"/>
+        <Static id="Static10" taborder="11" text="DM 주소 선택" cssclass="detail_title" left="0" top="37" width="110" height="30"/>
+        <Static id="Static14" taborder="14" text="받는 사람" cssclass="detail_title" left="0" top="95" width="110" height="30"/>
+        <Static id="Static33" taborder="15" text="DM 주소" cssclass="detail_title" left="341" top="124" width="110" height="30"/>
+        <Static id="Static21" taborder="16" text="h10" visible="false" left="0" top="0" width="1018" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static22" taborder="17" text="h10" visible="false" left="0" top="32" width="1018" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <CheckBox id="chk_nationDiv" taborder="21" value="1" truevalue="1" falsevalue="2" left="114" top="71" width="101" height="19" text="DM 예외 여부"/>
+        <Radio id="rdo_dmDiv" taborder="24" codecolumn="comCd" datacolumn="comCdNm" direction="vertical" left="121" top="43" width="282" height="19" innerdataset="@ds_dmDiv" onitemclick="rdo_dmDiv_onitemclick" columncount="0" style="border:1 none #808080ff ;"/>
+        <Edit id="edt_Rcver" taborder="25" left="115" top="99" width="222" height="22" style="border:1 solid #ccccccff ;"/>
+        <Button id="btn_pop" taborder="28" cssclass="popupDetail" left="313" top="128" width="24" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R" onclick="btn_pop_onclick"/>
+        <Edit id="edt_dmAddr1" taborder="29" left="456" top="128" width="557" height="22" style="border:1 solid #ccccccff ;" enable="false"/>
+        <Static id="Static30" taborder="30" text="DM 상세주소" cssclass="detail_title" left="341" top="153" width="110" height="30"/>
+        <Edit id="edt_dmAaddr2" taborder="31" left="456" top="157" width="557" height="22" style="border:1 solid #ccccccff ;"/>
+        <Static id="Static36" taborder="36" cssclass="detail_bg" visible="false" left="0" top="769" right="5" height="30"/>
+        <Static id="Static37" taborder="37" text="장학후원회이사" cssclass="detail_title" visible="false" left="0" top="769" width="110" height="28"/>
+        <Edit id="Edit01" taborder="44" visible="false" left="115" top="773" width="222" height="22"/>
+        <Edit id="Edit13" taborder="45" visible="false" left="342" top="773" width="222" height="22"/>
+        <Static id="Static27" taborder="56" text="w&#13;&#10;5" visible="false" left="1013" top="37" width="5" height="431" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Edit id="edt_title" taborder="77" left="456" top="99" width="223" height="22" style="border:1 solid #ccccccff ;"/>
+        <MaskEdit id="msk_dmZip" taborder="78" mask="#-###" maskchar=" " left="115" top="128" width="196" height="22" enable="false"/>
+        <Static id="Static20" taborder="83" text="w&#13;&#10;5" visible="false" left="110" top="37" width="5" height="145" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static25" taborder="84" text="w&#13;&#10;5" visible="false" left="678" top="37" width="5" height="145" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static24" taborder="87" text="w&#13;&#10;5" visible="false" left="451" top="37" width="5" height="145" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Grid id="grd_preAddr" taborder="88" binddataset="ds_preAddr" useinputpanel="false" autofittype="col" nodatatext="No Data" oncelldblclick="grd_afdMaster_oncelldblclick" left="0" top="220" right="5" bottom="35" visible="false">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="40"/>
+                <Column size="100"/>
+                <Column size="873"/>
+              </Columns>
+              <Rows>
+                <Row size="26" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="우편번호"/>
+                <Cell col="2" text="주소"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="normal" expr="expr:currow +1"/>
+                <Cell col="1"/>
+                <Cell col="2" text="bind:eMail"/>
+              </Band>
+            </Format>
+            <Format id="single">
+              <Columns>
+                <Column size="40" band="left"/>
+                <Column size="77"/>
+                <Column size="101"/>
+                <Column size="195"/>
+                <Column size="156"/>
+                <Column size="85"/>
+                <Column size="220"/>
+              </Columns>
+              <Rows>
+                <Row size="26" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="업무구분"/>
+                <Cell col="2" text="이름"/>
+                <Cell col="3" text="이메일"/>
+                <Cell col="4" text="전화(휴대폰)번호"/>
+                <Cell col="5" text="생년월일"/>
+                <Cell col="6" text="소속기관(학교)/부서(학과)"/>
+              </Band>
+              <Band id="body">
+                <Cell expr="expr:currow +1"/>
+                <Cell col="1" displaytype="combo" text="bind:taskCd" combodataset="ds_grdTaskGbn" combocodecol="comCd" combodatacol="comCdNm"/>
+                <Cell col="2" text="bind:nmKor" expr="expr:nmKor==''?nmEng:nmKor"/>
+                <Cell col="3" text="bind:email"/>
+                <Cell col="4" expr="expr:mobileNo==''?telNo:mobileNo"/>
+                <Cell col="5" expr="expr:juminNo.substr(0,2)+'.'+juminNo.substr(2,2)+'.'+juminNo.substr(4,2)"/>
+                <Cell col="6" text="expr:deptNm+' / '+majorNm"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static76" taborder="89" text="이전 주소" onclick="Static76_onclick" cssclass="page_stitle" left="0%" top="198" right="5" height="20" visible="false"/>
+        <Static id="Static01" taborder="90" text="h10" visible="false" left="0" top="183" width="1013" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <CheckBox id="chk_nationDiv00" taborder="91" text="DM 반송 여부" value="1" truevalue="1" falsevalue="2" left="218" top="71" width="101" height="19"/>
+        <Static id="Static17" taborder="94" text="h10" visible="false" left="437" width="576" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;" bottom="20" top="665"/>
+        <Static id="staGrdMain00" taborder="95" text="Count &lt;b v='true'&gt;999&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" right="5" bottom="5" width="60" height="20" visible="false"/>
+        <Static id="Static03" taborder="96" text="h10" visible="false" left="437" width="576" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;" bottom="0"/>
+      </Layout>
+    </Layouts>
+    <Bind>
+      <BindItem id="item3" compid="chk_nationDiv" propid="value" datasetid="ds_afdMaster" columnid="dmExcpYn"/>
+      <BindItem id="item6" compid="rdo_dmDiv" propid="value" datasetid="ds_afdMaster" columnid="dmDiv"/>
+      <BindItem id="item7" compid="edt_Rcver" propid="value" datasetid="ds_afdMaster" columnid="rcver"/>
+      <BindItem id="item11" compid="edt_dmAddr1" propid="value" datasetid="ds_afdMaster" columnid="dmAddr1"/>
+      <BindItem id="item12" compid="edt_dmAaddr2" propid="value" datasetid="ds_afdMaster" columnid="dmAddr2"/>
+      <BindItem id="item8" compid="edt_title" propid="value" datasetid="ds_afdMaster" columnid="title"/>
+      <BindItem id="item10" compid="msk_dmZip" propid="value" datasetid="ds_afdMaster" columnid="dmZip"/>
+      <BindItem id="item0" compid="chk_nationDiv00" propid="value" datasetid="ds_afdMaster" columnid="dmRetrnYn"/>
+    </Bind>
+    <Objects>
+      <Dataset id="ds_dmDiv"/>
+      <Dataset id="ds_preAddr"/>
+      <Dataset id="ds_rtnZipVal"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : afd01050_t02.xfdl
+* 화면설명     : DM 주소관리
+* 작성자       : 차현석
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.09.03     차현석         최초생성
+******************************************************************************/
+
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::frameUtils.xjs";
+include "commJs::lib_String.xjs";
+
+this.afd01050_t02_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	var essGrd = new Array();
+ 	essGrd[0] = this.grd_preAddr;
+ 	
+ 	this.gfn_essDataset(essGrd);//그리드헤더처리
+	this.gfn_bindCmmnFunction();
+	
+	/**DataSet 이름 설정*/
+	var arrDataSet = new Array();
+	arrDataSet[0] = "ds_dmDiv";
+	
+	/**공통 그룹코드 설정*/
+	var arrGrpCd = new Array();
+	arrGrpCd[0] = "AFD04"; // 1:자택, 2:직장, 3:교내, 4:국외, 5:기타
+	var arrUseYn = new Array();
+	arrUseYn[0] = "Y";
+	
+	/**Combo 출력시 첫번째 인덱스 문구 설정
+	* T : 전체
+	* S : 선택
+	* X : 사용안함
+	*/
+	var arrModeFg = new Array();
+	arrModeFg[0] = "X";
+	
+	/** 공통코드 조회시 where 절
+	* X : where 없음
+	*/
+	var arrWhere = new Array();
+	arrWhere[0] = "X";	
+	/**1. combo 설정*/
+	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+}
+
+/******************************************************************************
+* 함 수 명 	: btn_pop_onclick
+* 함수설명 	: 주소조회버튼
+*****************************************************************************/
+
+this.fn_callBack = function(trId, errCd, errMsg) {
+	if("LOAD" == trId) {
+		trace(this.ds_dmDiv.saveXML());
+		//this.killTimer(0);
+		
+	}
+}
+
+
+/******************************************************************************
+* 함 수 명 	: btn_pop_onclick
+* 함수설명 	: 주소조회버튼
+*****************************************************************************/
+this.btn_pop_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_zipCodePopupOpen("SEARCH_ZIP", "", "fn_zipCallBack", this);
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_zipCallBack
+* 함수설명 	: 주민번호 검색콜백 함수.
+*****************************************************************************/
+this.fn_zipCallBack = function(strID, rtnVal) {
+	if("close" == rtnVal) {
+		return;
+	}
+	this.ds_rtnZipVal.loadXML(rtnVal);
+	
+	if("SEARCH_ZIP" == strID) {
+		this.msk_dmZip.set_value(this.ds_rtnZipVal.getColumn(0, "zip"));
+		this.edt_dmAddr1.set_value(this.ds_rtnZipVal.getColumn(0,"addr"));
+	}
+	
+}
+]]></Script>
+  </Form>
+</FDL>

@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd01050_t03" classname="afd01050_t03" left="0" top="0" width="1018" height="700" titletext="약정현황" onload="afd01050_t03_onload">
+    <Layouts>
+      <Layout>
+        <Grid id="grd_afdCntrct" taborder="0" binddataset="ds_afdCntrct" useinputpanel="false" autofittype="col" nodatatext="No Data" oncelldblclick="grd_afdMaster_oncelldblclick" left="0%" top="37" right="5" bottom="35">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="40" band="left"/>
+                <Column size="79"/>
+                <Column size="88"/>
+                <Column size="110"/>
+                <Column size="110"/>
+                <Column size="110"/>
+                <Column size="110"/>
+                <Column size="110"/>
+                <Column size="110"/>
+                <Column size="123"/>
+                <Column size="110"/>
+              </Columns>
+              <Rows>
+                <Row size="26" band="head"/>
+                <Row size="24"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="기금코드"/>
+                <Cell col="2" text="기금명"/>
+                <Cell col="3" text="약정번호"/>
+                <Cell col="4" text="약정일"/>
+                <Cell col="5" text="납부예정일"/>
+                <Cell col="6" text="완납예정일"/>
+                <Cell col="7" text="완납일"/>
+                <Cell col="8" text="약정금액"/>
+                <Cell col="9" text="납부형태"/>
+                <Cell col="10" text="납입금액"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="normal" text="expr:currow +1"/>
+                <Cell col="1" text="bind:endwCd"/>
+                <Cell col="2" style="align:left;" text="bind:endwNm"/>
+                <Cell col="3" text="bind:enggMgnNo"/>
+                <Cell col="4" displaytype="date" text="bind:enggDt" mask="####-##-##" calendardisplaynulltype="none"/>
+                <Cell col="5" displaytype="date" text="bind:frstInspyPrearngeDt" mask="####-##-##" calendardisplaynulltype="none"/>
+                <Cell col="6" displaytype="date" text="bind:fpyPrearngeDt" calendardisplaynulltype="none"/>
+                <Cell col="7" displaytype="date" text="bind:rlPrearngeDt" calendardisplaynulltype="none"/>
+                <Cell col="8" displaytype="number" style="align:right;" text="bind:enggAmt" mask="#,###"/>
+                <Cell col="9" displaytype="combo" text="bind:paymthd" combodataset="ds_paymthd" combocodecol="paymthdCd" combodatacol="paymthdNm"/>
+                <Cell col="10" displaytype="number" style="align:right;" text="bind:sumPaymentAmt" mask="#,###" combodisplaynulltext="0"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2"/>
+                <Cell col="3"/>
+                <Cell col="4"/>
+                <Cell col="5"/>
+                <Cell col="6"/>
+                <Cell col="7"/>
+                <Cell col="8" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;enggAmt&quot;)"/>
+                <Cell col="9"/>
+                <Cell col="10" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;sumPaymentAmt&quot;)"/>
+              </Band>
+            </Format>
+            <Format id="single">
+              <Columns>
+                <Column size="40" band="left"/>
+                <Column size="77"/>
+                <Column size="101"/>
+                <Column size="195"/>
+                <Column size="156"/>
+                <Column size="85"/>
+                <Column size="220"/>
+              </Columns>
+              <Rows>
+                <Row size="26" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="업무구분"/>
+                <Cell col="2" text="이름"/>
+                <Cell col="3" text="이메일"/>
+                <Cell col="4" text="전화(휴대폰)번호"/>
+                <Cell col="5" text="생년월일"/>
+                <Cell col="6" text="소속기관(학교)/부서(학과)"/>
+              </Band>
+              <Band id="body">
+                <Cell expr="expr:currow +1"/>
+                <Cell col="1" displaytype="combo" text="bind:taskCd" combodataset="ds_grdTaskGbn" combocodecol="comCd" combodatacol="comCdNm"/>
+                <Cell col="2" text="bind:nmKor" expr="expr:nmKor==''?nmEng:nmKor"/>
+                <Cell col="3" text="bind:email"/>
+                <Cell col="4" expr="expr:mobileNo==''?telNo:mobileNo"/>
+                <Cell col="5" expr="expr:juminNo.substr(0,2)+'.'+juminNo.substr(2,2)+'.'+juminNo.substr(4,2)"/>
+                <Cell col="6" text="expr:deptNm+' / '+majorNm"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static76" taborder="1" text="약정현황" onclick="Static76_onclick" cssclass="page_stitle" left="0%" top="4" right="904" height="28"/>
+        <Static id="Static27" taborder="2" text="w&#13;&#10;5" visible="false" left="1013" top="38" width="5" height="431" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static21" taborder="7" text="h10" visible="false" left="0" top="0" width="1018" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static00" taborder="8" text="h10" visible="false" left="0" top="32" width="1018" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static17" taborder="9" text="h10" visible="false" left="437" top="665" width="576" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_count" taborder="10" text="Count &lt;b v='true'&gt;999&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" right="5" width="60" height="20" bottom="5"/>
+        <Static id="Static01" taborder="11" text="h10" visible="false" left="437" top="690" width="576" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_excel" taborder="12" text="엑셀" onclick="btn_excel_onclick" cssclass="btn_WF_Common" top="10" right="6" width="60" height="22" tooltiptype="hover" tooltiptext="Excel" userBtnAuth="D"/>
+      </Layout>
+    </Layouts>
+    <Bind/>
+    <Objects>
+      <Dataset id="ds_paymthd">
+        <ColumnInfo>
+          <Column id="paymthdCd" type="STRING" size="256"/>
+          <Column id="paymthdNm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="paymthdCd">1</Col>
+            <Col id="paymthdNm">계좌이체</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_afdCntrct">
+        <ColumnInfo>
+          <Column id="chk" type="string" size="32"/>
+          <Column id="rowStatus" type="string" size="32"/>
+          <Column id="enggMgnNo" type="string" size="32"/>
+          <Column id="memberNo" type="string" size="32"/>
+          <Column id="endwCd" type="string" size="32"/>
+          <Column id="endwNm" type="string" size="32"/>
+          <Column id="rcpmnyerNm" type="string" size="32"/>
+          <Column id="onlineEnggYn" type="string" size="32"/>
+          <Column id="enggAmt" type="bigdecimal" size="16"/>
+          <Column id="frstEnggAmt" type="string" size="32"/>
+          <Column id="inspyMonthCnt" type="bigdecimal" size="16"/>
+          <Column id="mtInspyAmt" type="bigdecimal" size="16"/>
+          <Column id="paymthd" type="string" size="32"/>
+          <Column id="acthngKnd" type="string" size="32"/>
+          <Column id="enggDt" type="string" size="32"/>
+          <Column id="frstInspyPrearngeDt" type="string" size="32"/>
+          <Column id="fpyPrearngeDt" type="string" size="32"/>
+          <Column id="rlPrearngeDt" type="string" size="32"/>
+          <Column id="recmndrMemNo" type="string" size="32"/>
+          <Column id="remark" type="string" size="32"/>
+          <Column id="enggSttus" type="string" size="32"/>
+          <Column id="enggCanclDesc" type="string" size="32"/>
+          <Column id="payResrveYn" type="string" size="32"/>
+          <Column id="reservepdFr" type="string" size="32"/>
+          <Column id="reservepdTo" type="string" size="32"/>
+          <Column id="rcpmnyGdccYn" type="string" size="32"/>
+          <Column id="thanksSndngYn" type="string" size="32"/>
+          <Column id="sumPaymentAmt" type="bigdecimal" size="16"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::frameUtils.xjs";
+include "commJs::lib_String.xjs";
+
+
+this.afd01050_t03_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	var essGrd = new Array();
+	essGrd[0] = this.ds_afdCntrct;
+ 	
+ 	this.gfn_essDataset(essGrd);
+	this.gfn_bindCmmnFunction();
+	
+	this.gfn_getDatasetCount(this.ds_afdCntrct, this.sta_count);
+	
+	this.fn_search();
+}
+
+this.fn_search = function() 
+{
+	//alert("ok");
+	//alert(nexacro.wrapQuote(this.parent.parent.ds_afdMaster.getColumn(this.parent.parent.ds_afdMaster.rowposition,"memberNo")));
+	var parent_memberNO = this.parent.parent.ds_afdMaster.getColumn(this.parent.parent.ds_afdMaster.rowposition,"memberNo");
+	var strArg = "memberNo=" + nexacro.wrapQuote(parent_memberNO);
+		
+	this.gfn_transaction("SEARCH"
+						,"txAdmUrl::com/admi/afd/afd01/retrieveAfdCntrct.do"
+						,""
+						,"ds_afdCntrct=resultList"
+						,strArg
+						,"");	
+}
+
+this.fn_callBack = function(trId, errCd, errMsg) 
+{
+	if(errCd < 0 ) 
+	{
+		this.gfn_message("A", errMsg);
+		return false;
+	}
+	
+	//
+	if("SEARCH" == trId) 
+	{
+		this.gfn_getDatasetCount(this.ds_afdCntrct, this.sta_count);
+	}
+}
+
+this.btn_excel_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.grd_afdCntrct.rowcount == 0)
+	{
+		this.gfn_message("A", "약정현황이 없습니다.");
+	}
+	else
+	{	
+		var excelGrd = new Array();
+			excelGrd[0] = this.grd_afdCntrct;
+		var parentsNM = this.parent.parent.ds_afdMaster.getColumn(this.parent.parent.ds_afdMaster.rowposition,"memberNmKor");
+		this.gfn_excelDown(excelGrd, "발전기금 "+parentsNM+" 약정현황");
+	}
+}
+]]></Script>
+  </Form>
+</FDL>

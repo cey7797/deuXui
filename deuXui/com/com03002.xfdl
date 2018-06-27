@@ -1,0 +1,522 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\default_typedef.xml"/>
+  <Form id="com03002" classname="cmmnCodeMng" left="0" top="0" width="1038" height="855" titletext="프로그램등록" scrollbars="autoboth" dragscrolltype="both" onload="comCsi08_onload">
+    <Layouts>
+      <Layout>
+        <Grid id="grd_main" taborder="2" useinputpanel="false" left="0" top="82" height="352" binddataset="ds_main" autofittype="col" autosizebandtype="body" style="color:crimson;" right="15" selecttype="row" autoenter="select" onheadclick="grd_main_onheadclick">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="35" band="left"/>
+                <Column size="25" band="left"/>
+                <Column size="30" band="left"/>
+                <Column size="280"/>
+                <Column size="400"/>
+                <Column size="100"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox"/>
+                <Cell col="2" text="순번"/>
+                <Cell col="3" edittype="none" style="background:URL('theme://images\icon\img_speak.png');" text="메뉴ID"/>
+                <Cell col="4" text="메뉴명"/>
+                <Cell col="5" text="표시순서"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="image" text="bind:rowStatus" expr="expr:rowStatus==2?&quot;URL('theme://images/icon/status_n.png')&quot;:rowStatus==4?&quot;URL('theme://images/icon/status_u.png')&quot;:rowStatus==8?&quot;URL('theme://images/icon/status_d.png')&quot;:&quot;&quot;"/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox" text="bind:chk"/>
+                <Cell col="2" expr="expr:currow+1"/>
+                <Cell col="3" edittype="normal" text="bind:menuId"/>
+                <Cell col="4" edittype="normal" text="bind:menuNm"/>
+                <Cell col="5" displaytype="normal" edittype="normal" text="bind:sortSeq"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Grid id="grd_sub" taborder="5" useinputpanel="false" left="0" top="493" binddataset="ds_sub" suppresslevel="sameskip" right="15" height="340" style="color:crimson;" autoenter="select" onheadclick="grd_sub_onheadclick">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="35" band="left"/>
+                <Column size="25" band="left"/>
+                <Column size="30" band="left"/>
+                <Column size="150"/>
+                <Column size="180"/>
+                <Column size="125"/>
+                <Column size="60"/>
+                <Column size="200"/>
+                <Column size="70"/>
+                <Column size="130"/>
+                <Column size="137"/>
+                <Column size="85"/>
+                <Column size="105"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox"/>
+                <Cell col="2" text="순번"/>
+                <Cell col="3" text="프로그램ID"/>
+                <Cell col="4" text="프로그램명"/>
+                <Cell col="5" text="도메인"/>
+                <Cell col="6" text="포트"/>
+                <Cell col="7" text="URL"/>
+                <Cell col="8" text="순서"/>
+                <Cell col="9" text="개인정보포함여부"/>
+                <Cell col="10" text="영문프로그램여부"/>
+                <Cell col="11" text="사용여부"/>
+                <Cell col="12" text="자동통보여부"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="image" text="bind:rowStatus" expr="expr:rowStatus==2?&quot;URL('theme://images/icon/status_n.png')&quot;:rowStatus==4?&quot;URL('theme://images/icon/status_u.png')&quot;:rowStatus==8?&quot;URL('theme://images/icon/status_d.png')&quot;:&quot;&quot;"/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox" text="bind:chk"/>
+                <Cell col="2" edittype="normal" expr="expr:currow+1"/>
+                <Cell col="3" edittype="normal" text="bind:progId"/>
+                <Cell col="4" edittype="normal" style="align:left;" text="bind:progNm"/>
+                <Cell col="5" edittype="normal" text="bind:domain"/>
+                <Cell col="6" edittype="normal" text="bind:port"/>
+                <Cell col="7" edittype="normal" style="align:left;" text="bind:urlN"/>
+                <Cell col="8" displaytype="number" edittype="masknumber" text="bind:sortSeq"/>
+                <Cell col="9" displaytype="checkbox" edittype="checkbox" text="bind:personInfYn"/>
+                <Cell col="10" displaytype="checkbox" edittype="checkbox" text="bind:engYn"/>
+                <Cell col="11" displaytype="checkbox" edittype="checkbox" text="bind:useFlag"/>
+                <Cell col="12" displaytype="checkbox" edittype="checkbox" text="bind:noticeYn"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Div id="div_search" taborder="15" left="0" top="0" right="0" height="39" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static05" taborder="37" text="시스템 ID" cssclass="search" left="20" top="9" width="84" height="22" class="search_bul"/>
+              <Static id="Static00" taborder="40" text="서브시스템 ID" cssclass="search" left="255" top="9" width="85" height="22" class="search_bul"/>
+              <Combo id="cmb_sysIdSh" taborder="41" innerdataset="ds_sys_sh" codecolumn="sysId" datacolumn="sysNm" ontextchanged="cmbSysIdSh_ontextchanged" onitemchanged="cmb_sysIdSh_onitemchanged" left="85" top="9" width="149" height="21" index="-1"/>
+              <Combo id="cmb_subIdSh" taborder="45" innerdataset="@ds_sub_sh" codecolumn="subId" datacolumn="subNm" left="344" top="9" width="149" height="21" index="-1"/>
+              <Static id="Static33" taborder="46" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="0" top="0" width="20" height="39"/>
+              <Static id="Static14" taborder="47" text="W10" cssclass="tipGuide" visible="false" left="72" top="2" width="14" height="37"/>
+              <Static id="Static12" taborder="48" text="H9" cssclass="tipGuide" visible="false" left="117" top="0" width="30" height="9"/>
+              <Static id="Static11" taborder="49" text="H9" cssclass="tipGuide" visible="false" left="117" top="30" width="30" height="9"/>
+              <Static id="Static01" taborder="50" text="W10" cssclass="tipGuide" visible="false" left="330" top="2" width="14" height="37"/>
+              <Static id="Static02" taborder="51" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="234" top="2" width="20" height="39"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static14" taborder="16" text="h15" visible="false" left="0" top="39" width="1025" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static04" taborder="17" text="w&#13;&#10;15" visible="false" top="49" right="0" width="15" height="803" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_search" taborder="18" text="조회" cssclass="search" top="54" right="201" width="60" height="22" tooltiptype="hover" tooltiptext="조회" onclick="btn_search_onclick" userBtnAuth="R"/>
+        <Button id="btn_new" taborder="19" text="추가" cssclass="new" top="54" right="139" width="60" height="22" tooltiptype="hover" tooltiptext="추가" onclick="btn_new_onclick" userBtnAuth="S"/>
+        <Button id="btn_del" taborder="20" text="삭제" cssclass="del" top="54" right="77" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" onclick="btn_del_onclick" userBtnAuth="S"/>
+        <Button id="btn_save" taborder="21" text="저장" cssclass="save" top="54" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="저장" onclick="btn_save_onclick" userBtnAuth="S"/>
+        <Static id="Static15" taborder="22" text="h5" visible="false" left="0" top="76" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static00" taborder="23" text="h5" visible="false" left="930" top="434" right="15" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_grdMain" taborder="24" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" left="938" top="436" right="14" height="20" style="border:0 none #808080ff ;align:right middle;"/>
+        <Static id="Static01" taborder="25" text="h5" visible="false" left="930" top="451" right="15" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static02" taborder="26" text="h15" visible="false" left="0" top="451" width="1025" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static76" taborder="27" text="프로그램등록" cssclass="page_stitle" left="0" top="55" width="324" height="20" style="background:transparent URL('theme://images/sta_WF_subtitle.png') left middle;"/>
+        <Button id="btn_saveSub" taborder="28" text="저장" cssclass="save" top="466" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="저장" onclick="btn_saveSub_onclick" userBtnAuth="S"/>
+        <Button id="btn_delSub" taborder="29" text="삭제" cssclass="del" top="466" right="77" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" onclick="btn_delSub_onclick" userBtnAuth="S"/>
+        <Button id="btn_newSub" taborder="30" text="추가" cssclass="new" top="466" right="139" width="60" height="22" tooltiptype="hover" tooltiptext="추가" onclick="btn_newSub_onclick" userBtnAuth="S"/>
+        <Static id="Static03" taborder="31" text="프로그램등록상세" cssclass="page_stitle" left="0" top="467" width="324" height="20" style="background:transparent URL('theme://images/sta_WF_subtitle.png') left middle;"/>
+        <Static id="Static05" taborder="32" text="h5" visible="false" left="0" top="488" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static06" taborder="33" text="h5" visible="false" left="930" top="850" right="15" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static07" taborder="34" text="h5" visible="false" left="930" top="833" right="15" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_grdDet" taborder="35" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" left="938" top="834" right="14" height="20" style="border:0 none #808080ff ;align:right middle;"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_main" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" onrowposchanged="ds_main_onrowposchanged">
+        <ColumnInfo>
+          <Column id="sysId" type="STRING" size="256"/>
+          <Column id="sysNm" type="STRING" size="256"/>
+          <Column id="menuId" type="STRING" size="256"/>
+          <Column id="menuNm" type="STRING" size="256"/>
+          <Column id="menuNmEng" type="STRING" size="256"/>
+          <Column id="sortSeq" type="STRING" size="256"/>
+          <Column id="year" type="STRING" size="256"/>
+          <Column id="termGb" type="STRING" size="256"/>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_sub" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="sysId" type="STRING" size="256"/>
+          <Column id="subId" type="STRING" size="256"/>
+          <Column id="menuId" type="STRING" size="256"/>
+          <Column id="progId" type="STRING" size="256"/>
+          <Column id="progNm" type="STRING" size="256"/>
+          <Column id="progNmEng" type="STRING" size="256"/>
+          <Column id="url" type="STRING" size="256"/>
+          <Column id="urlEng" type="STRING" size="256"/>
+          <Column id="typeCd" type="STRING" size="256"/>
+          <Column id="repairYn" type="STRING" size="256"/>
+          <Column id="useFlag" type="STRING" size="256"/>
+          <Column id="memo" type="STRING" size="256"/>
+          <Column id="domain" type="STRING" size="256"/>
+          <Column id="port" type="STRING" size="256"/>
+          <Column id="sortSeq" type="STRING" size="256"/>
+          <Column id="urlN" type="STRING" size="256"/>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="userInfoYn" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_sys_sh" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+      <Dataset id="ds_sub_sh" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+    </Objects>
+    <Bind>
+      <BindItem id="item0" compid="grd_main" propid="" datasetid="ds_cmmn_cd" columnid=""/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : com03002.xfdl
+* 화면설명     : 프로그램등록
+* 작성자       : 최용현
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.05.01     최용현         최초생성
+* 2015.05.09     최용현         주석 수정
+******************************************************************************/
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+/********************************************************************************
+ * 함 수 명 	: comCsi08_onload
+ * 함수설명 	: Load 이벤트
+********************************************************************************/
+this.comCsi08_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{ 
+// 	this.gfn_getAuth();
+// 	var essGrd = new Array();
+// 		essGrd[0] = this.grd_main;
+// 		essGrd[1] = this.grd_sub;
+// 	
+// 	this.gfn_essDataset(essGrd);
+	this.gfn_bindCmmnFunction(); 
+	this.gfn_findSysCombo();
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_search_onclick
+ * 함수설명 	: 조회버튼 클릭이벤트
+********************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_find();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preFind
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preFind = function()
+{
+	this.ds_main.clearData();
+	this.ds_sub.clearData();
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_find
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_find = function()
+{
+	if(this.fn_preFind()){
+		var strArg  = "strSysId="  + nexacro.wrapQuote(this.div_search.cmb_sysIdSh.value);
+			strArg += " strSubId=" + nexacro.wrapQuote(this.div_search.cmb_subIdSh.value);
+		
+		this.gfn_transaction("FIND",
+							 "txComUrl::com/selectComCsi08.do",
+							 "",
+							 "ds_main=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postFind
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postFind = function()
+{
+	this.gfn_getDatasetCount(this.ds_main, this.sta_grdMain);
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_findSub
+ * 함수설명 	: 하단그리드 조회 함수
+********************************************************************************/
+this.fn_findSub = function()
+{
+	var strArg  = "pv_sysId="  + nexacro.wrapQuote(this.ds_main.getColumn(this.ds_main.rowposition, "sysId"));
+		strArg += " pv_subId=" + nexacro.wrapQuote(this.ds_main.getColumn(this.ds_main.rowposition, "subId"));
+		strArg += " pv_menuId="+ nexacro.wrapQuote(this.ds_main.getColumn(this.ds_main.rowposition, "menuId"));
+	
+	this.gfn_transaction("FINDSUB",
+					     "txComUrl::com/selectComCsi08Sub.do",
+						 "",
+						 "ds_sub=resultList",
+						 strArg,
+						 "fn_callBack");
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postFindSub
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postFindSub = function()
+{
+	this.gfn_getDatasetCount(this.ds_sub, this.sta_grdDet);
+}
+
+/********************************************************************************
+ * 함 수 명 	: ds_main_onrowposchanged
+ * 함수설명 	: ds_main rowposition 변경 시 함수
+********************************************************************************/
+this.ds_main_onrowposchanged = function(obj:Dataset, e:nexacro.DSRowPosChangeEventInfo)
+{
+	if(e.newrow < 0){
+		return false;
+	}
+	this.fn_findSub();
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_new_onclick
+ * 함수설명 	: Row를 추가한다.
+********************************************************************************/
+this.btn_new_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{	
+	this.gfn_addRow(this.ds_main);
+	this.ds_main.setColumn(this.ds_main.rowposition, "sysId", this.div_search.cmb_sysIdSh.value);
+	this.ds_main.setColumn(this.ds_main.rowposition, "subId", this.div_search.cmb_subIdSh.value);
+	if(this.ds_main.getRowCount() == 0){
+		this.ds_main.setColumn(this.ds_main.rowposition, "sortSeq", 10);
+	}else{
+		this.ds_main.setColumn(this.ds_main.rowposition, "sortSeq", parseInt(this.gfn_nvl(this.ds_main.getColumn(this.ds_main.rowposition-1, "sortSeq"),0))+10);
+	}
+	
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_newSub_onclick
+ * 함수설명 	: Row를 추가한다.
+********************************************************************************/
+this.btn_newSub_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.ds_main.getRowCount()==0){
+		this.alert("시스템을 먼저 선택해 주세요.");
+		return false;
+	}
+
+	this.gfn_addRow(this.ds_sub);
+	this.ds_sub.setColumn(this.ds_sub.rowposition, "sysId",   this.ds_main.getColumn(this.ds_main.rowposition, "sysId"));
+	this.ds_sub.setColumn(this.ds_sub.rowposition, "subId",   this.ds_main.getColumn(this.ds_main.rowposition, "subId"));
+	this.ds_sub.setColumn(this.ds_sub.rowposition, "menuId",  this.ds_main.getColumn(this.ds_main.rowposition, "menuId"));
+	this.ds_sub.setColumn(this.ds_sub.rowposition, "urlN", 	 this.ds_main.getColumn(this.ds_main.rowposition, "menuId").toLowerCase()+"::");
+	if(this.ds_sub.getRowCount() == 0){
+		this.ds_sub.setColumn(this.ds_sub.rowposition, "sortSeq", 10);
+	}else{
+		this.ds_sub.setColumn(this.ds_sub.rowposition, "sortSeq", parseInt(this.gfn_nvl(this.ds_sub.getColumn(this.ds_sub.rowposition-1, "sortSeq"),0))+10);
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_del_onclick
+ * 함수설명 	: 선택한 Data를 삭제한다.
+ *********************************************************************/
+this.btn_del_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_deleteRow(this.ds_main,"this.fn_save()");
+}
+/*********************************************************************
+ * 함 수 명 	: btn_delSub_onclick
+ * 함수설명 	: 선택한 Data를 삭제한다.
+ *********************************************************************/
+this.btn_delSub_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_deleteRow(this.ds_sub,"this.fn_saveSub()");
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_save_onclick
+ * 함수설명 	: 저장버튼 클릭 event
+ *********************************************************************/
+this.btn_save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{	
+	this.fn_save();
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_saveSub_onclick
+ * 함수설명 	: 저장버튼 클릭 event
+ *********************************************************************/
+this.btn_saveSub_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_saveSub();
+}
+
+
+/*********************************************************************
+ * 함 수 명 	: fn_preSave
+ * 함수설명 	: DataSet을 저장 전 처리 함수.
+ *********************************************************************/
+this.fn_preSave = function()
+{
+	if(!this.gfn_isUpdate(this.ds_main)){
+		this.alert("변경된 데이터가 없습니다.");
+		return false;
+	}
+
+	//데이터 중복 체크
+	if(!this.gfn_chkValidation("ds_main", "sysId$menuId", "시스템ID, 메뉴ID")){
+		return false;
+	}
+	
+	/*
+	 * 필수값 입력 체크
+	 */
+	var colNm = "menuId$menuNm";
+	var korNm = "메뉴ID$메뉴명";
+	var cmpNm = " $ $ $ $ ";
+	
+	var result = this.gfn_chkEssItem("ds_main", colNm, korNm, cmpNm);
+	if (result[0] != "success") {
+		this.alert(result[0]);
+		this.ds_main.set_rowposition(result[1]);
+		if(result[3] != ""){
+			this.objects[result[3]].setFocus();
+		}
+		return false;	
+	}
+	
+	return true;	
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_save
+ * 함수설명 	: DataSet을 저장한다.
+ *********************************************************************/
+this.fn_save = function()
+{
+	if(this.fn_preSave()){
+		this.gfn_transaction("SAVE",
+							  "txComUrl::com/saveComCsi08.do",
+							  "resultList=ds_main:u",
+							  "",
+							  "",
+							 "fn_callBack");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSave
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postSave = function()
+{
+	this.alert("저장이 완료되었습니다.");
+	this.fn_find();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_preSaveSub
+ * 함수설명 	: DataSet을 저장 전 처리 함수.
+ *********************************************************************/
+this.fn_preSaveSub = function()
+{
+	if(this.gfn_isUpdate(this.ds_sub)){
+		return true;
+	}else{
+		this.alert("변경된 데이터가 없습니다.");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_saveSub
+ * 함수설명 	: DataSet을 저장한다.
+ *********************************************************************/
+this.fn_saveSub = function()
+{
+	if(this.fn_preSaveSub()){
+		this.gfn_transaction("SAVESUB",
+							  "txComUrl::com/saveComCsi08Sub.do",
+							  "resultList=ds_sub:u",
+							  "",
+							  "",
+							 "fn_callBack");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSaveSub
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postSaveSub = function()
+{
+	this.alert("저장이 완료되었습니다.");
+	this.fn_findSub();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId == "FIND"){
+			this.fn_postFind();
+		}else if(trId == "FINDSUB"){
+			this.fn_postFindSub();
+		}else if(trId == "SAVE"){
+			this.fn_postSave();
+		}else if(trId == "SAVESUB"){
+			this.fn_postSaveSub();
+		}else if(trId == "SYS"){
+			this.div_search.cmb_sysIdSh.set_index(0);
+			this.gfn_findSubCombo(this.div_search.cmb_sysIdSh.value);
+		}else if(trId == "SUB"){
+			this.div_search.cmb_subIdSh.set_index(0);
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: grd_main_onheadclick
+ * 함수설명 	: 그리드 헤더 클릭 함수
+ *********************************************************************/
+this.grd_main_onheadclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	
+}
+
+this.grd_sub_onheadclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	
+}
+/*********************************************************************
+ * 함 수 명 	: cmb_sysIdSh_onitemchanged
+ * 함수설명 	: 시스템ID 변경 함수
+ *********************************************************************/
+this.cmb_sysIdSh_onitemchanged = function(obj:Combo, e:nexacro.ItemChangeEventInfo)
+{
+	this.gfn_findSubCombo(obj.value);
+}
+
+
+
+]]></Script>
+  </Form>
+</FDL>

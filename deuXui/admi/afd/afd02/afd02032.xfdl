@@ -1,0 +1,1152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd02032" classname="afd02030" left="0" top="0" width="1038" height="855" titletext="급여공제관리" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Button id="btn_search" taborder="12" text="조회" cssclass="search" top="58" right="263" width="60" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R" onclick="btn_search_onclick"/>
+        <Static id="Static11" taborder="15" text="w&#13;&#10;15" visible="false" top="0" right="0" width="15" height="855" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static22" taborder="18" text="h15" visible="false" left="0" top="43" width="1038" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static23" taborder="19" text="h5" visible="false" left="0" top="80" width="1038" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_excel" taborder="54" text="엑셀" cssclass="btn_WF_Common" top="58" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="Excel" userBtnAuth="D" onclick="btn_excel_onclick"/>
+        <Static id="sta_count" taborder="83" text="Count &lt;b v='true'&gt;999&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" right="15" width="60" height="20" bottom="2"/>
+        <Static id="Static00" taborder="84" text="h10" visible="false" left="0" top="823" width="1038" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Div id="div_search" taborder="85" left="0" top="0" right="15" height="43" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout width="1038" height="96">
+              <Edit id="edt_endwNm" taborder="49" readonly="true" left="785" top="10" width="123" height="22"/>
+              <Button id="btn_endwPop" taborder="3" onclick="btn_endwPop_onclick" cssclass="popupDetail" left="761" top="10" width="22" height="22" tooltiptype="hover" tooltiptext="조회"/>
+              <Edit id="edt_endwCd" taborder="2" left="663" top="10" width="96" height="22" style="border:1 solid #ccccccff ;" onchanged="div_search_edt_endwCd_onchanged" onkeyup="div_search_edt_endwCd_onkeyup"/>
+              <Static id="Static00" taborder="52" text="기금구분" cssclass="search" left="612" top="10" width="50" height="22" class="search_bul"/>
+              <Static id="Static01" taborder="53" text="조회년월" cssclass="search" left="7" top="10" width="50" height="22" class="search_bul"/>
+              <Static id="Static02" taborder="54" text="w8" visible="false" left="65" top="10" width="8" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Div id="div_Yymm_Fr" taborder="0" url="component::monthCalendar.xfdl" left="57" top="10" width="82" height="22" style="background:transparent;"/>
+              <Static id="Static04" taborder="57" text="마감여부" cssclass="search" left="918" top="10" width="50" height="22" class="search_bul" visible="false"/>
+              <Combo id="cmb_useYn" taborder="1" codecolumn="codecolumn" datacolumn="datacolumn" left="976" top="10" width="46" height="22" class="essential" oncloseup="div_search_cmb_useYn_oncloseup" visible="false">
+                <Dataset id="innerdataset">
+                  <ColumnInfo>
+                    <Column id="codecolumn" size="256"/>
+                    <Column id="datacolumn" size="256"/>
+                  </ColumnInfo>
+                  <Rows>
+                    <Row>
+                      <Col id="codecolumn">0</Col>
+                      <Col id="datacolumn">N</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">1</Col>
+                      <Col id="datacolumn">Y</Col>
+                    </Row>
+                  </Rows>
+                </Dataset>
+              </Combo>
+              <Static id="Static07" taborder="60" text="w&#13;20" visible="false" left="206" top="10" width="20" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static08" taborder="61" text="회원성명" cssclass="search" left="310" top="10" width="50" height="22" class="search_bul"/>
+              <CheckBox id="chkAll" taborder="65" text="전체" left="235" top="10" height="22" onchanged="div_search_chkAll_onchanged" value="false" position="absolute" width="50" onclick="div_search_chkAll_onclick"/>
+              <Static id="Static10" taborder="66" text="w8" visible="false" left="242" top="10" width="8" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static06" taborder="68" text="w8" visible="false" left="426" top="10" width="8" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Div id="div_Yymm_To" taborder="69" url="component::monthCalendar.xfdl" left="151" top="10" width="82" height="22" style="background:transparent;"/>
+              <Static id="Static17" taborder="70" text="~" left="140" top="10" width="22" height="23" style="align:left middle;"/>
+              <Edit id="edt_sMemberNo" taborder="71" canchange="edt_memberNo_canchange" left="362" top="10" width="88" height="22" style="border:1 solid #ccccccff ;"/>
+              <Button id="btn_sPopup" taborder="72" onclick="div_search_btn_sPopup_onclick" cssclass="popupDetail" left="452" top="10" width="22" height="22" tooltiptype="hover" tooltiptext="조회"/>
+              <Edit id="edt_sMemberNmKor" taborder="73" readonly="true" left="476" top="10" width="123" height="22" style="border:1 solid #ccccccff ;"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static28" taborder="86" text="w&#13;&#10;15" visible="false" left="0" top="10" width="15" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static20" taborder="87" text="h10" visible="false" left="0" top="0" width="1038" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static01" taborder="88" text="h10" visible="false" left="0" top="32" width="1038" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static08" taborder="90" text="급여공제내역" cssclass="page_stitle" left="0" top="59" width="324" height="20"/>
+        <Button id="btn_new" taborder="91" text="생성" cssclass="new" top="58" right="201" width="60" height="22" tooltiptype="hover" userBtnAuth="S" onclick="btn_new_onclick" tooltiptext="생성"/>
+        <Button id="btn_del" taborder="92" text="삭제" cssclass="del" top="58" right="139" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" userBtnAuth="S" onclick="btn_del_onclick"/>
+        <Grid id="grd_rcpmny" taborder="93" binddataset="ds_rcpmny" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" oncelldblclick="grd_rcpmny_oncelldblclick" left="0" top="85" right="15" bottom="32">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="31" band="left"/>
+                <Column size="40" band="left"/>
+                <Column size="76"/>
+                <Column size="80"/>
+                <Column size="140"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="240"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="140"/>
+                <Column size="60"/>
+                <Column size="140"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="140"/>
+                <Column size="240"/>
+              </Columns>
+              <Rows>
+                <Row size="34" band="head"/>
+                <Row size="24"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" text="No"/>
+                <Cell col="2" text="년월"/>
+                <Cell col="3" text="지출일"/>
+                <Cell col="4" text="기금구분"/>
+                <Cell col="5" text="성명"/>
+                <Cell col="6" text="직번"/>
+                <Cell col="7" text="소속"/>
+                <Cell col="8" text="직명"/>
+                <Cell col="9" text="재직구분"/>
+                <Cell col="10" text="약정월액"/>
+                <Cell col="11" text="약정&#13;&#10;개월수"/>
+                <Cell col="12" text="약정총액"/>
+                <Cell col="13" text="약정&#13;&#10;시작연월"/>
+                <Cell col="14" text="약정&#13;&#10;마감연월"/>
+                <Cell col="15" text="기탁방법"/>
+                <Cell col="16" text="비고"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="expr:yymm != &quot;전체&quot; ? &quot;checkbox&quot; : &quot;none&quot;" edittype="expr:yymm != &quot;전체&quot; ? &quot;checkbox&quot; : &quot;none&quot;" text="bind:chk"/>
+                <Cell col="1" text="expr:currow +1"/>
+                <Cell col="2" displaytype="text" edittype="none" text="bind:yymm" calendardisplaynulltype="none"/>
+                <Cell col="3" displaytype="expr:yymm != &quot;전체&quot; ? &quot;date&quot; : &quot;none&quot;" edittype="expr:yymm != &quot;전체&quot; ? &quot;date&quot; : &quot;none&quot;" text="bind:spenDt" calendardisplaynulltype="none"/>
+                <Cell col="4" style="align:left;" text="bind:endwCdNm"/>
+                <Cell col="5" text="bind:memberNm"/>
+                <Cell col="6" text="bind:memberNo"/>
+                <Cell col="7" style="align:left;" text="bind:deptCdNm"/>
+                <Cell col="8" style="align:left;" text="bind:userGbNm"/>
+                <Cell col="9" text="bind:hofcDivNm"/>
+                <Cell col="10" displaytype="number" style="align:right;" text="bind:enggMmAmt" mask="#,###"/>
+                <Cell col="11" displaytype="normal" style="align:center;" text="bind:enggMmCnt"/>
+                <Cell col="12" displaytype="number" style="align:right;" text="bind:enggTotAmt" mask="#,###"/>
+                <Cell col="13" displaytype="date" text="bind:enggFrYymm" calendardisplaynulltype="none"/>
+                <Cell col="14" displaytype="date" text="bind:enggToYymm" calendardisplaynulltype="none"/>
+                <Cell col="15" style="align:left;" text="bind:paymthd"/>
+                <Cell col="16" edittype="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;normal&quot; : &quot;none&quot;" style="align:left;" text="bind:remark" editdisplay="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;display&quot; : &quot;edit&quot;"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2"/>
+                <Cell col="3"/>
+                <Cell col="4"/>
+                <Cell col="5"/>
+                <Cell col="6"/>
+                <Cell col="7"/>
+                <Cell col="8"/>
+                <Cell col="9"/>
+                <Cell col="10" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;enggMmAmt&quot;)"/>
+                <Cell col="11"/>
+                <Cell col="12" style="align:right;"/>
+                <Cell col="13"/>
+                <Cell col="14"/>
+                <Cell col="15"/>
+                <Cell col="16"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Calendar id="cal_rcpmnySpenDt" taborder="94" top="58" width="100" height="22" class="essential" left="153" position="absolute"/>
+        <Button id="btn_apply" taborder="95" text="일괄적용" onclick="btn_apply_onclick" cssclass="btn_WF_Common" top="58" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="D" position="absolute" left="258" width="63"/>
+        <Button id="btn_save" taborder="96" text="저장" onclick="btn_save_onclick" cssclass="save" top="58" right="77" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S"/>
+        <Grid id="grd_changeData" taborder="97" binddataset="ds_changeData" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" left="0" top="784" right="15" bottom="-60" visible="false">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="31" band="left"/>
+                <Column size="76"/>
+                <Column size="150"/>
+                <Column size="150"/>
+                <Column size="150"/>
+                <Column size="150"/>
+                <Column size="150"/>
+                <Column size="150"/>
+                <Column size="40"/>
+              </Columns>
+              <Rows>
+                <Row size="34" band="head"/>
+                <Row size="24"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" text="구분"/>
+                <Cell col="2" text="동문교수장학회"/>
+                <Cell col="3" text="일반(지정)발전기금"/>
+                <Cell col="4" text="교직원장학회"/>
+                <Cell col="5" text="전포종합사회복지관"/>
+                <Cell col="6" text="일반발전기금||"/>
+                <Cell col="7" text="합계(원)"/>
+                <Cell col="8" text="비고"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;checkbox&quot; : &quot;none&quot;" edittype="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;checkbox&quot; : &quot;none&quot;" text="bind:chk"/>
+                <Cell col="1" displaytype="normal" edittype="none" text="bind:yymm" calendardisplaynulltype="none"/>
+                <Cell col="2" displaytype="normal" edittype="none" text="bind:col1" calendardisplaynulltype="none"/>
+                <Cell col="3" style="align:left;" text="bind:col2"/>
+                <Cell col="4" text="bind:col3"/>
+                <Cell col="5" text="bind:col4"/>
+                <Cell col="6" style="align:left;" text="bind:col5"/>
+                <Cell col="7" style="align:left;" text="bind:colTotal"/>
+                <Cell col="8" edittype="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;normal&quot; : &quot;none&quot;" style="align:left;" text="bind:remark" editdisplay="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;display&quot; : &quot;edit&quot;"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2"/>
+                <Cell col="3"/>
+                <Cell col="4"/>
+                <Cell col="5"/>
+                <Cell col="6"/>
+                <Cell col="7"/>
+                <Cell col="8"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="btn_excel01" taborder="98" text="급여공제" onclick="btn_excel01_onclick" cssclass="btn_WF_Common" top="58" right="325" width="76" height="22" tooltiptype="hover" tooltiptext="Excel" userBtnAuth="D" visible="true"/>
+        <Grid id="grd_changeDataDetail" taborder="103" binddataset="ds_changeDataDetail" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" visible="false" left="0" top="848" right="15" bottom="-124">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="31" band="left"/>
+                <Column size="50"/>
+                <Column size="50"/>
+                <Column size="50"/>
+                <Column size="50"/>
+                <Column size="50"/>
+                <Column size="50"/>
+                <Column size="50"/>
+                <Column size="50"/>
+                <Column size="50"/>
+                <Column size="50"/>
+                <Column size="50"/>
+                <Column size="50"/>
+                <Column size="50"/>
+                <Column size="50"/>
+                <Column size="50"/>
+              </Columns>
+              <Rows>
+                <Row size="34" band="head"/>
+                <Row size="24"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" colspan="3" text="동문교수장학회"/>
+                <Cell col="4" colspan="3" text="일반(지정)발전기금"/>
+                <Cell col="7" colspan="3" text="교직원장학회"/>
+                <Cell col="10" colspan="3" text="전포종합사회복지관"/>
+                <Cell col="13" colspan="3" text="일반발전기금||"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;checkbox&quot; : &quot;none&quot;" edittype="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;checkbox&quot; : &quot;none&quot;" text="bind:chk"/>
+                <Cell col="1" displaytype="expr:endwCd == &quot;010501&quot; ? &quot;normal&quot; : &quot;none&quot;" edittype="expr:endwCd == &quot;010501&quot; ? &quot;normal&quot; : &quot;none&quot;" text="bind:memberNm" calendardisplaynulltype="none"/>
+                <Cell col="2" displaytype="expr:endwCd == &quot;010501&quot; ? &quot;normal&quot; : &quot;none&quot;" edittype="expr:endwCd == &quot;010501&quot; ? &quot;normal&quot; : &quot;none&quot;" text="bind:memberNo" calendardisplaynulltype="none"/>
+                <Cell col="3" displaytype="expr:endwCd == &quot;010501&quot; ? &quot;normal&quot; : &quot;none&quot;" edittype="expr:endwCd == &quot;010501&quot; ? &quot;normal&quot; : &quot;none&quot;" text="bind:amt" calendardisplaynulltype="none"/>
+                <Cell col="4" displaytype="expr:endwCd == &quot;010201&quot; ? &quot;normal&quot; : &quot;none&quot;" edittype="expr:endwCd == &quot;010201&quot; ? &quot;normal&quot; : &quot;none&quot;" style="align:left;" text="bind:memberNm"/>
+                <Cell col="5" displaytype="expr:endwCd == &quot;010201&quot; ? &quot;normal&quot; : &quot;none&quot;" edittype="expr:endwCd == &quot;010201&quot; ? &quot;normal&quot; : &quot;none&quot;" style="align:left;" text="bind:memberNo"/>
+                <Cell col="6" displaytype="expr:endwCd == &quot;010201&quot; ? &quot;normal&quot; : &quot;none&quot;" edittype="expr:endwCd == &quot;010201&quot; ? &quot;normal&quot; : &quot;none&quot;" style="align:left;" text="bind:amt"/>
+                <Cell col="7" displaytype="expr:endwCd == &quot;010601&quot; ? &quot;normal&quot; : &quot;none&quot;" edittype="expr:endwCd == &quot;010601&quot; ? &quot;normal&quot; : &quot;none&quot;" text="bind:memberNm"/>
+                <Cell col="8" displaytype="expr:endwCd == &quot;010601&quot; ? &quot;normal&quot; : &quot;none&quot;" edittype="expr:endwCd == &quot;010601&quot; ? &quot;normal&quot; : &quot;none&quot;" text="bind:memberNo"/>
+                <Cell col="9" displaytype="expr:endwCd == &quot;010601&quot; ? &quot;normal&quot; : &quot;none&quot;" edittype="expr:endwCd == &quot;010601&quot; ? &quot;normal&quot; : &quot;none&quot;" text="bind:amt"/>
+                <Cell col="10" displaytype="expr:endwCd == &quot;010701&quot; ? &quot;normal&quot; : &quot;none&quot;" edittype="expr:endwCd == &quot;010701&quot; ? &quot;normal&quot; : &quot;none&quot;" text="bind:memberNm"/>
+                <Cell col="11" displaytype="expr:endwCd == &quot;010701&quot; ? &quot;normal&quot; : &quot;none&quot;" edittype="expr:endwCd == &quot;010701&quot; ? &quot;normal&quot; : &quot;none&quot;" text="bind:memberNo"/>
+                <Cell col="12" displaytype="expr:endwCd == &quot;010701&quot; ? &quot;normal&quot; : &quot;none&quot;" edittype="expr:endwCd == &quot;010701&quot; ? &quot;normal&quot; : &quot;none&quot;" text="bind:amt"/>
+                <Cell col="13" displaytype="expr:endwCd == &quot;010302&quot; ? &quot;normal&quot; : &quot;none&quot;" edittype="expr:endwCd == &quot;010302&quot; ? &quot;normal&quot; : &quot;none&quot;" style="align:left;" text="bind:memberNm"/>
+                <Cell col="14" displaytype="expr:endwCd == &quot;010302&quot; ? &quot;normal&quot; : &quot;none&quot;" edittype="expr:endwCd == &quot;010302&quot; ? &quot;normal&quot; : &quot;none&quot;" style="align:left;" text="bind:memberNo"/>
+                <Cell col="15" displaytype="expr:endwCd == &quot;010302&quot; ? &quot;normal&quot; : &quot;none&quot;" edittype="expr:endwCd == &quot;010302&quot; ? &quot;normal&quot; : &quot;none&quot;" style="align:left;" text="bind:amt"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2"/>
+                <Cell col="3"/>
+                <Cell col="4"/>
+                <Cell col="5"/>
+                <Cell col="6"/>
+                <Cell col="7"/>
+                <Cell col="8"/>
+                <Cell col="9"/>
+                <Cell col="10"/>
+                <Cell col="11"/>
+                <Cell col="12"/>
+                <Cell col="13"/>
+                <Cell col="14"/>
+                <Cell col="15"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Grid id="grd_accountancy" taborder="100" binddataset="ds_accountancy" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" left="0" top="917" right="15" bottom="-153" visible="false">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="31" band="left"/>
+                <Column size="40" band="left"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="240"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="140"/>
+                <Column size="150"/>
+                <Column size="140"/>
+                <Column size="159"/>
+                <Column size="158"/>
+                <Column size="240"/>
+              </Columns>
+              <Rows>
+                <Row size="34" band="head"/>
+                <Row size="24"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" text="No"/>
+                <Cell col="2" text="성명"/>
+                <Cell col="3" text="직번"/>
+                <Cell col="4" text="소속"/>
+                <Cell col="5" text="직명"/>
+                <Cell col="6" text="재직구분"/>
+                <Cell col="7" text="동문교수장학회"/>
+                <Cell col="8" text="일반(지정)발전기금|"/>
+                <Cell col="9" text="교직원장학회"/>
+                <Cell col="10" text="전포종합사회복지관"/>
+                <Cell col="11" text="일반발전기금||"/>
+                <Cell col="12" text="비고"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;checkbox&quot; : &quot;none&quot;" edittype="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;checkbox&quot; : &quot;none&quot;" text="bind:chk"/>
+                <Cell col="1" text="expr:currow +1"/>
+                <Cell col="2" text="bind:nm"/>
+                <Cell col="3" text="bind:memberNo"/>
+                <Cell col="4" style="align:left;" text="bind:deptNm"/>
+                <Cell col="5" style="align:left;" text="bind:userGb"/>
+                <Cell col="6" text="bind:hofcDiv"/>
+                <Cell col="7" displaytype="number" style="align:right;" text="bind:col1" mask="#,###"/>
+                <Cell col="8" displaytype="number" style="align:center;" text="bind:col2" mask="#,###"/>
+                <Cell col="9" displaytype="number" style="align:right;" text="bind:col3" mask="#,###"/>
+                <Cell col="10" displaytype="number" text="bind:col4" mask="#,###" calendardisplaynulltype="none"/>
+                <Cell col="11" displaytype="number" text="bind:col5" mask="#,###" calendardisplaynulltype="none"/>
+                <Cell col="12" edittype="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;normal&quot; : &quot;none&quot;" style="align:left;" text="bind:remark" editdisplay="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;display&quot; : &quot;edit&quot;"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2"/>
+                <Cell col="3"/>
+                <Cell col="4"/>
+                <Cell col="5"/>
+                <Cell col="6"/>
+                <Cell col="7" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;enggMmAmt&quot;)"/>
+                <Cell col="8"/>
+                <Cell col="9" style="align:right;" expr="expr:dataset.getSum(&quot;enggTotAmt&quot;)"/>
+                <Cell col="10"/>
+                <Cell col="11"/>
+                <Cell col="12"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Grid id="grd_rcpmny01" taborder="101" binddataset="ds_rcpmny01" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" visible="false" left="0" top="1013" right="15" bottom="-249">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="31" band="left"/>
+                <Column size="40" band="left"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="240"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="140"/>
+                <Column size="150"/>
+                <Column size="140"/>
+                <Column size="240"/>
+              </Columns>
+              <Rows>
+                <Row size="34" band="head"/>
+                <Row size="24"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" text="No"/>
+                <Cell col="2" text="성명"/>
+                <Cell col="3" text="직번"/>
+                <Cell col="4" text="소속"/>
+                <Cell col="5" text="직명"/>
+                <Cell col="6" text="재직구분"/>
+                <Cell col="7" text="납부금액"/>
+                <Cell col="8" text="금액"/>
+                <Cell col="9" text="약정마감연월"/>
+                <Cell col="10" text="비고"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;checkbox&quot; : &quot;none&quot;" edittype="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;checkbox&quot; : &quot;none&quot;" text="bind:chk"/>
+                <Cell col="1" text="expr:currow +1"/>
+                <Cell col="2" text="bind:nm"/>
+                <Cell col="3" text="bind:memberNo"/>
+                <Cell col="4" style="align:left;" text="bind:deptNm"/>
+                <Cell col="5" style="align:left;" text="bind:userGb"/>
+                <Cell col="6" text="bind:hofcDiv"/>
+                <Cell col="7" displaytype="normal" style="align:right;" text="bind:enggAmtKor"/>
+                <Cell col="8" displaytype="normal" style="align:center;" text="bind:enggAmt"/>
+                <Cell col="9" displaytype="normal" style="align:right;" text="bind:enggToDt"/>
+                <Cell col="10" edittype="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;normal&quot; : &quot;none&quot;" style="align:left;" text="bind:remark" editdisplay="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;display&quot; : &quot;edit&quot;"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2"/>
+                <Cell col="3"/>
+                <Cell col="4"/>
+                <Cell col="5"/>
+                <Cell col="6"/>
+                <Cell col="7" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;enggMmAmt&quot;)"/>
+                <Cell col="8"/>
+                <Cell col="9" style="align:right;" expr="expr:dataset.getSum(&quot;enggTotAmt&quot;)"/>
+                <Cell col="10"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Grid id="grd_rcpmny11" taborder="102" binddataset="ds_rcpmny11" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" visible="false" left="0" top="1109" right="15" bottom="-345">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="31" band="left"/>
+                <Column size="40" band="left"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="171"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="140"/>
+                <Column size="75"/>
+                <Column size="93"/>
+                <Column size="91"/>
+                <Column size="103"/>
+                <Column size="56"/>
+                <Column size="240"/>
+              </Columns>
+              <Rows>
+                <Row size="37" band="head"/>
+                <Row size="24"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" text="No"/>
+                <Cell col="2" text="성명"/>
+                <Cell col="3" text="직번"/>
+                <Cell col="4" text="소속"/>
+                <Cell col="5" text="직명"/>
+                <Cell col="6" text="재직구분"/>
+                <Cell col="7" text="약정월액"/>
+                <Cell col="8" text="약정개월수"/>
+                <Cell col="9" text="약정총액"/>
+                <Cell col="10" text="시작연월"/>
+                <Cell col="11" text="약정마감연월"/>
+                <Cell col="12" text="기탁방법"/>
+                <Cell col="13" text="비고"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;checkbox&quot; : &quot;none&quot;" edittype="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;checkbox&quot; : &quot;none&quot;" text="bind:chk"/>
+                <Cell col="1" text="expr:currow +1"/>
+                <Cell col="2" text="bind:nm"/>
+                <Cell col="3" text="bind:memberNo"/>
+                <Cell col="4" style="align:left;" text="bind:deptNm"/>
+                <Cell col="5" style="align:left;" text="bind:userGb"/>
+                <Cell col="6" text="bind:hofcDiv"/>
+                <Cell col="7" displaytype="number" style="align:right;" text="bind:enggAmt" mask="#,###"/>
+                <Cell col="8" displaytype="normal" style="align:center;" text="bind:enggCnt"/>
+                <Cell col="9" text="bind:enggTotal"/>
+                <Cell col="10" text="bind:enggFrDt"/>
+                <Cell col="11" displaytype="normal" style="align:right;" text="bind:enggToDt"/>
+                <Cell col="12" text="bind:enggWay"/>
+                <Cell col="13" edittype="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;normal&quot; : &quot;none&quot;" style="align:left;" text="bind:remark" editdisplay="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;display&quot; : &quot;edit&quot;"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2"/>
+                <Cell col="3"/>
+                <Cell col="4"/>
+                <Cell col="5"/>
+                <Cell col="6"/>
+                <Cell col="7" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;enggMmAmt&quot;)"/>
+                <Cell col="8"/>
+                <Cell col="9"/>
+                <Cell col="10"/>
+                <Cell col="11" style="align:right;" expr="expr:dataset.getSum(&quot;enggTotAmt&quot;)"/>
+                <Cell col="12"/>
+                <Cell col="13"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_search">
+        <ColumnInfo>
+          <Column id="searchCd" type="STRING" size="256"/>
+          <Column id="searchNm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="searchCd">0</Col>
+            <Col id="searchNm">전체</Col>
+          </Row>
+          <Row>
+            <Col id="searchCd">1</Col>
+            <Col id="searchNm">이름</Col>
+          </Row>
+          <Row>
+            <Col id="searchCd">2</Col>
+            <Col id="searchNm">회원번호</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_sCnfirmYn"/>
+      <Dataset id="ds_sBankCd"/>
+      <Dataset id="ds_rcpmny" onrowposchanged="ds_rcpmny_onrowposchanged">
+        <ColumnInfo>
+          <Column id="rcpmnyDt" type="string" size="32"/>
+          <Column id="paymentAmt" type="string" size="32"/>
+          <Column id="paymthd" type="string" size="32"/>
+          <Column id="remark" type="string" size="32"/>
+          <Column id="paymentSeq" type="string" size="32"/>
+          <Column id="enggMgnNo" type="string" size="32"/>
+          <Column id="delYn" type="string" size="32"/>
+          <Column id="bnkbDesc" type="string" size="32"/>
+          <Column id="paymentBankCd" type="string" size="32"/>
+          <Column id="chk" type="string" size="32"/>
+          <Column id="memberNmKor" type="string" size="32"/>
+          <Column id="rowStatus" type="string" size="32"/>
+          <Column id="memberNo" type="string" size="32"/>
+          <Column id="rlPaymentPsn" type="string" size="32"/>
+          <Column id="cnfirmYn" type="string" size="32"/>
+          <Column id="yymm" type="STRING" size="256"/>
+          <Column id="end_yn" type="STRING" size="256"/>
+          <Column id="spenDt" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_bankCd"/>
+      <Dataset id="ds_cnfirmYn"/>
+      <Dataset id="ds_sMembas"/>
+      <Dataset id="ds_enggMgnNo"/>
+      <Dataset id="ds_paymthd">
+        <ColumnInfo>
+          <Column id="paymthdCd" type="STRING" size="256"/>
+          <Column id="paymthdNm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="paymthdCd"/>
+            <Col id="paymthdNm">선택</Col>
+          </Row>
+          <Row>
+            <Col id="paymthdCd">1</Col>
+            <Col id="paymthdNm">계좌이체</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_dummy"/>
+      <Dataset id="ds_rcpmny_chk" onrowposchanged="ds_rcpmny_onrowposchanged">
+        <ColumnInfo>
+          <Column id="rcpmnyDt" type="string" size="32"/>
+          <Column id="paymentAmt" type="string" size="32"/>
+          <Column id="paymthd" type="string" size="32"/>
+          <Column id="remark" type="string" size="32"/>
+          <Column id="paymentSeq" type="string" size="32"/>
+          <Column id="enggMgnNo" type="string" size="32"/>
+          <Column id="delYn" type="string" size="32"/>
+          <Column id="bnkbDesc" type="string" size="32"/>
+          <Column id="paymentBankCd" type="string" size="32"/>
+          <Column id="chk" type="string" size="32"/>
+          <Column id="memberNmKor" type="string" size="32"/>
+          <Column id="rowStatus" type="string" size="32"/>
+          <Column id="memberNo" type="string" size="32"/>
+          <Column id="rlPaymentPsn" type="string" size="32"/>
+          <Column id="cnfirmYn" type="string" size="32"/>
+          <Column id="yymm" type="STRING" size="256"/>
+          <Column id="end_yn" type="STRING" size="256"/>
+          <Column id="dataCnt" type="STRING" size="256"/>
+          <Column id="endDataCnt" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_createData">
+        <ColumnInfo>
+          <Column id="yymm" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_changeData"/>
+      <Dataset id="ds_accountancy"/>
+      <Dataset id="ds_rcpmny01"/>
+      <Dataset id="ds_rcpmny11"/>
+      <Dataset id="ds_changeDataDetail"/>
+    </Objects>
+    <Bind/>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+include "commJs::frameUtils.xjs";
+include "commJs::lib_String.xjs";
+
+/****************************************************************************
+* 함 수 명 	: form_onload
+* 함수설명 	: 화면로드 이벤트
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+ 	var essGrd = new Array();
+		essGrd[0] = this.grd_rcpmny;
+ 	
+ 	this.gfn_essDataset(essGrd);
+	this.gfn_bindCmmnFunction();
+	
+	//조회년월
+	this.div_search.div_Yymm_Fr.setData(this.gfn_getCurrentDate("YYYYMM"));
+	this.div_search.div_Yymm_To.setData(this.gfn_getCurrentDate("YYYYMM"));
+	
+	//그리드count
+	this.gfn_getDatasetCount(this.ds_rcpmny, this.sta_count);
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_search_onclick
+* 함수설명 	: 조회버튼
+*****************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();	
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_excel_onclick
+* 함수설명 	: 엑셀버튼
+*****************************************************************************/
+this.btn_excel_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var excelGrd = new Array();
+		excelGrd[0] = this.grd_rcpmny;
+ 	this.gfn_excelDown(excelGrd, "급여공제관리");
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_search
+* 함수설명 	: 조회함수
+*****************************************************************************/
+this.fn_search = function() 
+{
+	if(this.div_search.div_Yymm_Fr.getData()>this.div_search.div_Yymm_To.getData()){
+		this.gfn_message("A", "조회년도를 확인하십시오.");
+	}
+	if(this.div_search.chkAll.value == true && this.gfn_isNull(this.div_search.edt_endwCd.value) == true && this.gfn_isNull(this.div_search.edt_sMemberNo.value) == true){
+		this.gfn_message("A", "전체년도 조회시 기금구분 또는 이름이 필수입니다.");
+		return;
+	}
+	
+	var chkYearAll = "";
+	if(this.div_search.chkAll.value == true){
+		chkYearAll = "Y";
+	}else{
+		chkYearAll = "N";
+	}
+
+	var strArg = "yymmFr=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.div_Yymm_Fr.getData(), ""));//조회시작년월
+		strArg += " yymmTo=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.div_Yymm_To.getData(), ""));//조회년월
+		strArg += " endYn=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.cmb_useYn.value, ""));//마감여부
+		strArg += " endwCd=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_endwCd.value, ""));//기금구분
+		//strArg += " memberNm=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_memberNm.value, ""));//성명
+		strArg += " memberNo=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_sMemberNo.value, ""));
+		strArg += " chkAll=" + nexacro.wrapQuote(chkYearAll);//전체년도 체크
+		
+	
+	this.gfn_transaction("SEARCH"
+						,"txAdmUrl::com/admi/afd/afd02/selectFD02032_01.do"
+						,""
+						,"ds_rcpmny=resultList"
+						,strArg
+						,""
+						,true);
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_endwPop_onclick
+* 함수설명 	: 기금팝업 버튼클릭 이벤트
+*****************************************************************************/
+this.btn_endwPop_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var popupId = "afd02020_p01";
+	var popupUrl = "afd02::afd02020_p01.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var argumentsList = new Array();
+
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, this);
+}
+
+/****************************************************************************
+* 함 수 명 	: div_search_edt_endwCd_onchanged
+* 함수설명 	: 기금코드 변경 이벤트
+*****************************************************************************/
+this.div_search_edt_endwCd_onchanged = function(obj:Edit, e:nexacro.ChangeEventInfo)
+{
+	//전/후 값이다른경우
+	if(e.prevalue != e.postvalue)
+	{
+		this.div_search.edt_endwNm.set_value("");
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: div_search_edt_endwCd_onkeyup
+* 함수설명 	: 기금코드 enter이벤트
+*****************************************************************************/
+this.div_search_edt_endwCd_onkeyup = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	//Enter Key
+	if(e.keycode == "13") 
+	{
+		this.fn_search();
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: div_search_edt_memberNm_onkeyup
+* 함수설명 	: 이름 enter이벤트
+*****************************************************************************/
+this.div_search_edt_memberNm_onkeyup = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	//Enter Key
+	if(e.keycode == "13") 
+	{
+		this.fn_search();
+	}
+}
+
+
+/****************************************************************************
+* 함 수 명 	: div_search_cmb_useYn_oncloseup
+* 함수설명 	: 마감여부 변경 이벤트
+*****************************************************************************/
+this.div_search_cmb_useYn_oncloseup = function(obj:Combo, e:nexacro.ComboCloseUpEventInfo)
+{
+	//조회된 내역 삭제
+	this.ds_rcpmny.clearData();
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_callBack
+* 함수설명 	: callback함수
+*****************************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg) 
+{
+	if(errCd < 0 ) 
+	{
+		this.gfn_message("A", errMsg);
+		return;
+	}
+	
+	//조회
+	if(trId == "SEARCH") 
+	{
+		this.gfn_getDatasetCount(this.ds_rcpmny, this.sta_count);
+	}
+	//생성 전 데이터 확인함수
+	else if(trId == "CHECK_DATA")
+	{
+		if(this.ds_rcpmny_chk.getColumn(0,"endDataCnt") > 0){
+			this.gfn_message("A", this.div_search.div_Yymm_To.getData()+" 데이터에 마감된 데이터가 존재합니다.");
+			return false;
+		}
+
+		if(this.ds_rcpmny_chk.getColumn(0,"dataCnt") > 0){
+			if(!this.confirm("기존 데이터가 존재합니다. 삭제하고 재생성하시겠습니까?")){
+				return false;
+			}
+		}
+		this.fn_createData();
+	}
+	//생성 후
+	else if(trId == "CREATE_DATA")
+	{
+		this.gfn_message("A", this.div_search.div_Yymm_To.getData()+" 데이터가 생성되었습니다.");
+	}
+	//저장
+	else if(trId == "SAVE")
+	{
+		this.fn_postSaveSub();
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_popCallBack
+* 함수설명 	: 팝업 callback함수
+*****************************************************************************/
+this.fn_popCallBack = function(strID, rtnVal) 
+{
+	if("close" == rtnVal) 
+	{
+		return;
+	}
+		
+	//기금팝업
+	if("afd02020_p01" == strID) 
+	{
+		this.ds_dummy.loadXML(rtnVal);
+
+		this.div_search.edt_endwCd.set_value(this.ds_dummy.getColumn(0, "endwCd"));
+		this.div_search.edt_endwNm.set_value(this.ds_dummy.getColumn(0, "endwNm"));
+	}
+	else if("afd02020_p02" == strID) 
+	{
+		this.ds_dummy.loadXML(rtnVal);
+		this.div_search.edt_sMemberNo.set_value(this.ds_dummy.getColumn(0, "memberNo"));
+		this.div_search.edt_sMemberNmKor.set_value(this.ds_dummy.getColumn(0, "memberNmKor"));		
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: grd_rcpmny_oncelldblclick
+* 함수설명 	: 급여공제내역 더블클릭 이벤트
+*****************************************************************************/
+this.grd_rcpmny_oncelldblclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	var strParam = {enggMgnNo:this.ds_rcpmny.getColumn(this.ds_rcpmny.rowposition,"enggMgnNo")
+				   ,memberNo:this.ds_rcpmny.getColumn(this.ds_rcpmny.rowposition,"memberNo")
+				   };
+				   
+	this.cfn_memberEnggDtlPop(strParam, "fn_popCallback");
+		
+		
+	//성명항목에서 더블클릭시
+// 	if(obj.getBindCellIndex("body","memberNm") == obj.getCellPos())
+// 	{
+// 		var strParam = {enggMgnNo:this.ds_rcpmny.getColumn(this.ds_rcpmny.rowposition,"enggMgnNo")
+// 		               ,memberNo:this.ds_rcpmny.getColumn(this.ds_rcpmny.rowposition,"memberNo")
+// 					   };
+// 					   
+// 		this.cfn_memberEnggDtlPop(strParam, "fn_popCallback");
+// 	}
+}
+
+/****************************************************************************
+* 함 수 명 	: chkAll_onchanged
+* 함수설명 	: 전체 체크 이벤트
+*****************************************************************************/
+this.div_search_chkAll_onchanged = function(obj:CheckBox, e:nexacro.CheckBoxChangeEventInfo)
+{
+	if(this.div_search.chkAll.value==true){
+		this.div_search.div_Yymm_Fr.set_enable(false);
+		this.div_search.div_Yymm_To.set_enable(false);
+	}else{
+		this.div_search.div_Yymm_Fr.set_enable(true);
+		this.div_search.div_Yymm_To.set_enable(true);
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: del_onclick
+* 함수설명 	: 삭제 이벤트
+*****************************************************************************/
+this.btn_del_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_deleteRow(this.ds_rcpmny,"this.fn_saveSub()");
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_save
+ * 함수설명 	: DataSet을 저장한다.
+ *********************************************************************/
+this.fn_saveSub = function()
+{
+	if(this.fn_preSaveSub()){
+		this.gfn_transaction("SAVE",
+							  "txAdmUrl::com/admi/afd/afd02/saveFD02032.do",
+							  "resultList=ds_rcpmny:u",
+							  "",
+							  "");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_preSave
+ * 함수설명 	: DataSet을 저장 전 처리 함수.
+ *********************************************************************/
+this.fn_preSaveSub = function()
+{
+	if(!this.gfn_isUpdate(this.ds_rcpmny)){
+		this.alert("변경된 데이터가 없습니다.");
+		return false;
+	}
+	
+	return true;
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSave
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postSaveSub = function()
+{
+	this.alert("저장이 완료되었습니다.");
+	this.fn_search();	
+}
+
+/*********************************************************************
+ * 함 수 명 	: new_onclick
+ * 함수설명 	: 데이터 생성 함수
+ *********************************************************************/
+this.btn_new_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.div_search.div_Yymm_Fr.getData()!=this.div_search.div_Yymm_To.getData()){
+		this.gfn_message("A", "1개월 단위로 생성 가능합니다. 조회년월을 동일하게 하시기 바랍니다.");
+		return;
+	}
+	if(!this.confirm(this.div_search.div_Yymm_To.getData()+" 데이터를 생성하시겠습니까?")){
+		return false;
+	}
+	this.fn_checkData();
+}
+
+
+/****************************************************************************
+* 함 수 명 	: fn_checkData
+* 함수설명 	: 생성 전 데이터 확인함수
+*****************************************************************************/
+this.fn_checkData = function() 
+{
+	var strArg = "yymmFr=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.div_Yymm_Fr.getData(), ""));//조회시작년월
+		strArg += "yymmTo=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.div_Yymm_To.getData(), ""));//조회년월
+
+	this.gfn_transaction("CHECK_DATA"
+						,"txAdmUrl::com/admi/afd/afd02/selectFD02032_02.do"
+						,""
+						,"ds_rcpmny_chk=resultList"
+						,strArg
+						,""
+						,true);
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_createData
+* 함수설명 	: 데이터 생성 확인함수
+*****************************************************************************/
+this.fn_createData = function() 
+{
+	this.ds_createData.addRow();
+	this.ds_createData.setColumn(0,"yymm",this.div_search.div_Yymm_To.getData());
+	
+	var strArg = "yymmFr=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.div_Yymm_Fr.getData(), ""));//조회시작년월
+		strArg += "yymmTo=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.div_Yymm_To.getData(), ""));//조회년월
+	
+	this.gfn_transaction("CREATE_DATA",
+						  "txAdmUrl::com/admi/afd/afd02/createFD02032.do",
+						  "resultList=ds_createData:u",
+						  "",
+						  "",
+						  "fn_callBack");
+	
+}
+//일괄적용
+this.btn_apply_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	//전체 일때 조회조건이 한달이 아닐때
+	if(this.div_search.div_Yymm_Fr.getData() != this.div_search.div_Yymm_To.getData() || this.div_search.chkAll.value == 1)
+	{
+		this.gfn_message("A", "지출일 일괄적용은 시작/종료년월이 같아야합니다.");
+	}
+	//일괄적용
+	else
+	{		
+		
+		for(var i=0; i< this.ds_rcpmny.rowcount ; i++)
+		{
+			this.ds_rcpmny.setColumn(i, "spenDt", this.cal_rcpmnySpenDt.value);
+		}
+		
+		//지출일 일괄적용 후 저장
+		if(this.confirm("지출일( " + this.cal_rcpmnySpenDt.text + " )을 일괄적용 하시겠습니까?"))
+		{
+			
+			this.fn_save();
+		}		
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_save_onclick
+* 함수설명 	: 저장버튼
+*****************************************************************************/
+this.btn_save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.fn_preSave()) 
+	{
+		this.fn_save();
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_preSave
+* 함수설명 	: 지출일 일괄적용 저장 전 함수
+*****************************************************************************/
+this.fn_preSave = function() 
+{
+	if(!this.gfn_isUpdate(this.ds_rcpmny)){
+		this.gfn_message("A", "변경된 데이터가 없습니다.");
+		return false;
+	}
+	return true;
+
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_save
+* 함수설명 	: 급여공제 저장 함수
+*****************************************************************************/
+this.fn_save = function() 
+{
+	//지출일 일괄적용
+	this.gfn_transaction("SAVE"
+						,"txAdmUrl::com/admi/afd/afd02/updateFD02032.do"
+						,"resultList=ds_rcpmny:u"
+						,""
+						,""
+						,""
+						,true);	
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_excel_onclick
+* 함수설명 	: 급여공제 엑셀버튼
+*****************************************************************************/
+this.btn_excel01_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.div_search.div_Yymm_Fr.getData()!=this.div_search.div_Yymm_To.getData()){
+		this.gfn_message("A", "1개월 단위로 급여공제 생성 가능합니다. 조회년월을 동일하게 하시기 바랍니다.");
+		return;
+	}
+// 	if(!this.confirm(this.div_search.div_Yymm_To.getData()+" 데이터를 생성하시겠습니까?")){
+// 		return false;
+// 	}
+	
+	var chkYearAll = "";
+	var strArg = "yymmFr=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.div_Yymm_Fr.getData(), ""));//조회시작년월
+		strArg += "yymmTo=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.div_Yymm_To.getData(), ""));//조회년월
+		strArg += " endYn=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.cmb_useYn.value, ""));//마감여부
+		strArg += " endwCd=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_endwCd.value, ""));//기금구분
+		//strArg += " memberNm=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_memberNm.value, ""));//성명
+		strArg += " memberNo=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_sMemberNo.value, ""));
+		strArg += " chkAll=" + nexacro.wrapQuote(chkYearAll);//전체년도 체크
+
+	this.fn_changeData(strArg);//변동사항
+	
+	this.fn_changeDataDetail(strArg);//변동사항상세
+
+	this.fn_accountancy(strArg);//경리팀제출
+
+	this.fn_rcpmny01(strArg);//일반(지정)기탁|
+
+	this.fn_rcpmny11(strArg);//일반기탁||
+
+	var excelGrd = new Array();
+		excelGrd[0] = this.grd_changeData; //변동사항
+		excelGrd[1] = this.grd_changeDataDetail; //변동사항상세
+		excelGrd[2] = this.grd_accountancy;//경리팀제출
+		excelGrd[3] = this.grd_rcpmny01; //교직원일반(지정)1
+		excelGrd[4] = this.grd_rcpmny11; //교직원일반2
+	this.gfn_excelDown(excelGrd, this.div_search.div_Yymm_Fr.getData()+"_급여공제양식파일");
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_changeData
+* 함수설명 	: 변동사항 엑셀
+*****************************************************************************/
+this.fn_changeData = function(strArg) 
+{
+	this.gfn_transaction("SEARCH_EXCEL_01"
+						,"txAdmUrl::com/admi/afd/afd02/selectChangeData.do"
+						,""
+						,"ds_changeData=resultList"
+						,strArg
+						,""
+						,false);
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_changeDataDetail
+* 함수설명 	: 변동사항상세 엑셀
+*****************************************************************************/
+this.fn_changeDataDetail = function(strArg) 
+{
+	this.gfn_transaction("SEARCH_EXCEL_05"
+						,"txAdmUrl::com/admi/afd/afd02/selectChangeDataDetail.do"
+						,""
+						,"ds_changeDataDetail=resultList"
+						,strArg
+						,""
+						,false);
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_accountancy
+* 함수설명 	: 경리팀 제출 엑셀
+*****************************************************************************/
+this.fn_accountancy = function(strArg) 
+{
+	this.gfn_transaction("SEARCH_EXCEL_02"
+						,"txAdmUrl::com/admi/afd/afd02/selectAccountancy.do"
+						,""
+						,"ds_accountancy=resultList"
+						,strArg
+						,""
+						,false);
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_rcpmny01
+* 함수설명 	: 교직원 일반(지정) 기탁(|)
+*****************************************************************************/
+this.fn_rcpmny01 = function(strArg) 
+{
+	this.gfn_transaction("SEARCH_EXCEL_03"
+						,"txAdmUrl::com/admi/afd/afd02/selectRcpmny01.do"
+						,""
+						,"ds_rcpmny01=resultList"
+						,strArg
+						,""
+						,false);
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_fn_rcpmny11
+* 함수설명 	: 교직원 일반 기탁(||)
+*****************************************************************************/
+this.fn_rcpmny11 = function(strArg) 
+{
+	this.gfn_transaction("SEARCH_EXCEL_04"
+						,"txAdmUrl::com/admi/afd/afd02/selectRcpmny11.do"
+						,""
+						,"ds_rcpmny11=resultList"
+						,strArg
+						,""
+						,false);
+}
+this.div_search_btn_sPopup_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var popupId = "afd02020_p02";
+	var popupUrl = "afd02::afd02020_p02.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var argumentsList = new Array();
+		argumentsList['memberNo'] = this.gfn_nvl(this.div_search.edt_sMemberNo.value, "");
+	
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, this);
+}]]></Script>
+  </Form>
+</FDL>

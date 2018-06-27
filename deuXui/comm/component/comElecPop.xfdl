@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="comElecPop" classname="comSingleUpload" left="0" top="0" width="928" height="531" titletext="전자결재팝업" oninit="comSingleUpload_oninit">
+    <Layouts>
+      <Layout>
+        <WebBrowser id="WebBrowser00" left="0" top="0" right="0" bottom="0" taborder="0" onloadcompleted="WebBrowser00_onloadcompleted" onusernotify="WebBrowser00_onusernotify"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_rtnVal" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="originalName" type="STRING" size="256"/>
+          <Column id="uploadName" type="STRING" size="256"/>
+          <Column id="guid" type="STRING" size="256"/>
+          <Column id="size" type="STRING" size="256"/>
+          <Column id="uploadPath" type="STRING" size="256"/>
+          <Column id="logicalPath" type="STRING" size="256"/>
+          <Column id="fileExtension" type="STRING" size="256"/>
+          <Column id="localPath" type="STRING" size="256"/>
+          <Column id="mark" type="STRING" size="256"/>
+          <Column id="responseCustomValue" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_fileNo" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="fileMasterNo" type="BIGDECIMAL" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="fileMasterNo">11111</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_attachFileList" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" oncolumnchanged="ds_attachFileList_oncolumnchanged">
+        <ColumnInfo>
+          <Column id="fileMasterNo" type="INT" size="256"/>
+          <Column id="fileNm" type="STRING" size="256"/>
+          <Column id="fileUrl" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_temp"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : comElecPop.xfdl
+* 화면설명     : 전자결재 popup
+* 작성자       : 최용현
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.06.04     최용현         최초생성
+******************************************************************************/
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+//업로드화면   조회로직 추가할것
+this.WebBrowser00_onloadcompleted = function(obj:WebBrowser, e:nexacro.WebLoadCompEventInfo)
+{
+	var elecDs   = this.parent.ds_elec;
+	var callback = this.parent.callBackNm;
+
+	var doc = this.WebBrowser00.getProperty("document");
+
+	this.ds_temp.loadXML(elecDs.saveXML());
+
+	var protId   = doc.callMethod("getElementById", "protID"); // 매개변수(파라미터)받아오는방식
+		protId.setProperty("value", this.ds_temp.getColumn(0, "protID"));
+	
+	var userId   = doc.callMethod("getElementById", "userID"); // 매개변수(파라미터)받아오는방식
+		userId.setProperty("value", this.ds_temp.getColumn(0, "userID"));
+		
+	var jobId   = doc.callMethod("getElementById", "jobID"); // 매개변수(파라미터)받아오는방식
+		jobId.setProperty("value", this.ds_temp.getColumn(0, "jobID"));
+	
+	var docId   = doc.callMethod("getElementById", "docID"); // 매개변수(파라미터)받아오는방식
+		docId.setProperty("value", this.ds_temp.getColumn(0, "docID"));
+		
+	var Document   = doc.callMethod("getElementById", "Document"); // 매개변수(파라미터)받아오는방식
+		Document.setProperty("value", this.ds_temp.getColumn(0, "Document"));
+		
+	var docBtn = doc.callMethod("getElementById", "btnClick"); // 데이터셋명 매개변수타입은 ""로 던지게함
+		docBtn.callMethod("click");
+}
+
+//업로드화면   저장로직 추가할것
+this.WebBrowser00_onusernotify = function(obj:WebBrowser, e:nexacro.WebTitleChangeEventInfo)
+{
+
+}
+
+this.comSingleUpload_oninit = function(obj:Form, e:nexacro.InitEventInfo)
+{
+	this.WebBrowser00.set_url(application.gv_svrUrl+"elec_nanum.jsp");
+}
+
+]]></Script>
+  </Form>
+</FDL>

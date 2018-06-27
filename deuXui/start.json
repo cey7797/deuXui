@@ -1,0 +1,46 @@
+﻿{
+    "version" : "14.0.0.1",
+    "runtime" :
+    {
+        "target" :
+        {
+            "os" : "windows"
+        },
+        "framework" :
+        [
+         "./nexacro14lib/framework/Framework.js"
+        ],
+        "component" :
+        [
+         "./nexacro14lib/component/CompBase.js",
+         "./nexacro14lib/component/ComComp.js",
+         "./nexacro14lib/component/Grid.js",
+         "./nexacro14lib/component/DeviceAPI.js",
+         "./nexacro14lib/component/EcoLibrary.js",
+         "./nexacro14lib/component/ExtComp.js"
+        ],
+        "form" :
+        [
+         "./comm/main/TopFrame.xfdl.js",
+         "./comm/main/LeftFrame.xfdl.js",
+         "./comm/main/MDIFrame.xfdl.js",
+         "./comm/main/LogIn.xfdl.js"
+        ],
+        "xadl" :
+        {
+          "launch" : "./deuXui.xadl.js",
+					"quickview" : "./deuXui.xadl.quickview.js"
+        },
+        "protocol":
+        {
+            "adaptors":
+            [
+          
+            ]
+        },
+        "resource" :
+        {
+
+        }
+    }
+}

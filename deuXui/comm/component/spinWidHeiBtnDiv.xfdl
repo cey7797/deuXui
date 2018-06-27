@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="spinWidHeiBtnDiv" classname="multiComboPop" left="0" top="0" width="138" height="21" titletext="좌우버튼스핀컴포넌트">
+    <Layouts>
+      <Layout>
+        <Spin id="spn_yy" taborder="0" type="normal" displaynulltext="1" min="1" left="0" top="0" height="21" style="padding:1 0 0 0;" max="9999" right="19" onchanged="spn_yy_onchanged" onspin="spn_yy_onspin" canchange="spn_yy_canchange" onkeyup="spn_yy_onkeyup" onkeydown="spn_yy_onkeydown"/>
+        <Button id="btn_down" taborder="2" onclick="btn_spn_onclick" cssclass="spindown" top="0" width="20" height="21" userBtnAuth="R" right="0"/>
+        <Static id="Static00" taborder="3" top="1" width="19" height="20" style="background:white;" right="20"/>
+        <Button id="btn_up" taborder="1" onclick="btn_spn_onclick" cssclass="spinup" top="0" width="20" height="21" userBtnAuth="R" right="19"/>
+      </Layout>
+    </Layouts>
+    <Objects/>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : spinWidHeiBtnDiv.xfdl
+* 화면설명     : 좌우버튼스핀컴포넌트
+* 작성자       : 이수현
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.09.21     이수현         최초생성
+******************************************************************************/
+include "commJs::commonUtils.xjs";
+
+/******************************************************************************
+* 전역변수
+* 변수명
+******************************************************************************/
+var g_onspinFunction = "fn_spn_onspin";	// 스핀 버튼 클릭 이벤트
+var g_canchangeFunction = "fn_spn_canchange";	// 스핀 년도 변경시 이벤트
+var g_canchangedFunction = "fn_spn_canchanged";	// 스핀 년도 변경후 이벤트
+var g_onkeydownFunction = "fn_spn_onkeydown";	// 스핀 엔터값 입력시 이벤트
+var g_onkeyupFunction = "fn_spn_onkeyup";	// 스핀 엔터값 입력후 이벤트
+var g_onkeyupNextFunction = "fn_spn_onkeyupNext";	// 스핀 변경후 이벤트
+var g_dupleChk = true;	// keydown과 canchange 중복 체크 방지
+	
+/*********************************************************************
+ * 함 수 명 	: btn_spn_onclick
+ * 함수설명 	: 스핀 updown버튼 클릭 함수.
+ *********************************************************************/
+this.btn_spn_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(obj.id == "btn_up") {
+		this.spn_yy.spinupbutton.click();
+	} else if(obj.id == "btn_down") {
+		this.spn_yy.spindownbutton.click();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_setSpnYy
+ * 함수설명 	: 스핀 값 세팅
+ *********************************************************************/
+this.fn_setSpnYy = function(value)
+{
+	this.spn_yy.set_value(value);
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_setSpnEnable
+ * 함수설명 	: 스핀 enable 세팅
+ *********************************************************************/
+this.fn_setSpnEnable = function(value, value1, value2)
+{
+	this.spn_yy.set_enable(this.gfn_nvl(value, true));
+	this.btn_up.set_enable(this.gfn_nvl(value1, true));
+	this.btn_down.set_enable(this.gfn_nvl(value2, true));
+}
+
+/*********************************************************************
+ * 함 수 명 	: spn_yy_onspin
+ * 함수설명 	: 스핀 버튼 클릭시
+ *********************************************************************/
+this.spn_yy_onspin = function(obj:Spin, e:nexacro.SpinEventInfo)
+{
+	var strValue = false;
+	
+	strValue = this.fn_callFunction(g_onspinFunction);
+	
+	return this.gfn_nvl(strValue, true);
+}
+
+/*********************************************************************
+ * 함 수 명 	: spn_yy_canchange
+ * 함수설명 	: 스핀 년도 변경시
+ *********************************************************************/
+this.spn_yy_canchange = function(obj:Spin, e:nexacro.ChangeEventInfo)
+{
+	var strValue = true;
+	
+	strValue = this.fn_callFunction(g_canchangeFunction);
+	if(strValue) {
+		if(!g_dupleChk) {	// onkeydown 여부 확인
+			this.fn_callFunction(g_onkeyupNextFunction);
+			g_dupleChk = true;
+			return true; 
+		}
+	}
+	return strValue;
+}
+
+/*********************************************************************
+ * 함 수 명 	: spn_yy_onchanged
+ * 함수설명 	: 스핀 년도 변경후
+ *********************************************************************/
+this.spn_yy_onchanged = function(obj:Spin, e:nexacro.ChangeEventInfo)
+{
+	this.fn_callFunction(g_canchangedFunction);
+}
+
+/*********************************************************************
+ * 함 수 명 	: spn_yy_onkeydown
+ * 함수설명 	: 스핀 엔터값 입력시
+ *********************************************************************/
+this.spn_yy_onkeydown = function(obj:Spin, e:nexacro.KeyEventInfo)
+{
+	if(e.keycode == "13") {	// 엔터키 입력시
+		g_dupleChk = false;
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: spn_yy_onkeyup
+ * 함수설명 	: 스핀 엔터값 입력후
+ *********************************************************************/
+this.spn_yy_onkeyup = function(obj:Spin, e:nexacro.KeyEventInfo)
+{
+	if(e.keycode == "13") {	// 엔터키 입력시
+		this.fn_callFunction(g_onkeyupFunction);
+		g_dupleChk = false;
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_valueReturn
+ * 함수설명 	: 스핀 값 전송
+ *********************************************************************/
+this.fn_valueReturn = function()
+{
+	return this.gfn_nvl(this.spn_yy.value, "");
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_lengthReturn
+ * 함수설명 	: 스핀 값 길이 전송
+ *********************************************************************/
+this.fn_lengthReturn = function()
+{
+	return this.gfn_nvl(new String(this.spn_yy.value).length, 0);
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callFunction
+ * 함수설명 	: 펑션 호출하기
+ *********************************************************************/
+this.fn_callFunction = function(fncNm)
+{
+	var parentStr = this.gfn_searchParent(fncNm);
+	var strValue = true;
+	
+	if(this.gfn_isNull(eval("this." + parentStr)[fncNm])==false)
+	{
+		strValue = eval("this." + parentStr +"."+fncNm+"(this)");
+	}
+	
+	return strValue;
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_setOnspinFunction
+ * 함수설명 	: 스핀 버튼 클릭 이벤트명 세팅
+ *********************************************************************/
+this.fn_setOnspinFunction = function(value)
+{
+	g_onspinFunction = value;
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_setCanchangeFunction
+ * 함수설명 	: 스핀 년도 변경시 이벤트명 세팅
+ *********************************************************************/
+this.fn_setCanchangeFunction = function(value)
+{
+	g_canchangeFunction = value;
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_setCanchangedFunction
+ * 함수설명 	: 스핀 년도 변경후 이벤트명 세팅
+ *********************************************************************/
+this.fn_setCanchangedFunction = function(value)
+{
+	g_canchangedFunction = value;
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_setOnkeydownFunction
+ * 함수설명 	: 스핀 엔터값 입력시 이벤트명 세팅
+ *********************************************************************/
+this.fn_setOnkeydownFunction = function(value)
+{
+	g_onkeydownFunction = value;
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_setOnkeyupFunction
+ * 함수설명 	: 스핀 엔터값 입력후 이벤트명 세팅
+ *********************************************************************/
+this.fn_setOnkeyupFunction = function(value)
+{
+	g_onkeyupFunction = value;
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_setOnkeyupNextFunction
+ * 함수설명 	: 스핀 변경 후 이벤트명 세팅
+ *********************************************************************/
+this.fn_setOnkeyupNextFunction = function(value)
+{
+	g_onkeyupNextFunction = value;
+}
+]]></Script>
+  </Form>
+</FDL>

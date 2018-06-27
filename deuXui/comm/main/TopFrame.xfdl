@@ -1,0 +1,620 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="TopFrame" classname="TopFrame" left="0" top="0" width="1276" height="47" scrollbars="none" onsize="form_onsize" onload="form_onload" ontimer="form_ontimer" onclose="form_onclose" titletext="상단영역">
+    <Layouts>
+      <Layout>
+        <Static id="Static00" taborder="0" left="0" top="0" right="0" bottom="0" onclick="Static00_onclick" cssclass="sta_TF_Bg"/>
+        <Button id="btn_menuClose" taborder="2" cssclass="btn_LF_Close" left="54" top="71" width="12" height="12" visible="false"/>
+        <Menu id="mnu_topMenu" taborder="3" left="196" innerdataset="@ds_subMenu" levelcolumn="MENU_LEVEL" idcolumn="MENU_CODE" right="260" height="40" top="58" visible="false" captioncolumn="MENU_NAME" userdatacolumn="userData"/>
+        <Div id="div_topMenu" taborder="4" left="198" top="3" height="44" scrollbars="none" visible="true" width="750"/>
+        <Button id="btn_Prev" taborder="5" cssclass="btn_TF_spinUp" enable="false" top="13" right="317" width="25" height="25" tooltiptext="메뉴좌측이동" class="btn_TF_spinUp" onclick="btn_Prev_onclick" visible="false"/>
+        <Button id="btn_Next" taborder="6" cssclass="btn_TF_spinDn" enable="false" top="13" right="290" width="25" height="25" tooltiptext="메뉴우측이동" class="btn_TF_spinDn" onclick="btn_Next_onclick" visible="false"/>
+        <Div id="div_quick" taborder="7" top="13" right="79" width="120" height="25" cssclass="div_TF_quick" visible="false">
+          <Layouts>
+            <Layout>
+              <Edit id="edt_SearchMenu" taborder="6" autoselect="true" onkeydown="div_quick_edt_quick_onkeydown" top="0" width="96" height="23" cssclass="edt_TF_search" right="22" displaynulltext="업무화면 검색" imemode="hangul" visible="false"/>
+              <Button id="btn_quick" taborder="7" onclick="div_quick_btn_quick_onclick" cssclass="btn_TF_go" height="23" right="0" width="23" bottom="0" visible="false"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <PopupDiv id="pdv_tabList" top="39" width="281" height="289" scrollbars="autovert" visible="false" cssclass="div_TF_list" right="79">
+          <Layouts>
+            <Layout>
+              <ListBox id="lis_openMenu" taborder="1" scrollbars="autovert" innerdataset="ds_menu" codecolumn="MENU_ID" datacolumn="MENU_NM" onitemclick="pdv_tabList_lis_openMenu_onitemclick" right="0" index="-1" cssclass="ListBox_TF" top="30" width="279" bottom="0"/>
+              <PopupDiv id="pdv_tabList" left="1071" top="33" width="188" height="156" scrollbars="none" visible="false">
+                <Layouts>
+                  <Layout>
+                    <ListBox id="lis_openMenu" taborder="0" scrollbars="none" innerdataset="@gds_openMenu" codecolumn="MENU_ID" datacolumn="TITLE" onitemclick="pdv_tabList_lis_openMenu_onitemclick" left="0" top="0" right="0" bottom="0" style="itemheight:21;itembackground:#eaf0f4ff;itemborder:0 solid #808080ff,0 solid #808080ff,1 solid #b5c0cdff,0 solid #808080ff;itempadding:0 5 0 9;color:#2a46a0ff;border:1 solid #808080ff,1 solid #1c2950ff,1 solid #1c2950ff,1 solid #1c2950ff;bordertype:normal 0 0 ; :mouseover {itembackground:#baf0f2ff;background:#f6f6f6ff;} :selected {itemheight:21;itembackground:#7cf2e3ff;itembordertype:normal 0 0 ;color:#001c96ff;font:bold 9 Dotum;}"/>
+                  </Layout>
+                </Layouts>
+              </PopupDiv>
+              <Static id="sta_searchList" taborder="2" text="총 32건 검색되었습니다." cssclass="sta_TF_searchList" left="0" top="0" right="0" height="31"/>
+            </Layout>
+          </Layouts>
+        </PopupDiv>
+        <PopupDiv id="pdv_Menu" oncloseup="pdv_Menu_oncloseup" left="156" top="77" width="122" height="105" style="showeffect:tranTopSlide;" scrollbars="none" visible="false">
+          <Layouts>
+            <Layout>
+              <Grid id="grd_TopMenu" taborder="0" binddataset="ds_subMenu" scrollbars="autovert" useinputpanel="false" cellsizingtype="both" autofittype="col" treeuseline="false" treeusecheckbox="false" onmousemove="divMenu_GrdMenu_onmousemove" oncellclick="grd_TopMenu_oncellclick" left="0" top="0" width="122" height="105" cssclass="grd_menu">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="133"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="28"/>
+                    </Rows>
+                    <Band id="body">
+                      <Cell displaytype="tree" edittype="tree" style="align:left;padding: ;line:EXPR(MENU_LEVEL=='3'?'0 none #b7ccddff,0 none #b7ccddff,1 dashed #b7ccddff,1 dashed #b7ccddff':'');background:EXPR(MENU_LEVEL=='4'?'#ffffff':'');background2:EXPR(MENU_LVL=='4'?'#ffffff':'');selectline:EXPR(MENU_LEVEL=='3'?'0 none #b7ccddff,0 none #b7ccddff,1 dashed #b7ccddff,1 dashed #b7ccddff':'');" text="bind:subNm" treestartlevel="3" treelevel="bind:MENU_LEVEL" tooltiptype="top,center"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+            </Layout>
+          </Layouts>
+        </PopupDiv>
+        <Static id="Static01" taborder="8" text="행정 시스템" cssclass="sta_TF_Logo" left="0" top="3" width="198" height="44" onclick="Static01_onclick"/>
+        <Button id="btn_menuOpen" taborder="1" left="150" top="3" width="48" height="44" cssclass="btn_LF_Open" onclick="btn_menuOpen_onclick" visible="false"/>
+        <Static id="Static02" taborder="9" left="1289" top="3" width="180" height="80" visible="false" text="* 클래스변경 *&#13;&#10;btn_LF_go -&gt; btn_TF_go&#13;&#10;div_LF_quick -&gt; div_TF_quick" style="linespace:6;align:left middle;" cssclass="Guide_number"/>
+        <Static id="Static27" taborder="10" top="364" right="15" width="120" height="5"/>
+        <Static id="Static28" taborder="11" text="minsize : 120" cssclass="Guide_number" top="368" right="15" width="120" height="21" style="align:right middle;"/>
+        <Div id="div_quick00" taborder="12" top="336" right="15" width="120" height="25" cssclass="div_TF_quick">
+          <Layouts>
+            <Layout>
+              <Edit id="edt_SearchMenu" taborder="10" displaynulltext="업무화면 검색" autoselect="true" onkeydown="div_quick_edt_quick_onkeydown" cssclass="edt_TF_search" left="0" top="0" right="22" height="23"/>
+              <Button id="btn_quick" taborder="11" onclick="div_quick_btn_quick_onclick" cssclass="btn_TF_go" right="0" bottom="0" width="23" height="23"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Div id="div_quick01" taborder="13" top="394" right="15" width="280" height="25" cssclass="div_TF_quick">
+          <Layouts>
+            <Layout>
+              <Edit id="edt_SearchMenu" taborder="12" displaynulltext="업무화면 검색" autoselect="true" onkeydown="div_quick_edt_quick_onkeydown" cssclass="edt_TF_search" left="0" top="0" right="22" height="23"/>
+              <Button id="btn_quick" taborder="13" onclick="div_quick_btn_quick_onclick" cssclass="btn_TF_go" right="0" bottom="0" width="23" height="23"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static03" taborder="14" text="maxsize : 280" cssclass="Guide_number" top="425" right="15" width="120" height="21" style="align:right middle;"/>
+        <Static id="Static04" taborder="15" top="422" right="15" width="280" height="5"/>
+        <Button id="Button00" taborder="17" text="전체보기" cssclass="btn_Top_sitemap" top="13" width="82" height="25" right="207" visible="false"/>
+        <Button id="btn_logout" taborder="18" text="logout" cssclass="btn_WF_Common" top="13" right="11" width="50" height="22" tooltiptype="hover" tooltiptext="logout" userBtnAuth="S" onclick="btn_logout_onclick"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_topMenu" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <Row>
+          <Col id="GROUPID">0019</Col>
+          <Col id="GROUPNAME">업무구분</Col>
+          <Col id="SUBCODE">00190005</Col>
+          <Col id="CODENAME">시스템</Col>
+          <Col id="CODEENAME">SYSTEM</Col>
+          <Col id="ABRV_ENM">SYST</Col>
+          <Col id="GRUP_CD1">00000000</Col>
+          <Col id="GRUP_CD2">00000001</Col>
+          <Col id="PRT_SEQ">25</Col>
+        </Row>
+        <Row>
+          <Col id="GROUPID">0019</Col>
+          <Col id="GROUPNAME">업무구분</Col>
+          <Col id="SUBCODE">00191000</Col>
+          <Col id="CODENAME">Guide</Col>
+          <Col id="CODEENAME">GUIDE</Col>
+          <Col id="ABRV_ENM">GUID</Col>
+          <Col id="GRUP_CD1">89000000</Col>
+          <Col id="GRUP_CD2">00000001</Col>
+          <Col id="PRT_SEQ">26</Col>
+        </Row>
+        <Row>
+          <Col id="GROUPID">0019</Col>
+          <Col id="GROUPNAME">업무구분</Col>
+          <Col id="SUBCODE">00192000</Col>
+          <Col id="CODENAME">평생직업교육처</Col>
+          <Col id="CODEENAME">평생직업교육처</Col>
+          <Col id="ABRV_ENM">PJCU</Col>
+          <Col id="GRUP_CD1">90000000</Col>
+          <Col id="PRT_SEQ">27</Col>
+          <Col id="GRUP_CD2">00000001</Col>
+        </Row>
+      </Dataset>
+      <Dataset id="ds_userInfo" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+      <Dataset id="ds_subMenu" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="SYST_DIV_CD" type="string" size="9" prop=""/>
+          <Column id="MENU_ID" type="string" size="10" prop=""/>
+          <Column id="MENU_NM" type="string" size="50" prop=""/>
+          <Column id="MENU_EXPR" type="string" size="600" prop=""/>
+          <Column id="HG_MENU_ID" type="string" size="10" prop=""/>
+          <Column id="MENU_LEVEL" type="bigdecimal" size="22" prop=""/>
+          <Column id="PROG_PATH" type="string" size="200" prop=""/>
+          <Column id="MENU_GROUP" type="string" size="200" prop=""/>
+          <Column id="PROG_ID" type="string" size="30" prop=""/>
+          <Column id="SORT_SEQ" type="bigdecimal" size="22" prop=""/>
+          <Column id="USE_YN" type="string" size="1" prop=""/>
+          <Column id="SEARCH_YN" type="string" size="1" prop=""/>
+          <Column id="NEW_YN" type="string" size="1" prop=""/>
+          <Column id="DEL_YN" type="string" size="1" prop=""/>
+          <Column id="SAVE_YN" type="string" size="1" prop=""/>
+          <Column id="PRT_YN" type="string" size="1" prop=""/>
+          <Column id="HELP_YN" type="string" size="1" prop=""/>
+          <Column id="DAT_LOG_YN" type="string" size="1" prop=""/>
+          <Column id="PRT_LOG_YN" type="string" size="1" prop=""/>
+          <Column id="PROG_DIV" type="string" size="1" prop=""/>
+          <Column id="BSS_DIV_CD" type="string" size="8" prop=""/>
+          <Column id="DTL_BSS_DIV_CD" type="string" size="8" prop=""/>
+          <Column id="NOTE" type="string" size="400" prop=""/>
+          <Column id="MENU_FULL_NM" type="string" size="200" prop=""/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_menu" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="SYST_DIV_CD" type="string" size="9" prop=""/>
+          <Column id="MENU_ID" type="string" size="10" prop=""/>
+          <Column id="MENU_NM" type="string" size="50" prop=""/>
+          <Column id="MENU_EXPR" type="string" size="600" prop=""/>
+          <Column id="HG_MENU_ID" type="string" size="10" prop=""/>
+          <Column id="MENU_LEVEL" type="bigdecimal" size="22" prop=""/>
+          <Column id="PROG_PATH" type="string" size="200" prop=""/>
+          <Column id="MENU_GROUP" type="string" size="200" prop=""/>
+          <Column id="PROG_ID" type="string" size="30" prop=""/>
+          <Column id="SORT_SEQ" type="bigdecimal" size="22" prop=""/>
+          <Column id="USE_YN" type="string" size="1" prop=""/>
+          <Column id="SEARCH_YN" type="string" size="1" prop=""/>
+          <Column id="NEW_YN" type="string" size="1" prop=""/>
+          <Column id="DEL_YN" type="string" size="1" prop=""/>
+          <Column id="SAVE_YN" type="string" size="1" prop=""/>
+          <Column id="PRT_YN" type="string" size="1" prop=""/>
+          <Column id="HELP_YN" type="string" size="1" prop=""/>
+          <Column id="DAT_LOG_YN" type="string" size="1" prop=""/>
+          <Column id="PRT_LOG_YN" type="string" size="1" prop=""/>
+          <Column id="PROG_DIV" type="string" size="1" prop=""/>
+          <Column id="BSS_DIV_CD" type="string" size="8" prop=""/>
+          <Column id="DTL_BSS_DIV_CD" type="string" size="8" prop=""/>
+          <Column id="NOTE" type="string" size="400" prop=""/>
+          <Column id="MENU_FULL_NM" type="string" size="200" prop=""/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_cond" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="SYST_DIV_CD" type="STRING" size="256"/>
+          <Column id="USER_ID" type="STRING" size="256"/>
+          <Column id="USER_NM" type="STRING" size="256"/>
+          <Column id="PASSWORD" type="STRING" size="256"/>
+          <Column id="DEPT_CD" type="STRING" size="256"/>
+          <Column id="DEPT_NM" type="STRING" size="256"/>
+          <Column id="AUTH_SYST_PST_CD" type="STRING" size="256"/>
+          <Column id="AUTH_SYST_WK_CD" type="STRING" size="256"/>
+          <Column id="AUTH_USER_ID" type="STRING" size="256"/>
+          <Column id="AUTH_DEPT_CD" type="STRING" size="256"/>
+          <Column id="AUTH_USER_DIV_CD" type="STRING" size="256"/>
+          <Column id="AUTH_EMP_DIV_CD" type="STRING" size="256"/>
+          <Column id="LOGIN_DIV_CD" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="SYST_DIV_CD">00000001</Col>
+            <Col id="LOGIN_DIV_CD">1</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_sysdate" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+      <Dataset id="ds_topMenu00" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="GROUPID" type="STRING" size="6"/>
+          <Column id="GROUPNAME" type="STRING" size="30"/>
+          <Column id="SUBCODE" type="STRING" size="10"/>
+          <Column id="CODENAME" type="STRING" size="100"/>
+          <Column id="CODEENAME" type="STRING" size="100"/>
+          <Column id="ABRV_KNM" type="STRING" size="100"/>
+          <Column id="ABRV_ENM" type="STRING" size="100"/>
+          <Column id="PRT_SEQ" type="BIGDECIMAL" size="22"/>
+        </ColumnInfo>
+        <Row>
+          <Col id="GROUPID">0019</Col>
+          <Col id="GROUPNAME">업무구분</Col>
+          <Col id="SUBCODE">00190005</Col>
+          <Col id="CODENAME">시스템</Col>
+          <Col id="CODEENAME">SYSTEM</Col>
+          <Col id="ABRV_ENM">SYST</Col>
+          <Col id="GRUP_CD1">00000000</Col>
+          <Col id="GRUP_CD2">00000001</Col>
+          <Col id="PRT_SEQ">25</Col>
+        </Row>
+        <Row>
+          <Col id="GROUPID">0019</Col>
+          <Col id="GROUPNAME">업무구분</Col>
+          <Col id="SUBCODE">00191000</Col>
+          <Col id="CODENAME">Guide</Col>
+          <Col id="CODEENAME">GUIDE</Col>
+          <Col id="ABRV_ENM">GUID</Col>
+          <Col id="GRUP_CD1">89000000</Col>
+          <Col id="GRUP_CD2">00000001</Col>
+          <Col id="PRT_SEQ">26</Col>
+        </Row>
+        <Row>
+          <Col id="GROUPID">0019</Col>
+          <Col id="GROUPNAME">업무구분</Col>
+          <Col id="SUBCODE">00192000</Col>
+          <Col id="CODENAME">평생직업교육처</Col>
+          <Col id="CODEENAME">평생직업교육처</Col>
+          <Col id="ABRV_ENM">PJCU</Col>
+          <Col id="GRUP_CD1">90000000</Col>
+          <Col id="PRT_SEQ">27</Col>
+          <Col id="GRUP_CD2">00000001</Col>
+        </Row>
+        <Rows>
+          <Row>
+            <Col id="GROUPID">SYS</Col>
+            <Col id="GROUPNAME">업무구분</Col>
+            <Col id="SUBCODE">00190005</Col>
+            <Col id="CODENAME">시스템</Col>
+            <Col id="CODEENAME">SYSTEM</Col>
+            <Col id="ABRV_ENM">SYST</Col>
+            <Col id="PRT_SEQ">1</Col>
+          </Row>
+          <Row>
+            <Col id="GROUPID">ADMI</Col>
+            <Col id="GROUPNAME">업무구분</Col>
+            <Col id="SUBCODE">00192000</Col>
+            <Col id="CODENAME">행정</Col>
+            <Col id="CODEENAME">ADMI</Col>
+            <Col id="ABRV_ENM">ADMI</Col>
+            <Col id="PRT_SEQ">2</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_logout">
+        <ColumnInfo>
+          <Column id="log" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_acntNoCnt"/>
+      <Dataset id="ds_budgChgCnt"/>
+    </Objects>
+    <Bind>
+      <BindItem id="item0" compid="mnu_topMenu" propid="" datasetid="Dataset00" columnid=""/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[/***********************************************************************
+ * 01. 업무구분 : Frame 공통
+ * 02. 화면명   : TopFrame.xfdl
+ * 04. 작성일   :
+ * 05. 작성자   :
+ * 06. 수정이력 :
+ * ====================================================================
+ *     수정일     수정자   내용
+ * ====================================================================
+ *
+ * ==================================================================== */
+ 
+/* ====================================================================
+ * 1. 공통 라이브러리
+ * ==================================================================== */
+ 
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+ 
+/* ====================================================================
+ * 2. 변수 선언부
+ * ==================================================================== */
+this.objBtnMenuNm;
+ 
+/* ====================================================================
+ * 3. Event 처리 부분
+ * ==================================================================== */
+ 
+/* ==================================================================== 
+ * 4. Local Function(사용자 FUNCTION 영역)
+ * ==================================================================== */
+//상위메뉴 필터 및 레벨 메뉴 버튼 삭제 후 메뉴 버튼 생성
+this.fn_setTopMenu = function()
+{
+	this.ds_topMenu.copyData(application.gds_sys);    
+    this.ds_topMenu.updateSortGroup("S:sortSeq");
+	
+    if (this.div_topMenu.components.length > 0){
+        var btnObj;
+        while (this.div_topMenu.components.length > 0){
+            btnObj = this.div_topMenu.components[0];
+            this.div_topMenu.removeChild(btnObj.id);
+            btnObj.destroy();
+            btnObj = null;
+        }
+    }
+	
+    var k=0;
+    
+	for (var i=0; i<this.ds_topMenu.getRowCount(); i++){
+		var strBtnId = this.ds_topMenu.getColumn(i,"sysId");
+		var strBtnNm = this.ds_topMenu.getColumn(i,"sysNm");
+		var strUpMenuId = this.ds_topMenu.getColumn(i,"sysId");
+		this.fn_createTopMenu(strBtnId, strUpMenuId, strBtnNm, k);
+		k++;
+	}
+	
+//     //이전/다음 버튼 설정함
+// 	//var nTopMenuCnt = this.ds_topMenu.getRowCount()*150;
+// 	var nTopMenuCnt = k*150;
+// 	//trace("nTopMenuCnt : "+nTopMenuCnt+","+nexacro.toNumber(this.div_topMenu.getOffsetWidth()));
+//     if (nTopMenuCnt >  nexacro.toNumber(this.div_topMenu.getOffsetWidth())){
+//         this.btn_Prev.set_enable(true);
+//     } else {
+//         this.btn_Prev.set_enable(false);
+//     }
+}
+
+// 상위 메뉴를 생성한다.
+this.fn_createTopMenu = function(strBtnId, strUpMenuId, strBtnNm, index)
+{
+	// 페이지버튼생성
+	var objBtn = new Button();
+	objBtn.init(this.MENU_BTN_PREFIX + strBtnId, "absolute",(index*150),0,(index*150)+150-(index*150),42);
+	this.div_topMenu.addChild(objBtn.name, objBtn);
+	objBtn.set_text(strBtnNm);
+	objBtn.set_tooltiptext(strBtnNm);
+	objBtn.set_wordwrap(true);
+	objBtn.menuid = strBtnId;
+	objBtn.upmenuid = strUpMenuId;
+	objBtn.set_cssclass("btn_menu");
+	objBtn.style.set_border("0 solid #808080ff");
+	objBtn.setEventHandler("onclick", this.Button_onclick, this);
+	objBtn.setEventHandler("onmouseleave", this.Button_onmouseleave, this);
+	objBtn.setEventHandler("onmouseenter", this.Button_onmouseenter, this);
+	objBtn.set_visible(true);
+	objBtn.show();
+}
+
+//상위 메뉴클릭 이벤트
+this.Button_onclick = function(obj:Button, e:nexacro.ClickEventInfo)
+{
+	this.objBtnMenu = obj;			//대분류메뉴버튼
+	this.objBtnMenuNm = obj.text;	//대분류메뉴버튼명
+	this.fn_OpenPop(this.objBtnMenu);
+}
+
+//
+this.fn_OpenPop = function(obj)
+{
+	var filterExpr = "sysId == '"+obj.upmenuid+"'&& subLvl == '0'";
+	
+	application.gds_subsys.filter(filterExpr);
+	this.ds_subMenu.copyData(application.gds_subsys,true);
+	application.gds_subsys.filter("");
+
+	var objDs = this.pdv_Menu.grd_TopMenu.binddataset;
+	this.nRowCnt = this.objects[objDs].getRowCount();
+	
+	this.nTopMenuWidth = 150;
+	this.nTopMenuHeight = parseInt((this.nRowCnt*28)+5);
+	
+	this.pdv_Menu.resize(this.nTopMenuWidth-2, this.nTopMenuHeight);
+	this.pdv_Menu.grd_TopMenu.resize(this.nTopMenuWidth, this.nTopMenuHeight);
+	
+	this.pdv_Menu.set_width(this.nTopMenuWidth);
+	this.pdv_Menu.grd_TopMenu.set_width(this.nTopMenuWidth);
+	this.pdv_Menu.set_height(this.nTopMenuHeight);
+	this.pdv_Menu.grd_TopMenu.set_height(this.nTopMenuHeight);
+	
+	var nX = system.clientToScreenX(obj, 0);
+	var nY = system.clientToScreenY(obj, 0)+obj.height;
+	
+	this.pdv_Menu.resetScroll();
+	//this.pdv_Menu.trackPopup(nX+1, nY);
+	this.pdv_Menu.trackPopupByComponent(obj,0,42,this.nTopMenuWidth,this.nTopMenuHeight);	
+}
+
+//서브메뉴 클릭이벤트
+this.grd_TopMenu_oncellclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{	
+	var objDs = obj.binddataset;
+	var strMenuGrp = this.objects[objDs].getColumn(e.row, "sysId");
+	var strMenuId = this.objects[objDs].getColumn(e.row, "subId");
+	var strMenuNm = this.objects[objDs].getColumn(e.row, "subNm");
+	
+			//application.gv_topMenu = strMenuGrp;
+			//application.gv_menuPath = this.objBtnMenuNm+"."+strMenuNm;
+    
+    //trace("gv_menuPath : "+application.gv_menuPath);
+    //gv_appLeftFrame.form.img_title.set_text(strMenuId);
+	//this.gfn_setFrameChange("work");
+	
+	//Sub Menu명 설정
+	application.apLeftFrame.form.div_Menu.sta_SubMenu.set_text(strMenuNm);
+	this.Static01.set_text(strMenuNm+" 시스템");
+
+	//Sub Menu Tree 설정
+	application.apLeftFrame.form.fn_leftTreeMenu(strMenuId);
+	
+			//application.gv_menuParam = "";	
+	//메인화면->업무화면
+	//this.gfn_setVFrameChange("work");
+	/*if (!this.gfn_isNull(application.gv_workFrame.getActiveFrame())){
+		if (!this.gfn_isNull(application.gv_workFrame.getActiveFrame().form.div_work.div_editor)){
+			application.gv_workFrame.getActiveFrame().form.div_work.div_editor.set_visible(true);
+		}
+	}*/
+	//메뉴로 Focus 이동
+	if (application.apLeftFrame.form.btn_Menu.cssclass == "btn_LF_menu"){
+		application.apLeftFrame.form.btn_Menu.set_cssclass("btn_LF_menu_S");
+		application.apLeftFrame.form.btn_MyMenu.set_cssclass("btn_LF_mymenu");
+		application.apLeftFrame.form.div_Menu.set_visible(true);
+		application.apLeftFrame.form.div_MyMenu.set_visible(false);
+	}
+    this.pdv_Menu.closePopup();
+}
+
+/**
+ * @class 프레임 화면을 변경한다.
+ * @param sView (로그인:login, 메인:main, 업무:work)
+ * @return None
+ */  
+this.gfn_setVFrameChange = function(sView)
+{
+	var strSeparatesize = application.gv_vFrameSet.separatesize;
+	switch(sView){
+	    case "login":
+	        strSeparatesize = "*,0,0,0,0";
+	        /*application.gv_topFrame.set_formurl(" ");
+			application.gv_leftFrame.set_formurl(" ");
+			application.gv_mdiFrame.set_formurl(" ");
+			application.gv_homeFrame.set_formurl(" ");
+			
+	        var objTitlebar = application.mainframe.titlebar;
+	        objTitlebar.removeChild("sta_name");
+	        objTitlebar.removeChild("btn_logout");
+	        objTitlebar.removeChild("btn_setup");
+	        application.gv_vFrameSet.LoginFrame.form.killTimer(0);*/
+	        break;
+	    case "main": 
+			strSeparatesize = "0,47,0,*,33";
+			break;
+	    case "work": 
+			strSeparatesize = "0,47,*,0,33";
+			break;
+	}
+	application.gv_vFrameSet.set_separatesize(strSeparatesize);
+	application.gv_viewType = sView;
+}
+this.btn_logout_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if (nexacro.Browser == "Runtime") 
+	{
+		application.exit();
+	} 
+	else 
+	{	
+		this.gfn_transaction("LOGOUT",
+							 "txComUrl::com/admi/selectDoGetLogout.do",
+							 "",
+							 "ds_logout=resultList",
+							 "",
+							 "fn_callBack"); 
+
+	} 
+}
+
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.gfn_message("A", errMsg);
+	}else{
+		if(trId=="LOGOUT"){
+			if(application.gv_formType == "linkPopup"){
+				application.exit();
+			}else{
+				window.location.href = application.gv_initUrl+"deuXui/index.html";
+			}
+		} else if(trId=="SEARCHCNT"){
+			this.fn_postSearchIncAcntNoCnt();
+		} else if(trId=="SEARCHBUDGCNT"){
+			this.fn_postSearchBudgChgCnt();
+		} 
+	}
+}
+
+this.fn_searchIncAcntNoCnt = function()
+{
+	if(application.gds_user.rowcount > 0 ) {
+
+		var strArg  = "deptCd=" + application.gds_user.getColumn(0,"deptCd");	//부서
+			
+		this.gfn_transaction("SEARCHCNT",
+							 "txAdmUrl::com/admi/ac01/selectNoIncAcntNoCnt.do",
+							 "",
+							 "ds_acntNoCnt=resultList",
+							 strArg,
+							 "fn_callBack");
+							 
+							 
+		if (application.gds_user.getColumn(0,"deptCd") == "02000") {
+	
+			this.gfn_transaction("SEARCHBUDGCNT",
+								 "txAdmUrl::com/admi/selectBudgChgAplyCnt.do",
+								 "",
+								 "ds_budgChgCnt=resultList",
+								 strArg,
+								 "fn_callBack");
+		}
+	}
+}
+
+this.fn_postSearchIncAcntNoCnt = function()
+{
+	var cnt = this.ds_acntNoCnt.getColumn(0, "cnt");
+	var cardCnt = this.ds_acntNoCnt.getColumn(0, "cardCnt");
+	
+	if ( cnt > 0 && cardCnt > 0 ) {
+		this.gfn_message("A", "미정산 입금내역 : [" + cnt + "]건과\n\n카드 사용내역 : [" + cardCnt + "]건이 있습니다.\n\n각각 수입, 지출기안을 작성하시기 바랍니다.");
+		this.fn_searchIncAcntNoList();
+		this.fn_searchCardList();
+	} else if ( cnt > 0 ) {
+		this.gfn_message("A", "미정산된 입금내역이 [" + cnt + "]건 있습니다.\n\n수입기안을 작성하시기 바랍니다.");
+		this.fn_searchIncAcntNoList();
+	} else if ( cardCnt > 0 ) {
+		this.gfn_message("A", "카드사용내역이 [" + cardCnt + "]건 있습니다.\n\n지출기안을 작성하시기 바랍니다.");
+		this.fn_searchCardList();
+	}
+}
+
+this.fn_postSearchBudgChgCnt = function()
+{
+	var cnt = this.ds_budgChgCnt.getColumn(0, "cnt");
+	var cnt1 = this.ds_budgChgCnt.getColumn(0, "t1");
+	var cnt2 = this.ds_budgChgCnt.getColumn(0, "t2");
+	var cnt3 = this.ds_budgChgCnt.getColumn(0, "t3");
+	var cnt4 = this.ds_budgChgCnt.getColumn(0, "t4");
+	var msg = "";
+	
+	if ( cnt > 0 ) {
+		msg += "예산변경신청이 " + cnt + "건 있습니다."
+		
+		if ( cnt1 > 0 || cnt2 > 0 || cnt3 > 0 || cnt4 > 0 ) msg += "\n";
+		if ( cnt1 > 0 ) msg += "\n등록금회계 [전용] :" + cnt1 + " 건";
+		if ( cnt2 > 0 ) msg += "\n등록금회계 [추가] :" + cnt2 + " 건";
+		if ( cnt3 > 0 ) msg += "\n비등록금회계 [전용] :" + cnt3 + " 건";
+		if ( cnt4 > 0 ) msg += "\n비등록금회계 [추가] :" + cnt4 + " 건";
+		
+		this.gfn_message("A", msg);
+	}
+}
+
+this.fn_setTimer = function()
+{
+	this.setTimer(2150, 1800000);
+}
+
+this.form_ontimer = function(obj:Form, e:nexacro.TimerEventInfo)
+{
+	if ( e.timerid == 2150 ) {
+		this.fn_searchIncAcntNoCnt();
+	}
+}
+
+this.fn_searchIncAcntNoList = function()
+{
+	var strParam = {
+						deptCd:application.gds_user.getColumn(0,"deptCd")
+					};
+
+	var popupId = "admi01010_p25";
+	var popupUrl = "admi::admi01010_p25.xfdl";
+	var argumentsList = strParam;
+	var option = "top=-1,left=-1,width=790,height=522,title=false,titletext=null";
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option);
+}
+
+this.fn_searchCardList = function()
+{
+	var strParam = {
+						deptCd:application.gds_user.getColumn(0,"deptCd")
+					};
+
+	var popupId = "admi01010_p26";
+	var popupUrl = "admi::admi01010_p26.xfdl";
+	var argumentsList = strParam;
+	var option = "top=-1,left=-1,width=790,height=522,title=false,titletext=null";
+	
+	this.gfn_openPopup(popupId, popupUrl, argumentsList, option);
+}]]></Script>
+  </Form>
+</FDL>

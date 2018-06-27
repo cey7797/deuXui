@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="comSingleUploadForm" classname="comSingleUpload" left="0" top="0" width="810" height="210" titletext="파일업로드(폼)">
+    <Layouts>
+      <Layout>
+        <WebBrowser id="WebBrowser00" left="0" top="0" right="0" bottom="0" taborder="0" onusernotify="WebBrowser00_onusernotify" onloadcompleted="WebBrowser00_onloadcompleted"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_rtnVal" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="originalName" type="STRING" size="256"/>
+          <Column id="uploadName" type="STRING" size="256"/>
+          <Column id="guid" type="STRING" size="256"/>
+          <Column id="size" type="STRING" size="256"/>
+          <Column id="uploadPath" type="STRING" size="256"/>
+          <Column id="logicalPath" type="STRING" size="256"/>
+          <Column id="fileExtension" type="STRING" size="256"/>
+          <Column id="localPath" type="STRING" size="256"/>
+          <Column id="mark" type="STRING" size="256"/>
+          <Column id="responseCustomValue" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_fileNo" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="fileMasterNo" type="BIGDECIMAL" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="fileMasterNo">11111</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : comSingleUploadForm.xfdl
+* 화면설명     : 싱글업로드 Form
+* 작성자       : 라병수
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.06.04     라병수         최초생성
+******************************************************************************/
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+var fileMstNo = this.gfn_nvl(this.parent.parent.fv_argumentsList['mstNo'], "0"); 
+
+this.WebBrowser00_onloadcompleted = function(obj:WebBrowser, e:nexacro.WebLoadCompEventInfo)
+{	
+	var doc = this.WebBrowser00.getProperty("document");
+
+	var subId   = doc.callMethod("getElementById", "subId"); // 매개변수(파라미터)받아오는방식
+		subId.setProperty("value", "MNG111");
+	
+	var menuId   = doc.callMethod("getElementById", "menuId"); // 매개변수(파라미터)받아오는방식
+		menuId.setProperty("value", "LOG2222");
+		
+	var progId   = doc.callMethod("getElementById", "progId"); // 매개변수(파라미터)받아오는방식
+		progId.setProperty("value", "com_0300933333");
+
+	var numNo   = doc.callMethod("getElementById", "numNo"); // 매개변수(파라미터)받아오는방식
+		numNo.setProperty("value", fileMstNo);
+
+	var docBtn = doc.callMethod("getElementById", "btnClick"); // 데이터셋명 매개변수타입은 ""로 던지게함		
+		docBtn.callMethod("click");
+}
+
+//업로드화면   저장로직 추가할것
+this.WebBrowser00_onusernotify = function(obj:WebBrowser, e:nexacro.WebTitleChangeEventInfo)
+{
+ 	if(e.userdata != "title"){
+ 		application.gv_fileMstNo = e.userdata;
+ 	//	this.alert("application.gv_fileMstNo " + application.gv_fileMstNo);
+ 	}
+	
+}]]></Script>
+  </Form>
+</FDL>

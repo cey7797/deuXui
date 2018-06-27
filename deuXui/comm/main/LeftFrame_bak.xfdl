@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="LeftFrame" classname="LeftFrame" left="0" top="0" width="242" height="884" scrollbars="autoboth">
+    <Layouts>
+      <Layout>
+        <Tab id="tab_menuLv3" taborder="1" left="6" top="0" width="220" height="855" tabindex="0" scrollbars="autoboth" cssclass="menuLv3">
+          <Tabpages>
+            <Tabpage id="tpg_menu" text="MENU" scrollbars="none">
+              <Layouts>
+                <Layout>
+                  <Grid id="grd_menuLv3" taborder="0" binddataset="ds_menu" useinputpanel="false" treeuseline="false" treeusecheckbox="false" treeinitstatus="collapse,all" treeuseexpandkey="false" oncellclick="Grid00_oncellclick" left="3" top="5" autofittype="col" style="treeitemimage:URL('theme://images/icon/ico_treeitem.png');treelinetype:0 dotted #a5b6b6ff ;border:0 none #808080ff ;" treeusebutton="noclick" scrollbars="autoboth" right="3" bottom="5">
+                    <Formats>
+                      <Format id="default">
+                        <Columns>
+                          <Column size="212"/>
+                        </Columns>
+                        <Rows>
+                          <Row size="26"/>
+                        </Rows>
+                        <Band id="body">
+                          <Cell displaytype="tree" edittype="tree" style="background:#ffffffff;background2:#ffffffff;color:#333333ff;color2:#333333ff;selectcolor:#333333ff;backgroundimage: ;" text="bind:menuNm" treelevel="bind:menuLvl" treestate="bind:menuSt"/>
+                        </Band>
+                      </Format>
+                    </Formats>
+                  </Grid>
+                </Layout>
+              </Layouts>
+            </Tabpage>
+            <Tabpage id="tpg_my" text="MY MENU"/>
+          </Tabpages>
+        </Tab>
+      </Layout>
+    </Layouts>
+    <Objects/>
+    <Script type="xscript5.0"><![CDATA[this.Grid00_oncelldblclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	if(e.oldrow != e.row){
+		if(application.ds_menu.getColumn(application.ds_menu.rowposition, "menuLvl") == 1){
+			var menuUrl = application.ds_menu.getColumn(application.ds_menu.rowposition, "url");
+			var menuNm = application.ds_menu.getColumn(application.ds_menu.rowposition, "menuNm");
+			var menuId = application.ds_menu.getColumn(application.ds_menu.rowposition, "menuId");
+			var tabCnt = application.mainframe.WorkFrame.form.workTab.getTabpageCount();
+			var tabIndex = application.mainframe.WorkFrame.form.workTab.getIndex();
+			
+			if(application.ds_open.findRow("menuId", menuId)<0){
+				if(tabCnt > 9){
+					this.alert("화면은 한번에 10개까지만 열 수 있습니다.");
+					return false;
+				}
+				//insertTab
+				application.mainframe.WorkFrame.form.workTab.insertTabpage("tab"+menuId,tabCnt,menuUrl,menuNm);
+				var addRow = application.ds_open.addRow();
+				application.ds_open.setColumn(addRow, 'menuId', menuId);
+			}else{
+				//활성화
+				application.mainframe.WorkFrame.form.workTab.set_tabindex(application.ds_open.findRow("menuId", menuId));
+			}
+		}
+	}
+}
+
+this.Grid00_oncellclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	/*
+	if(e.oldrow != e.row){
+		if(application.ds_menu.getColumn(application.ds_menu.rowposition, "menuLvl") == 1){
+			var menuUrl = application.ds_menu.getColumn(application.ds_menu.rowposition, "url");
+			var menuNm = application.ds_menu.getColumn(application.ds_menu.rowposition, "menuNm");
+			var menuId = application.ds_menu.getColumn(application.ds_menu.rowposition, "menuId");
+			var parentId = application.ds_menu.getColumn(application.ds_menu.rowposition, "parentId");
+			var tabCnt = application.mainframe.WorkFrame.form.workTab.getTabpageCount();
+			var tabIndex = application.mainframe.WorkFrame.form.workTab.getIndex();
+			
+			//if(application.ds_open.findRow("menuId", menuId)<0){
+			if(application.ds_open.findRowExpr("menuId =='"+menuId+"'&& parentId =='"+parentId+"'")<0){
+				if(tabCnt > 9){
+					this.alert("화면은 한번에 10개까지만 열 수 있습니다.");
+					return false;
+				}
+				//insertTab
+				application.mainframe.WorkFrame.form.workTab.insertTabpage("tab"+parentId+menuId,tabCnt,menuUrl,menuNm);
+				var addRow = application.ds_open.addRow();
+				application.ds_open.setColumn(addRow, 'menuId', menuId);
+				application.ds_open.setColumn(addRow, 'parentId', parentId);
+				
+				//div 객체 생성
+				var component = application.mainframe.WorkFrame.form.components;	
+				var str = new Array();
+				var num = 0;
+				
+				for(var i=0 ; i<component.length ; i++){		
+					if(component[i] == "[object Div]"){
+						str[num] = component[i].id;
+						num++;
+					}
+				}
+				for(var i=0 ; i<str.length ; i++){
+					if(str[i].substr(0,3) == "Div"){
+						var divVisible = "application.mainframe.WorkFrame.form."+str[i]+".set_visible(false)";
+						eval(divVisible);
+					}
+				}
+				
+				var strLength = str.length-5;
+				var objNm = "Div"+strLength.toString();
+
+				var objDiv = new Div();
+				objDiv.init(objNm, "absolute", 243, 128, null, 855, 2, null);
+				application.mainframe.WorkFrame.form.addChild(objNm, objDiv); 
+				var divUrl = "application.mainframe.WorkFrame.form."+objNm+".set_url(menuUrl)";
+				eval(divUrl);
+				objDiv.show(); 
+				
+			}else{
+				//활성화
+				application.mainframe.WorkFrame.form.workTab.set_tabindex(application.ds_open.findRowExpr("menuId =='"+menuId+"'&& parentId =='"+parentId+"'"));
+				var idx = application.ds_open.findRowExpr("menuId =='"+menuId+"'&& parentId =='"+parentId+"'");	
+				var divNm = "Div"+idx;
+				
+				var component = application.mainframe.WorkFrame.form.components;	
+				var str = new Array();
+				var num = 0;
+				
+				for(var i=0 ; i<component.length ; i++){		
+					if(component[i] == "[object Div]"){
+						str[num] = component[i].id;
+						num++;
+					}
+				}
+				for(var i=0 ; i<str.length ; i++){
+					if(str[i].substr(0,3) == "Div"){
+						var divVisible = "application.mainframe.WorkFrame.form."+str[i]+".set_visible(false)";
+						eval(divVisible);
+					}
+				}
+				
+				var divUrl = "application.mainframe.WorkFrame.form."+divNm+".set_visible(true)";
+				eval(divUrl);
+				
+			}
+		} else {
+			this.alert(this.tab_menuLv3.tpg_menu.grd_menuLv3.getTreeStatus(application.ds_menu.rowposition));
+		
+			if ( this.tab_menuLv3.tpg_menu.grd_menuLv3.getTreeStatus(application.ds_menu.rowposition) ) {
+				this.tab_menuLv3.tpg_menu.grd_menuLv3.setTreeStatus(application.ds_menu.rowposition, false);
+			} else {
+				this.tab_menuLv3.tpg_menu.grd_menuLv3.setTreeStatus(application.ds_menu.rowposition, true);
+			}
+		}
+	} */
+	
+
+	if(application.ds_menu.getColumn(application.ds_menu.rowposition, "menuLvl") == 1){
+		var menuUrl = application.ds_menu.getColumn(application.ds_menu.rowposition, "url");
+		var menuNm = application.ds_menu.getColumn(application.ds_menu.rowposition, "menuNm");
+		var menuId = application.ds_menu.getColumn(application.ds_menu.rowposition, "menuId");
+		var parentId = application.ds_menu.getColumn(application.ds_menu.rowposition, "parentId");
+		var tabCnt = application.mainframe.WorkFrame.form.workTab.getTabpageCount();
+		var tabIndex = application.mainframe.WorkFrame.form.workTab.getIndex();
+		
+		if(application.ds_open.findRow("menuId", menuId)<0){
+			if(tabCnt > 9){
+				this.alert("화면은 한번에 10개까지만 열 수 있습니다.");
+				return false;
+			}
+			
+			//insertTab
+			application.mainframe.WorkFrame.form.workTab.insertTabpage("tab"+parentId+menuId,tabCnt,menuUrl,menuNm);
+			var addRow = application.ds_open.addRow();
+			application.ds_open.setColumn(addRow, 'menuId', menuId);
+			application.ds_open.setColumn(addRow, 'parentId', parentId);
+			//div 객체 생성
+				var component = application.mainframe.WorkFrame.form.components;	
+				var str = new Array();
+				var num = 0;
+				
+				for(var i=0 ; i<component.length ; i++){		
+					if(component[i] == "[object Div]"){
+						str[num] = component[i].id;
+						num++;
+					}
+				}
+				for(var i=0 ; i<str.length ; i++){
+					if(str[i].substr(0,3) == "Div"){
+						var divVisible = "application.mainframe.WorkFrame.form."+str[i]+".set_visible(false)";
+						eval(divVisible);
+					}
+				}
+				
+				var strLength = str.length-5;
+				var objNm = "Div"+strLength.toString();
+
+				var objDiv = new Div();
+				objDiv.init(objNm, "absolute", 243, 128, null, 855, 2, null);
+				application.mainframe.WorkFrame.form.addChild(objNm, objDiv); 
+				var divUrl = "application.mainframe.WorkFrame.form."+objNm+".set_url(menuUrl)";
+				eval(divUrl);
+				objDiv.show(); 
+		}else{
+			if(application.ds_open.findRowExpr("menuId =='"+menuId+"'&& parentId =='"+parentId+"'")<0){
+				if(tabCnt > 9){
+					this.alert("화면은 한번에 10개까지만 열 수 있습니다.");
+					return false;
+				}
+				//insertTab
+				application.mainframe.WorkFrame.form.workTab.insertTabpage("tab"+parentId+menuId,tabCnt,menuUrl,menuNm);
+				var addRow = application.ds_open.addRow();
+				application.ds_open.setColumn(addRow, 'menuId', menuId);
+				application.ds_open.setColumn(addRow, 'parentId', parentId);
+			}else{
+				//활성화
+				application.mainframe.WorkFrame.form.workTab.set_tabindex(application.ds_open.findRowExpr("menuId =='"+menuId+"'&& parentId =='"+parentId+"'"));
+				var idx = application.ds_open.findRowExpr("menuId =='"+menuId+"'&& parentId =='"+parentId+"'");	
+				var divNm = "Div"+idx;
+				
+				var component = application.mainframe.WorkFrame.form.components;	
+				var str = new Array();
+				var num = 0;
+				
+				for(var i=0 ; i<component.length ; i++){		
+					if(component[i] == "[object Div]"){
+						str[num] = component[i].id;
+						num++;
+					}
+				}
+				for(var i=0 ; i<str.length ; i++){
+					if(str[i].substr(0,3) == "Div"){
+						var divVisible = "application.mainframe.WorkFrame.form."+str[i]+".set_visible(false)";
+						eval(divVisible);
+					}
+				}
+				
+				var divUrl = "application.mainframe.WorkFrame.form."+divNm+".set_visible(true)";
+				eval(divUrl);
+			}
+		}
+	} else {
+		if ( this.tab_menuLv3.tpg_menu.grd_menuLv3.getTreeStatus(application.ds_menu.rowposition) ) {
+			this.tab_menuLv3.tpg_menu.grd_menuLv3.setTreeStatus(application.ds_menu.rowposition, false);
+		} else {
+			this.tab_menuLv3.tpg_menu.grd_menuLv3.setTreeStatus(application.ds_menu.rowposition, true);
+		}
+	}
+	
+}
+
+
+this.fn_treeColor = function(nRow)
+{
+	trace( "AAAAA : " + ds_menu1.getColumn(nRow, "menuLvl") );
+	
+	if ( this.ds_menu1.getColumn(nRow, "menuLvl") == "0" ) {
+		trace("#ff0000");
+		return "#ff0000";
+	} else {
+		trace("#0000ff");
+		return "#0000ff";
+	}
+}
+]]></Script>
+  </Form>
+</FDL>

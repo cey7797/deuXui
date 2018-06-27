@@ -1,0 +1,315 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="admi01010_p14" classname="Component_Guide" inheritanceid="" position="absolute" scrollbars="none" left="0" top="0" width="790" height="522" titletext="교직원조회팝업" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Grid id="grd_com_user" taborder="14" binddataset="ds_com_user" useinputpanel="false" nodatatext="No Data" treeinitstatus="expand,all" left="15" top="99" width="760" height="363" formatid="10" oncelldblclick="grd_com_user_oncelldblclick">
+          <Formats>
+            <Format id="10">
+              <Columns>
+                <Column size="50" band="left"/>
+                <Column size="65" band="left"/>
+                <Column size="87" band="left"/>
+                <Column size="73"/>
+                <Column size="150"/>
+                <Column size="60"/>
+                <Column size="60"/>
+                <Column size="0"/>
+                <Column size="500"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="인사번호"/>
+                <Cell col="2" text="성명"/>
+                <Cell col="3" text="부서코드"/>
+                <Cell col="4" text="부서명"/>
+                <Cell col="5" text="재직구분"/>
+                <Cell col="6" text="우편번호"/>
+                <Cell col="7"/>
+                <Cell col="8" text="주소"/>
+              </Band>
+              <Band id="body">
+                <Cell text="expr:currow+1"/>
+                <Cell col="1" style="align:center;" text="bind:memberNo"/>
+                <Cell col="2" displaytype="normal" style="align:left;" text="bind:nm"/>
+                <Cell col="3" text="bind:deptCd"/>
+                <Cell col="4" style="align:left;" text="bind:deptCdNm"/>
+                <Cell col="5" style="align:center;" text="bind:hofcDivNm"/>
+                <Cell col="6" style="align:center;" text="bind:zipNo"/>
+                <Cell col="7"/>
+                <Cell col="8" style="align:left;" text="bind:addrF"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Div id="div_search" taborder="15" left="15" top="45" width="760" height="39" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static07" taborder="44" text="성명" cssclass="search" left="21" top="9" width="25" height="22"/>
+              <Edit id="S_NM" taborder="0" left="7.89%" top="9" right="68.82%" height="22" onkeydown="div_search_S_NM_onkeydown" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static33" taborder="46" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="1" top="0" width="20" height="39"/>
+              <Static id="Static14" taborder="47" text="W10" cssclass="tipGuide" visible="false" left="46" top="1" width="13" height="37"/>
+              <Static id="Static12" taborder="48" text="H9" cssclass="tipGuide" visible="false" left="174" top="0" width="29" height="9"/>
+              <Static id="Static11" taborder="49" text="H9" cssclass="tipGuide" visible="false" left="174" top="30" width="29" height="9"/>
+              <Static id="Static13" taborder="50" text="W20" cssclass="tipGuide" visible="false" left="238" top="1" width="19" height="37"/>
+              <Static id="Static00" taborder="51" text="부서명" cssclass="search" left="261" top="9" width="41" height="22"/>
+              <Edit id="S_DEPT_CD_NM" taborder="1" left="40.53%" top="9" right="36.18%" height="22" onkeydown="div_search_S_DEPT_CD_NM_onkeydown" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static01" taborder="52" text="재직구분" cssclass="search" left="498" top="8" width="48" height="22"/>
+              <Combo id="S_HOFC_DIV" taborder="2" enable="true" left="552" top="9" width="124" height="22" style=":disabled {color:black;font:bold 9 Dotum;}" class="essential" codecolumn="comCd" datacolumn="comCdNm" innerdataset="@ds_cmb_hofc_div"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static00" taborder="17" text="교직원조회팝업" cssclass="sta_WF_Title" left="15" top="9" width="170" height="29"/>
+        <Static id="Static34" taborder="18" text="h45" cssclass="tipGuide" visible="false" left="198" top="0" width="74" height="45"/>
+        <Static id="Static02" taborder="19" text="w15" cssclass="tipGuide" visible="false" left="0" top="6" width="15" height="503"/>
+        <Static id="Static06" taborder="20" text="w15" cssclass="tipGuide" visible="false" left="775" top="6" width="15" height="503"/>
+        <Static id="Static21" taborder="21" text="h15" cssclass="tipGuide" visible="false" left="119" top="84" right="329" height="15"/>
+        <Static id="bg" taborder="22" cssclass="sta_POP_bottomBg" left="15" top="477" width="760" height="41" positionstep="-1"/>
+        <Button id="btn_close" taborder="23" text="닫기" onclick="btn_close_onclick" cssclass="btn_POP_Common" left="715" top="487" width="60" height="21"/>
+        <Static id="Static03" taborder="24" text="h10" cssclass="tipGuide" visible="false" left="741" top="0" width="34" height="10"/>
+        <Button id="btn_search" taborder="25" text="조회" onclick="btn_search_onclick" cssclass="btn_WF_commonSearch" top="10" right="15" width="60" height="25"/>
+        <Static id="Static04" taborder="26" text="h10" cssclass="tipGuide" visible="false" left="741" top="35" width="34" height="10"/>
+        <Static id="Static05" taborder="27" text="h15" cssclass="tipGuide" visible="false" right="15" bottom="45" width="760" height="15"/>
+        <Static id="Static28" taborder="28" text="10" cssclass="tipGuide" visible="false" right="15" bottom="35" width="136" height="10"/>
+        <Static id="Static01" taborder="29" text="10" cssclass="tipGuide" visible="false" right="15" bottom="4" width="136" height="10"/>
+        <Static id="Static22" taborder="30" text="h17" cssclass="tipGuide" visible="false" left="36" top="0" width="74" height="17"/>
+        <Static id="Static23" taborder="31" text="h14" cssclass="tipGuide" visible="false" left="36" top="31" width="74" height="14"/>
+        <Button id="btn_confirm" taborder="32" text="확인" onclick="btn_confirm_onclick" cssclass="btn_POP_Common" left="650" top="487" width="60" height="21"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_com_user" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+      <Dataset id="ds_dummy" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+      <Dataset id="ds_cmb_hofc_div"/>
+    </Objects>
+    <Bind/>
+    <Script type="xscript5.0"><![CDATA[/* ====================================================================
+ * 01. 업무구분	: 행정공통
+ * 02. 화면명		: admi01010_p14.xfdl
+ * 03. 화면설명	: 교직원 조회 팝업
+ * 04. 작성일		: 2015.12.23
+ * 05. 작성자		: 박태희
+ * 06. 수정이력	: 2016.01.18
+					  - 우편번호/주소/상세주소/국가 추가
+ * ====================================================================
+ *     수정일     수정자   내용
+ * ====================================================================
+ *
+ * ==================================================================== */
+ 
+/* ====================================================================
+ * 1. 공통 라이브러리
+ * ==================================================================== */
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+/* ====================================================================
+ * 2. 변수 선언부
+ * ==================================================================== */
+var nm	//성명
+var deptCdNm	//부서명
+var autoClose;  //자동종료옵션
+var autoSearch; //자동조회옵션
+
+/* ====================================================================
+ * 3. Event 처리 부분
+ * ==================================================================== */
+
+/******************************************************************************
+* 함 수 명 	: admi01010_p14_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	var arrDataSet = Array(0);
+		arrDataSet[0]  = "ds_cmb_hofc_div";	//결의종류
+	
+	var arrGrpCd = Array(0);
+		arrGrpCd[0]  = "CS006";
+
+	// 사용여부	지정할 아큐먼트를 넘긴다.
+	var arrUseYn =	Array(0);
+		arrUseYn[0]  =	"Y";
+	
+	// T:전체,S:선택,X:없음 
+	var arrModeFg =	Array(0);
+		arrModeFg[0]  =	"T";
+	
+	// WHERE절 내용 "X":없음
+	var arrWhere =	Array(0);
+		arrWhere[0]  =	"X";
+		
+	/* 메소드명     : ComboLoad
+	 * 설명			 : 공통코드 테이블을 조회하여 콤보박스를 생성한다.
+	 * 메소드인수1  : DataSet명의 배열
+	 * 메소드인수2  : 그룹코드번호의 배열
+	 * 메소드인수3  : 캠퍼스구분 배열 ("T":전체, "C":공통만, "S":서울, "K":경주)
+	 * 메소드인수4  : 조건문의 배열 (1:사용, 0:사용안함)
+	 * 메소드인수5  : 전체공란 첨부여부 "T": 전체, "S":선택, "X" : 데이터시작
+	 * 메소드인수6  : WHERE절 내용 "X":없음
+	 */
+
+ 	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{
+	
+	this.nm = this.gfn_nvl(this.parent.nm,'');						//성명
+	this.autoClose = this.gfn_nvl(this.parent.autoClose,false);		//자동종료옵션
+	this.autoSearch = this.gfn_nvl(this.parent.autoSearch,false);	//자동조회옵션
+
+
+	this.div_search.S_NM.set_value(this.nm);
+	
+	this.div_search.S_HOFC_DIV.set_index(1);
+
+	if(this.autoSearch) {
+		this.fn_search();
+	} else {
+		this.div_search.S_NM.setFocus();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_confirm_onclick
+ * 함수설명 	: 확인
+ *********************************************************************/
+this.btn_confirm_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_confirm();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_confirm
+ * 함수설명 	: 부모로 리턴
+ *********************************************************************/
+this.fn_confirm = function()
+{
+	this.ds_dummy.copyData(this.ds_com_user);
+	this.ds_dummy.clearData();
+	
+	var addRow = this.ds_dummy.addRow();
+	this.ds_dummy.copyRow(addRow, this.ds_com_user, this.ds_com_user.rowposition);
+	this.close(this.ds_dummy.saveXML());
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_close_onclick
+ * 함수설명 	: 화면 종료
+ *********************************************************************/
+this.btn_close_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.close("close");
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_search_onclick
+ * 함수설명 	: 조회 버튼 클릭 함수
+********************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preSearch
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preSearch = function()
+{
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_search = function()
+{
+	if(this.fn_preSearch()){
+		var strArg   = "NM="   + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.S_NM.text));
+			strArg  += " DEPTCDNM=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.S_DEPT_CD_NM.text));
+			strArg  += " HOFC_DIV=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.S_HOFC_DIV.value));
+					
+		this.gfn_transaction("SEARCH",
+							 "txAdmUrl::com/admi/adcom/selectComUserPopList.do",
+							 "",
+							 "ds_com_user=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postSearch
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearch = function()
+{	
+	if(this.autoClose && this.ds_com_user.rowcount == 1){
+		this.fn_confirm();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: grd_com_user_oncelldblclick
+ * 함수설명 	: 그리드 더블클릭
+ *********************************************************************/
+this.grd_com_user_oncelldblclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	this.fn_confirm();
+}
+
+
+/*********************************************************************
+ * 함 수 명 	: div_search_S_NM_onkeydown
+ * 함수설명 	: 엔터키
+ *********************************************************************/
+this.div_search_S_NM_onkeydown = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	if(e.keycode == "13") {
+		this.fn_search();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: div_search_S_DEPT_CD_NM_onkeydown
+ * 함수설명 	: 엔터키
+ *********************************************************************/
+this.div_search_S_DEPT_CD_NM_onkeydown = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	if(e.keycode == "13") {
+		this.fn_search();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		} else if(trId=="SEARCH"){
+			this.fn_postSearch();
+		}
+	}
+}
+
+]]></Script>
+  </Form>
+</FDL>

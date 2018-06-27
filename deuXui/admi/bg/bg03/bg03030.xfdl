@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="bg03030" classname="aac01001_001" left="0" top="0" width="1038" height="855" titletext="변경예산관련통계" onload="bg03030_onload">
+    <Layouts>
+      <Layout>
+        <Static id="Static76" taborder="0" text="출력물 목록" cssclass="page_stitle" left="0" top="55" width="220" height="20"/>
+        <Grid id="grd_main" taborder="1" binddataset="ds_printList" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="col" onkeydown="grd_acnt_onkeydown" onheadclick="grd_acnt_onheadclick" left="0" top="81" width="500" bottom="21">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="35" band="left"/>
+                <Column size="367"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell displaytype="number" text="순번"/>
+                <Cell col="1" text="출력물"/>
+              </Band>
+              <Band id="body">
+                <Cell edittype="none" text="expr:currow+1" expandsize="13"/>
+                <Cell col="1" displaytype="normal" edittype="none" style="align:left;" text="bind:title" calendardisplay="edit" calendardisplaynulltype="none"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static22" taborder="2" text="h5" visible="false" left="0" top="76" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static20" taborder="3" text="h15" visible="false" left="0" top="39" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static01" taborder="4" text="출력조건" cssclass="page_stitle" left="504" top="55" width="220" height="20"/>
+        <Static id="sta_grdbgFrmn" taborder="5" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" onclick="sta_grdbgFrmn_onclick" cssclass="inquiry_icon" left="414" width="86" height="20" style="border:0 none #808080ff ;align:right middle;" bottom="1"/>
+        <Div id="div_search" taborder="6" left="0" top="0" right="14" height="39" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static12" taborder="32" text="H9" cssclass="tipGuide" visible="false" left="117" top="2" width="30" height="9"/>
+              <Static id="Static11" taborder="33" text="H9" cssclass="tipGuide" visible="false" left="117" top="31" width="30" height="9"/>
+              <Static id="Static04" taborder="34" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="182" top="0" width="20" height="39"/>
+              <Static id="Static14" taborder="35" text="W10" cssclass="tipGuide" visible="false" left="68" top="2" width="14" height="37"/>
+              <Static id="Static33" taborder="36" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="0" top="2" width="20" height="39"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static33" taborder="7" text="W&#13;&#10;15" cssclass="tipGuide" visible="false" left="1023" top="7" width="15" height="846"/>
+        <Static id="Static35" taborder="8" text="W&#13;&#10;10" cssclass="tipGuide" visible="false" left="500" top="85" width="10" height="311"/>
+        <Static id="Static31" taborder="9" text="w&#13;&#10;10" cssclass="tipGuide" visible="false" left="510" top="119" bottom="689" width="10"/>
+        <Static id="Static00" taborder="12" text="H5" cssclass="tipGuide" visible="false" left="407" top="850" width="93" height="5"/>
+        <Static id="Static02" taborder="13" text="H5" cssclass="tipGuide" visible="false" left="407" top="834" width="93" height="5"/>
+        <Div id="div_form" taborder="14" top="97" width="503" bottom="4" left="520" scrollbars="none"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_printList" onrowposchanged="ds_printList_onrowposchanged">
+        <ColumnInfo>
+          <Column id="title" type="STRING" size="256"/>
+          <Column id="divUrl" type="STRING" size="256"/>
+          <Column id="clipFileNm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="title">예산 전용 내역서</Col>
+            <Col id="divUrl">bg03::bg03030_d01.xfdl</Col>
+            <Col id="clipFileNm">bg03030_r01</Col>
+          </Row>
+          <Row>
+            <Col id="title">예산 추가 내역서</Col>
+            <Col id="divUrl">bg03::bg03030_d01.xfdl</Col>
+            <Col id="clipFileNm">bg03030_r04</Col>
+          </Row>
+          <Row>
+            <Col id="title">예비비 사용 내역서</Col>
+            <Col id="divUrl">bg03::bg03030_d02.xfdl</Col>
+            <Col id="clipFileNm">bg03030_r02_n</Col>
+          </Row>
+          <Row>
+            <Col id="title">예비비 사용액 명세서</Col>
+            <Col id="divUrl">bg03::bg03030_d03.xfdl</Col>
+            <Col id="clipFileNm">bg03030_r03</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[// [프로젝트]	동의대학교 예산회계시스템 구축
+// [시스템명]	행정
+// [부시스템]	예산관리
+// [프로그램]	예산편성 > 예산변경관련통계
+// [설명] 
+//	         
+// [작성자명] 	라병수
+// [작성일자]	2016/02/03
+//////////////////////////////////[수정이력]//////////////////////////////////
+// [수정일자] 
+// [수 정 자] 
+// [수정내용]
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+
+	
+/******************************************************************************
+* 함 수 명 	: from_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.bg03030_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	
+	
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{	
+
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.gfn_message("A", errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		} 
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: ds_printList_onrowposchanged
+ * 함수설명 	: 출력물종류에 따라서 출력조건 호출
+ *********************************************************************/
+this.ds_printList_onrowposchanged = function(obj:Dataset, e:nexacro.DSRowPosChangeEventInfo)
+{
+	this.div_form.set_url(obj.getColumn(e.newrow, 'divUrl'));
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_print
+ * 함수설명 	: 레포트호출
+ *********************************************************************/
+this.fn_print = function(objParams)
+{
+	var title;
+	var objParam = {};
+	
+	for (var i in objParams) {
+        objParam[i] = objParams[i];
+    }
+	
+	
+	title = this.ds_printList.getColumn(this.ds_printList.rowposition,"clipFileNm");
+	
+	
+
+    var strArg  = "ACNT_YY:"  + objParam["acntYy"];		 // 회계년도
+ 		strArg += "|ACNT_UNT:" + objParam["acntUnt"];    // 회계연도
+ 		strArg += "|ACNT_UNT_NM:" + objParam["acntUntNm"];    // 회계연도
+ 		strArg += "|FR_DT:" + objParam["frDt"];     // 기준시작일
+ 		strArg += "|TO_DT:" + objParam["toDt"];     // 기준종료일
+ 		strArg += "|BUDG_CD:" + objParam["budgCd"];     // 기준종료일
+ 		strArg += "|GV_USERID:" + application.gds_user.getColumn(application.gds_user.rowposition,"memberNo"); // login userid
+ 		strArg += "|GV_USERNM:" + application.gds_user.getColumn(application.gds_user.rowposition,"nm"); // login usernm
+ 		strArg += "|GV_MENUID:" + "ac03020"; // menuId
+ 		strArg += "|GV_USER:" + application.gds_user.getColumn(application.gds_user.rowposition,"nm")+"("+application.gds_user.getColumn(application.gds_user.rowposition,"memberNo")+")"; // login usernm(userid)
+    
+    var callType = ""; 
+    var crfName = "com/"+title; 
+    var crfParams = strArg; //예) 키:값|키:값|키:값
+    var crfDbName = ""; // null 값이나 "oracle1" 값으로 던질것
+	this.gfn_openClipReport(callType,crfName,crfParams,crfDbName);
+	
+	
+
+}
+]]></Script>
+  </Form>
+</FDL>

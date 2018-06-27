@@ -1,0 +1,517 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="bg02040_p02" classname="Component_Guide" inheritanceid="" position="absolute" scrollbars="none" left="0" top="0" width="790" height="487" titletext="계정내역변경팝업" onload="bg02040_p02_onload">
+    <Layouts>
+      <Layout>
+        <Static id="Static00" taborder="31" text="계정내역변경팝업" cssclass="sta_WF_Title" left="15" top="9" width="170" height="29"/>
+        <Static id="Static34" taborder="32" text="h45" cssclass="tipGuide" visible="false" left="198" top="0" width="74" height="45"/>
+        <Static id="Static02" taborder="33" text="w15" cssclass="tipGuide" visible="false" left="0" top="6" width="15" height="503"/>
+        <Static id="Static06" taborder="34" text="w15" cssclass="tipGuide" visible="false" top="6" right="0" width="15" height="503"/>
+        <Static id="bg" taborder="36" cssclass="sta_POP_bottomBg" left="15" height="41" positionstep="-1" top="445" width="760"/>
+        <Button id="btn_close" taborder="39" text="닫기" onclick="btn_close_onclick" cssclass="btn_POP_Common" left="715" top="455" width="60" height="21" visible="false"/>
+        <Static id="Static03" taborder="40" text="h10" cssclass="tipGuide" visible="false" left="741" top="0" width="34" height="10"/>
+        <Static id="Static04" taborder="42" text="h10" cssclass="tipGuide" visible="false" left="741" top="35" width="34" height="10"/>
+        <Static id="Static05" taborder="43" text="h15" cssclass="tipGuide" visible="false" right="15" bottom="77" width="760" height="15"/>
+        <Static id="Static28" taborder="44" text="10" cssclass="tipGuide" visible="false" right="15" bottom="67" width="136" height="10"/>
+        <Static id="Static01" taborder="45" text="10" cssclass="tipGuide" visible="false" right="15" bottom="36" width="136" height="10"/>
+        <Static id="Static22" taborder="46" text="h17" cssclass="tipGuide" visible="false" left="36" top="0" width="74" height="17"/>
+        <Static id="Static23" taborder="47" text="h14" cssclass="tipGuide" visible="false" left="36" top="31" width="74" height="14"/>
+        <Button id="btn_confirm" taborder="48" text="확인" cssclass="btn_POP_Common" left="650" top="455" width="60" height="21" onclick="btn_save_onclick" visible="false"/>
+        <Button id="btn_save" taborder="49" text="저장" cssclass="save" top="10" right="15" width="60" height="25" tooltiptext="저장" onclick="btn_save_onclick"/>
+        <Static id="Static21" taborder="50" text="h15" cssclass="tipGuide" visible="false" left="14" top="197" right="434" height="15"/>
+        <Static id="Static14" taborder="51" cssclass="detail_bg" left="15" top="84" right="16" height="29" style="border:1 solid #c7c9ccff,0 none #808080ff;"/>
+        <Static id="Static07" taborder="53" text="회계단위" cssclass="detail_title" left="15" top="85" width="100" height="27" style="align:left;"/>
+        <Static id="Static08" taborder="54" cssclass="detail_bg" left="15" top="112" right="16" height="29" style="border:1 solid #c7c9ccff,0 none #808080ff;"/>
+        <Static id="Static09" taborder="55" cssclass="detail_bg" left="15" top="140" right="16" height="29" style="border:1 solid #c7c9ccff,0 none #808080ff;"/>
+        <Static id="Static10" taborder="56" cssclass="detail_bg" left="15" top="168" right="16" height="29" style="border:1 solid #c7c9ccff,0 none #808080ff;"/>
+        <Static id="Static12" taborder="58" text="부서코드" cssclass="detail_title" left="15" top="113" width="100" height="27" style="align:left;"/>
+        <Static id="Static13" taborder="59" cssclass="detail_title" left="15" top="141" width="100" height="27" style="align:left;" text="사업코드"/>
+        <Static id="Static15" taborder="60" text="계정과목" cssclass="detail_title" left="15" top="169" width="100" height="27" style="align:left;"/>
+        <Combo id="cmb_bfAcntUnt" taborder="61" left="123" top="88" width="245" height="21" enable="false" innerdataset="@ds_bfAcntUntCmb" codecolumn="cd" datacolumn="nm"/>
+        <Static id="Static76" taborder="66" text="기존 계정내역목록" cssclass="page_stitle" left="15" top="56" width="324" height="20"/>
+        <Static id="Static11" taborder="67" text="h45" cssclass="tipGuide" visible="false" left="342" top="197" width="74" height="45"/>
+        <Static id="Static16" taborder="68" cssclass="detail_bg" left="15" top="284" right="16" height="29" style="border:1 solid #c7c9ccff,0 none #808080ff;"/>
+        <Static id="Static17" taborder="69" text="회계단위" cssclass="detail_title" left="15" top="285" width="100" height="27" style="align:left;"/>
+        <Static id="Static18" taborder="70" cssclass="detail_bg" left="15" top="312" right="16" height="29" style="border:1 solid #c7c9ccff,0 none #808080ff;"/>
+        <Static id="Static19" taborder="71" cssclass="detail_bg" left="15" top="340" right="16" height="29" style="border:1 solid #c7c9ccff,0 none #808080ff;"/>
+        <Static id="Static20" taborder="72" cssclass="detail_bg" left="15" top="368" right="16" height="29" style="border:1 solid #c7c9ccff,0 none #808080ff;"/>
+        <Static id="Static24" taborder="73" text="부서코드" cssclass="detail_title" left="15" top="313" width="100" height="27" style="align:left;"/>
+        <Static id="Static25" taborder="74" text="사업코드" cssclass="detail_title" left="15" top="341" width="100" height="27" style="align:left;"/>
+        <Static id="Static26" taborder="75" text="계정과목" cssclass="detail_title" left="15" top="369" width="100" height="27" style="align:left;"/>
+        <Combo id="cmb_aftAcntUnt" taborder="76" left="123" top="288" width="245" height="21" codecolumn="cd" datacolumn="nm" innerdataset="@ds_aftAcntUntCmb"/>
+        <Static id="Static27" taborder="80" text="변경 계정내역목록" cssclass="page_stitle" left="15" top="256" width="324" height="20"/>
+        <Edit id="edt_aftBudgOrgNm" taborder="81" left="15.57%" top="316" right="56.71%" height="21" style="border:1 solid #ccccccff ;" enable="true" onkeyup="edt_aftBudgOrgNm_onkeyup"/>
+        <Edit id="edt_aftBudgOrgId" taborder="82" left="48.1%" top="316" right="29.11%" height="21" style="border:1 solid #ccccccff ;" visible="false"/>
+        <Button id="btn_popBudgOrg" taborder="83" cssclass="popupDetail" left="345" top="316" width="23" height="21" tooltiptype="hover" tooltiptext="초기화" userBtnAuth="S" onclick="btn_popBudgOrg_onclick"/>
+        <Edit id="edt_bfBudgOrgId" taborder="84" left="47.97%" top="116" right="27.22%" height="21" style="border:1 solid #ccccccff ;" enableevent="false" visible="false"/>
+        <Edit id="edt_bfBudgOrgNm" taborder="86" left="15.57%" top="116" right="53.42%" height="21" style="border:1 solid #ccccccff ;" enableevent="false" enable="false"/>
+        <Edit id="edt_aftBizNm" taborder="87" left="15.57%" top="344" right="56.71%" height="21" style="border:1 solid #ccccccff ;" onkeyup="edt_aftBizNm_onkeyup"/>
+        <Button id="btn_popBudgBiz" taborder="88" cssclass="popupDetail" left="345" top="344" width="23" height="21" tooltiptype="hover" tooltiptext="초기화" userBtnAuth="S" onclick="btn_popBudgBiz_onclick"/>
+        <Edit id="edt_aftBizCd" taborder="89" left="47.97%" top="344" right="24.3%" height="21" style="border:1 solid #ccccccff ;" visible="false"/>
+        <Edit id="edt_aftAcntNm" taborder="90" enable="true" left="15.57%" top="372" right="56.71%" height="21" style="border:1 solid #ccccccff ;" onkeyup="edt_aftAcntNm_onkeyup"/>
+        <Button id="btn_popAftAcnt" taborder="91" cssclass="popupDetail" left="345" top="372" width="23" height="21" tooltiptype="hover" tooltiptext="초기화" userBtnAuth="S" onclick="btn_popAftAcnt_onclick" enable="true"/>
+        <Edit id="edt_aftAcntCd" taborder="92" left="48.1%" top="372" right="25.06%" height="21" style="border:1 solid #ccccccff ;" visible="false"/>
+        <Edit id="edt_bfBizNm" taborder="93" left="15.57%" top="144" right="53.42%" height="21" style="border:1 solid #ccccccff ;" enable="false"/>
+        <Edit id="edt_bfBizCd" taborder="94" left="47.97%" top="144" right="21.01%" height="21" style="border:1 solid #ccccccff ;" visible="false"/>
+        <Edit id="edt_bfAcntNm" taborder="95" left="15.57%" top="172" right="56.71%" height="21" style="border:1 solid #ccccccff ;" enable="false" onkeyup="edt_bfAcntNm_onkeyup"/>
+        <Edit id="edt_bfAcntCd" taborder="96" left="47.97%" top="172" right="21.01%" height="21" style="border:1 solid #ccccccff ;" visible="false"/>
+        <Button id="btn_popBfAcnt" taborder="97" cssclass="popupDetail" left="345" top="172" width="23" height="21" tooltiptype="hover" tooltiptext="초기화" userBtnAuth="S" onclick="btn_popBfAcnt_onclick" enable="false"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_dummy" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" onrowposchanged="ds_account_onrowposchanged"/>
+      <Dataset id="ds_bfAcntUntCmb"/>
+      <Dataset id="ds_aftAcntUntCmb"/>
+      <Dataset id="ds_budgOrgId"/>
+      <Dataset id="ds_acntChg">
+        <ColumnInfo>
+          <Column id="bfAcntUnt" type="STRING" size="256"/>
+          <Column id="bfBizCd" type="STRING" size="256"/>
+          <Column id="bfBudgOrgId" type="STRING" size="256"/>
+          <Column id="bfAcntCd" type="STRING" size="256"/>
+          <Column id="aftAcntUnt" type="STRING" size="256"/>
+          <Column id="aftBizCd" type="STRING" size="256"/>
+          <Column id="aftAcntCd" type="STRING" size="256"/>
+          <Column id="aftBudgOrgId" type="STRING" size="256"/>
+          <Column id="acntYy" type="STRING" size="256"/>
+          <Column id="balDiv" type="STRING" size="256"/>
+          <Column id="budgCd" type="STRING" size="256"/>
+          <Column id="adjOrdCd" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="chk" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Bind/>
+    <Script type="xscript5.0"><![CDATA[// [프로젝트]	동의대학교 예산회계시스템 구축
+// [시스템명]	행정
+// [부시스템]	예산관리
+// [프로그램]	예산편성신청등록(팝업)
+// [설명] 
+//	         
+// [작성자명]	라병수
+// [작성일자]	2015.12.03
+//////////////////////////////////[수정이력]//////////////////////////////////
+// [수정일자] 
+// [수 정 자] 
+// [수정내용]
+
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+
+var strAcntYy;		//회계년도
+var strAcntUnt;		//회계단위
+var strBudgOrgId;	//예산부서
+var strBalDiv;		//수지구분
+var strBizCd;		//사업코드
+var strBizNm;		//사업명
+var strAcntCd;		//계정코드
+var strAcntNm;		//계정명
+var strBudgCd;		//예산구분
+var strAdjOrdCd;	//조정차수
+var intCnt;
+var chkCnt = 0;
+
+this.bg02040_p02_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	strAcntYy = this.parent.acntYy;
+	strAcntUnt = this.parent.acntUnt;
+	strBudgOrgId = this.parent.budgOrgId;
+	strBudgOrgNm = this.parent.budgOrgNm;
+	strBalDiv = this.parent.balDiv;
+	strBizCd = this.parent.bizCd;
+	strBizNm = this.parent.bizNm;
+	strBudgCd = this.parent.budgCd;
+	strAdjOrdCd = this.parent.adjOrdCd;
+	strAcntCd = this.parent.acntCd;
+	strAcntNm = this.parent.acntNm;
+	intCnt = this.parent.acntCnt;
+	
+	
+	
+	//return ds,회계연도,권한적용여부,사용여부,합산회계여부,프로그램ID
+	this.cfn_acntUntCombo("ds_bfAcntUntCmb","","1","","0","bg02040_p02"); //회계단위콤보호출
+	//return ds,회계연도,권한적용여부,사용여부,합산회계여부,프로그램ID
+	this.cfn_acntUntCombo("ds_aftAcntUntCmb","","1","","0","bg02040_p02"); //회계단위콤보호출
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.gfn_message("A", errMsg);
+	}else{
+		if(trId == "ACNTUNTCOMBO"){
+			this.fn_param_set();
+		}else if(trId == "SAVECHG"){
+			this.gfn_message("A",  "처리되었습니다");
+			this.close("popClose");
+		}else if(trId == "SAVECHGMULTI"){
+			if(Math.max(nexacro.toNumber(chkCnt))){
+				this.gfn_message("A",  "처리되었습니다");
+				this.close("popClose");
+			}
+			
+		}
+
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_param_set()
+ * 함수설명 	: 넘어온 파라미터들을 컴포넌트에 셋팅해준다
+ *********************************************************************/
+this.fn_param_set = function(){
+// 	var acnt1 = strAcntCd;
+// 	var acnt1;
+// 	var acnt1;
+	
+	
+	if( intCnt > 1 ){
+	//계정과목코드가 1개이상이면	 이전/이후 과목을 셋팅하지않고 
+	//회계단위,부서코드,사업코드를 변경할수 있게 셋팅한다.
+		this.cmb_bfAcntUnt.set_value(strAcntUnt);
+		this.cmb_aftAcntUnt.set_value(strAcntUnt);
+		this.edt_bfBudgOrgId.set_value(strBudgOrgId);
+		this.edt_bfBudgOrgNm.set_value(strBudgOrgNm);
+		this.edt_aftBudgOrgId.set_value(strBudgOrgId);
+		this.edt_aftBudgOrgNm.set_value(strBudgOrgNm);
+		this.edt_bfBizCd.set_value(strBizCd);
+		this.edt_bfBizNm.set_value(strBizNm);
+		this.edt_aftBizCd.set_value(strBizCd);
+		this.edt_aftBizNm.set_value(strBizNm);
+// 		this.edt_bfAcntCd.set_value(strAcntCd);
+// 		this.edt_bfAcntNm.set_value(strAcntNm);
+// 		this.edt_aftAcntCd.set_value(strAcntCd);
+// 		this.edt_aftAcntNm.set_value(strAcntNm);
+		this.edt_aftAcntCd.set_enable(false);
+		this.edt_aftAcntNm.set_enable(false);
+		this.btn_popAftAcnt.set_enable(false);
+
+	}else{
+	//계정과목코드가 1개면	 이전/이후 과목을 셋팅하고 
+	//회계단위,부서코드,사업코드,계정코드를 변경할수 있게 셋팅한다.
+		this.cmb_bfAcntUnt.set_value(strAcntUnt);
+		this.cmb_aftAcntUnt.set_value(strAcntUnt);
+		this.edt_bfBudgOrgId.set_value(strBudgOrgId);
+		this.edt_bfBudgOrgNm.set_value(strBudgOrgNm);
+		this.edt_aftBudgOrgId.set_value(strBudgOrgId);
+		this.edt_aftBudgOrgNm.set_value(strBudgOrgNm);
+		this.edt_bfBizCd.set_value(strBizCd);
+		this.edt_bfBizNm.set_value(strBizNm);
+		this.edt_aftBizCd.set_value(strBizCd);
+		this.edt_aftBizNm.set_value(strBizNm);
+		this.edt_bfAcntCd.set_value(strAcntCd);
+		this.edt_bfAcntNm.set_value(strAcntNm);
+		this.edt_aftAcntCd.set_value(strAcntCd);
+		this.edt_aftAcntNm.set_value(strAcntNm);
+		this.edt_aftAcntCd.set_enable(true);
+		this.edt_aftAcntNm.set_enable(true);
+		this.btn_popAftAcnt.set_enable(true);
+
+
+	}
+	
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_save_onclick
+ * 함수설명 	: 예산변경호출
+ *********************************************************************/
+this.btn_save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(intCnt > 1){
+		var key;
+		var key1;
+		
+		for(i=0; i <= intCnt-1; i++ ){
+			var addRow = this.ds_acntChg.addRow();
+			key = strAcntCd.toString().split("|");
+			key1 = key[i]
+			this.ds_acntChg.setColumn(addRow,"bfAcntUnt",strAcntUnt);
+			this.ds_acntChg.setColumn(addRow,"bfBizCd",strBizCd);
+			this.ds_acntChg.setColumn(addRow,"bfBudgOrgId",strBudgOrgId);
+			this.ds_acntChg.setColumn(addRow,"bfAcntCd",key1);
+			this.ds_acntChg.setColumn(addRow,"aftAcntUnt",this.cmb_aftAcntUnt.value);
+			this.ds_acntChg.setColumn(addRow,"aftBizCd",this.edt_aftBizCd.value);
+			this.ds_acntChg.setColumn(addRow,"aftBudgOrgId",this.edt_aftBudgOrgId.value);
+			this.ds_acntChg.setColumn(addRow,"aftAcntCd",key1);
+			this.ds_acntChg.setColumn(addRow,"acntYy",strAcntYy);
+			this.ds_acntChg.setColumn(addRow,"balDiv",strBalDiv);
+			this.ds_acntChg.setColumn(addRow,"budgCd",strBudgCd);
+			this.ds_acntChg.setColumn(addRow,"adjOrdCd",strAdjOrdCd);
+			this.ds_acntChg.setColumn(addRow,"rowStatus",2);
+		}
+		for(i=0; i <= this.ds_acntChg.rowcount-1; i++ ){
+			chkCnt+= i;
+			this.fn_acntChgMulti();
+		}
+	}else{
+		this.ds_acntChg.addRow();
+		this.ds_acntChg.setColumn(0,"bfAcntUnt",strAcntUnt);
+		this.ds_acntChg.setColumn(0,"bfBizCd",strBizCd);
+		this.ds_acntChg.setColumn(0,"bfBudgOrgId",strBudgOrgId);
+		this.ds_acntChg.setColumn(0,"bfAcntCd",strAcntCd);
+		this.ds_acntChg.setColumn(0,"aftAcntUnt",this.cmb_aftAcntUnt.value);
+		this.ds_acntChg.setColumn(0,"aftBizCd",this.edt_aftBizCd.value);
+		this.ds_acntChg.setColumn(0,"aftBudgOrgId",this.edt_aftBudgOrgId.value);
+		this.ds_acntChg.setColumn(0,"aftAcntCd",this.edt_aftAcntCd.value);
+		this.ds_acntChg.setColumn(0,"acntYy",strAcntYy);
+		this.ds_acntChg.setColumn(0,"balDiv",strBalDiv);
+		this.ds_acntChg.setColumn(0,"budgCd",strBudgCd);
+		this.ds_acntChg.setColumn(0,"adjOrdCd",strAdjOrdCd);
+		this.ds_acntChg.setColumn(0,"rowStatus",2);
+		
+		this.fn_acntChg();
+	}
+	
+	
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_acntChgMulti
+ * 함수설명 	: 입력된 계정내역을 변경한다.
+ *********************************************************************/
+this.fn_acntChgMulti = function(){
+	
+	this.gfn_transaction("SAVECHGMULTI",
+						 "txComUrl::com/admi/saveBgAcntChg.do",
+						 "resultList=ds_acntChg:u",
+						 "",
+						 "",
+						 "fn_callBack");
+	
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_acntChg
+ * 함수설명 	: 입력된 계정내역을 변경한다.
+ *********************************************************************/
+this.fn_acntChg = function(){
+	
+	this.gfn_transaction("SAVECHG",
+						 "txComUrl::com/admi/saveBgAcntChg.do",
+						 "resultList=ds_acntChg:u",
+						 "",
+						 "",
+						 "fn_callBack");
+	
+}
+
+
+/*********************************************************************
+ * 함 수 명 	: btn_popBudgOrg_onclick
+ * 함수설명 	: 부서팝업호출
+ *********************************************************************/
+this.btn_popBudgOrg_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var strParam = {jojikCdNm:this.edt_aftBudgOrgNm.value
+				   ,autoSearch:true
+				   };
+	this.cfn_deptPopup(strParam,"fn_bgBudgOrgPopCallback");
+}
+
+/*********************************************************************
+ * 함 수 명 	: edt_aftBudgOrgNm_onkeyup
+ * 함수설명 	: 부서팝업호출
+ *********************************************************************/
+this.edt_aftBudgOrgNm_onkeyup = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	this.edt_aftBudgOrgId.set_value("");
+	if(e.keycode == 13){
+		var strParam = {jojikCdNm:this.edt_aftBudgOrgNm.value
+					   ,autoSearch:true
+					   };
+		this.cfn_deptPopup(strParam,"fn_bgBudgOrgPopCallback");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_bgBudgOrgPopCallback
+ * 함수설명 	: 부서팝업 리턴
+ *********************************************************************/
+this.fn_bgBudgOrgPopCallback = function(strID, rtnVal)
+{
+	if(rtnVal == "close" || rtnVal == "" || this.gfn_isNull(rtnVal) ){
+		return;
+	}
+	
+	this.ds_dummy.clear();
+	this.ds_dummy.loadXML(rtnVal);
+	
+	 this.edt_aftBudgOrgNm.set_value(this.ds_dummy.getColumn(0, "deptNmKor"));
+	 this.edt_aftBudgOrgId.set_value(this.ds_dummy.getColumn(0, "deptCd"));
+
+
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_popBudgBiz_onclick
+ * 함수설명 	: 사업팝업호출
+ *********************************************************************/
+this.btn_popBudgBiz_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var strParam = {acntUnt:strAcntUnt
+				   ,bizNm:this.edt_aftBizNm.value
+				   ,bizLvlCd:"30"
+				   ,autoSearch:true
+				   };
+	this.cfn_bgBizPopup(strParam,"fn_bgBizPopCallback");
+}
+
+/*********************************************************************
+ * 함 수 명 	: edt_aftBizNm_onkeyup
+ * 함수설명 	: 사업팝업호출
+ *********************************************************************/
+this.edt_aftBizNm_onkeyup = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	this.edt_aftBizCd.set_value("");
+	if(e.keycode == 13){
+		var strParam = {acntUnt:strAcntUnt
+					   ,bizNm:this.edt_aftBizNm.value
+					   ,bizLvlCd:"30"
+					   ,autoSearch:true
+					   };
+		this.cfn_bgBizPopup(strParam,"fn_bgBizPopCallback");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_bgBizPopCallback
+ * 함수설명 	: 사업팝업 리턴
+ *********************************************************************/
+this.fn_bgBizPopCallback = function(strID, rtnVal)
+{
+	if(rtnVal == "close" || rtnVal == "" || this.gfn_isNull(rtnVal) ){
+		return;
+	}
+	
+	this.ds_dummy.clear();
+	this.ds_dummy.loadXML(rtnVal);
+	
+	 this.edt_aftBizNm.set_value(this.ds_dummy.getColumn(0, "bizNm"));
+	 this.edt_aftBizCd.set_value(this.ds_dummy.getColumn(0, "bizCd"));
+
+
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_popBfAcnt_onclick
+ * 함수설명 	: 이전계정과목팝업호출
+ *********************************************************************/
+this.btn_popBfAcnt_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var argumentsList = new Array();
+		argumentsList['acntYy'] = strAcntYy;
+		argumentsList['acntUnt'] = strAcntUnt;
+		argumentsList['acntLvl'] = "50";
+		argumentsList['acntNm']  = this.edt_bfAcntNm.value;
+		argumentsList['balDiv']  = strBalDiv;
+	//	argumentsList['autoClose'] = false;
+		argumentsList['autoSearch'] = "autoSearch";
+	
+	this.cfn_bgAcntPopup(argumentsList,"fn_bfBgAcntPopCallback");
+}
+
+this.edt_bfAcntNm_onkeyup = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	this.edt_aftAcntCd.set_value("");
+	if(e.keycode == 13){
+		var argumentsList = new Array();
+			argumentsList['acntYy'] = strAcntYy;
+			argumentsList['acntUnt'] = strAcntUnt;
+			argumentsList['acntLvl'] = "50";
+			argumentsList['acntNm']  = this.edt_bfAcntNm.value;
+			argumentsList['balDiv']  = strBalDiv;
+		//	argumentsList['autoClose'] = false;
+			argumentsList['autoSearch'] = "autoSearch";
+		
+		this.cfn_bgAcntPopup(argumentsList,"fn_bfBgAcntPopCallback");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_popAftAcnt_onclick
+ * 함수설명 	: 이후계정과목팝업호출
+ *********************************************************************/
+this.btn_popAftAcnt_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var argumentsList = new Array();
+		argumentsList['acntYy'] = strAcntYy;
+		argumentsList['acntUnt'] = strAcntUnt;
+		argumentsList['acntLvl'] = "50";
+		argumentsList['acntNm']  = this.edt_aftAcntNm.value;
+		argumentsList['balDiv']  = strBalDiv;
+	//	argumentsList['autoClose'] = false;
+		argumentsList['autoSearch'] = "autoSearch";
+	
+	this.cfn_bgAcntPopup(argumentsList,"fn_aftBgAcntPopCallback");
+}
+
+this.edt_aftAcntNm_onkeyup = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	this.edt_aftAcntCd.set_value("");
+	if(e.keycode == 13){
+		var argumentsList = new Array();
+			argumentsList['acntYy'] = strAcntYy;
+			argumentsList['acntUnt'] = strAcntUnt;
+			argumentsList['acntLvl'] = "50";
+			argumentsList['acntNm']  = this.edt_aftAcntNm.value;
+			argumentsList['balDiv']  = strBalDiv;
+		//	argumentsList['autoClose'] = false;
+			argumentsList['autoSearch'] = "autoSearch";
+		
+		this.cfn_bgAcntPopup(argumentsList,"fn_aftBgAcntPopCallback");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_bgBgAcntPopCallback
+ * 함수설명 	: 이전예산계정 팝업 리턴
+ *********************************************************************/
+this.fn_bfBgAcntPopCallback = function(strID, rtnVal)
+{
+	if(rtnVal == "close" || rtnVal == "" || this.gfn_isNull(rtnVal) ){
+		return;
+	}
+	
+	this.ds_dummy.clear();
+	this.ds_dummy.loadXML(rtnVal);
+	
+	this.edt_bfAcntNm.set_value(this.ds_dummy.getColumn(0, "semokNm"));
+	this.edt_bfAcntCd.set_value(this.ds_dummy.getColumn(0, "acntCd"));
+
+
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_aftBgAcntPopCallback
+ * 함수설명 	: 이후예산계정 팝업 리턴
+ *********************************************************************/
+this.fn_aftBgAcntPopCallback = function(strID, rtnVal)
+{
+	if(rtnVal == "close" || rtnVal == "" || this.gfn_isNull(rtnVal) ){
+		return;
+	}
+	
+	this.ds_dummy.clear();
+	this.ds_dummy.loadXML(rtnVal);
+	
+	this.edt_aftAcntNm.set_value(this.ds_dummy.getColumn(0, "semokNm"));
+	this.edt_aftAcntCd.set_value(this.ds_dummy.getColumn(0, "acntCd"));
+
+
+}
+
+this.btn_close_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.close("popClose");
+}
+]]></Script>
+  </Form>
+</FDL>

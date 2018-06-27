@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="ac02020_purc_p02" classname="ac02020_purc_p01" left="0" top="0" width="822" height="251" onload="ac02020_purc_p01_onload" titletext="중간확정">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="0" left="0" top="0" right="15" height="42" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static00" taborder="73" text="회계연도" cssclass="search" left="20" top="10" width="48" height="22"/>
+              <Static id="Static01" taborder="74" text="회계단위" cssclass="search" left="186" top="10" width="48" height="22"/>
+              <Combo id="S_ACNT_UNT" taborder="75" innerdataset="ds_acntUntCmb" codecolumn="cd" datacolumn="nm" left="240" top="11" width="124" height="21" class="essential" autoskip="false" enable="false"/>
+              <Static id="Static12" taborder="76" text="H9" cssclass="tipGuide" visible="false" left="117" top="2" width="30" height="9"/>
+              <Static id="Static11" taborder="77" text="H9" cssclass="tipGuide" visible="false" left="117" top="32" width="30" height="9"/>
+              <Static id="Static02" taborder="78" text="H9" cssclass="tipGuide" visible="false" left="311" top="2" width="30" height="9"/>
+              <Static id="Static03" taborder="79" text="H9" cssclass="tipGuide" visible="false" left="311" top="32" width="30" height="9"/>
+              <Spin id="S_ACNT_YY" taborder="80" value="0" onspin="div_search_S_ACNT_YY_onspin" left="74" top="11" width="100" height="21" enable="false"/>
+              <Static id="Static06" taborder="81" text="부서" cssclass="search" left="380" top="10" width="24" height="22"/>
+              <Combo id="S_VOU_ORG_ID" taborder="82" innerdataset="ds_cmb_vou_org_id" codecolumn="deptCd" datacolumn="deptNmKor" left="411" top="10" width="159" height="22" class="essential" autoskip="false" enable="false"/>
+              <Static id="Static07" taborder="83" text="기안번호" cssclass="search" left="586" top="10" width="48" height="22"/>
+              <Edit id="S_VOU_NO" taborder="94" inputtype="number" maxlength="12" left="640" top="11" width="124" height="21" style="border:1 solid #ccccccff ;" enable="false"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static11" taborder="1" text="H15" cssclass="tipGuide" visible="false" left="0" top="42" width="1023" height="15"/>
+        <Static id="Static33" taborder="2" text="W&#13;&#10;15" cssclass="tipGuide" visible="false" left="807" top="0" width="15" height="215"/>
+        <Static id="Static03" taborder="4" cssclass="page_stitle" left="0" top="58" width="220" height="20"/>
+        <Static id="Static00" taborder="8" text="H5" cssclass="tipGuide" visible="false" left="0" top="79" width="1023" height="5"/>
+        <Static id="Static08" taborder="11" cssclass="detail_bg" left="1" top="85" right="15" height="125" style="border:1 solid #c7c9ccff,0 none #808080ff;"/>
+        <Static id="Static12" taborder="12" text="확정사유" cssclass="detail_title" left="1" top="86" width="76" height="124" style="align:left;"/>
+        <TextArea id="txt_rsn" taborder="13" imemode="hangul" left="10.1%" top="89" right="1.95%" height="118"/>
+        <Button id="btn_confirm" taborder="17" text="확인" onclick="btn_confirm_onclick" cssclass="btn_POP_Common" left="680" top="218" width="60" height="21"/>
+        <Button id="btn_close" taborder="18" text="닫기" onclick="btn_close_onclick" cssclass="btn_POP_Common" left="745" top="218" width="60" height="21"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_cmd_acnt_yy"/>
+      <Dataset id="ds_acntUntCmb"/>
+      <Dataset id="ds_cmb_sta_cd"/>
+      <Dataset id="ds_cmb_c_sta_cd">
+        <ColumnInfo>
+          <Column id="comCd" type="STRING" size="256"/>
+          <Column id="comCdNm" type="STRING" size="256"/>
+          <Column id="procCd" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="comCd">32</Col>
+            <Col id="comCdNm">결의접수</Col>
+            <Col id="procCd">Y</Col>
+          </Row>
+          <Row>
+            <Col id="comCd">32</Col>
+            <Col id="comCdNm">접수반려</Col>
+            <Col id="procCd">N</Col>
+          </Row>
+          <Row>
+            <Col id="comCdNm">회계전자결재신청</Col>
+            <Col id="procCd">E</Col>
+            <Col id="comCd">41</Col>
+          </Row>
+          <Row>
+            <Col id="comCd">41</Col>
+            <Col id="comCdNm">결의접수취소</Col>
+            <Col id="procCd">C</Col>
+          </Row>
+          <Row>
+            <Col id="comCdNm">결의반려취소</Col>
+            <Col id="procCd">C</Col>
+            <Col id="comCd">42</Col>
+          </Row>
+          <Row>
+            <Col id="comCd">61</Col>
+            <Col id="comCdNm"/>
+            <Col id="procCd"/>
+          </Row>
+          <Row>
+            <Col id="comCd">62</Col>
+            <Col id="comCdNm">회계전자결재신청</Col>
+            <Col id="procCd">E</Col>
+          </Row>
+          <Row>
+            <Col id="comCd">62</Col>
+            <Col id="comCdNm">결의접수취소</Col>
+            <Col id="procCd">C</Col>
+          </Row>
+          <Row>
+            <Col id="comCd">63</Col>
+            <Col id="comCdNm"/>
+            <Col id="procCd"/>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_cmb_sta_cd_grd"/>
+      <Dataset id="ds_cmb_vou_org_id"/>
+      <Dataset id="ds_main" onrowposchanged="ds_main_onrowposchanged"/>
+      <Dataset id="ds_result"/>
+      <Dataset id="ds_dummy"/>
+    </Objects>
+    <Bind>
+      <BindItem id="item0" compid="txt_rsn" propid="value" datasetid="ds_main" columnid="cfmRsn"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[// [프로젝트]	동의대학교 예산회계시스템 구축
+// [시스템명]	행정
+// [부시스템]	회계관리
+// [프로그램]	기안관리 > 결의서접수 >  전표관리팝업
+// [설명] 
+//	         
+// [작성자명]	라 병 수
+// [작성일자]	2016-06-02
+//////////////////////////////////[수정이력]//////////////////////////////////
+// [수정일자] 
+// [수 정 자] 
+// [수정내용] 
+
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+
+var F_ACNT_YY = this.parent.ACNT_YY;			//회계년도
+var F_ACNT_UNT = this.parent.ACNT_UNT;			//회계단위
+var F_VOU_NO = this.parent.VOU_NO;				//결의번호
+var F_SLIP_NO = this.parent.SLIP_NO;			//전표번호
+var F_VOU_ORG_ID = this.parent.VOU_ORG_ID;		//결의부서
+var F_STA_CD = this.parent.STA_CD;				//진행상태	
+var F_APLY_USER_ID = this.parent.APLY_USER_ID;	//신청자
+var F_APLY_DT = this.parent.APLY_DT;			//신청일자	
+var F_VOU_TTL = this.parent.VOU_TTL;			//신청일자
+var sMemberNo = application.gds_user.getColumn(application.gds_user.rowposition, "memberNo");	//사용자ID
+var sNm = application.gds_user.getColumn(application.gds_user.rowposition, "nm");				//사용자명
+var sIpAddr = application.gds_user.getColumn(application.gds_user.rowposition, "ipAddr");		//사용자IP
+this.ac02020_purc_p01_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	//회계년도Combo
+	this.cfn_acntYy("ds_cmd_acnt_yy");
+	
+	//회계단위Combo
+	this.cfn_acntUntCombo("ds_acntUntCmb", "", "", "", "0", "ac02010");
+		
+	//결의부서Grid
+	this.gfn_findDeptCombo("ds_cmb_vou_org_id");
+	
+	this.fn_postLoad();
+}
+
+//온로드 후처리
+this.fn_postLoad = function()
+{
+	this.div_search.S_ACNT_YY.set_value(F_ACNT_YY);			//회계년도
+	this.div_search.S_ACNT_UNT.set_value(F_ACNT_UNT);			//회계단위
+	this.div_search.S_VOU_NO.set_value(F_VOU_NO);				//결의번호
+	this.div_search.S_VOU_ORG_ID.set_value(F_VOU_ORG_ID);		//결의부서
+	//this.div_search.S_STA_CD.set_value(F_STA_CD);				//진행상태
+	
+	this.gfn_bindCmmnFunction();
+
+	//자동조회
+	this.fn_Search();
+}
+
+this.div_search_S_ACNT_YY_onspin = function(obj:Spin, e:nexacro.SpinEventInfo)
+{
+	//회계단위Combo
+	this.cfn_acntUntCombo("ds_acntUntCmb", this.div_search.S_ACNT_YY.value, "", "", "0", "ac02010");
+}
+
+//조회 전 처리 함수
+this.fn_preSearch = function()
+{
+	if(this.gfn_isNull(this.div_search.S_ACNT_YY.value) || this.gfn_nvl(new String(this.div_search.S_ACNT_YY.value).length, 0) != 4) {
+		this.gfn_message("A", "회계연도가 없습니다.\n관리자에게 문의 바랍니다.");
+		return false;
+	}
+	
+	return true;
+}
+
+//조회 액션
+this.fn_Search = function()
+{	
+	if(this.fn_preSearch()) {
+		var strArg  = "acntYy=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(F_ACNT_YY));
+			strArg += " acntUnt=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(F_ACNT_UNT));	  
+			strArg += " vouNo=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(F_VOU_NO));
+			//strArg += " staCd=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.S_STA_CD.value));
+		  		
+		this.gfn_transaction("SEARCH",
+							 "txComUrl::com/admi/ac02/selectAc02020_purc_p01_1.do",
+							 "",
+							 "ds_main=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+
+
+//조회 후 처리
+this.fn_postSearch = function()
+{
+}
+
+/*____________________________________________________________________________________________________________
+	
+	서버 통신 후 callBack
+______________________________________________________________________________________________________________*/
+
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0)
+	{
+		this.gfn_message("A", errMsg);
+ 	}
+ 	else
+ 	{
+		if(trId=="LOAD")
+		{
+			this.fn_postLoad();
+ 		}
+ 		else if(trId == "SEARCH")
+ 		{
+ 			this.fn_postSearch();
+ 		}
+		else if(trId == "ACNTUNTCOMBO")
+		{
+			this.div_search.S_ACNT_UNT.set_index(0);
+		}
+		else if(trId == "SAVE")
+ 		{
+			this.fn_postSave();
+		}
+ 	}
+}
+
+
+this.btn_close_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.close();
+}
+
+this.btn_confirm_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if( this.gfn_isNull(this.txt_rsn.value) ) {
+		this.gfn_message("A", "확정사유를 입력하세요.");
+		this.txt_rsn.setFocus();
+		return;
+	}
+
+	if(this.gfn_message("C", "현재 확정된 전표를 기준으로 예산 확정액이 변경되며\n\n기안문이 확정 처리됩니다. 계속하시겠습니까?")) {	
+		this.gfn_transaction("SAVE",
+							 "txComUrl::com/admi/ac02/saveCfmAc02020.do",
+							 "resultList=ds_main",
+							 "ds_result=resultList",
+							 "",
+							 "fn_callBack");	
+	}
+}
+
+this.fn_postSave = function()
+{
+	var OUT_CNT = "";
+	var OUT_MSG = "";
+
+	OUT_CNT = this.ds_result.getColumn(0, "OUT_CNT");
+	OUT_MSG = this.ds_result.getColumn(0, "OUT_MSG");
+	
+	if(OUT_CNT == 0)
+	{
+		this.gfn_message("A", "확정 처리가 완료되었습니다.");
+ 		this.close("1");
+	}
+	else
+	{
+		this.gfn_message("A", OUT_MSG);
+	}
+}
+]]></Script>
+  </Form>
+</FDL>

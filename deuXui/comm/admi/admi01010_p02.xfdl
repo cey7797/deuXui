@@ -1,0 +1,382 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="admi01010_p02" classname="Component_Guide" inheritanceid="" position="absolute" scrollbars="none" left="0" top="0" width="790" height="522" titletext="계정코드조회팝업" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Grid id="grd_bgAcntCdPopList" taborder="14" binddataset="ds_bgAcntCdPopList" useinputpanel="false" autofittype="col" nodatatext="No Data" treeinitstatus="expand,all" left="15" top="99" width="760" height="363" oncelldblclick="grd_bgAcntCdPopList_oncelldblclick" formatid="10">
+          <Formats>
+            <Format id="10">
+              <Columns>
+                <Column size="30" band="left"/>
+                <Column size="100"/>
+                <Column size="630"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="계정코드"/>
+                <Cell col="2" text="계정명(장)"/>
+              </Band>
+              <Band id="body">
+                <Cell text="expr:currow+1"/>
+                <Cell col="1" style="align:center;" text="bind:acntCd"/>
+                <Cell col="2" displaytype="normal" style="align:left;" text="bind:jangNm"/>
+              </Band>
+            </Format>
+            <Format id="20">
+              <Columns>
+                <Column size="30"/>
+                <Column size="100"/>
+                <Column size="315"/>
+                <Column size="315"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="계정코드"/>
+                <Cell col="2" text="장명"/>
+                <Cell col="3" text="계정명(관)"/>
+              </Band>
+              <Band id="body">
+                <Cell text="expr:currow + 1"/>
+                <Cell col="1" text="bind:acntCd"/>
+                <Cell col="2" style="align:left;" text="bind:jangNm"/>
+                <Cell col="3" style="align:left;" text="bind:gwanNm"/>
+              </Band>
+            </Format>
+            <Format id="30">
+              <Columns>
+                <Column size="30"/>
+                <Column size="100"/>
+                <Column size="315"/>
+                <Column size="315"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="계정코드"/>
+                <Cell col="2" text="관명"/>
+                <Cell col="3" text="계정명(항)"/>
+              </Band>
+              <Band id="body">
+                <Cell text="expr:currow + 1"/>
+                <Cell col="1" text="bind:acntCd"/>
+                <Cell col="2" style="align:left;" text="bind:gwanNm"/>
+                <Cell col="3" style="align:left;" text="bind:hangNm"/>
+              </Band>
+            </Format>
+            <Format id="40">
+              <Columns>
+                <Column size="30"/>
+                <Column size="100"/>
+                <Column size="210"/>
+                <Column size="210"/>
+                <Column size="210"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="계정코드"/>
+                <Cell col="2" text="관명"/>
+                <Cell col="3" text="항명"/>
+                <Cell col="4" text="계정명(목)"/>
+              </Band>
+              <Band id="body">
+                <Cell text="expr:currow + 1"/>
+                <Cell col="1" text="bind:acntCd"/>
+                <Cell col="2" style="align:left;" text="bind:gwanNm"/>
+                <Cell col="3" style="align:left;" text="bind:hangNm"/>
+                <Cell col="4" style="align:left;" text="bind:mokNm"/>
+              </Band>
+            </Format>
+            <Format id="50">
+              <Columns>
+                <Column size="30"/>
+                <Column size="100"/>
+                <Column size="157"/>
+                <Column size="157"/>
+                <Column size="157"/>
+                <Column size="157"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="계정코드"/>
+                <Cell col="2" text="관명"/>
+                <Cell col="3" text="항명"/>
+                <Cell col="4" text="목명"/>
+                <Cell col="5" text="계정명(세목)"/>
+              </Band>
+              <Band id="body">
+                <Cell text="expr:currow + 1"/>
+                <Cell col="1" text="bind:acntCd"/>
+                <Cell col="2" style="align:left;" text="bind:gwanNm"/>
+                <Cell col="3" style="align:left;" text="bind:hangNm"/>
+                <Cell col="4" style="align:left;" text="bind:mokNm"/>
+                <Cell col="5" style="align:left;" text="bind:semokNm"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Div id="div_search" taborder="15" left="15" top="45" width="760" height="39" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static07" taborder="44" text="계정코드/명" cssclass="search" left="21" top="9" width="65" height="22"/>
+              <Edit id="edt_acntCdNm" taborder="45" left="13.16%" top="9" right="63.55%" height="22" onkeydown="div_search_edt_acntCdNm_onkeydown" imemode="hangul" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static33" taborder="46" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="1" top="0" width="20" height="39"/>
+              <Static id="Static14" taborder="47" text="W10" cssclass="tipGuide" visible="false" left="86" top="1" width="13" height="37"/>
+              <Static id="Static12" taborder="48" text="H9" cssclass="tipGuide" visible="false" left="174" top="0" width="29" height="9"/>
+              <Static id="Static11" taborder="49" text="H9" cssclass="tipGuide" visible="false" left="174" top="30" width="29" height="9"/>
+              <Static id="Static13" taborder="50" text="W20" cssclass="tipGuide" visible="false" left="278" top="1" width="19" height="37"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static00" taborder="17" text="계정코드조회팝업" cssclass="sta_WF_Title" left="15" top="9" width="170" height="29"/>
+        <Static id="Static34" taborder="18" text="h45" cssclass="tipGuide" visible="false" left="198" top="0" width="74" height="45"/>
+        <Static id="Static02" taborder="19" text="w15" cssclass="tipGuide" visible="false" left="0" top="6" width="15" height="503"/>
+        <Static id="Static06" taborder="20" text="w15" cssclass="tipGuide" visible="false" left="775" top="6" width="15" height="503"/>
+        <Static id="Static21" taborder="21" text="h15" cssclass="tipGuide" visible="false" left="119" top="84" right="329" height="15"/>
+        <Static id="bg" taborder="22" cssclass="sta_POP_bottomBg" left="15" top="477" width="760" height="41" positionstep="-1"/>
+        <Button id="btn_close" taborder="23" text="닫기" onclick="btn_close_onclick" cssclass="btn_POP_Common" left="715" top="487" width="60" height="21"/>
+        <Static id="Static03" taborder="24" text="h10" cssclass="tipGuide" visible="false" left="741" top="0" width="34" height="10"/>
+        <Button id="btn_search" taborder="25" text="조회" onclick="btn_search_onclick" cssclass="btn_WF_commonSearch" top="10" right="15" width="60" height="25"/>
+        <Static id="Static04" taborder="26" text="h10" cssclass="tipGuide" visible="false" left="741" top="35" width="34" height="10"/>
+        <Static id="Static05" taborder="27" text="h15" cssclass="tipGuide" visible="false" right="15" bottom="45" width="760" height="15"/>
+        <Static id="Static28" taborder="28" text="10" cssclass="tipGuide" visible="false" right="15" bottom="35" width="136" height="10"/>
+        <Static id="Static01" taborder="29" text="10" cssclass="tipGuide" visible="false" right="15" bottom="4" width="136" height="10"/>
+        <Static id="Static22" taborder="30" text="h17" cssclass="tipGuide" visible="false" left="36" top="0" width="74" height="17"/>
+        <Static id="Static23" taborder="31" text="h14" cssclass="tipGuide" visible="false" left="36" top="31" width="74" height="14"/>
+        <Button id="btn_confirm" taborder="32" text="확인" onclick="btn_confirm_onclick" cssclass="btn_POP_Common" left="650" top="487" width="60" height="21"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_bgAcntCdPopList" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+      <Dataset id="ds_dummy" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" onrowposchanged="ds_account_onrowposchanged"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[/* ====================================================================
+ * 01. 업무구분	: 행정공통
+ * 02. 화면명		: admi01010_p02.xfdl
+ * 03. 화면설명	: 계정코드조회 화면이다.
+ * 04. 작성일		: 2015.12.01
+ * 05. 작성자		: 김현수
+ * 06. 수정이력	: 2016.02.26 박태희
+                      1. 용도구분 param 추가 (BG005:현금성자산, 감가상각대상...)
+ * ====================================================================
+ *     수정일     수정자   내용
+ * ====================================================================
+ *
+ * ==================================================================== */
+ 
+/* ====================================================================
+ * 1. 공통 라이브러리
+ * ==================================================================== */
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+/* ====================================================================
+ * 2. 변수 선언부
+ * ==================================================================== */
+var acntYy;		//회계년도
+var acntUnt;	//회계단위
+var acntLvl;	//계정레벨
+var acntNm;		//계정명
+var balDiv;		//수지구분
+var usageCd;	//용도구분
+var autoClose;  //자동종료옵션
+var autoSearch; //자동조회옵션
+var upAcntCd;	//상위계정
+
+/* ====================================================================
+ * 3. Event 처리 부분
+ * ==================================================================== */
+
+/******************************************************************************
+* 함 수 명 	: admi01010_p03_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.fn_postLoad();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{
+	this.acntYy  = this.parent.acntYy;						//회계년도
+	this.acntUnt = this.parent.acntUnt;						//회계단위
+	this.acntLvl = this.gfn_nvl(this.parent.acntLvl,'');			//계정레벨
+	this.acntNm  = this.gfn_nvl(this.parent.acntNm ,'');			//계정명
+	this.balDiv  = this.gfn_nvl(this.parent.balDiv ,'');			//수지구분
+	this.usageCd  = this.gfn_nvl(this.parent.usageCd ,'');			//용도구분
+	this.autoClose = this.gfn_nvl(this.parent.autoClose,false);		//자동종료옵션
+	this.autoSearch = this.gfn_nvl(this.parent.autoSearch,false);	//자동조회옵션
+	this.upAcntCd = this.gfn_nvl(this.parent.upAcntCd ,'');	
+
+	if(this.gfn_isNull(this.acntYy)) {
+		this.alert("회계연도가 없습니다.");
+		this.close();
+		return false;
+	}
+	if(this.gfn_isNull(this.acntUnt)) {
+		this.alert("회계단위가 없습니다.");
+		this.close();
+		return false;
+	}
+	if(this.gfn_isNull(this.acntLvl) || this.acntLvl < "10") {
+		this.acntLvl = "50";
+	}
+	
+	this.grd_bgAcntCdPopList.set_formatid(this.acntLvl);
+	this.div_search.edt_acntCdNm.set_value(this.acntNm);
+	
+	if(this.autoSearch) {
+		this.fn_search();
+	} else {
+		this.div_search.edt_acntCdNm.setFocus();
+	}
+	
+	this.div_search.edt_acntCdNm.setFocus();
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_confirm_onclick
+ * 함수설명 	: 확인
+ *********************************************************************/
+this.btn_confirm_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_confirm();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_confirm
+ * 함수설명 	: 부모로 리턴
+ *********************************************************************/
+this.fn_confirm = function()
+{
+	this.ds_dummy.copyData(this.ds_bgAcntCdPopList);
+	this.ds_dummy.clearData();
+	
+	var addRow = this.ds_dummy.addRow();
+	this.ds_dummy.copyRow(addRow, this.ds_bgAcntCdPopList, this.ds_bgAcntCdPopList.rowposition);
+	this.close(this.ds_dummy.saveXML());
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_close_onclick
+ * 함수설명 	: 화면 종료
+ *********************************************************************/
+this.btn_close_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.close("close");
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_search_onclick
+ * 함수설명 	: 조회 버튼 클릭 함수
+********************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preSearch
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preSearch = function()
+{
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_search = function()
+{
+	if(this.fn_preSearch()){
+		var strArg   = "acntYy="   + nexacro.wrapQuote(this.acntYy);	//회계년도
+			strArg  += " acntUnt=" + nexacro.wrapQuote(this.acntUnt);	//회계단위
+			strArg  += " acntLvl=" + nexacro.wrapQuote(this.acntLvl);	//계정레벨
+			strArg  += " acntNm="  + nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_acntCdNm.value,''));	//계정코드/명
+			strArg  += " balDiv="  + nexacro.wrapQuote(this.balDiv);	//수지구분
+			strArg  += " usageCd="  + nexacro.wrapQuote(this.usageCd);	//용도구분
+			strArg  += " upAcntCd="  + nexacro.wrapQuote(this.upAcntCd);
+			
+		this.gfn_transaction("SEARCH",
+							 "txAdmUrl::com/admi/adcom/selectBgAcntCdPopList.do",
+							 "",
+							 "ds_bgAcntCdPopList=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postSearch
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearch = function()
+{	
+	if(this.autoClose && this.ds_bgAcntCdPopList.rowcount == 1){
+		this.fn_confirm();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: grd_bgAcntCdPopList_oncelldblclick
+ * 함수설명 	: 그리드 더블클릭
+ *********************************************************************/
+this.grd_bgAcntCdPopList_oncelldblclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	this.fn_confirm();
+}
+
+/*********************************************************************
+ * 함 수 명 	: div_search_edt_acntCdNm_onkeydown
+ * 함수설명 	: 엔터키
+ *********************************************************************/
+this.div_search_edt_acntCdNm_onkeydown = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	if(e.keycode == "13") {
+		this.fn_search();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		} else if(trId=="SEARCH"){
+			this.fn_postSearch();
+		}
+	}
+}]]></Script>
+  </Form>
+</FDL>

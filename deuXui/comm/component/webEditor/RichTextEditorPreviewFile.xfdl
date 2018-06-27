@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="RichTextEditorPreviewSample" classname="RichTextEditorPreviewSample" left="0" top="0" width="800" height="600" titletext="미리보기(파일첨부)" onload="RichTextEditorPreviewSample_onload">
+    <Layouts>
+      <Layout>
+        <WebBrowser id="web_preview" left="5" top="8" width="790" height="411" taborder="0" style="border:1px solid gray ;" onloadcompleted="web_preview_onloadcompleted" onusernotify="web_preview_onusernotify"/>
+        <Button id="Button00" taborder="1" text="닫기" left="731" top="571" width="64" height="26" onclick="Button00_onclick"/>
+        <Div id="div_files" taborder="2" left="5" top="418" right="5" height="151" style="background:#f4f8fcff;border:1 solid #a4bed4ff ;bordertype:round 5 5 ;">
+          <Layouts>
+            <Layout>
+              <Grid id="grd_files" taborder="4" binddataset="ds_files" useinputpanel="false" autofittype="col" oncellclick="grd_files_oncellclick" left="4" top="38" right="4" height="107" style="border:1 solid #a4bed4ff ;bordertype:round 5 5 ;">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="35" band="left"/>
+                      <Column size="596"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="35"/>
+                    </Rows>
+                    <Band id="body" style="selectbackground:#ffffffff;selectfont:antialias 9 Verdana;selectcolor:#46586eff;cellline: ;cellfont:antialias 9 Verdana;cellpadding:3 5 3 5;cellbackground:#ffffffff;cellbackground2:#ffffffff;cellcolor2:#46586eff;">
+                      <Cell displaytype="image" style="cursor: ;" text="bind:fileimg"/>
+                      <Cell col="1" displaytype="normal" style="align:left middle;cursor:EXPR(dataset.getRowType(currow)== Dataset.ROWTYPE_INSERT ? &quot;default&quot; : &quot;hand&quot;);" text="bind:filename"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+              <Static id="st_fileMessage" taborder="7" left="10" top="9" width="552" height="20"/>
+            </Layout>
+          </Layouts>
+        </Div>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_files" firefirstcount="0" firenextcount="0" reversesubsum="false" enableevent="true">
+        <ColumnInfo>
+          <Column id="fileid" type="STRING" size="256"/>
+          <Column id="fileimg" type="STRING" size="256"/>
+          <Column id="filename" type="STRING" size="256"/>
+          <Column id="filetype" type="STRING" size="256"/>
+          <Column id="filesize" type="INT" size="256"/>
+          <Column id="tranfilesize" type="INT" size="256"/>
+          <Column id="prog" type="INT" size="256"/>
+          <Column id="rmimg" type="STRING" size="256"/>
+          <Column id="status" type="STRING" size="256"/>
+          <Column id="filekey" type="STRING" size="256"/>
+          <Column id="downcnt" type="STRING" size="256"/>
+          <Column id="savefilename" type="STRING" size="256"/>
+          <Column id="fileMasterNo" type="STRING" size="256"/>
+          <Column id="fileSeq" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_file_info" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[include "commJs::commonUtils.xjs";
+
+this.previewUrl = application.gv_svrUrl+"webEditor/preview.html";
+
+this.RichTextEditorPreviewSample_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.web_preview.set_url(this.previewUrl);
+	
+	//확장자별 파일아이콘 설정.
+	this.initExtToIcon();
+	
+	var name = Eco.getUniqueId("extDownload_");
+	var extDown = new nexacro.ExtFileDownload(name, this);
+	this.addChild(extDown.name, extDown);
+	this.extDown = extDown;
+	
+	// == Event 설정 ==
+    //통신 성공시에 발생하는 이벤트입니다
+    extDown.addEventHandler("onsuccess", this.extDownload_onsuccess, this);
+    
+    //통신 오류 시 발생하는 이벤트입니다.
+	extDown.addEventHandler("onerror", this.extDownload_onerror, this);
+	
+	//HTML5 Only : XMLHttpRequest가 데이터를 보내거나 받는 동안 서버에서 정의된 간격으로 발생합니다.
+	extDown.addEventHandler("onprogress", this.extDownload_onprogress, this);
+	
+	extDown.show();
+	
+	//첨부된 파일을 조회한다.
+	if(!this.gfn_isNull(this.getOwnerFrame().fileMasterNo)){
+		this.fn_searchFile();
+	}
+}
+
+this.web_preview_onloadcompleted = function(obj:WebBrowser, e:nexacro.WebLoadCompEventInfo)
+{
+	if ( e.url == this.previewUrl )
+	{
+		var content = this.getOwnerFrame().content;
+		var fileMasterNo = this.getOwnerFrame().fileMasterNo;
+		
+		obj.callMethod("setContent", this.getOwnerFrame().content);
+	}
+}
+
+this.web_preview_onusernotify = function(obj:WebBrowser, e:nexacro.WebTitleChangeEventInfo)
+{
+	if ( e.userdata == "loadContent" )
+	{
+		var w = obj.getProperty("document").getProperty("body").getProperty("offsetWidth");		
+		var h = obj.getProperty("document").getProperty("body").getProperty("offsetHeight");
+		
+		if ( w > this.web_preview.getOffsetWidth() || h > this.web_preview.getOffsetHeight() )
+		{
+			//this.web_preview.resize(w, h);
+			//this.resetScroll();
+		}
+	}
+}
+
+this.Button00_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	//system.print(this.web_preview, false, "top");
+	this.close();
+}
+
+this.fn_searchFile = function()
+{
+	var strArg = "strFileMasterNo=" + nexacro.wrapQuote(fileMasterNo);		// 파일마스터번호
+
+	this.gfn_transaction("FILE",
+						 "txComUrl::com/comm/selectFile.do",
+						 "",
+						 "ds_file_info=resultList",
+						 strArg,
+						 "fn_callBack");
+}
+
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId == "FILE"){
+			this.fn_postSearchFile();
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSearchFile
+ * 함수설명 	: file 조회 후 함수.
+ *********************************************************************/
+this.fn_postSearchFile = function()
+{
+	var ds = this.ds_file_info;
+	var fileName, saveFileName, fileSize, row;
+	for (var i=0,cnt=ds.rowcount; i<cnt; i++)
+	{
+		fileName = ds.getColumn(i, "fileNm");
+		fileUrl  = ds.getColumn(i, "fileUrl");
+		fileSeq  = ds.getColumn(i, "fileSeq");
+		saveFileName = fileUrl.substring(fileUrl.indexOf(fileName.substring(0, fileName.indexOf("."))));
+
+		var downImage = this.getFileIcon(fileName); 
+		fileSize = ds.getColumn(i, "fileSize");
+		fileMasterNo = ds.getColumn(i, "fileMasterNo");
+		
+		var addRow = this.ds_files.addRow();
+		this.ds_files.setColumn(addRow, "filesize", fileSize);
+		this.ds_files.setColumn(addRow, "savefilename", saveFileName);
+		this.ds_files.setColumn(addRow, "fileMasterNo", fileMasterNo);
+		this.ds_files.setColumn(addRow, "fileSeq", fileSeq);
+		this.ds_files.setColumn(addRow, "filename", fileName);
+		this.ds_files.setColumn(addRow, "fileimg", downImage);
+		this.ds_files.setColumn(addRow, "fileid", Eco.getUniqueId("file_"));
+		this.ds_files.setColumn(addRow, "filetype", "unknown");
+		this.ds_files.setColumn(addRow, "prog", 0);
+		this.ds_files.setColumn(addRow, "rmimg", this.fileConfig.delImage);
+	}
+	
+	this.ds_files.applyChange();
+}
+
+//확장자별 아이콘 정보	 
+this.extToIcon = {};
+
+/**
+ * 파일 확장자에 이미지 정보를 구성한다.
+*/
+this.initExtToIcon = function()
+{
+	var extToIcon = this.extToIcon;
+	var iconInfo = this.iconInfo;
+
+	for (var name in iconInfo) {
+		var len = iconInfo[name].length;
+		for (var i=0; i<len; i++) 
+		{
+			extToIcon[iconInfo[name][i]] = name;
+		}
+	}
+}
+
+/**
+ * 파일 확장자에 해당하는 이미지경로 반환.
+ * @param {string} fileName file name
+ * @return {string} image full path
+*/
+this.getFileIcon = function(fileName)
+{
+	if(Eco.isEmpty(fileName)) return;
+	
+	fileName = fileName.toLowerCase();
+	var ext = (/[.]/.exec(fileName)) ? /[^.]+$/.exec(fileName) : undefined;
+	var icon = this.extToIcon[ext];
+	
+	if(icon == undefined) ext = "etc";
+
+	return "Images::" + this.extToIcon[ext] + ".png";
+}
+
+/**
+ * file명과 size를 반환한다.
+ * @param {number} rowIndex Dataset current row
+ * @return {string} file + size
+*/
+this.getFileNameWithSize = function(ds, rowIndex)
+{
+	var fileName = ds.getColumn(rowIndex, "filename");
+	if(Eco.isEmpty(fileName)) return "";
+	
+	var fileSize = ds.getColumn(rowIndex, "filesize");
+	
+	if ( Eco.isEmpty(fileSize) || isNaN(fileSize) )
+	{
+		return fileName;
+	}
+
+	var displayFileSize = this.bytesToSize(fileSize);
+	return fileName + " (" + displayFileSize + ")";
+}
+
+this.fileConfig = {
+		host : application.gv_svrUrl+"webEditor",
+		uploadUrl    : "/jsp/saveFile.jsp?path=webEditor/repository",
+		downloadUrl  : "/jsp/downloadFile.jsp?path=webEditor/repository",
+		deleteUrl    : "/jsp/deleteFile.jsp?path=webEditor/repository",
+		fileMasterNo : "?FileMasterNo=",
+		fileSeq      : "&FileSeq=",
+		downImage    : "Images::img_file.png",
+		delImage     : "Images::btn_del.png",
+		allowTypes   : ["jpg","jpeg","gif","png","bmp","txt","zip","7z","gzip","doc","docx","ppt","pptx","xls","xlsx","pdf"],
+		maxCount     : 5,
+		maxSize      : "20MB",
+		maxTotalSize : "100MB",
+	};
+
+//아이콘별 확장자 목록.
+this.iconInfo = {
+		file_icon_ZIP: ["zip","rar","7z"],
+		file_icon_IMG: ["jpg", "jpeg", "gif", "png", "bmp"],
+		file_icon_TXT: ["txt", "xml"],
+		file_icon_DOC: ["doc", "docx"],
+		file_icon_XLS: ["xls", "xlsx"],
+		file_icon_PPT: ["ppt", "pptx"],
+		file_icon_PDF: ["pdf"],
+		file_icon_ETC: ["etc"] //위 확장자 목록에 일치하지 않을 경우. default icon
+	};
+	
+//XHR2 진행처리용
+this.tranFiles = {
+	added : [],				// 업로드 파일 정보
+	downloaded : [],		// 다운로드 파일 정보
+	transferFileSize : 0,	// 현재까지 전송된 파일 크기
+	transferFileIndex : 0,	// 현재 전송중인 파일 인덱스
+	preFileSizeSum : 0		// 현재까지 전송된 파일크기 합계
+};	
+	
+// Grid cell click
+this.grd_files_oncellclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	if ( e.cell == 1 )
+	{
+		// 파일 다운로드
+		this.downloadFile(e.row);
+	}
+}
+
+/**
+ * 파일 다운로드 함수
+ * @param {number} row 다운로드 대상 row
+ */
+this.downloadFile = function(row)
+{
+	if ( this.ds_files.getRowType(row) == Dataset.ROWTYPE_INSERT ) return;
+	
+	if (Eco.isEmpty(row) || row < 0)
+	{
+		return;
+	}
+		
+	var	fileId,
+		fileName,
+		fileSize = 0,
+		fileInfo,
+		downloadUrl;
+		
+	var tranFiles = this.tranFiles;
+	tranFiles.downloaded = [];
+	
+	//progressbar 초기화
+	this.ds_files.setColumn(row, "prog", 0);
+	
+	fileId = this.ds_files.getColumn(row, "fileid");
+	fileName = this.ds_files.getColumn(row, "filename");
+	fileSize = this.ds_files.getColumn(row, "filesize");
+	saveFileName = this.ds_files.getColumn(row, "savefilename");
+	fileInfo = {"id": fileId, "name": fileName, "size": fileSize, "row": row};
+	
+	tranFiles.downloaded.push(fileInfo);
+		
+	var downloadUrl = this.fileConfig.host + this.fileConfig.downloadUrl;
+	downloadUrl += "&fileName=" + encodeURIComponent(fileName) + "&saveFileName=" + encodeURIComponent(saveFileName);
+	
+	//download file
+	//@param {=string} url 다운로드 fullPath url
+	//@param {string} filename 파일저장시 적용할 file name.(지원가능한 브라우저만 적용됨. 런타임 미지원)
+	//@return {boolean} 다운로드 성공여부
+	this.extDown.download(downloadUrl, fileName);		
+}
+
+/**
+ *   다운로드 성공시에 발생하는 이벤트입니다
+ */
+this.extDownload_onsuccess = function(obj, e)
+{
+	this.tranFiles.downloaded = [];
+
+	if( !Eco.isEmpty(e.url) )
+	{
+		//alert("Successfully downloaded.");
+	}
+	else
+	{
+		//alert("다운로드 실패");
+	}
+}
+
+/**
+ * [HTML5 Only] XMLHttpRequest가 데이터를 보내거나 받는 동안 서버에서 정의된 간격으로 발생합니다.
+ * file upload & download 진행시 progress bar 처리용
+ * @param {ExtFileUpload} obj ExtFileUpload
+ * @param {ExtFileProgress} e ExtFileProgress
+ */
+this.extDownload_onprogress = function(obj,e)
+{
+	if ( e.lengthComputable )
+	{
+		var status,									 // 파일 전송 진행율
+			currentFileSize,						 // 파일 크기
+			transferCurrentFileSize,				 // 파일 전송 사이즈
+			downFiles = this.tranFiles.downloaded,	 // 다운로드 대상 파일 목록
+			currentRow = -1;
+			
+		status = Math.floor((e.loaded / e.total) * 100);
+		
+		currentFileSize = downFiles[0].size;
+		currentRow = downFiles[0].row;
+		
+		transferCurrentFileSize = Math.floor(currentFileSize * (status / 100));
+		
+		this.ds_files.setColumn(currentRow, "prog", status);
+		this.ds_files.setColumn(currentRow, "filesize", currentFileSize);
+		this.ds_files.setColumn(currentRow, "tranfilesize", transferCurrentFileSize);
+	}
+}
+
+/**
+ *   통신 오류 시 발생하는 이벤트입니다
+ */
+this.extDownload_onerror = function(obj, e)
+{
+	// 런타임에서 e.errortype; <-- 원하는 type이 아닌 error object 가 전송됨.	
+	alert("에러발생 \extDownload_onerror index=" + e.index  + ", errortype=" + e.errortype   + "\n, statuscode=" + e.statuscode + ", requesturi=" + e.requesturi);
+	
+	this.tranFiles.downloaded = [];
+}]]></Script>
+  </Form>
+</FDL>

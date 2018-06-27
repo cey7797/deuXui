@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/jdbc  http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd http://www.springframework.org/schema/jee" >
+	
+	<!-- Oracle -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="net.sf.log4jdbc.DriverSpy"/>
+        <property name="url" value="jdbc:log4jdbc:oracle:thin:@113.198.254.248:1521:orcl" />
+        <property name="username" value="ADMI"/>
+        <property name="password" value="ADMI"/>
+        <property name="initialSize" value="0"/>
+		<property name="maxActive" value="100"/>
+		<property name="maxIdle" value="30" />
+		<property name="minIdle" value="5"/>
+		<property name="maxWait" value="60" />
+		<property name="removeAbandoned" value="true"/>
+ 		<property name="removeAbandonedTimeout" value="5"/>
+        <property name="poolPreparedStatements" value="true"/>
+	</bean>
+	    
+    <!-- SMS -->
+    <bean id="dataSourceMssqlSms" class="org.apache.commons.dbcp.BasicDataSource"> 
+      <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+      <property name="url" value="jdbc:sqlserver://113.198.254.197:1433;DatabaseName=PPurioDB"/>
+      <property name="username" value="smsadmin"/> 
+      <property name="password" value="smsadmin"/> 
+	</bean>
+    
+    <!-- MSSQL -->
+    <bean id="dataSourceMssql" class="org.apache.commons.dbcp.BasicDataSource"> 
+      <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+      <property name="url" value="jdbc:sqlserver://175.126.232.53:1433;DatabaseName=ADMI"/>
+      <property name="username" value="sa"/> 
+      <property name="password" value="doul6310"/> 
+      <property name="initialSize" value="10"/>
+	  <property name="maxActive" value="30"/>
+	  <property name="maxIdle" value="20" />
+	  <property name="minIdle" value="5"/>
+	  <property name="maxWait" value="30" />
+	  <property name="removeAbandoned" value="true"/>
+	  <property name="removeAbandonedTimeout" value="5"/>
+      <property name="poolPreparedStatements" value="true"/>
+	</bean> 
+
+</beans>

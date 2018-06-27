@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="bg02020" classname="aac01001_001" left="0" top="0" width="1038" height="855" titletext="예산신청현황" onclose="abg01010_onclose" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Button id="btn_search" taborder="3" text="조회" cssclass="search" top="56" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R" onclick="btn_search_onclick"/>
+        <Static id="Static76" taborder="2" text="예산편선신청현황" cssclass="page_stitle" left="0" top="65" width="324" height="20"/>
+        <Grid id="grd_bgOrgBizList" taborder="1" binddataset="ds_bgOrgBizList" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="col" left="0" top="91" right="15" onexpanddown="sta_grdBgOrgBiz_onexpanddown" onkeyup="grd_bgOrgBizList_onkeyup" bottom="21">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="45" band="left"/>
+                <Column size="65"/>
+                <Column size="200"/>
+                <Column size="256"/>
+                <Column size="91"/>
+                <Column size="91"/>
+                <Column size="91"/>
+                <Column size="91"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="부서코드"/>
+                <Cell col="2" cssclass="req" text="부서명"/>
+                <Cell col="3" cssclass="req" text="사업명"/>
+                <Cell col="4" cssclass="req" text="회계단위"/>
+                <Cell col="5" cssclass="req" text="수지구분"/>
+                <Cell col="6" cssclass="req" text="예산신청액"/>
+                <Cell col="7" cssclass="req" text="신청상태"/>
+              </Band>
+              <Band id="body">
+                <Cell text="expr:currow+1"/>
+                <Cell col="1" style="color:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');color2:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');selectcolor:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');" text="bind:budgOrgId" suppress="1"/>
+                <Cell col="2" displaytype="normal" edittype="none" style="align:left;color:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');color2:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');selectcolor:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');" text="bind:budgOrgIdNm" editimemode="hangul" expandshow="hide" expandimage="URL('theme://images\ico_expand.png')" suppress="1"/>
+                <Cell col="3" displaytype="normal" edittype="none" style="align:left;color:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');color2:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');selectcolor:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');" text="bind:bizCdNm" editimemode="hangul" expandshow="hide" expandimage="URL('theme://images\ico_expand.png')" suppress="2" calendardisplay="edit" calendardisplaynulltype="none"/>
+                <Cell col="4" displaytype="normal" edittype="none" style="color:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');color2:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');selectcolor:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');" text="bind:acntUntNm" expandsize="13" suppress="3"/>
+                <Cell col="5" displaytype="normal" edittype="none" style="color:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');color2:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');selectcolor:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');" text="bind:balDivNm" expandsize="13"/>
+                <Cell col="6" displaytype="normal" edittype="none" style="align:right;color:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');color2:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');selectcolor:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');" text="bind:budgAmt" expandsize="13"/>
+                <Cell col="7" displaytype="normal" edittype="none" style="color:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');color2:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');selectcolor:EXPR(nexacro.toNumber(budgAmt) != 0 &amp;&amp; staCd == 10 ? 'red':'');" text="bind:staCdNm" expandsize="13"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static06" taborder="10" text="h5" visible="false" left="930" top="834" width="8.96%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static26" taborder="11" text="h5" visible="false" left="930" top="850" width="8.96%" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;" height="5"/>
+        <Static id="Static21" taborder="12" text="w&#13;&#10;15" visible="false" top="49" right="0" width="15" height="803" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Div id="div_search" taborder="0" left="0" top="0" right="15" height="41" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static00" taborder="8" text="회계연도" cssclass="search" left="20" top="10" width="48" height="22"/>
+              <Spin id="spn_acntYy" taborder="0" value="0" onspin="div_search_spn_acntYy_onspin" left="82" top="11" width="100" height="21"/>
+              <Static id="Static12" taborder="33" text="예산구분" cssclass="search" left="202" top="11" width="48" height="22"/>
+              <Combo id="cmb_budgCd" taborder="5" innerdataset="@ds_schBudgCd" codecolumn="comCd" datacolumn="comCdNm" left="264" top="11" width="124" height="21" class="essential"/>
+              <Static id="Static33" taborder="35" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="0" top="2" width="20" height="30"/>
+              <Static id="Static14" taborder="36" text="W10" cssclass="tipGuide" visible="false" left="68" top="2" width="14" height="30"/>
+              <Static id="Static13" taborder="37" text="H9" cssclass="tipGuide" visible="false" left="117" top="2" width="30" height="9"/>
+              <Static id="Static15" taborder="38" text="H9" cssclass="tipGuide" visible="false" left="117" top="56" width="30" height="9"/>
+              <Static id="Static16" taborder="39" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="182" top="0" width="20" height="30"/>
+              <Static id="Static06" taborder="40" text="W10" cssclass="tipGuide" visible="false" left="250" top="2" width="14" height="30"/>
+              <Static id="Static09" taborder="45" text="H5" cssclass="tipGuide" visible="false" left="108" top="30" width="38" height="5"/>
+              <Combo id="cmb_staCd" taborder="46" innerdataset="@ds_schStaCd" codecolumn="comCd" datacolumn="comCdNm" left="459" top="11" width="124" height="21" class="essential"/>
+              <Static id="Static01" taborder="47" text="신청상태" cssclass="search" left="397" top="11" width="48" height="22"/>
+              <CheckBox id="chk_zero" taborder="48" text="예산신청액 0인 사업 제외" left="609" top="10" height="20" truevalue="1" falsevalue="0" width="174"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="sta_grdBgOrgBizList" taborder="14" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" right="15" width="86" style="border:0 none #808080ff ;align:right middle;" height="13" bottom="3"/>
+        <Static id="Static11" taborder="15" text="H15" cssclass="tipGuide" visible="false" left="0" top="41" width="1023" height="15"/>
+        <Static id="Static02" taborder="16" text="H5" cssclass="tipGuide" visible="false" left="0" top="86" width="1023" height="5"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_schBizDivCd"/>
+      <Dataset id="ds_bgOrgBizList" useclientlayout="false"/>
+      <Dataset id="ds_schAcntUnt"/>
+      <Dataset id="ds_grdBizDivCd"/>
+      <Dataset id="ds_dummy"/>
+      <Dataset id="ds_schBalDiv"/>
+      <Dataset id="ds_schBudgCd"/>
+      <Dataset id="ds_acntYy" oncolumnchanged="ds_acntYy_oncolumnchanged"/>
+      <Dataset id="ds_schStaCd"/>
+    </Objects>
+    <Bind>
+      <BindItem id="item0" compid="div_search.spn_acntYy" propid="value" datasetid="ds_acntYy" columnid="acntYy"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[// [프로젝트]	동의대학교 예산회계시스템 구축
+// [시스템명]	행정
+// [부시스템]	예산관리
+// [프로그램]	예산편성 > 부서별사업등록
+// [설명] 
+//	         
+// [작성자명]유남규	
+// [작성일자]	2015/11/30
+//////////////////////////////////[수정이력]//////////////////////////////////
+// [수정일자] 박 태 희
+// [수 정 자] 2015-12-10
+// [수정내용] 1. 조회조건 부서 리턴 수정
+//			   2. 조회조건 부서 검색 수정
+//             3. fn_div_serach_popCallback 추가
+//             4. 조회 param 수정
+//			   5. 조회조건 부서정보가 존재하고 신규시 부서정보 자동세팅 추가
+//			   6. 조회조건 부서명 엔터 팝업 호출 수정
+//			   7. edt_budgOrgIdNm enableevent 수정
+//			   8. 그리드 사업코드 제외 처리
+//             10. 사업조회팝업 그리드 사업코드 제외 처리
+//			   11. 중복체크 추가
+
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+
+/******************************************************************************
+* 전역변수
+* 변수명
+******************************************************************************/ 
+var arrDsInit = Array(1);
+	arrDsInit[0]  = this.ds_bgOrgBizList;
+	
+/******************************************************************************
+* 함 수 명 	: form_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	var arrDataSet = Array(2);
+		arrDataSet[0]  = "ds_schBudgCd";			//예산구분
+		arrDataSet[1]  = "ds_schStaCd";  	    // 상태구분
+	
+	var arrGrpCd = Array(2);
+		arrGrpCd[0]  = "BG008";		
+		arrGrpCd[1]  = "BG011";		
+			
+	// 사용여부	지정할 아큐먼트를 넘긴다.
+	var arrUseYn =	Array(2);
+		arrUseYn[0]  =	"Y";
+		arrUseYn[1]  =	"Y";
+	
+	// T:전체,S:선택,X:없음 
+	var arrModeFg =	Array(2);
+		arrModeFg[0]  =	"X";
+		arrModeFg[1]  =	"T";
+	
+	// WHERE절 내용 "X":없음
+	var arrWhere =	Array(2);
+		arrWhere[0]  =	"X";//ABB_CD IN ('S','K')
+		arrWhere[1]  =	"X";//ABB_CD IN ('S','K')
+		
+	/* 메소드명     : ComboLoad
+	 * 설명         : 공통코드 테이블을 조회하여 콤보박스를 생성한다.
+	 * 메소드인수1  : DataSet명의 배열
+	 * 메소드인수2  : 그룹코드번호의 배열
+	 * 메소드인수3  : 캠퍼스구분 배열 ("T":전체, "C":공통만, "S":서울, "K":경주)
+	 * 메소드인수4  : 조건문의 배열 (1:사용, 0:사용안함)
+	 * 메소드인수5  : 전체공란 첨부여부 "T": 전체, "S":선택, "X" : 데이터시작
+	 * 메소드인수6  : WHERE절 내용 "X":없음
+	 */
+
+ 	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{
+	this.gfn_bindCmmnFunction();
+	this.cfn_acntYy("ds_acntYy");
+	this.div_search.cmb_budgCd.set_index(0);
+	this.div_search.cmb_staCd.set_index(0);
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_search_onclick
+ * 함수설명 	: 조회버튼 클릭이벤트
+********************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preSearch 
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preSearch = function()
+{
+	this.ds_bgOrgBizList.clearData();
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_search = function()
+{
+	if(this.fn_preSearch()){
+		var strArg  = "acntYy=" + nexacro.wrapQuote(this.div_search.spn_acntYy.value);	 //회계연도
+			strArg += " budgCd=" + nexacro.wrapQuote(this.div_search.cmb_budgCd.value);	//예산구분
+			strArg += " staCd=" + nexacro.wrapQuote(this.div_search.cmb_staCd.value);	//신청상태
+			strArg += " includeZeroYn=" + nexacro.wrapQuote(this.div_search.chk_zero.value);	// 신청액 0인사업 제외여부
+			
+		this.gfn_transaction("SEARCH",
+							 "txAdmUrl::com/admi/selectBgOrgBizSta.do",
+							 "",
+							 "ds_bgOrgBizList=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postSearch
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearch = function()
+{
+	this.gfn_getDatasetCount(this.ds_bgOrgBizList, this.sta_grdBgOrgBizList);
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.gfn_message("A", errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		} else if(trId == "SEARCH"){
+			this.fn_postSearch();
+		} 
+	}
+}
+
+]]></Script>
+  </Form>
+</FDL>

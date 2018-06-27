@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="UserInfo" classname="UserInfo" left="0" top="0" width="197" height="86">
+    <Layouts>
+      <Layout>
+        <Static id="Static03" taborder="8" cssclass="detail_bg" left="0" top="57" right="1688" height="30"/>
+        <Static id="Static20" taborder="2" cssclass="detail_bg" left="0" top="0" right="1688" height="30"/>
+        <Static id="Static13" taborder="0" text="최근접속시간" cssclass="detail_title" left="0" top="1" width="82" height="28"/>
+        <Static id="Static00" taborder="3" cssclass="detail_bg" left="0" top="28" right="1688" height="30"/>
+        <Static id="Static01" taborder="4" text="최근접속IP" cssclass="detail_title" left="0" top="29" width="82" height="28"/>
+        <Edit id="edt_lastIP" taborder="5" lengthunit="utf8" left="89" top="32" width="104" height="22" value="127.0.0.1" readonly="true" enable="false"/>
+        <Static id="Static02" taborder="6" text="현재IP" cssclass="detail_title" left="0" top="57" width="82" height="28"/>
+        <Edit id="edt_nowIP" taborder="7" lengthunit="utf8" left="89" top="60" width="104" height="22" value="127.0.0.1" readonly="true" enable="false"/>
+        <MaskEdit id="msk_lastTime" taborder="9" left="89" top="4" width="104" height="22" value="201507160900" type="string" mask="####-##-## ##:##" style="align:left middle;" readonly="true" enable="false"/>
+      </Layout>
+    </Layouts>
+    <Bind>
+      <BindItem id="item0" compid="edt_lastIP" propid="value" datasetid="gds_user" columnid="loginip"/>
+      <BindItem id="item1" compid="edt_nowIP" propid="value" datasetid="gds_user" columnid="ipAddr"/>
+      <BindItem id="item2" compid="msk_lastTime" propid="value" datasetid="gds_user" columnid="logintime"/>
+    </Bind>
+  </Form>
+</FDL>

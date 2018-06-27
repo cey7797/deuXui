@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="rightBtnPop" classname="rightBtnPop" left="0" top="0" width="68" height="109" titletext="우클릭팝업">
+    <Layouts>
+      <Layout>
+        <ListBox id="ListBox00" taborder="0" left="0" top="0" height="109" codecolumn="codecolumn" datacolumn="datacolumn" width="68">
+          <Dataset id="innerdataset">
+            <ColumnInfo>
+              <Column id="codecolumn" size="256"/>
+              <Column id="datacolumn" size="256"/>
+            </ColumnInfo>
+            <Rows>
+              <Row>
+                <Col id="codecolumn">0</Col>
+                <Col id="datacolumn">행고정</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">1</Col>
+                <Col id="datacolumn">열고정</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">2</Col>
+                <Col id="datacolumn">열숨기기</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">3</Col>
+                <Col id="datacolumn">열보이기</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">4</Col>
+                <Col id="datacolumn">영역선택</Col>
+              </Row>
+            </Rows>
+          </Dataset>
+        </ListBox>
+      </Layout>
+    </Layouts>
+  </Form>
+</FDL>

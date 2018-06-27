@@ -1,0 +1,1719 @@
+﻿Static.WF_sta_editor
+{
+	background		: #e4e5e9;
+	border			: 1 solid #9da4ae;
+	bordertype		: round 4 4;
+}
+
+Static.WF_sta_thumbBox
+{
+	background		: #ffffff;
+	border			: 1 solid #9da4ae;
+	bordertype		: round 4 4;
+}
+
+Static.WF_sta_thumbtitle
+{
+	background		: #e4e5e9;
+	border			: 1 solid #93a5ba;
+	bordertype		: round 3 3 lefttop righttop;
+	color			: #9da4ae;
+	padding			: 0 0 0 12;
+}
+
+/***************/
+ImageViewer.WF_imgvwr_thumb
+{
+	align			: center middle;
+	background		: #f3f4f6;
+	border			: 1 solid #9da4ae;
+	bordertype		: normal 0 0;
+	color			: ;
+	cursor			: ;
+	font			: ;
+	gradation		: ;
+	opacity			: 100;
+	padding			: ;
+	shadow			: ;
+}
+ImageViewer.WF_imgvwr_thumb:mouseover, ImageViewer.WF_imgvwr_thumb:focused
+{
+	border			: 1 solid #5659e7;
+}
+ImageViewer.WF_imgvwr_thumb:disabled
+{
+
+}
+
+/****** 썸네일 사진기모양 *******/
+Button.WF_btn_thumbPhoto, Button.WF_btn_thumbPhoto:disabled, Button.WF_btn_thumbPhoto:focused
+{
+	background : URL('theme://images/editor/WF_btn_thumbPhoto.png') center ;
+	border			: 0 none #ffffff;
+}
+Button.WF_btn_thumbPhoto:mouseover, Button.WF_btn_thumbPhoto:pushed, Button.WF_btn_thumbPhoto:selected
+{
+	background : URL('Images::editor/WF_btn_thumbPhoto_O.png') center ;
+	border			: 0 none #ffffff;
+}
+
+/****** 썸네일 적용하기 *******/
+Button.WF_btn_thumbUse, Button.WF_btn_thumbUse:disabled, Button.WF_btn_thumbUse:focused
+{	
+	background		: URL('Images::editor/WF_btn_thumbUse.png') center middle;
+	border			: 0 none #ffffff;
+}
+Button.WF_btn_thumbUse:mouseover, Button.WF_btn_thumbUse:pushed, Button.WF_btn_thumbUse:selected
+{
+	background		: URL('Images::editor/WF_btn_thumbUse_O.png') center middle;
+	border			: 0 none #ffffff;
+}
+
+/****** 사진삭제 ******/
+Button.WF_btn_thumbCls, Button.WF_btn_thumbCls:focused, Button.WF_btn_thumbCls:selected, Button.WF_btn_thumbCls:disabled
+{
+	background		: URL('Images::editor/WF_btn_thumbCls.png') center middle;
+	border			: 0 none #ffffff;
+}
+Button.WF_btn_thumbCls:mouseover, Button.WF_btn_thumbCls:pushed
+{
+	background		: URL('Images::editor/WF_btn_thumbCls_O.png') center middle;
+	border			: 0 none #ffffff;
+}
+
+/***************/
+TextArea.Editor_tex_none,TextArea.Editor_tex_none:focused
+{
+	align			: left top;
+	background		: #ffffff;
+	border			: 1 solid #9da4ae;
+	bordertype		: round 4 4 lefttop righttop;
+	color			: #46586e;
+	cursor			: ;
+	font			: ;
+	linespace		: 2;
+	padding			: 3 0 3 5;
+	selectbackground: #1abd9c;
+	caretcolor		: #1abd9c;
+	compositecolor	: #1abd9c;
+	selectcolor		: #ffffff;
+}
+TextArea.Editor_tex_none:mouseover,TextArea.Editor_tex_none:pushed
+{
+	background		: #ffffff;
+	border			: 1 solid #9da4ae;
+}
+TextArea.Editor_tex_none:disabled, TextArea.Editor_tex_none:readonly
+{
+	background		: #ffffff;
+	border			: 1 solid #9da4ae;
+	color			: #b2bfce;
+}
+
+/****** 탭버튼 ********/
+Button.Editor_tab, Button.Editor_tab:disabled, Button.Editor_tab:focused
+{
+	background		: #e4e5e9;
+	border			: 1 solid #93a5ba;
+	bordertype		: round 4 4 leftbottom rightbottom;
+	color			: #93a5ba;
+	font			: antialias 9 Verdana, malgun gothic;
+}
+/*******/
+Button.Editor_tab:mouseover, Button.Editor_tab:pushed
+{
+	background		: #e4e5e9;
+	border			: 1 solid #93a5ba;
+	bordertype		: round 4 4 leftbottom rightbottom;
+	color			: #46586e;
+	font			: antialias 9 Verdana, malgun gothic;
+}
+Button.Editor_tab:selected
+{
+	background		: URL('Images::editor/Editor_tab_S.png') stretch 6,6;
+	border			: 0 none;
+	bordertype		: normal;
+	color			: #46586e;
+	font			: antialias 9 Verdana, malgun gothic;
+}
+
+/****** 레이아웃 ******/
+Button.Editor_btn_layout, Button.Editor_btn_layout:focused, Button.Editor_btn_layout:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_layout.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_layout:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_layout.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_layout:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_layout.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_layout:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_layout_D.png;
+	imagealign		: center middle;
+}
+
+/********** 코드 하이라이트 **********/
+Button.Editor_btn_highlight, Button.Editor_btn_highlight:focused, Button.Editor_btn_highlight:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_highlight.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_highlight:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_highlight.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_highlight:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_highlight.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_highlight:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_highlight_D.png;
+	imagealign		: center middle;
+}
+
+
+/********** 인용구 **********/
+Button.Editor_btn_quo, Button.Editor_btn_quo:focused, Button.Editor_btn_quo:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_quo.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_quo:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_quo.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_quo:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_quo.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_quo:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_quo_D.png;
+	imagealign		: center middle;
+}
+
+
+/********** 왼쪽정렬 **********/
+Button.Editor_btn_alignL, Button.Editor_btn_alignL:focused, Button.Editor_btn_alignL:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_alignL.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignL:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_alignL.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignL:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_alignL.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignL:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_alignL_D.png;
+	imagealign		: center middle;
+}
+
+
+/********** 가운데정렬 **********/
+Button.Editor_btn_alignC, Button.Editor_btn_alignC:focused, Button.Editor_btn_alignC:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_alignC.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignC:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_alignC.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignC:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_alignC.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignC:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_alignC_D.png;
+	imagealign		: center middle;
+}
+
+
+/********** 오른쪽정렬 **********/
+Button.Editor_btn_alignR, Button.Editor_btn_alignR:focused, Button.Editor_btn_alignR:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_alignR.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignR:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_alignR.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignR:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_alignR.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignR:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_alignR_D.png;
+	imagealign		: center middle;
+}
+
+
+/********** 양쪽정렬 **********/
+Button.Editor_btn_alignJ, Button.Editor_btn_alignJ:focused, Button.Editor_btn_alignJ:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_alignJ.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignJ:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_alignJ.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignJ:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_alignJ.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignJ:disabled
+{
+	background		: #ffffff80;
+
+	image			: Images::editor/Editor_btn_alignJ_D.png;
+	imagealign		: center middle;
+}
+
+
+/********** 상단 정렬 **********/
+Button.Editor_btn_alignT, Button.Editor_btn_alignT:focused, Button.Editor_btn_alignT:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_alignT.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignT:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_alignT.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignT:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_alignT.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignT:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_alignT_D.png;
+	imagealign		: center middle;
+}
+
+
+/********** 중단 정렬 **********/
+Button.Editor_btn_alignM, Button.Editor_btn_alignM:focused, Button.Editor_btn_alignM:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_alignM.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignM:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_alignM.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignM:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_alignM.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignM:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_alignM_D.png;
+	imagealign		: center middle;
+}
+
+/********** 하단 정렬 **********/
+Button.Editor_btn_alignB, Button.Editor_btn_alignB:focused, Button.Editor_btn_alignB:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_alignB.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignB:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_alignB.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignB:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_alignB.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_alignB:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_alignB_D.png;
+	imagealign		: center middle;
+}
+
+
+/********** 좌측들여쓰기 **********/
+Button.Editor_btn_justL, Button.Editor_btn_justL:focused, Button.Editor_btn_justL:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_justL.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_justL:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_justL.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_justL:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_justL.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_justL:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_justL_D.png;
+	imagealign		: center middle;
+}
+
+
+/********** 우측들여쓰기 **********/
+Button.Editor_btn_justR, Button.Editor_btn_justR:focused, Button.Editor_btn_justR:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_justR.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_justR:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_justR.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_justR:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_justR.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_justR:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_justR_D.png;
+	imagealign		: center middle;
+}
+
+
+/********** 리스트숫자 **********/
+Button.Editor_btn_listOdr, Button.Editor_btn_listOdr:focused, Button.Editor_btn_listOdr:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_listOdr.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_listOdr:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_listOdr.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_listOdr:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_listOdr.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_listOdr:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_listOdr_D.png;
+	imagealign		: center middle;
+}
+
+
+/********** 리스트 **********/
+Button.Editor_btn_list, Button.Editor_btn_list:focused, Button.Editor_btn_list:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_list.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_list:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_list.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_list:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_list.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_list:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_list_D.png;
+	imagealign		: center middle;
+}
+
+
+/********** 링크삭제 **********/
+Button.Editor_btn_linkDel, Button.Editor_btn_linkDel:focused, Button.Editor_btn_linkDel:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_linkDel.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_linkDel:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_linkDel.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_linkDel:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_linkDel.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_linkDel:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_linkDel_D.png;
+	imagealign		: center middle;
+}
+
+
+/********** 링크 **********/
+Button.Editor_btn_link, Button.Editor_btn_link:focused, Button.Editor_btn_link:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_link.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_link:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_link.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_link:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_link.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_link:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_link_D.png;
+	imagealign		: center middle;
+}
+
+
+Button.Editor_btn_bgclr2, Button.Editor_btn_bgclr2:focused, Button.Editor_btn_bgclr2:selected
+{
+	background		: #ffffff;
+	border			: 2 solid #ffffff;
+	image			: Images::editor/Editor_btn_bgclr2.png;
+	imagealign		: left middle;
+	padding			: 2 -18 1 0;
+}
+Button.Editor_btn_bgclr2:mouseover
+{
+	background		: #ffffff;
+	border			: 2 solid #56e7ca;
+	image			: Images::editor/Editor_btn_bgclr2.png;
+	imagealign		: left middle;
+	padding			: 2 -18 1 0;
+}
+Button.Editor_btn_bgclr2:pushed
+{
+	background		: #ffffff;
+	border			: 2 solid #afb1f4;
+	image			: Images::editor/Editor_btn_bgclr2.png;
+	imagealign		: left middle;
+	padding			: 2 -18 1 0;
+}
+Button.Editor_btn_bgclr2:disabled
+{
+	background		: #ffffff80;
+	border			: 2 solid #ffffff80;
+	image			: Images::editor/Editor_btn_bgclr2_D.png;
+	imagealign		: left middle;
+	padding			: 2 -18 1 0;
+}
+
+
+/********** 폰트컬러 **********/
+Button.Editor_btn_ftclr, Button.Editor_btn_ftclr:focused, Button.Editor_btn_ftclr:selected
+{
+	background		: #ffffff;
+	border			: 2 solid #ffffff;
+	image			: URL('Images::editor/Editor_btn_ftclr.png');
+	imagealign		: left middle;
+	padding			: 2 -16 1 0;
+}
+Button.Editor_btn_ftclr:mouseover
+{
+	background		: #ffffff;
+	border			: 2 solid #56e7ca;
+	image			: Images::editor/Editor_btn_ftclr.png;
+	imagealign		: left middle;
+	padding			: 2 -16 1 0;
+}
+Button.Editor_btn_ftclr:pushed
+{
+	background		: #ffffff;
+	border			: 2 solid #afb1f4;
+	image			: Images::editor/Editor_btn_ftclr.png;
+	imagealign		: left middle;
+	padding			: 2 -16 1 0;
+}
+Button.Editor_btn_ftclr:disabled
+{
+	background		: #ffffff80;
+	border			: 2 solid #ffffff80;
+	image			: Images::editor/Editor_btn_ftclr_D.png;
+	imagealign		: left middle;
+	padding			: 2 -16 1 0;
+}
+
+
+/********** 볼드체 **********/
+Button.Editor_btn_bold, Button.Editor_btn_bold:focused, Button.Editor_btn_bold:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_bold.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_bold:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_bold.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_bold:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_bold.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_bold:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_bold_D.png;
+	imagealign		: center middle;
+}
+
+
+/********** 이탤릭체 **********/
+Button.Editor_btn_italic, Button.Editor_btn_italic:focused, Button.Editor_btn_italic:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_italic.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_italic:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_italic.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_italic:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_italic.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_italic:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_italic_D.png;
+	imagealign		: center middle;
+}
+
+
+/********** 언더라인 **********/
+Button.Editor_btn_underline, Button.Editor_btn_underline:focused, Button.Editor_btn_underline:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_underline.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_underline:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_underline.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_underline:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_underline.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_underline:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_underline_D.png;
+	imagealign		: center middle;
+}
+
+
+/********** strike **********/
+Button.Editor_btn_strike, Button.Editor_btn_strike:focused, Button.Editor_btn_strike:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_strike.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_strike:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_strike.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_strike:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_strike.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_strike:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_strike_D.png;
+	imagealign		: center middle;
+}
+
+
+/********** 심볼 **********/
+Button.Editor_btn_symbol, Button.Editor_btn_symbol:focused, Button.Editor_btn_symbol:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_symbol.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_symbol:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_symbol.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_symbol:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_symbol.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_symbol:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_symbol_D.png;
+	imagealign		: center middle;
+}
+
+
+/********** 그리드 **********/
+Button.Editor_btn_grid, Button.Editor_btn_grid:focused, Button.Editor_btn_grid:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_grid.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_grid:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_grid.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_grid:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_grid.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_grid:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_grid_D.png;
+	imagealign		: center middle;
+}
+
+
+/****** 폰트 ******/
+Button.Editor_btn_font, Button.Editor_btn_font:focused, Button.Editor_btn_font:selected
+{
+	align			: left middle;
+	background		: #ffffff url('Images::editor/Editor_btn_font.png') left middle;
+	border			: 2 solid #ffffff;
+	image			: ;
+	imagealign		: ;
+	padding			: 2 5 1 20;
+	color			: #34495e;
+	font			: antialias 9 Verdana, malgun gothic;
+}
+Button.Editor_btn_font:mouseover
+{
+	align			: left middle;
+	background		: #ffffff url('Images::editor/Editor_btn_font.png') left middle;
+	border			: 2 solid #56e7ca;
+	image			: ;
+	imagealign		: ;
+	padding			: 2 5 1 20;
+	color			: #34495e;
+	font			: antialias 9 Verdana, malgun gothic;
+}
+Button.Editor_btn_font:pushed
+{
+	align			: left middle;
+	background		: #ffffff url('Images::editor/Editor_btn_font.png') left middle;
+	border			: 2 solid #afb1f4;
+	image			: ;
+	imagealign		: ;
+	padding			:  2 5 1 20;
+	color			: #34495e;
+	font			: antialias 9 Verdana, malgun gothic;
+}
+Button.Editor_btn_font:disabled
+{
+	align			: left middle;
+	background		: #ffffff00 url('Images::editor/Editor_btn_font_D.png') left middle;
+	border			: 2 solid #ffffff80;
+	image			: ;
+	imagealign		: ;
+	padding			:  2 5 1 20;
+	color			: #b2bfce;
+	font			: antialias 9 Verdana, malgun gothic;
+}
+
+
+/****** 사이즈 ******/
+Button.Editor_btn_size, Button.Editor_btn_size:focused, Button.Editor_btn_size:selected
+{
+	background		: #ffffff;
+	border			: 2 solid #ffffff;
+	image			: Images::editor/Editor_btn_size.png;
+	imagealign		: left middle;
+	font			: antialias 8 Standard0755;
+	color			: #46586e;
+	padding			: 1 -18 0 0;
+}
+Button.Editor_btn_size:mouseover
+{
+	background		: #ffffff;
+	border			: 2 solid #56e7ca;
+	image			: Images::editor/Editor_btn_size.png;
+	imagealign		: left middle;
+	font			: antialias 8 Times New Roman;
+	color			: #46586e;
+	padding			: 1 -18 0 0;
+}
+Button.Editor_btn_size:pushed
+{
+	background		: #ffffff;
+	border			: 2 solid #afb1f4;
+	image			: Images::editor/Editor_btn_size.png;
+	imagealign		: left middle;
+	font			: antialias 8 Times New Roman;
+	color			: #46586e;
+	padding			: 1 -18 0 0;
+}
+Button.Editor_btn_size:disabled
+{
+	background		: #ffffff80;
+	border			: 2 solid #ffffff80;
+	image			: Images::editor/Editor_btn_size_D.png;
+	imagealign		: left middle;
+	font			: antialias 8 Times New Roman;
+	color			: #46586e;
+	padding			: 1 -18 0 0;
+}
+
+
+/********** 파일업로드 **********/
+Button.Editor_btn_file, Button.Editor_btn_file:focused, Button.Editor_btn_file:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_fileAdd.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_file:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_fileAdd.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_file:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_fileAdd.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_file:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_fileAdd_D.png;
+	imagealign		: center middle;
+}
+
+
+/********** 이미지 **********/
+Button.Editor_btn_image, Button.Editor_btn_image:focused, Button.Editor_btn_image:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_imgAdd.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_image:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_imgAdd.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_image:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_imgAdd.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_image:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_imgAdd_D.png;
+	imagealign		: center middle;
+}
+
+
+/*********************** 펼쳤을때 ****************************/
+Button.Editor_btn_algn01, Button.Editor_btn_algn01:focused, Button.Editor_btn_algn01:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_algn01.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn01:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_algn01.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn01:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_algn01.png;
+	imagealign		: center middle;
+}
+
+
+/********** bg컬러 **********/
+Button.Editor_btn_bgclr, Button.Editor_btn_bgclr:focused, Button.Editor_btn_bgclr:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_bgclr.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_bgclr:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_bgclr.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_bgclr:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_bgclr.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_bgclr:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_bgclr_D.png;
+	imagealign		: center middle;
+}
+
+/***********/
+Button.Editor_penclr, Button.Editor_penclr:focused, Button.Editor_penclr:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_penclr.png;
+	imagealign		: center middle;
+}
+Button.Editor_penclr:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_penclr.png;
+	imagealign		: center middle;
+}
+Button.Editor_penclr:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_penclr.png;
+	imagealign		: center middle;
+}
+Button.Editor_penclr:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_penclr_D.png;
+	imagealign		: center middle;
+}
+/***********/
+Button.Editor_btn_algn01:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_algn01_D.png;
+	imagealign		: center middle;
+}
+/***********/
+Button.Editor_btn_algn02, Button.Editor_btn_algn02:focused, Button.Editor_btn_algn02:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_algn02.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn02:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_algn02.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn02:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_algn02.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn02:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_algn02_D.png;
+	imagealign		: center middle;
+}
+/***********/
+Button.Editor_btn_algn03, Button.Editor_btn_algn03:focused, Button.Editor_btn_algn03:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_algn03.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn03:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_algn03.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn03:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_algn03.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn03:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_algn03_D.png;
+	imagealign		: center middle;
+}
+/***********/
+Button.Editor_btn_algn04, Button.Editor_btn_algn04:focused, Button.Editor_btn_algn04:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_algn04.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn04:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_algn04.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn04:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_algn04.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn04:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_algn04_D.png;
+	imagealign		: center middle;
+}
+/***********/
+Button.Editor_btn_algn05, Button.Editor_btn_algn05:focused, Button.Editor_btn_algn05:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_algn05.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn05:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_algn05.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn05:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_algn05.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn05:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_algn05_D.png;
+	imagealign		: center middle;
+}
+/***********/
+Button.Editor_btn_algn06, Button.Editor_btn_algn06:focused, Button.Editor_btn_algn06:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_algn06.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn06:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_algn06.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn06:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_algn06.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn06:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_algn06_D.png;
+	imagealign		: center middle;
+}
+/***********/
+Button.Editor_btn_algn07, Button.Editor_btn_algn07:focused, Button.Editor_btn_algn07:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_algn07.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn07:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_algn07.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn07:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_algn07.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn07:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_algn07_D.png;
+	imagealign		: center middle;
+}
+/***********/
+Button.Editor_btn_algn08, Button.Editor_btn_algn08:focused, Button.Editor_btn_algn08:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_algn08.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn08:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_algn08.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn08:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_algn08.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algn08:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_algn08_D.png;
+	imagealign		: center middle;
+}
+
+/*******/
+Button.Editor_btn_grid2, Button.Editor_btn_grid2:focused, Button.Editor_btn_grid2:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_grid2.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_grid2:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_grid2.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_grid2:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_grid2.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_grid2:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_grid2_D.png;
+	imagealign		: center middle;
+}
+
+/****** 에디터펼침버튼 *****/
+Button.Editor_btn_dn, Button.Editor_btn_dn:focused, Button.Editor_btn_dn:selected, Button.Editor_btn_dn:disabled
+{
+	background		: #e4e5e9;
+	border			: 0 none, 0 none, 0 none, 1 solid #93a5ba;
+	bordertype		: normal;
+	image			: Images::editor/Editor_btn_dn.png;
+	imagealign		: center top;
+}
+Button.Editor_btn_dn:mouseover, Button.Editor_btn_dn:pushed
+{
+	background		: #e4e5e9;
+	border			: 0 none, 0 none, 0 none, 1 solid #93a5ba;
+	image			: Images::editor/Editor_btn_dn_O.png;
+	imagealign		: center top;
+}
+/********/
+Button.Editor_btn_up, Button.Editor_btn_up:focused, Button.Editor_btn_up:selected, Button.Editor_btn_up:disabled
+{
+	background		: #e4e5e9;
+	border			: 0 none, 0 none, 0 none, 1 solid #93a5ba;
+	bordertype		: normal;
+	image			: Images::editor/Editor_btn_up.png;
+	imagealign		: center top;
+}
+Button.Editor_btn_up:mouseover, Button.Editor_btn_up:pushed
+{
+	background		: #e4e5e9;
+	border			: 0 none, 0 none, 0 none, 1 solid #93a5ba;
+	image			: Images::editor/Editor_btn_up_O.png;
+	imagealign		: center top;
+}
+
+/****** 박스라운드 Static *******/
+Static.Editor_sta_box
+{
+	background	: #ffffff;
+	border		: 1 solid #93a5bb;
+	bordertype	: round 4 4;
+}
+
+/***************/
+Grid.Editor_grd_pop2
+{
+	align			: center middle;
+	background		: #ffffff;
+	border			: 1 solid #e4e5e9;
+	bordertype		: normal 0 0;
+	color			: #46586e;
+}
+Grid.Editor_grd_pop2>#body
+{
+	border			: 0 none;
+	background		: #ffffff;
+	cellalign		: center middle;
+	cellbackground		: #ffffff;
+	cellbackground2		: #ffffff;
+	cellcolor		: #46586e;
+	cellcolor2		: #46586e;
+	cellfont		: antialias 11 Verdana, malgun gothic;
+	cellline		: 1 solid #e4e5e9;
+	cellpadding		: 0 0 0 0;
+	selectbackground	: #5659e7;
+	selectborder		: 1 solid #e4e5e9;
+	selectcolor		: #ffffff;
+	selectfont		: antialias 11 Verdana, malgun gothic;
+	selectline		: 0 none;
+	selectline		: 1 solid #ffffff;
+}
+
+
+
+/**** 템플릿형태버튼 *****/
+Button.Editor_btn_table01, Button.Editor_btn_table01:focused, Button.Editor_btn_table01:disabled
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_table01.png;
+	imagealign		: center middle;
+	border			: 2 solid #ffffff;
+	bordertype		: normal ;
+	shadow			: ;
+}
+Button.Editor_btn_table01:mouseover, Button.Editor_btn_table01:pushed, Button.Editor_btn_table01:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_table01.png;
+	imagealign		: center middle;
+	border			: 2 solid #1abd9c;
+	bordertype		: normal ;
+	shadow			: ;
+}
+/*******/
+Button.Editor_btn_table02, Button.Editor_btn_table02:focused, Button.Editor_btn_table02:disabled
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_table02.png;
+	imagealign		: center middle;
+	border			: 2 solid #ffffff;
+	bordertype		: normal ;
+	shadow			: ;
+}
+Button.Editor_btn_table02:mouseover, Button.Editor_btn_table02:pushed, Button.Editor_btn_table02:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_table02.png;
+	imagealign		: center middle;
+	border			: 2 solid #1abd9c;
+	bordertype		: normal ;
+	shadow			: ;
+}
+/*******/
+Button.Editor_btn_table03, Button.Editor_btn_table03:focused, Button.Editor_btn_table03:disabled
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_table03.png;
+	imagealign		: center middle;
+	border			: 2 solid #ffffff;
+	bordertype		: normal ;
+	shadow			: ;
+}
+Button.Editor_btn_table03:mouseover, Button.Editor_btn_table03:pushed, Button.Editor_btn_table03:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_table03.png;
+	imagealign		: center middle;
+	border			: 2 solid #1abd9c;
+	bordertype		: normal ;
+	shadow			: ;
+}
+/*******/
+Button.Editor_btn_table04, Button.Editor_btn_table04:focused, Button.Editor_btn_table04:disabled
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_table04.png;
+	imagealign		: center middle;
+	border			: 2 solid #ffffff;
+	bordertype		: normal ;
+	shadow			: ;
+}
+Button.Editor_btn_table04:mouseover, Button.Editor_btn_table04:pushed, Button.Editor_btn_table04:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_table04.png;
+	imagealign		: center middle;
+	border			: 2 solid #1abd9c;
+	bordertype		: normal ;
+	shadow			: ;
+}
+/*******/
+Button.Editor_btn_table05, Button.Editor_btn_table05:focused, Button.Editor_btn_table05:disabled
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_table05.png;
+	imagealign		: center middle;
+	border			: 2 solid #ffffff;
+	bordertype		: normal ;
+	shadow			: ;
+}
+Button.Editor_btn_table05:mouseover, Button.Editor_btn_table05:pushed, Button.Editor_btn_table05:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_table05.png;
+	imagealign		: center middle;
+	border			: 2 solid #1abd9c;
+	bordertype		: normal ;
+	shadow			: ;
+}
+/*******/
+Button.Editor_btn_table06, Button.Editor_btn_table06:focused, Button.Editor_btn_table06:disabled
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_table06.png;
+	imagealign		: center middle;
+	border			: 2 solid #ffffff;
+	bordertype		: normal ;
+	shadow			: ;
+}
+Button.Editor_btn_table06:mouseover, Button.Editor_btn_table06:pushed, Button.Editor_btn_table06:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_table06.png;
+	imagealign		: center middle;
+	border			: 2 solid #1abd9c;
+	bordertype		: normal ;
+	shadow			: ;
+}/*******/
+
+/*********/
+Grid.Editor_grd_pop
+{
+	align			: center middle;
+	background		: transparent;
+	border			: 0 none;
+	bordertype		: normal 0 0;
+	color			: #46586e;
+}
+Grid.Editor_grd_pop>#body
+{
+	background		: transparent;
+	cellalign		: center middle;
+	cellbackground		: transparent;
+	cellbackground2		: transparent;
+	cellcolor		: #46586e;
+	cellcolor2		: #46586e;
+	cellfont		: antialias 9 Verdana, malgun gothic;
+	cellline		: 0 none;
+	celllinetype		: onlyhorz;
+	cellpadding		: 3 5 3 5;
+	selectbackground	: #e4e5e9;
+	selectborder		: ;
+	selectcolor		: #46586e;
+	selectfont		: antialias 9 Verdana, malgun gothic;
+	selectline		: 0 none;
+}
+Grid.Editor_grd_pop>#body:mouseover
+{
+	border			: 0 none #e5e5e5;
+	cellbackground		: #e4e5e9;
+	cellbackground2		: #e4e5e9;
+	cellcolor		: #46586e;
+	cellcolor2		: #46586e;
+	cellfont		: antialias 9 Verdana, malgun gothic;
+	cellfont2		: antialias 9 Verdana, malgun gothic;
+	selectbackground	: #e4e5e9;
+	selectcolor		: #46586e;
+}
+Grid.Editor_grd_pop2>#body:mouseover
+{
+	border			: 0 none #e5e5e5;
+	cellbackground		: #e4e5e9;
+	cellbackground2		: #e4e5e9;
+	cellcolor		: #46586e;
+	cellcolor2		: #46586e;
+	cellline		: 1 solid #e4e5e9;
+	cellfont		: antialias 11 Verdana, malgun gothic;
+	cellfont2		: antialias 11 Verdana, malgun gothic;
+	selectbackground: #5659e7;
+	selectcolor		: #ffffff;
+	selectline		: 1 solid #ffffff;
+}
+
+
+/***** 템플릿형태 *****/
+Static.Editor_sta_tmpp01
+{
+	background		: URL('Images::editor/Editor_sta_tmpp01.png') center middle;
+	border			: 2 solid #ffffff;
+}
+Static.Editor_sta_tmpp01:mouseover
+{
+	background		: URL('Images::editor/Editor_sta_tmpp01.png') center middle;
+	border			: 2 solid #5759e7;
+}
+/**********/
+Static.Editor_sta_tmpp02
+{
+	background		: URL('Images::editor/Editor_sta_tmpp02.png') center middle;
+	border			: 2 solid #ffffff;
+}
+Static.Editor_sta_tmpp02:mouseover
+{
+	background		: URL('Images::editor/Editor_sta_tmpp02.png') center middle;
+	border			: 2 solid #5759e7;
+}
+/**********/
+Static.Editor_sta_tmpp03
+{
+	background		: URL('Images::editor/Editor_sta_tmpp03.png') center middle;
+	border			: 2 solid #ffffff;
+}
+Static.Editor_sta_tmpp03:mouseover
+{
+	background		: URL('Images::editor/Editor_sta_tmpp03.png') center middle;
+	border			: 2 solid #5759e7;
+}
+/**********/
+Static.Editor_sta_tmpp04
+{
+	background		: URL('Images::editor/Editor_sta_tmpp04.png') center middle;
+	border			: 2 solid #ffffff;
+}
+Static.Editor_sta_tmpp04:mouseover
+{
+	background		: URL('Images::editor/Editor_sta_tmpp04.png') center middle;
+	border			: 2 solid #5759e7;
+}
+/**********/
+Static.Editor_sta_tmpp05
+{
+	background		: URL('Images::editor/Editor_sta_tmpp05.png') center middle;
+	border			: 2 solid #ffffff;
+}
+Static.Editor_sta_tmpp05:mouseover
+{
+	background		: URL('Images::editor/Editor_sta_tmpp05.png') center middle;
+	border			: 2 solid #5759e7;
+}
+/**********/
+Static.Editor_sta_tmpp06
+{
+	background		: URL('Images::editor/Editor_sta_tmpp06.png') center middle;
+	border			: 2 solid #ffffff;
+}
+Static.Editor_sta_tmpp06:mouseover
+{
+	background		: URL('Images::editor/Editor_sta_tmpp06.png') center middle;
+	border			: 2 solid #5759e7;
+}
+/**********/
+Static.Editor_sta_tmpp07
+{
+	background		: URL('Images::editor/Editor_sta_tmpp07.png') center middle;
+	border			: 2 solid #ffffff;
+}
+Static.Editor_sta_tmpp07:mouseover
+{
+	background		: URL('Images::editor/Editor_sta_tmpp07.png') center middle;
+	border			: 2 solid #5759e7;
+}
+/**********/
+Static.Editor_sta_tmpp08
+{
+	background		: URL('Images::editor/Editor_sta_tmpp08.png') center middle;
+	border			: 2 solid #ffffff;
+}
+Static.Editor_sta_tmpp08:mouseover
+{
+	background		: URL('Images::editor/Editor_sta_tmpp08.png') center middle;
+	border			: 2 solid #5759e7;
+}
+
+/**********/
+Button.Editor_btn_rsiz, Button.Editor_btn_rsiz:disabled, Button.Editor_btn_rsiz:focused
+{
+	border			: 0 none #ffffff;
+	background		: URL('Images::editor/Editor_btn_rsiz.png') center middle;
+	cursor			: n-resize;
+}
+Button.Editor_btn_rsiz:mouseover, Button.Editor_btn_rsiz:pushed, Button.Editor_btn_rsiz:selected
+{
+	border			: 0 none #ffffff;
+	background		: URL('Images::editor/Editor_btn_rsiz_O.png') center middle;
+	cursor			: n-resize;
+}
+
+/****** 리셋버튼 ********/
+Button.Editor_btn_reset, Button.Editor_btn_reset:focused, Button.Editor_btn_reset:selected
+{
+	image			: Images::editor/Editor_btn_reset.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_reset:mouseover
+{
+	image			: Images::editor/Editor_btn_reset_O.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_reset:pushed
+{
+	image			: Images::editor/Editor_btn_reset_O.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_reset:disabled
+{
+	image			: Images::editor/Editor_btn_reset.png;
+	imagealign		: center middle;
+}
+
+
+/******* 정렬_자리차지,좌측위치,어울림,우측위치 *******/
+Button.Editor_btn_algnOcc, Button.Editor_btn_algnOcc:focused, Button.Editor_btn_algnOcc:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_algnOcc.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algnOcc:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_algnOcc.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algnOcc:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_algnOcc.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algnOcc:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_algnOcc_D.png;
+	imagealign		: center middle;
+}
+
+/********/
+Button.Editor_btn_algnL, Button.Editor_btn_algnL:focused, Button.Editor_btn_algnL:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_algnL.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algnL:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_algnL.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algnL:pushed
+{
+	background		: #afb1f4;
+	image			: Images::editor/Editor_btn_algnL.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algnL:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_algnL_D.png;
+	imagealign		: center middle;
+}
+
+/********/
+Button.Editor_btn_algnR, Button.Editor_btn_algnR:focused, Button.Editor_btn_algnR:selected
+{
+	background		: #ffffff;
+	image			: Images::editor/Editor_btn_algnR.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algnR:mouseover
+{
+	background		: #56e7ca;
+	image			: Images::editor/Editor_btn_algnR.png;
+	imagealign		: center middle;
+}
+Button.Editor_btn_algnR:pushed
+{
+	background		: #afb1f4;
+	image			: URL('Images::editor/Editor_btn_algnR.png');
+	imagealign		: center middle;
+}
+Button.Editor_btn_algnR:disabled
+{
+	background		: #ffffff80;
+	image			: Images::editor/Editor_btn_algnR_D.png;
+	imagealign		: center middle;
+}
+
+
+/*********** 파일첨부 그리드 ***************/
+Grid.WF_grd_fileAdd
+{
+	background		: transparent;
+	border			: 1 solid #93a5baff, 0 none #9f8f71, 1 solid #e4e5e9ff, 0 none #9f8f71;
+	bordertype		: normal 0 0;
+	color			: #46586e;
+	cursor			: hand;
+	font			: ;
+}
+Grid.WF_grd_fileAdd>#body
+{
+	background		: #ffffff;
+	border			: 0 none #e5e5e5;
+	bordertype		: ;
+	cellbackground		: #ffffff;
+	cellbackground2		: #ffffff;
+	cellcolor		: #46586e;
+	cellcolor2		: #46586e;
+	cellfont		: ;
+	cellline		: 1 solid #e4e5e9ff, 0 none;
+	celllinetype		: nocross;
+	cellpadding		: 5 0 5 0;
+	selectbackground	: #ffffff;
+	selectborder		: ;
+	selectcolor		: #00bff3;
+	selectfont		: ;
+	selectline		: 0 none, 0 none, 1 solid #e4e5e9, 0 none;
+	selectlinetype		: nocross;
+}
+Grid.WF_grd_fileAdd>#body:mouseover
+{
+	cellcolor		: #00bff3;
+	cellcolor2		: #00bff3;
+	cellfont		: antialias 9 Verdana, malgun gothic;
+	selectcolor		: #00bff3;
+	selectfont		: antialias 9 Verdana, malgun gothic;
+}
+
+/************************************ popup ************************************/
+Div.POP_div_bg
+{
+	background		: #ffffff;
+	border			: 1 solid #93a5ba;
+	bordertype		: round 15 15;
+}

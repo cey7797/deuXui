@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TypeDefinition version="1.2">
+  <Modules>
+    <Module url="CompBase.json"/>
+    <Module url="ComComp.json"/>
+    <Module url="Grid.json"/>
+    <Module url="DeviceAPI.json"/>
+    <Module url="EcoLibrary.json"/>
+    <Module url="DataUtilClass.json"/>
+    <Module url="Graphic.json"/>
+    <Module url="ExtComp.json"/>
+  </Modules>
+  <Components>
+    <Component type="JavaScript" id="Div" classname="nexacro.Div"/>
+    <Component type="JavaScript" id="Button" classname="nexacro.Button"/>
+    <Component type="JavaScript" id="PopupDiv" classname="nexacro.PopupDiv"/>
+    <Component type="JavaScript" id="Combo" classname="nexacro.Combo"/>
+    <Component type="JavaScript" id="CheckBox" classname="nexacro.CheckBox"/>
+    <Component type="JavaScript" id="ListBox" classname="nexacro.ListBox"/>
+    <Component type="JavaScript" id="Edit" classname="nexacro.Edit"/>
+    <Component type="JavaScript" id="MaskEdit" classname="nexacro.MaskEdit"/>
+    <Component type="JavaScript" id="TextArea" classname="nexacro.TextArea"/>
+    <Component type="JavaScript" id="Menu" classname="nexacro.Menu"/>
+    <Component type="JavaScript" id="Tab" classname="nexacro.Tab"/>
+    <Component type="JavaScript" id="ImageViewer" classname="nexacro.ImageViewer"/>
+    <Component type="JavaScript" id="Radio" classname="nexacro.Radio"/>
+    <Component type="JavaScript" id="Calendar" classname="nexacro.Calendar"/>
+    <Component type="JavaScript" id="Static" classname="nexacro.Static"/>
+    <Component type="JavaScript" id="Grid" classname="nexacro.Grid"/>
+    <Component type="JavaScript" id="Spin" classname="nexacro.Spin"/>
+    <Component type="JavaScript" id="PopupMenu" classname="nexacro.PopupMenu"/>
+    <Component type="JavaScript" id="GroupBox" classname="nexacro.GroupBox"/>
+    <Component type="JavaScript" id="ProgressBar" classname="nexacro.ProgressBar"/>
+    <Component type="JavaScript" id="Plugin" classname="nexacro.Plugin"/>
+    <Component type="JavaScript" id="Dataset" classname="nexacro.NormalDataset"/>
+    <Component type="JavaScript" id="ExtFileUpload" classname="nexacro.ExtFileUpload"/>
+    <Component type="JavaScript" id="ExtFileDownload" classname="nexacro.ExtFileDownload"/>
+    <Component type="JavaScript" id="WebBrowser" classname="nexacro.WebBrowser"/>
+    <Component type="JavaScript" id="FileDownload" classname="nexacro.FileDownload"/>
+    <Component type="JavaScript" id="Graphic" classname="nexacro.Graphic"/>
+  </Components>
+  <Services>
+    <Service prefixid="txComUrl" type="JSP" url="http://localhost:7080/" cachelevel="dynamic" version="0" communicationversion="0"/>
+    <Service prefixid="txAdmUrl" type="JSP" url="http://localhost:7080/" cachelevel="dynamic" version="0" communicationversion="0"/>
+    <Service prefixid="commJs" type="form" url="./comm/js/" cachelevel="dynamic" version="0" communicationversion="0"/>
+    <Service prefixid="commMain" type="form" url="./comm/main/" version="0" communicationversion="0"/>
+    <Service prefixid="component" type="form" url="./comm/component/" version="0" communicationversion="0"/>
+    <Service prefixid="webEditor" type="form" url="./comm/component/webEditor/" version="0" communicationversion="0"/>
+    <Service prefixid="Images" type="file" url="./img/" version="0" communicationversion="0" cachelevel="session"/>
+    <Service prefixid="########### 시스템 ###########" type="form" url="./dummy/" version="0" communicationversion="0"/>
+    <Service prefixid="com" type="form" url="./com/" version="0" communicationversion="0"/>
+    <Service prefixid="########### 동의대 ###########" type="form" url="./dummy/" version="0" communicationversion="0"/>
+    <Service prefixid="***** 동의대행정공통" type="form" url="./dummy/" version="0" communicationversion="0"/>
+    <Service prefixid="admi" type="form" url="./comm/admi" version="0" communicationversion="0"/>
+    <Service prefixid="***** 동의대예산" type="form" url="./admi/bg/" version="0" communicationversion="0"/>
+    <Service prefixid="bg01" type="form" url="./admi/bg/bg01/" version="0" communicationversion="0"/>
+    <Service prefixid="bg02" type="form" url="./admi/bg/bg02/" version="0" communicationversion="0"/>
+    <Service prefixid="bg03" type="form" url="./admi/bg/bg03/" version="0" communicationversion="0"/>
+    <Service prefixid="bg04" type="form" url="./admi/bg/bg04/" version="0" communicationversion="0"/>
+    <Service prefixid="***** 동의대회계" type="form" url="./admi/ac/" version="0" communicationversion="0"/>
+    <Service prefixid="ac01" type="form" url="./admi/ac/ac01/" version="0" communicationversion="0"/>
+    <Service prefixid="ac02" type="form" url="./admi/ac/ac02/" version="0" communicationversion="0"/>
+    <Service prefixid="ac03" type="form" url="./admi/ac/ac03/" version="0" communicationversion="0"/>
+    <Service prefixid="ac04" type="form" url="./admi/ac/ac04/" version="0" communicationversion="0"/>
+    <Service prefixid="***** 기금관리" type="form" url="./admi/afd/" version="0" communicationversion="0"/>
+    <Service prefixid="afd01" type="form" url="./admi/afd/afd01/" version="0" communicationversion="0"/>
+    <Service prefixid="afd02" type="form" url="./admi/afd/afd02/" version="0" communicationversion="0"/>
+    <Service prefixid="afd03" type="form" url="./admi/afd/afd03/" version="0" communicationversion="0"/>
+    <Service prefixid="afd04" type="form" url="./admi/afd/afd04/" version="0" communicationversion="0"/>
+    <Service prefixid="afd05" type="form" url="./admi/afd/afd05/" version="0" communicationversion="0"/>
+    <Service prefixid="afd06" type="form" url="./admi/afd/afd06/" version="0" communicationversion="0"/>
+  </Services>
+  <Update/>
+  <Protocols/>
+</TypeDefinition>

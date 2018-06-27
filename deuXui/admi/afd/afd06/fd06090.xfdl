@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="fd06090" classname="afd01050_t03" left="0" top="0" width="1038" height="855" titletext="월결산" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Static id="Static76" taborder="0" text="출력물 목록" cssclass="page_stitle" left="0" top="55" width="220" height="20"/>
+        <Grid id="grd_main" taborder="1" binddataset="ds_printList" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="col" onkeydown="grd_acnt_onkeydown" onheadclick="grd_acnt_onheadclick" left="0" top="81" width="500" height="753">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="35" band="left"/>
+                <Column size="367"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell displaytype="number" text="순번"/>
+                <Cell col="1" text="출력물"/>
+              </Band>
+              <Band id="body">
+                <Cell edittype="none" text="expr:currow+1" expandsize="13"/>
+                <Cell col="1" displaytype="normal" edittype="none" style="align:left;" text="bind:title" calendardisplay="edit" calendardisplaynulltype="none"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static22" taborder="2" text="h5" visible="false" left="0" top="76" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static20" taborder="3" text="h15" visible="false" left="0" top="39" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static01" taborder="4" text="출력조건" cssclass="page_stitle" left="510" top="55" width="220" height="20"/>
+        <Div id="div_search" taborder="6" left="0" top="0" right="14" height="39" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static12" taborder="32" text="H9" cssclass="tipGuide" visible="false" left="117" top="2" width="30" height="9"/>
+              <Static id="Static11" taborder="33" text="H9" cssclass="tipGuide" visible="false" left="117" top="31" width="30" height="9"/>
+              <Static id="Static04" taborder="34" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="182" top="0" width="20" height="39"/>
+              <Static id="Static14" taborder="35" text="W10" cssclass="tipGuide" visible="false" left="68" top="2" width="14" height="37"/>
+              <Static id="Static33" taborder="36" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="0" top="2" width="20" height="39"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static33" taborder="7" text="W&#13;&#10;15" cssclass="tipGuide" visible="false" left="1023" top="7" width="15" height="846"/>
+        <Static id="Static35" taborder="8" text="W&#13;&#10;10" cssclass="tipGuide" visible="false" left="500" top="85" width="10" height="311"/>
+        <Div id="div_form" taborder="14" left="520" top="81" width="503" height="754"/>
+      </Layout>
+    </Layouts>
+    <Bind/>
+    <Objects>
+      <Dataset id="ds_printList" onrowposchanged="ds_printList_onrowposchanged">
+        <ColumnInfo>
+          <Column id="title" type="STRING" size="256"/>
+          <Column id="divUrl" type="STRING" size="256"/>
+          <Column id="clipFileNm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="title">계좌별 내역 현황</Col>
+            <Col id="divUrl">afd06::fd06090_d01.xfdl</Col>
+            <Col id="clipFileNm">fd06090_r01</Col>
+          </Row>
+          <Row>
+            <Col id="title">정기예금 내역 현황</Col>
+            <Col id="clipFileNm">fd06090_r02</Col>
+            <Col id="divUrl">afd06::fd06090_d01.xfdl</Col>
+          </Row>
+          <Row>
+            <Col id="title">보통예금 내역 현황</Col>
+            <Col id="divUrl">afd06::fd06090_d01.xfdl</Col>
+            <Col id="clipFileNm">fd06090_r03</Col>
+          </Row>
+          <Row>
+            <Col id="title">기부금 현황</Col>
+            <Col id="divUrl">afd06::fd06090_d01.xfdl</Col>
+            <Col id="clipFileNm">fd06090_r04</Col>
+          </Row>
+          <Row>
+            <Col id="title">발전기금 지출 현황</Col>
+            <Col id="divUrl">afd06::fd06090_d01.xfdl</Col>
+            <Col id="clipFileNm">fd06090_r05</Col>
+          </Row>
+          <Row>
+            <Col id="title">발전기금 통장 현황표</Col>
+            <Col id="divUrl">afd06::fd06090_d02.xfdl</Col>
+            <Col id="clipFileNm">fd06090_r06</Col>
+          </Row>
+          <Row>
+            <Col id="title">예금이자 및 선급법인세 내역 현황</Col>
+            <Col id="divUrl">afd06::fd06090_d01.xfdl</Col>
+            <Col id="clipFileNm">fd06090_r07</Col>
+          </Row>
+          <Row>
+            <Col id="title">현물기부금 내역 현황</Col>
+            <Col id="divUrl">afd06::fd06090_d01.xfdl</Col>
+            <Col id="clipFileNm">fd06090_r08</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_printList00" onrowposchanged="ds_printList_onrowposchanged">
+        <ColumnInfo>
+          <Column id="title" type="STRING" size="256"/>
+          <Column id="divUrl" type="STRING" size="256"/>
+          <Column id="clipFileNm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="title">계좌별 내역 현황</Col>
+            <Col id="divUrl">afd06::fd06090_d01.xfdl</Col>
+            <Col id="clipFileNm">fd06090_r01</Col>
+          </Row>
+          <Row>
+            <Col id="title">정기예금 내역 현황</Col>
+            <Col id="clipFileNm">fd06090_r02</Col>
+            <Col id="divUrl">afd06::fd06090_d01.xfdl</Col>
+          </Row>
+          <Row>
+            <Col id="title">보통예금 내역 현황</Col>
+            <Col id="divUrl">afd06::fd06090_d01.xfdl</Col>
+            <Col id="clipFileNm">fd06090_r03</Col>
+          </Row>
+          <Row>
+            <Col id="title">기부금 현황</Col>
+            <Col id="divUrl">afd06::fd06090_d01.xfdl</Col>
+            <Col id="clipFileNm">fd06090_r04</Col>
+          </Row>
+          <Row>
+            <Col id="title">발전기금 지출 현황</Col>
+            <Col id="divUrl">afd06::fd06090_d02.xfdl</Col>
+            <Col id="clipFileNm">fd06090_r05</Col>
+          </Row>
+          <Row>
+            <Col id="title">발전기금 통장 현황표</Col>
+            <Col id="divUrl">afd06::fd06090_d01.xfdl</Col>
+            <Col id="clipFileNm">fd06090_r06</Col>
+          </Row>
+          <Row>
+            <Col id="title">예금이자 및 선급법인세 내역 현황</Col>
+            <Col id="divUrl">afd06::fd06090_d01.xfdl</Col>
+            <Col id="clipFileNm">fd06090_r07</Col>
+          </Row>
+          <Row>
+            <Col id="title">현물기부금 내역 현황</Col>
+            <Col id="divUrl">afd06::fd06090_d01.xfdl</Col>
+            <Col id="clipFileNm">fd06090_r08</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+
+	 
+/******************************************************************************
+* 함 수 명 	: from_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0)
+	{
+		this.gfn_message("A", errMsg);
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: ds_printList_onrowposchanged
+ * 함수설명 	: 출력물종류에 따라서 출력조건 호출
+ *********************************************************************/
+this.ds_printList_onrowposchanged = function(obj:Dataset, e:nexacro.DSRowPosChangeEventInfo)
+{
+	this.div_form.set_url(obj.getColumn(e.newrow, 'divUrl'));
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_print
+ * 함수설명 	: 레포트호출(대학발전기금 기탁현황)
+ *********************************************************************/
+this.fn_print = function(objParams)
+{
+	var title;
+	var objParam = {};
+	var strArg = "";
+	
+	for (var i in objParams) {
+        objParam[i] = objParams[i];
+    }
+
+	title = this.ds_printList.getColumn(this.ds_printList.rowposition,"clipFileNm");
+	strArg  = "FRDT:"  + objParam["frDt"];//
+	strArg += "|TODT:" + objParam["toDt"];//
+	strArg += "|ACNO:" + objParam["acno"];//
+	strArg += "|TITLE:" + objParam["title"];//
+	
+
+    var callType = ""; 
+    var crfName = "afd/"+title; 
+    var crfParams = strArg; //예) 키:값|키:값|키:값
+    var crfDbName = ""; // null 값이나 "oracle1" 값으로 던질것
+    
+	this.gfn_openClipReport(callType,crfName,crfParams,crfDbName);
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_print2
+ * 함수설명 	: 레포트호출(월별 현황)
+ *********************************************************************/
+// this.fn_print2 = function(objParams)
+// {
+// 	var title;
+// 	var objParam = {};
+// 	
+// 	for (var i in objParams) {
+//         objParam[i] = objParams[i];
+//     }
+// 	
+// 	if(this.ds_printList.getColumn(this.ds_printList.rowposition,"title") == "월별내역" ) 
+// 	{
+// 		title = this.ds_printList.getColumn(this.ds_printList.rowposition,"clipFileNm");
+// 	}
+// 	else
+// 	{
+// 		title = this.ds_printList.getColumn(this.ds_printList.rowposition,"clipFileNm");
+// 	}
+// 
+//     var strArg  = "YY:"  + objParam["yy"];//년도
+//  		strArg += "|ENDW_CD:" + objParam["endwCd"];//기금코드
+//     
+//     var callType = ""; 
+//     var crfName = "afd/"+title; 
+//     var crfParams = strArg; //예) 키:값|키:값|키:값
+//     var crfDbName = ""; // null 값이나 "oracle1" 값으로 던질것
+//     
+// 	this.gfn_openClipReport(callType,crfName,crfParams,crfDbName);
+// }]]></Script>
+  </Form>
+</FDL>

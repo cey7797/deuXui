@@ -1,0 +1,573 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="bg02020" classname="aac01001_001" left="0" top="0" width="1038" height="855" titletext="부서별사업등록" onclose="abg01010_onclose" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Button id="btn_search" taborder="3" text="조회" cssclass="search" top="80" right="263" width="60" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R" onclick="btn_search_onclick"/>
+        <Button id="btn_new" taborder="4" text="추가" cssclass="new" top="80" right="201" width="60" height="22" tooltiptype="hover" tooltiptext="추가" onclick="btn_new_onclick" userBtnAuth="S"/>
+        <Button id="btn_save" taborder="6" cssclass="save" top="80" right="77" width="60" height="22" tooltiptype="hover" tooltiptext="저장" onclick="btn_save_onclick" userBtnAuth="S" text="저장"/>
+        <Static id="Static76" taborder="2" text="사업내역" cssclass="page_stitle" left="0" top="81" width="324" height="20"/>
+        <Grid id="grd_bgOrgBizList" taborder="1" binddataset="ds_bgOrgBizList" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="col" left="0" top="107" right="15" onexpanddown="sta_grdBgOrgBiz_onexpanddown" onkeyup="grd_bgOrgBizList_onkeyup" bottom="21">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="30" band="left"/>
+                <Column size="25" band="left"/>
+                <Column size="45" band="left"/>
+                <Column size="65"/>
+                <Column size="200"/>
+                <Column size="256"/>
+                <Column size="91"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox"/>
+                <Cell col="2" text="순번"/>
+                <Cell col="3" text="부서코드"/>
+                <Cell col="4" cssclass="req" text="부서명"/>
+                <Cell col="5" cssclass="req" text="사업명"/>
+                <Cell col="6" cssclass="req" text="사업구분"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="image" text="bind:rowStatus" expr="expr:rowStatus==2?&quot;URL('theme://images/ico_i.png')&quot;:rowStatus==4?&quot;URL('theme://images/ico_u.png')&quot;:rowStatus==8?&quot;URL('theme://images/ico_d.png')&quot;:&quot;&quot;"/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox" text="bind:chk"/>
+                <Cell col="2" text="expr:currow+1"/>
+                <Cell col="3" text="bind:budgOrgId"/>
+                <Cell col="4" displaytype="normal" edittype="normal" style="align:left;" text="bind:budgOrgIdNm" editimemode="hangul" expandshow="show" expandimage="URL('theme://images\ico_expand.png')"/>
+                <Cell col="5" displaytype="normal" edittype="normal" style="align:left;" text="bind:bizCdNm" editimemode="hangul" expandshow="show" expandimage="URL('theme://images\ico_expand.png')" calendardisplay="edit" calendardisplaynulltype="none"/>
+                <Cell col="6" displaytype="combo" edittype="none" text="bind:bizDivCd" expandsize="13" combodataset="ds_grdBizDivCd" combocodecol="comCd" combodatacol="comCdNm"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="btn_del" taborder="5" text="삭제" cssclass="del" top="80" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" right="139" onclick="btn_del_onclick" userBtnAuth="S"/>
+        <Button id="btn_excel" taborder="7" text="엑셀" cssclass="btn_WF_Common" top="80" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="Excel" onclick="btn_excel_onclick" userBtnAuth="D"/>
+        <Static id="Static06" taborder="10" text="h5" visible="false" left="930" top="834" width="8.96%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static26" taborder="11" text="h5" visible="false" left="930" top="850" width="8.96%" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;" height="5"/>
+        <Static id="Static21" taborder="12" text="w&#13;&#10;15" visible="false" top="49" right="0" width="15" height="803" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Div id="div_search" taborder="0" left="0" top="0" right="15" height="65" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static02" taborder="15" text="예산부서" cssclass="search" left="408" top="10" width="48" height="22"/>
+              <Static id="Static00" taborder="8" text="회계연도" cssclass="search" left="20" top="10" width="48" height="22"/>
+              <Static id="Static01" taborder="12" text="회계단위" cssclass="search" left="202" top="10" width="48" height="22"/>
+              <Button id="btn_popUprAcnt01" taborder="19" cssclass="popupDetail" left="593" top="11" width="22" height="21" tooltiptype="hover" tooltiptext="초기화" userBtnAuth="S" onclick="div_search_btn_popUprAcnt01_onclick"/>
+              <Static id="Static08" taborder="21" text="사업구분" cssclass="search" left="635" top="10" width="48" height="22"/>
+              <Combo id="cmb_bizDivCd" taborder="3" innerdataset="@ds_schBizDivCd" codecolumn="comCd" datacolumn="comCdNm" left="697" top="11" width="124" height="21" class="essential"/>
+              <Edit id="edt_budgOrgIdNm" taborder="2" left="470" top="11" width="120" height="21" style="border:1 solid #ccccccff ;" onkeydown="div_search_edt_budgOrgIdNm_onkeydown" imemode="hangul"/>
+              <Spin id="spn_acntYy" taborder="0" value="0" onspin="div_search_spn_acntYy_onspin" left="82" top="11" width="100" height="21"/>
+              <Combo id="cmb_acntUnt" taborder="1" autoselect="true" innerdataset="@ds_schAcntUnt" codecolumn="cd" datacolumn="nm" canitemchange="common_canitemchange" onitemchanged="cmb_schAcntUnt00_onitemchanged" left="264" top="11" width="124" height="21" class="essential"/>
+              <Combo id="cmb_balDiv" taborder="4" innerdataset="@ds_schBalDiv" codecolumn="comCd" datacolumn="comCdNm" left="82" top="35" width="100" height="21" class="essential"/>
+              <Static id="Static10" taborder="32" text="수지구분" cssclass="search" left="20" top="35" width="48" height="22"/>
+              <Static id="Static12" taborder="33" text="예산구분" cssclass="search" left="202" top="35" width="48" height="22"/>
+              <Combo id="cmb_budgCd" taborder="5" innerdataset="@ds_schBudgCd" codecolumn="comCd" datacolumn="comCdNm" left="264" top="35" width="124" height="21" class="essential" onitemchanged="div_search_cmb_budgCd_onitemchanged"/>
+              <Static id="Static33" taborder="35" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="0" top="2" width="20" height="78"/>
+              <Static id="Static14" taborder="36" text="W10" cssclass="tipGuide" visible="false" left="68" top="2" width="14" height="78"/>
+              <Static id="Static13" taborder="37" text="H9" cssclass="tipGuide" visible="false" left="117" top="2" width="30" height="9"/>
+              <Static id="Static15" taborder="38" text="H9" cssclass="tipGuide" visible="false" left="117" top="56" width="30" height="9"/>
+              <Static id="Static16" taborder="39" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="182" top="0" width="20" height="78"/>
+              <Static id="Static06" taborder="40" text="W10" cssclass="tipGuide" visible="false" left="250" top="2" width="14" height="78"/>
+              <Static id="Static03" taborder="41" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="388" top="0" width="20" height="78"/>
+              <Static id="Static04" taborder="42" text="W10" cssclass="tipGuide" visible="false" left="456" top="2" width="14" height="37"/>
+              <Static id="Static05" taborder="43" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="615" top="0" width="20" height="39"/>
+              <Static id="Static07" taborder="44" text="W10" cssclass="tipGuide" visible="false" left="683" top="2" width="14" height="37"/>
+              <Static id="Static09" taborder="45" text="H5" cssclass="tipGuide" visible="false" left="108" top="30" width="38" height="5"/>
+              <Edit id="edt_budgOrgId" taborder="46" autoselect="true" onkeydown="div_search_edt_budgOrgIdNm_onkeydown" enableevent="true" left="470" top="35" width="124" height="21" style="border:1 solid #ccccccff ;" visible="false"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="sta_grdBgOrgBizList" taborder="14" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" right="15" width="86" style="border:0 none #808080ff ;align:right middle;" height="13" bottom="3"/>
+        <Static id="Static11" taborder="15" text="H15" cssclass="tipGuide" visible="false" left="0" top="65" width="1023" height="15"/>
+        <Static id="Static02" taborder="16" text="H5" cssclass="tipGuide" visible="false" left="0" top="102" width="1023" height="5"/>
+        <Button id="btn_budgGbCopy" taborder="17" text="본예산기초자료생성" onclick="btn_budgGbCopy_onclick" cssclass="btn_WF_Common" enable="true" top="79" right="326" width="128" height="22" tooltiptype="hover" tooltiptext="본예산 기초자료 생성(전년도 최종 일반사업 복사 및 일반사업 계정 기초 셋팅 )" userBtnAuth="P"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_schBizDivCd"/>
+      <Dataset id="ds_bgOrgBizList" useclientlayout="false"/>
+      <Dataset id="ds_schAcntUnt"/>
+      <Dataset id="ds_grdBizDivCd"/>
+      <Dataset id="ds_dummy"/>
+      <Dataset id="ds_schBalDiv"/>
+      <Dataset id="ds_schBudgCd"/>
+      <Dataset id="ds_acntYy" oncolumnchanged="ds_acntYy_oncolumnchanged"/>
+      <Dataset id="ds_proc_result"/>
+    </Objects>
+    <Bind>
+      <BindItem id="item0" compid="div_search.spn_acntYy" propid="value" datasetid="ds_acntYy" columnid="acntYy"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[// [프로젝트]	동의대학교 예산회계시스템 구축
+// [시스템명]	행정
+// [부시스템]	예산관리
+// [프로그램]	예산편성 > 부서별사업등록
+// [설명] 
+//	         
+// [작성자명]유남규	
+// [작성일자]	2015/11/30
+//////////////////////////////////[수정이력]//////////////////////////////////
+// [수정일자] 박 태 희
+// [수 정 자] 2015-12-10
+// [수정내용] 1. 조회조건 부서 리턴 수정
+//			   2. 조회조건 부서 검색 수정
+//             3. fn_div_serach_popCallback 추가
+//             4. 조회 param 수정
+//			   5. 조회조건 부서정보가 존재하고 신규시 부서정보 자동세팅 추가
+//			   6. 조회조건 부서명 엔터 팝업 호출 수정
+//			   7. edt_budgOrgIdNm enableevent 수정
+//			   8. 그리드 사업코드 제외 처리
+//             10. 사업조회팝업 그리드 사업코드 제외 처리
+//			   11. 중복체크 추가
+
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+
+/******************************************************************************
+* 전역변수
+* 변수명
+******************************************************************************/ 
+var arrDsInit = Array(1);
+	arrDsInit[0]  = this.ds_bgOrgBizList;
+	
+/******************************************************************************
+* 함 수 명 	: form_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	var arrDataSet = Array(3);
+		arrDataSet[0]  = "ds_schBizDivCd";  		//사업구분
+		arrDataSet[1]  = "ds_grdBizDivCd";			//사업구분
+		arrDataSet[2]  = "ds_schBalDiv";			//수지구분
+		arrDataSet[3]  = "ds_schBudgCd";			//예산구분
+	
+	var arrGrpCd = Array(3);
+		arrGrpCd[0]  = "BG014"; 					
+		arrGrpCd[1]  = "BG014";
+		arrGrpCd[2]  = "BG007";
+		arrGrpCd[3]  = "BG008";		
+			
+	// 사용여부	지정할 아큐먼트를 넘긴다.
+	var arrUseYn =	Array(3);
+		arrUseYn[0]  =	"Y";
+		arrUseYn[1]  =	"Y";
+		arrUseYn[2]  =	"Y";
+		arrUseYn[3]  =	"Y";
+	
+	// T:전체,S:선택,X:없음 
+	var arrModeFg =	Array(3);
+		arrModeFg[0]  =	"X";
+		arrModeFg[1]  =	"X";
+		arrModeFg[2]  =	"X";
+		arrModeFg[3]  =	"X";
+	
+	// WHERE절 내용 "X":없음
+	var arrWhere =	Array(3);
+		arrWhere[0]  =	"X";//ABB_CD IN ('S','K')
+		arrWhere[1]  =	"X";
+		arrWhere[2]  =	"X";
+		arrWhere[3]  =	"X";
+		
+	/* 메소드명     : ComboLoad
+	 * 설명         : 공통코드 테이블을 조회하여 콤보박스를 생성한다.
+	 * 메소드인수1  : DataSet명의 배열
+	 * 메소드인수2  : 그룹코드번호의 배열
+	 * 메소드인수3  : 캠퍼스구분 배열 ("T":전체, "C":공통만, "S":서울, "K":경주)
+	 * 메소드인수4  : 조건문의 배열 (1:사용, 0:사용안함)
+	 * 메소드인수5  : 전체공란 첨부여부 "T": 전체, "S":선택, "X" : 데이터시작
+	 * 메소드인수6  : WHERE절 내용 "X":없음
+	 */
+
+ 	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{
+	this.gfn_bindCmmnFunction();
+	this.cfn_acntYy("ds_acntYy");
+	this.cfn_acntUntCombo("ds_schAcntUnt",this.div_search.spn_acntYy.value,"","","0","bg01010"); //회계단위콤보호출
+}
+
+/*******************************************************************************
+ * 함 수 명 	: ds_acntYy_oncolumnchanged()
+ * 함수설명 	: 회계연도 변경후 회계단위호출 함수
+********************************************************************************/
+this.ds_acntYy_oncolumnchanged = function(obj:Dataset, e:nexacro.DSColChangeEventInfo)
+{
+	this.cfn_acntUntCombo("ds_schAcntUnt",e.newvalue,"","","0","bg02020"); //회계단위콤보호출	
+}
+
+/**********************************************************************
+ * 함 수 명 	: div_search_spn_acntYy_onspin()
+ * 함수설명 	: 스핀 년도 변경시 이벤트
+***********************************************************************/
+this.div_search_spn_acntYy_onspin = function(obj:Spin, e:nexacro.SpinEventInfo)
+{
+ 	this.cfn_acntUntCombo("ds_schAcntUnt",e.postvalue,"","","0","bg02020"); //회계단위콤보호출
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_search_onclick
+ * 함수설명 	: 조회버튼 클릭이벤트
+********************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preSearch 
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preSearch = function()
+{
+	this.ds_bgOrgBizList.clearData();
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_search = function()
+{
+	if(this.fn_preSearch()){
+		var strArg  = "acntUnt=" + nexacro.wrapQuote(this.div_search.cmb_acntUnt.value); //회계단위
+			strArg += "acntYy=" + nexacro.wrapQuote(this.div_search.spn_acntYy.value);	 //회계연도
+			strArg += "budgOrgBiz=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.edt_budgOrgId.value));	//예산부서
+			strArg += "bizDivCd=" + nexacro.wrapQuote(this.div_search.cmb_bizDivCd.value);	//사업구분
+			strArg += "balDiv=" + nexacro.wrapQuote(this.div_search.cmb_balDiv.value);	//수지구분
+			strArg += "budgCd=" + nexacro.wrapQuote(this.div_search.cmb_budgCd.value);	//예산구분
+			
+		this.gfn_transaction("SEARCH",
+							 "txAdmUrl::com/admi/selectBgOrgBiz.do",
+							 "",
+							 "ds_bgOrgBizList=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postSearch
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearch = function()
+{
+	this.gfn_getDatasetCount(this.ds_bgOrgBizList, this.sta_grdBgOrgBizList);
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_new_onclick
+ * 함수설명 	: Row를 추가한다.
+********************************************************************************/
+this.btn_new_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var addRow = this.gfn_addRow(this.ds_bgOrgBizList);
+	
+	this.ds_bgOrgBizList.setColumn(this.ds_bgOrgBizList.rowposition, "acntUnt", this.div_search.cmb_acntUnt.value); // 회계단위
+	this.ds_bgOrgBizList.setColumn(this.ds_bgOrgBizList.rowposition, "acntYy", this.div_search.spn_acntYy.value); //회계연도
+	this.ds_bgOrgBizList.setColumn(this.ds_bgOrgBizList.rowposition, "balDiv", this.div_search.cmb_balDiv.value); //수지구분
+	this.ds_bgOrgBizList.setColumn(this.ds_bgOrgBizList.rowposition, "budgCd", this.div_search.cmb_budgCd.value); //예산구분	
+	
+	//신규시 조회조건의 부서정보를 그리드에 기본 세팅 해준다.
+	//예산부서 조회조건이 전체일경우('') 그리드내에서 부서 검색 팝업을 통제 한다.
+	this.ds_bgOrgBizList.setColumn(this.ds_bgOrgBizList.rowposition, "budgOrgId", this.div_search.edt_budgOrgId.value); //부서코드
+	this.ds_bgOrgBizList.setColumn(this.ds_bgOrgBizList.rowposition, "budgOrgIdNm",this.div_search.edt_budgOrgIdNm.value); //부서명
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_del_onclick
+ * 함수설명 	: 선택한 Data를 삭제한다.
+ *********************************************************************/
+this.btn_del_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_deleteRow(this.ds_bgOrgBizList, "this.fn_save()");
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_save_onclick
+ * 함수설명 	: 저장버튼 클릭 event
+ *********************************************************************/
+this.btn_save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{	
+	this.fn_save();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_preSave
+ * 함수설명 	: DataSet을 저장 전 처리 함수.
+ *********************************************************************/
+this.fn_preSave = function()
+{
+	if(!this.gfn_isUpdate(this.ds_bgOrgBizList)){
+		this.gfn_message("A", "변경된 데이터가 없습니다.");
+		return false;
+	}
+	
+	/*
+	 * 필수값 입력 체크
+	 */
+	var colNm = "acntUnt$acntYy$balDiv$budgCd$budgOrgId$bizCd";
+	var korNm = "회계단위$회계년도$수지구분$예산구분$부서코드$사업코드";
+	var cmpNm = "$";
+	
+	var result = this.gfn_chkEssItem("ds_bgOrgBizList", colNm, korNm, cmpNm);
+	if (result[0] != "success") {
+		this.gfn_message("A", result[0]);
+		this.ds_basicInfo.set_rowposition(result[1]);
+		if(result[3] != ""){
+			this.objects[result[3]].setFocus();
+		}
+		return false;	
+	}
+	
+	//데이터 중복 체크
+	if(!this.gfn_chkValidation("ds_bgOrgBizList", "acntUnt$acntYy$budgOrgId$balDiv$bizCd$budgCd", "회계단위, 회계년도, 예산부서, 수지구분, 사업코드, 예산구분")){
+		return false;
+	}
+	
+	return true;
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_save
+ * 함수설명 	: DataSet을 저장한다.
+ *********************************************************************/
+this.fn_save = function()
+{
+	if(this.fn_preSave()){
+		this.gfn_transaction("SAVE",
+							 "txAdmUrl::com/admi/saveBgOrgBiz.do",
+							 "resultList=ds_bgOrgBizList:u",
+							 "",
+							 "",
+							 "fn_callBack");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSave
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postSave = function()
+{
+	this.gfn_message("A", "저장이 완료되었습니다.");
+	this.fn_search();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.gfn_message("A", errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		} else if(trId == "SEARCH"){
+			this.fn_postSearch();
+		} else if(trId == "SAVE"){
+			this.fn_postSave();
+		} else if(trId == "ACNTUNTCOMBO"){
+			this.div_search.cmb_acntUnt.set_index(0);
+			this.div_search.cmb_bizDivCd.set_index(0);
+			this.div_search.cmb_balDiv.set_index(1);
+			this.div_search.cmb_budgCd.set_index(0);
+		} else if(trId == "BUDGCREATE"){
+			this.fn_postCreate();
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_popCallback
+ * 함수설명 	: 팝업호출 후 callBack 함수.
+ *********************************************************************/
+this.fn_popCallback = function (strID, rtnVal)
+{
+	if(rtnVal == "close" || rtnVal == "" || rtnVal == "undefined") {
+		return;
+	}
+	
+	//Dataset을 return 할 경우
+	this.ds_dummy.clear();
+	this.ds_dummy.loadXML(rtnVal);
+	
+	//조직도조회팝업 호출+
+	if(strID == "admi01010_p07") {	
+		this.ds_bgOrgBizList.setColumn(this.ds_bgOrgBizList.rowposition, "budgOrgId", this.ds_dummy.getColumn(0, "deptCd")); //부서코드
+ 		this.ds_bgOrgBizList.setColumn(this.ds_bgOrgBizList.rowposition, "budgOrgIdNm", this.ds_dummy.getColumn(0, "deptNmKor")); //부서이름
+	} 
+	//사업검색 팝업 호출
+	else if(strID == "admi01010_p03") {
+		this.ds_bgOrgBizList.setColumn(this.ds_bgOrgBizList.rowposition, "bizDivCd", this.ds_dummy.getColumn(0, "bizDivCd"));	//사업구분코드
+		this.ds_bgOrgBizList.setColumn(this.ds_bgOrgBizList.rowposition, "bizCd", this.ds_dummy.getColumn(0, "bizCd"));	// 사업코드
+		this.ds_bgOrgBizList.setColumn(this.ds_bgOrgBizList.rowposition, "bizCdNm", this.ds_dummy.getColumn(0, "bizNm"));	// 사업코드명
+	}
+}
+
+this.fn_div_serach_popCallback = function (strID, rtnVal)
+{
+	if(rtnVal == "close" || rtnVal == "" || rtnVal == "undefined") {
+		return;
+	}
+	
+	//Dataset을 return 할 경우
+	this.ds_dummy.clear();
+	this.ds_dummy.loadXML(rtnVal);
+ 		
+	this.div_search.edt_budgOrgIdNm.set_value(this.ds_dummy.getColumn(0,"deptNmKor")); //SearchDiv 부서명
+	this.div_search.edt_budgOrgId.set_value(this.ds_dummy.getColumn(0,"deptCd"));		//SearchDiv 부서코드
+}
+
+/*********************************************************************
+ * 함 수 명 	: div_search_btn_popUprAcnt01_onclick
+ * 함수설명 	: 조회조건의 예산부서검색 팝업호출
+ *********************************************************************/
+this.div_search_btn_popUprAcnt01_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.cfn_deptPopup({jojikCdNm:this.div_search.edt_budgOrgIdNm.value,autoSearch:true},"fn_div_serach_popCallback");
+}
+
+/*******************************************************************************
+ * 함 수 명 	: ds_acntYy_oncolumnchanged()
+ * 함수설명 	: 회계연도 변경후 회계단위호출 함수`
+********************************************************************************/
+this.ds_acntYy_oncolumnchanged = function(obj:Dataset, e:nexacro.DSColChangeEventInfo)
+{
+	this.cfn_acntUntCombo("ds_acntUntCmb",e.newvalue,"","","0","bg01010"); //회계단위콤보호출
+}
+
+/*******************************************************************************
+ * 함 수 명 	: div_search_spn_acntYy_onspin
+ * 함수설명 	: 
+********************************************************************************/
+this.div_search_spn_acntYy_onspin = function(obj:Spin, e:nexacro.SpinEventInfo)
+{
+ 	this.cfn_acntUntCombo("ds_acntUntCmb",e.postvalue,"","","0","bg01010"); //회계단위콤보호출
+}
+
+/*******************************************************************************
+ * 함 수 명 	: sta_grdBgOrgBiz_onexpanddown
+ * 함수설명 	: 
+********************************************************************************/
+this.sta_grdBgOrgBiz_onexpanddown = function(obj:Grid, e:nexacro.GridMouseEventInfo)
+{
+	var cellPropText = this.grd_bgOrgBizList.getCellProperty("head",e.cell,"text");
+	
+	if(cellPropText == "부서명") { //부서명
+		var strParam = {jojikCdNm:this.div_search.edt_budgOrgIdNm.value
+		               ,autoSearch:true
+					   };
+		this.cfn_deptPopup(strParam,"fn_popCallback");
+	} else if(cellPropText == "사업명") { //사업명
+		var strParam = {acntUnt:this.ds_bgOrgBizList.getColumn(this.ds_bgOrgBizList.rowposition, "acntUnt")
+					   ,bizLvlCd:"30"
+		               ,autoSearch:true
+		               };
+		this.cfn_bgBizPopup(strParam,"fn_popCallback");
+ 	}
+}
+
+
+/*******************************************************************************
+ * 함 수 명 	: div_search_edt_budgOrgIdNm_onkeydown
+ * 함수설명 	: 엔터키
+********************************************************************************/
+this.div_search_edt_budgOrgIdNm_onkeydown = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	//브라우져에서는  autoClose 사용불가 
+	//런타임에서 테스트후 꼭 브라우져에서도 확인할것
+	this.div_search.edt_budgOrgId.set_value("");
+	if(e.keycode == 13) this.cfn_deptPopup({jojikCdNm:this.div_search.edt_budgOrgIdNm.value,autoSearch:true},"fn_div_serach_popCallback");
+
+}
+
+this.grd_bgOrgBizList_onkeyup = function(obj:Grid, e:nexacro.KeyEventInfo)
+{
+	if(obj.getBindCellIndex("body","budgOrgIdNm") == obj.currentcell){
+		if(e.keycode == 13 ){
+			var strParam = {jojikCdNm:this.ds_bgOrgBizList.getColumn(this.ds_bgOrgBizList.rowposition, "budgOrgIdNm")
+						   ,autoSearch:true
+						   };
+			this.cfn_deptPopup(strParam,"fn_popCallback");
+		}
+	}else if(obj.getBindCellIndex("body","bizCdNm") == obj.currentcell){
+		if(e.keycode == 13 ){
+			var strParam = {acntUnt:this.ds_bgOrgBizList.getColumn(this.ds_bgOrgBizList.rowposition, "acntUnt")
+						   ,bizLvlCd:"30"
+						   ,bizNm:this.ds_bgOrgBizList.getColumn(this.ds_bgOrgBizList.rowposition, "bizCdNm")
+						   ,autoSearch:true
+						   };
+			this.cfn_bgBizPopup(strParam,"fn_popCallback");
+		}
+	}
+}
+
+this.div_search_cmb_budgCd_onitemchanged = function(obj:Combo, e:nexacro.ItemChangeEventInfo)
+{
+	if(e.postvalue == "10") {
+		this.btn_budgGbCopy.set_enable(true);
+	} else {
+		this.btn_budgGbCopy.set_enable(false);
+	}
+}
+
+this.btn_budgGbCopy_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{	
+	var strMsg = this.div_search.spn_acntYy.value +  "년도 본예산 기초 자료를 생성합니다.\n\n";
+	    strMsg += "기 생성된 데이터가 있을 경우 삭제됩니다.\n\n";
+	    strMsg += "계속 하시겠습니까?";
+
+	if(!this.gfn_message("C", strMsg)) {
+		return;
+	}
+		
+	var strArg   = "acntYy="  + nexacro.wrapQuote(this.div_search.spn_acntYy.value);
+
+	this.gfn_transaction("BUDGCREATE",
+						 "txComUrl::com/admi/saveBgBudgCreate.do",
+						 "",
+						 "ds_proc_result=resultList",
+						 strArg,
+						 "fn_callBack");
+}
+
+this.fn_postCreate = function()
+{
+	var OUT_CNT = "";
+	var OUT_MSG = "";
+	
+	OUT_CNT = this.ds_proc_result.getColumn(0, "OUT_CNT");
+	OUT_MSG = this.ds_proc_result.getColumn(0, "OUT_MSG");
+	
+	if(OUT_CNT == 0)
+	{
+		this.gfn_message("A", OUT_MSG);
+		this.fn_search();
+	}
+	else
+	{
+		this.gfn_message("A", OUT_MSG);
+	}
+}
+
+this.btn_excel_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.cfn_excelExport(this.grd_bgOrgBizList,"부서별_사업_내역");
+}
+]]></Script>
+  </Form>
+</FDL>

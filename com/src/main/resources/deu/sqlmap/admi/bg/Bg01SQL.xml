@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Bg01SQL">
+
+    <typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>    
+    
+    <!--
+    #########################################################################################################################################
+    # 예산통제자등록 (admi/bg/bg01/bg01060.xfdl)
+    #########################################################################################################################################
+    -->
+    
+    <select id="bg01DAO.selectBg01060_01"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		SELECT '0' AS CHK
+    	     , '' AS ROW_STATUS
+		     , ACNT_UNT
+		     , APPRO_SEQ
+		     , dbo.F_COM_USER_NM(MEMBER_NO, 'DEPT_CD') AS DEPT_CD
+		     , dbo.F_COM_DEPT_NM(dbo.F_COM_USER_NM(MEMBER_NO, 'DEPT_CD'), 'DEPT_NM_KOR') AS DEPT_CD_NM
+		     , MEMBER_NO
+		     , dbo.F_COM_USER_NM(MEMBER_NO, 'NM') AS MEMBER_NO_NM
+		     , RMK
+		     , USE_YN
+		  FROM BG_CTRLER_REG WITH(NOLOCK)
+		 WHERE 1=1
+		 <isNotEmpty property="acntUnt">
+		   AND ACNT_UNT = #acntUnt#
+		 </isNotEmpty>
+		 ORDER BY ACNT_UNT, APPRO_SEQ
+    </select>
+        
+    <insert id="bg01DAO.insertBg01060_01" parameterClass="java.util.HashMap">
+		INSERT INTO BG_CTRLER_REG
+		            (
+		              ACNT_UNT
+		            , APPRO_SEQ
+		            , MEMBER_NO
+		            , RMK
+		            , USE_YN
+		            , INSERT_DT
+		            , INSERT_ID
+		            , INSERT_IP
+		            , INSERT_PGM		            
+		            )
+				VALUES
+					(
+					  #acntUnt#
+					, (
+						SELECT ISNULL(MAX(CONVERT(INT, APPRO_SEQ)), 0) + 1
+  				   		  FROM BG_CTRLER_REG WITH(NOLOCK)
+  				  		 WHERE 1=1
+				           AND ACNT_UNT = #acntUnt#
+				      )
+					, #memberNo#
+					, #rmk#
+					, #useYn#
+					, GETDATE()
+					, #insertId#
+					, #inserIp#
+					, 'bg01060.xfdl'
+					)
+	</insert>
+	
+	<update id="bg01DAO.updateBg01060_01" parameterClass="java.util.HashMap">
+		UPDATE BG_CTRLER_REG
+		   SET MEMBER_NO = #memberNo# 
+             , RMK = #rmk#
+             , USE_YN = #useYn#
+             , UPDATE_DT = GETDATE() 
+             , UPDATE_ID = #updateId#
+             , UPDATE_IP = #updateIp#
+             , UPDATE_PGM = 'bg01060.xfdl'
+         WHERE 1=1
+           AND ACNT_UNT = #acntUnt#
+           AND APPRO_SEQ = CONVERT(INT,#approSeq#  )
+	</update>
+	
+	<delete id="bg01DAO.deleteBg01060_01" parameterClass="java.util.HashMap">
+		DELETE 
+		  FROM BG_CTRLER_REG
+		 WHERE 1=1
+		   AND ACNT_UNT = #acntUnt#
+		   AND APPRO_SEQ = CONVERT(INT,#approSeq#)
+	</delete>
+    
+    
+</sqlMap>

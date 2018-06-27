@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="mainPage" classname="mainPage" left="0" top="0" width="1280" height="1024" titletext="UST 통합정보시스템(미사용)" onload="mainPage_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_topArea" taborder="1" top="0" height="23" style="border:0 none #808080ff ;" scrollbars="none" url="commMain::NaviFrame.xfdl" left="243" right="1"/>
+        <Div id="div_menuLv1" taborder="2" left="243" top="23" height="37" scrollbars="none" url="commMain::menuFrame1.xfdl" right="1"/>
+        <Div id="div_menuLv2" taborder="3" left="243" top="60" height="31" scrollbars="none" url="commMain::MenuFrame2.xfdl" right="1"/>
+        <Div id="div_leftMenu" taborder="4" left="0" top="95" width="242" scrollbars="none" bottom="10" url="commMain::LeftFrame.xfdl">
+          <Layouts/>
+        </Div>
+        <Tab id="workTab" taborder="10" left="243" top="96" onextrabuttonclick="workTab_onextrabuttonclick" tabindex="0" scrollbars="autoboth" visible="true" tabjustify="false" right="2" dragscrolltype="none" cssclass="menu_tab" height="33">
+          <Tabpages>
+            <Tabpage id="tabpage1">
+              <Layouts>
+                <Layout/>
+              </Layouts>
+            </Tabpage>
+          </Tabpages>
+        </Tab>
+        <Div id="div_logo" taborder="12" left="0" top="0" width="242" height="91" style="background:transparent;" url="commMain::LogoFrame.xfdl" scrollbars="none"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.0"><![CDATA[this.workTab_onextrabuttonclick = function(obj:Tab, e:nexacro.TabMouseEventInfo)
+{
+	this.workTab.set_tabindex(e.index);
+	application.ds_open.deleteRow(e.index);
+	//this.workTab.removeTabpage(-1);
+	this.workTab.removeTabpage(e.index);
+	
+	var component = this.components;	
+	var str = new Array();
+	var num = 0;
+	
+	for(var i=0 ; i<component.length ; i++){		
+		if(component[i] == "[object Div]"){
+			str[num] = component[i].id;
+			num++;
+		}
+	}
+	for(var i=0 ; i<str.length ; i++){
+		if(str[i].substr(0,3) == "Div"){
+			if(str[i].substring(3,4) == e.index){
+				//var divUrl = "this."+str[i]+".removeChild(this."+str[i]+")";
+				var divUrl = "this."+str[i]+".removeChild(this."+str[i]+")";
+				eval(divUrl);
+				var aaa = "this."+str[i]+".destroy()";
+				eval(aaa);
+			}
+		}
+	}
+}
+
+this.mainPage_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.workTab.removeTabpage(0);
+}
+]]></Script>
+  </Form>
+</FDL>

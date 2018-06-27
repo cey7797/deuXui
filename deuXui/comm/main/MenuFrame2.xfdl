@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="MenuFrame2" classname="MenuFrame2" left="0" top="0" width="1038" height="31" scrollbars="none" style="font:7 Dotum;">
+    <Layouts>
+      <Layout>
+        <Menu id="menuLv2" taborder="0" left="0" top="0" height="31" innerdataset="@gds_subsys" captioncolumn="subNm" levelcolumn="subLvl" idcolumn="subId" onmenuclick="Menu00_onmenuclick" cssclass="lv2" right="0" style="background:#0a3d91ff;"/>
+      </Layout>
+    </Layouts>
+    <Objects/>
+    <Script type="xscript5.0"><![CDATA[
+this.Menu00_onmenuclick = function(obj:Menu, e:nexacro.MenuClickEventInfo)
+{
+	var strArg  = "memberNo=" + nexacro.wrapQuote(application.gds_user.getColumn(application.gds_user.rowposition, "memberNo"));
+	    strArg += " strMenuId=" + nexacro.wrapQuote(e.id);
+	    strArg += " gv_langFg=" + nexacro.wrapQuote(application.gv_langFg);
+	
+	this.transaction("",
+					 "txComUrl::com/comm/selectLeftMenu.do",
+					 "",
+					 "gds_menu=resultList",
+					 strArg,
+					 "");
+}
+]]></Script>
+  </Form>
+</FDL>

@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd02010" classname="afd02010" left="0" top="0" width="1038" height="855" titletext="온라인약정승인관리" onload="afd02010_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="0" left="0" top="0" right="15" height="42" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static05" taborder="99" text="신청일자" cssclass="search" left="15" top="10" width="59" height="22" class="search_bul"/>
+              <Static id="Static02" taborder="101" text="w&#13;20" visible="false" left="291" top="10" width="20" height="23" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Static id="Static04" taborder="102" text="회원성명" cssclass="search" left="311" top="10" width="58" height="22" class="search_bul"/>
+              <Static id="Static06" taborder="103" text="w8" visible="false" left="368" top="10" width="8" height="23" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+              <Edit id="edt_sMemberNo" taborder="107" left="376" top="10" width="89" height="22" style="border:1 solid #ccccccff ;"/>
+              <Button id="btn_popup" taborder="108" cssclass="popupDetail" left="467" top="10" width="24" height="22" tooltiptype="hover" tooltiptext="조회" onclick="div_search_btn_popup_onclick"/>
+              <Calendar id="cal_createFromDt" taborder="109" left="79" top="10" width="100" height="22" class="essential" value="null" dateformat="yyyy-MM-dd ddd"/>
+              <Calendar id="cal_createToDt" taborder="110" left="191" top="10" width="100" height="22" class="essential"/>
+              <Static id="Static00" taborder="111" text="~" left="181" top="16" width="14" height="13"/>
+              <Edit id="edt_sMemberNmKor" taborder="112" left="493" top="10" width="109" height="22" style="border:1 solid #ccccccff ;" enable="false"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static00" taborder="1" text="w&#13;&#10;15" visible="false" left="0" top="10" width="15" height="23" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static01" taborder="2" text="w8" visible="false" left="71" top="10" width="8" height="23" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static05" taborder="4" text="h10" visible="false" left="0" top="32" width="1038" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static03" taborder="5" text="h10" visible="false" left="0" top="0" width="1038" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static40" taborder="7" text="h15" visible="false" left="0" top="41" width="1038" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static08" taborder="8" text="w&#13;&#10;15" visible="false" top="0" right="0" width="15" height="855" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_search" taborder="9" text="조회" cssclass="search" top="56" right="217" width="60" height="22" tooltiptype="hover" tooltiptext="조회" onclick="btn_search_onclick" userBtnAuth="R"/>
+        <Static id="Static09" taborder="11" visible="false" top="56" right="121" width="2" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static15" taborder="12" text="h10" visible="false" left="0" top="78" width="1036" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static20" taborder="13" text="h10" visible="false" left="447" top="823" width="576" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_count" taborder="14" text="Count &lt;b v='true'&gt;999&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" right="15" width="60" height="20" bottom="2"/>
+        <Grid id="grd_onlnCntrcp" taborder="16" binddataset="ds_onlnCntrct" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="col" left="0" top="82" right="15" bottom="32">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="26" band="left"/>
+                <Column size="40" band="left"/>
+                <Column size="96"/>
+                <Column size="93"/>
+                <Column size="86"/>
+                <Column size="107"/>
+                <Column size="152"/>
+                <Column size="100"/>
+                <Column size="92"/>
+                <Column size="107"/>
+                <Column size="100"/>
+              </Columns>
+              <Rows>
+                <Row size="26" band="head"/>
+                <Row size="24"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" text="순번"/>
+                <Cell col="2" text="신청일자"/>
+                <Cell col="3" text="가약정번호"/>
+                <Cell col="4" text="약정번호"/>
+                <Cell col="5" text="성명"/>
+                <Cell col="6" text="기금"/>
+                <Cell col="7" text="납부방법"/>
+                <Cell col="8" text="약정금액"/>
+                <Cell col="9" text="휴대폰번호"/>
+                <Cell col="10" text="처리상태"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="image" text="bind:rowStatus" expr="expr:rowStatus==2?&quot;URL('theme://images/icon/status_n.png')&quot;:rowStatus==4?&quot;URL('theme://images/icon/status_u.png')&quot;:rowStatus==8?&quot;URL('theme://images/icon/status_d.png')&quot;:&quot;&quot;"/>
+                <Cell col="1" text="expr:currow +1"/>
+                <Cell col="2" displaytype="date" text="bind:tmprEnggDt" calendardisplaynulltype="none"/>
+                <Cell col="3" text="bind:tmprEnggNo"/>
+                <Cell col="4" text="bind:inspyMgnNo"/>
+                <Cell col="5" style="align:left;" text="bind:memberNmKor"/>
+                <Cell col="6" style="align:left;" text="bind:endwNm"/>
+                <Cell col="7" displaytype="combo" text="bind:paymthd" combodataset="ds_paymthd" combocodecol="paymthdCd" combodatacol="paymthdNm"/>
+                <Cell col="8" displaytype="number" style="align:right;" text="bind:enggAmt" mask="###,###,###,###,###"/>
+                <Cell col="9" style="align:left;" text="bind:hpNo"/>
+                <Cell col="10" displaytype="combo" edittype="combo" text="bind:procGb" combodataset="ds_procGb" combocodecol="comCd" combodatacol="comCdNm" combodisplay="display"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2"/>
+                <Cell col="3"/>
+                <Cell col="4"/>
+                <Cell col="5"/>
+                <Cell col="6"/>
+                <Cell col="7"/>
+                <Cell col="8" displaytype="number" style="align:right;" expr="expr:dataset.getSum(&quot;enggAmt&quot;)"/>
+                <Cell col="9"/>
+                <Cell col="10"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="btn_excel" taborder="17" text="엑셀" cssclass="btn_WF_Common" top="56" right="93" width="60" height="22" tooltiptype="hover" tooltiptext="Excel" onclick="btn_excel_onclick" userBtnAuth="D"/>
+        <Button id="btn_save" taborder="18" text="저장" cssclass="save" top="56" right="155" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S" onclick="btn_save_onclick"/>
+        <Button id="btn_print" taborder="19" text="약정서" cssclass="print" top="56" right="15" width="76" height="22" tooltiptype="hover" tooltiptext="출력" userBtnAuth="P" onclick="btn_print_onclick"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_onlnCntrct">
+        <ColumnInfo>
+          <Column id="wsJuminNo" type="string" size="32"/>
+          <Column id="paymthd" type="string" size="32"/>
+          <Column id="fpyPrearngeDt" type="string" size="32"/>
+          <Column id="pcpsklRel" type="string" size="32"/>
+          <Column id="remark" type="string" size="32"/>
+          <Column id="tmprEnggNo" type="string" size="32"/>
+          <Column id="endwCd" type="string" size="32"/>
+          <Column id="inspySeq" type="string" size="32"/>
+          <Column id="inspyMonthCnt" type="string" size="32"/>
+          <Column id="hpNo" type="string" size="32"/>
+          <Column id="chk" type="string" size="32"/>
+          <Column id="inspyMgnNo" type="string" size="32"/>
+          <Column id="tmprEnggDt" type="string" size="32"/>
+          <Column id="rcpmnyerNm" type="string" size="32"/>
+          <Column id="mtInspyAmt" type="string" size="32"/>
+          <Column id="frstInspyPrearngeDt" type="string" size="32"/>
+          <Column id="endwNm" type="string" size="32"/>
+          <Column id="memberNmKor" type="string" size="32"/>
+          <Column id="rowStatus" type="string" size="32"/>
+          <Column id="procGb" type="string" size="32"/>
+          <Column id="memberNo" type="string" size="32"/>
+          <Column id="enggAmt" type="string" size="32"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_procGb"/>
+      <Dataset id="ds_paymthd">
+        <ColumnInfo>
+          <Column id="paymthdCd" type="STRING" size="256"/>
+          <Column id="paymthdNm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="paymthdCd">1</Col>
+            <Col id="paymthdNm">계좌이체</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_dummy"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::frameUtils.xjs";
+include "commJs::lib_String.xjs";
+
+this.afd02010_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	var essGrd = new Array();
+		essGrd[0] = this.grd_onlnCntrcp;
+	
+	this.gfn_essDataset(essGrd);//그리드헤더처리
+	this.gfn_bindCmmnFunction();
+	
+	var arrDataSet = Array();
+		arrDataSet[0]  = "ds_procGb";
+		
+	var arrGrpCd = Array();
+		arrGrpCd[0]  = "AFD05"; 					// 약정승인상태(1:약정승인 2:가약정 3:약정취소)
+		
+	var arrUseYn =	Array();
+		arrUseYn[0]  =	"Y";
+		
+	var arrModeFg =	Array();
+		arrModeFg[0]  =	"X";
+		
+	var arrWhere =	Array();
+		arrWhere[0]  =	"X";//ABB_CD IN ('S','K')
+		
+ 	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+}
+
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();
+}
+
+this.btn_excel_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	
+}
+
+this.btn_save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_save();
+}
+
+this.div_search_btn_popup_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{	
+	var popupId = "afd02020_p02";
+	var popupUrl = "afd02::afd02020_p02.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var argumentsList = new Array();
+		argumentsList['memberNo']   = this.gfn_nvl(this.div_search.edt_sMemberNo.value, "");
+		
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, this);
+
+}
+
+this.fn_search = function() 
+{
+	var strArg = "createFromDt="+nexacro.wrapQuote(this.gfn_nvl(this.div_search.cal_createFromDt.value, "19000101"));
+		strArg += " createToDt="+nexacro.wrapQuote(this.gfn_nvl(this.div_search.cal_createToDt.value, "21001231"));
+		strArg += " memberNo="+nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_sMemberNo.value, ""));
+		
+	this.gfn_transaction("SEARCH"
+						,"txAdmUrl::com/admi/afd/afd02/retrieveOnlnCntrct.do"
+						,""
+						,"ds_onlnCntrct=resultList"
+						,strArg
+						,"");
+	
+}
+
+this.fn_save = function() 
+{
+	this.gfn_transaction("SAVE"
+						,"txAdmUrl::com/admi/afd/afd02/saveOnlnCntrct.do"
+						,"resultList=ds_onlnCntrct:u"
+						,""
+						,""
+						,""
+						,true);
+}
+
+this.fn_popCallBack = function(strID, rtnVal) 
+{
+	if("close" == strID) 
+	{
+		return;
+	}
+	
+	//
+	if("afd02020_p02" == strID) 
+	{
+		this.ds_dummy.loadXML(rtnVal);
+		
+		this.div_search.edt_sMemberNo.set_value(this.ds_dummy.getColumn(0, "memberNo"));
+ 		this.div_search.edt_sMemberNmKor.set_value(this.ds_dummy.getColumn(0, "memberNmKor"));	
+	}
+}
+
+this.fn_callBack = function(trId, errCd, errMsg) 
+{
+	if(errCd < 0 ) 
+	{
+		this.gfn_message("A", errMsg);
+		return false;
+	}	
+	//
+	if("LOAD" == trId) 
+	{
+		this.gfn_getDatasetCount(this.ds_onlnCntrct, this.sta_count);
+		
+		var today = this.gfn_getCurrentDate("YYYYMMDD");
+		
+		this.div_search.cal_createFromDt.set_value(today.substr(0,6) + "01");
+		this.div_search.cal_createToDt.set_value(today);
+	}
+	//
+	else if("SEARCH" == trId) 
+	{
+		this.gfn_getDatasetCount(this.ds_onlnCntrct, this.sta_count);
+		
+	}
+	//
+	else if("SAVE" == trId) 
+	{
+		this.gfn_message("A", "정상적으로 처리되었습니다.");
+		this.fn_search();
+	}	
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_print_onclick
+* 함수설명 	: 약정서 출력 이벤트
+*****************************************************************************/
+this.btn_print_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.gfn_message("C","현재 선택된 항목의 약정서를 출력하시겠습니까?"))
+	{
+	
+		this.fn_print();
+	}
+}
+/****************************************************************************
+* 함 수 명 	: fn_print
+* 함수설명 	: 기부금영수증 출력 함수
+*****************************************************************************/
+this.fn_print = function() 
+{
+	var callType = "param"; // null 값이나 "param" 값으로 던질것
+    var crfName = "afd/fd02010_r01"; //  업무명/레포트명 
+	var memberNo = "";
+	
+    var crfParams = "TMPR_ENGG_NO:" + this.gfn_nvl(this.ds_onlnCntrct.getColumn(this.ds_onlnCntrct.rowposition, "tmprEnggNo"),""); //예) 키:값|키:값|키:값
+	
+    var crfDbName = "oracle1"; // null 값이나 "oracle1" 값으로 던질것
+	this.gfn_openClipReport(callType,crfName,crfParams,crfDbName);
+	this.ds_dummy.clearData();
+	
+}
+]]></Script>
+  </Form>
+</FDL>

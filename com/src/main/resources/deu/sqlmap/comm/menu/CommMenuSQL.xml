@@ -1,0 +1,989 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CommMenuSQL">
+
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	
+	<select id="commMenuDAO.selectSysMenu"  parameterClass="Map" resultClass="egovMap">
+
+			SELECT DISTINCT
+			       CSYS.SYS_ID,
+				   CSYS.SYS_NM,
+				   0 AS SYS_LVL,
+				   CSYS.SORT_SEQ,
+				   CSYS.SYS_NM_ENG,
+				   CSYS.CREATE_NO,
+				   CSYS.CREATE_DT,
+				   CSYS.ENTRY_NO,
+				   CSYS.ENTRY_DT
+			  FROM COM_SYS         CSYS
+			     , COM_V_ROLE_USER VRUSR
+			     , COM_ROLE_PROG   RPGM
+			 WHERE 1=1
+			   AND VRUSR.ROLE_ID   = RPGM.ROLE_ID
+			   AND RPGM.SYS_ID     = CSYS.SYS_ID
+			   AND VRUSR.MEMBER_NO = #memberNo#
+			   
+			UNION
+			
+			SELECT DISTINCT
+			       CSYS.SYS_ID,
+				   CSYS.SYS_NM,
+				   0 AS SYS_LVL,
+				   CSYS.SORT_SEQ,
+				   CSYS.SYS_NM_ENG,
+				   CSYS.CREATE_NO,
+				   CSYS.CREATE_DT,
+				   CSYS.ENTRY_NO,
+				   CSYS.ENTRY_DT
+			  FROM COM_SYS         CSYS
+			     , COM_ROLE_USER_GB RUSR
+			     , COM_ROLE_PROG   RPGM
+			     , VW_USER_LIST VUL
+			 WHERE 1=1
+			   AND RUSR.ROLE_ID   = RPGM.ROLE_ID
+			   AND RPGM.SYS_ID     = CSYS.SYS_ID
+			   AND RUSR.USER_GB = VUL.USER_GB
+			   AND VUL.MEMBER_NO = #memberNo#
+			   
+		     ORDER BY CSYS.SORT_SEQ
+	</select>
+	
+	<select id="commMenuDAO.selectSysCombo"  parameterClass="Map" resultClass="egovMap">
+			<isNotEmpty property="strAllGb" >
+			SELECT '' AS SYS_ID
+			     , '전체' AS SYS_NM
+			     , 0 AS SORT_SEQ
+			 
+			
+			UNION ALL
+			</isNotEmpty>
+			
+			SELECT DISTINCT
+			       CSYS.SYS_ID,
+				   CSYS.SYS_ID + ' - ' +CSYS.SYS_NM as SYS_NM,
+				   CSYS.SORT_SEQ
+			  FROM COM_SYS         CSYS
+			     , COM_V_ROLE_USER VRUSR
+			     , COM_ROLE_PROG   RPGM
+			 WHERE 1=1
+			   AND VRUSR.ROLE_ID   = RPGM.ROLE_ID
+			   AND RPGM.SYS_ID     = CSYS.SYS_ID
+			   <isNotEmpty property="memberNo" >
+			   AND VRUSR.MEMBER_NO = #memberNo#
+			   </isNotEmpty>
+		     ORDER BY SORT_SEQ
+	</select>
+	
+	<select id="commMenuDAO.selectSubMenu"  parameterClass="Map" resultClass="egovMap">
+             WITH TA AS (
+				    SELECT PROG.SYS_ID
+					     , (SELECT SYS_NM
+					          FROM COM_SYS SA
+					         WHERE PROG.SYS_ID = SA.SYS_ID) AS SYS_NM
+					     , PROG.SUB_ID
+					     , (SELECT SA.SUB_NM
+					          FROM COM_SUB SA
+					         WHERE PROG.SYS_ID = SA.SYS_ID
+					           AND PROG.SUB_ID = SA.SUB_ID) AS SUB_NM
+					     , PROG.PROG_ID AS MENU_ID
+						 , PROG.PROG_NM AS MENU_NM
+				         , PROG.MENU_ID AS PARENT_ID
+				         , (SELECT SA.MENU_NM
+					          FROM COM_MENU SA
+					         WHERE PROG.SYS_ID = SA.SYS_ID
+					           AND PROG.SUB_ID = SA.SUB_ID
+					           AND PROG.MENU_ID = SA.MENU_ID) AS PARENT_NM
+				         , PROG.URL_N AS URL
+				         , 1 AS MENU_LVL
+				         , 0 AS MENU_ST
+				         , PROG.SORT_SEQ
+				         , PROG.YEAR
+				         , PROG.TERM_CD
+				         , PROG.SCHEDULE_CD
+				         , PROG.PROG_NM_ENG
+				  	  FROM COM_PROG PROG
+				  	     , COM_V_USER_PROG VPROG
+				  	 WHERE VPROG.SYS_ID  = PROG.SYS_ID
+				  	   AND VPROG.SUB_ID  = PROG.SUB_ID
+				  	   AND VPROG.MENU_ID = PROG.MENU_ID
+		   			   AND VPROG.PROG_ID = PROG.PROG_ID
+		   			   <isNotEmpty property="memberNo" >
+		   			   AND VPROG.MEMBER_NO= #memberNo#
+		   			   </isNotEmpty>
+		   			UNION 
+				    SELECT PROG.SYS_ID
+					     , (SELECT SYS_NM
+					          FROM COM_SYS SA
+					         WHERE PROG.SYS_ID = SA.SYS_ID) AS SYS_NM
+					     , PROG.SUB_ID
+					     , (SELECT SA.SUB_NM
+					          FROM COM_SUB SA
+					         WHERE PROG.SYS_ID = SA.SYS_ID
+					           AND PROG.SUB_ID = SA.SUB_ID) AS SUB_NM
+					     , PROG.PROG_ID AS MENU_ID
+						 , PROG.PROG_NM AS MENU_NM
+				         , PROG.MENU_ID AS PARENT_ID
+				         , (SELECT SA.MENU_NM
+					          FROM COM_MENU SA
+					         WHERE PROG.SYS_ID = SA.SYS_ID
+					           AND PROG.SUB_ID = SA.SUB_ID
+					           AND PROG.MENU_ID = SA.MENU_ID) AS PARENT_NM
+				         , PROG.URL_N AS URL
+				         , 1 AS MENU_LVL
+				         , 0 AS MENU_ST
+				         , PROG.SORT_SEQ
+				         , PROG.YEAR
+				         , PROG.TERM_CD
+				         , PROG.SCHEDULE_CD
+				         , PROG.PROG_NM_ENG
+				  	  FROM COM_PROG PROG
+				  	     , COM_ROLE_PROG RPROG
+				  	     , COM_ROLE_USER_GB RUSER
+				  	     , VW_USER_LIST VUL
+				  	 WHERE RPROG.SYS_ID  = PROG.SYS_ID
+				  	   AND RPROG.SUB_ID  = PROG.SUB_ID
+				  	   AND RPROG.MENU_ID = PROG.MENU_ID
+		   			   AND RPROG.PROG_ID = PROG.PROG_ID
+		   			   AND RPROG.ROLE_ID = RUSER.ROLE_ID
+		   			   AND RUSER.USER_GB = VUL.USER_GB
+		   			   <isNotEmpty property="memberNo" >
+		   			   AND VUL.MEMBER_NO= #memberNo#
+		   			   </isNotEmpty>
+			)
+			SELECT DISTINCT
+			       CSUB.SYS_ID,
+				   CSUB.SUB_ID,
+				   CSUB.SUB_NM,
+				   CSUB.SORT_SEQ,
+				   0 AS SUB_LVL,
+				   CSUB.CREATE_NO,
+				   CSUB.CREATE_DT,
+				   CSUB.ENTRY_NO,
+				   CSUB.ENTRY_DT,
+				   CSUB.SUB_NM_ENG
+			  FROM COM_SUB  CSUB
+			     , COM_V_ROLE_USER VRUSR
+			     , COM_ROLE_PROG   RPGM
+			 WHERE 1=1
+			   AND VRUSR.ROLE_ID   = RPGM.ROLE_ID
+			   AND RPGM.SYS_ID     = CSUB.SYS_ID
+			   AND VRUSR.MEMBER_NO = #memberNo#
+			   AND EXISTS (SELECT 1 FROM TA SA WHERE CSUB.SUB_ID = SA.SUB_ID)
+			UNION   
+			SELECT DISTINCT
+			       CSUB.SYS_ID,
+				   CSUB.SUB_ID,
+				   CSUB.SUB_NM,
+				   CSUB.SORT_SEQ,
+				   0 AS SUB_LVL,
+				   CSUB.CREATE_NO,
+				   CSUB.CREATE_DT,
+				   CSUB.ENTRY_NO,
+				   CSUB.ENTRY_DT,
+				   CSUB.SUB_NM_ENG
+			  FROM COM_SUB  CSUB
+			     , COM_ROLE_PROG   RPGM
+			     , COM_ROLE_USER_GB RUSER
+				 , VW_USER_LIST VUL
+			 WHERE 1=1
+			   AND RUSER.ROLE_ID   = RPGM.ROLE_ID
+			   AND RPGM.SYS_ID     = CSUB.SYS_ID
+			   AND RUSER.USER_GB   = VUL.USER_GB
+			   AND VUL.MEMBER_NO = #memberNo#
+			   AND EXISTS (SELECT 1 FROM TA SA WHERE CSUB.SUB_ID = SA.SUB_ID)
+		     ORDER BY SYS_ID, SORT_SEQ
+	</select>
+	
+	<select id="commMenuDAO.selectSubCombo"  parameterClass="Map" resultClass="egovMap">
+			<isNotEmpty property="strAllGb" >
+			SELECT '' AS SYS_ID
+				 , '' AS SUB_ID
+			     , '전체' AS SUB_NM
+			     , 0 AS SORT_SEQ
+
+			UNION ALL
+			</isNotEmpty>
+			
+			SELECT DISTINCT
+				   CSUB.SYS_ID, /*임시*/
+				   CSUB.SUB_ID,
+				   CSUB.SUB_ID + ' - ' + CSUB.SUB_NM AS SUB_NM,
+				   CSUB.SORT_SEQ
+			  FROM COM_SUB  CSUB
+			     , COM_V_ROLE_USER VRUSR
+			     , COM_ROLE_PROG   RPGM
+			 WHERE 1=1
+			   AND VRUSR.ROLE_ID   = RPGM.ROLE_ID
+			   AND RPGM.SYS_ID     = CSUB.SYS_ID
+			   <isNotEmpty property="memberNo" >
+			   AND VRUSR.MEMBER_NO = #memberNo#
+			   </isNotEmpty>
+			   <isNotEmpty property="strSysId" >
+			   AND CSUB.SYS_ID = #strSysId#
+			   </isNotEmpty>
+		     ORDER BY SORT_SEQ
+	</select>
+	
+	<select id="commMenuDAO.selectLeftMenu"  parameterClass="Map" resultClass="egovMap">
+			WITH TA AS (
+				    SELECT PROG.SYS_ID
+					     , (SELECT SYS_NM
+					          FROM COM_SYS SA
+					         WHERE PROG.SYS_ID = SA.SYS_ID) AS SYS_NM
+					     , PROG.SUB_ID
+					     , (SELECT SA.SUB_NM
+					          FROM COM_SUB SA
+					         WHERE PROG.SYS_ID = SA.SYS_ID
+					           AND PROG.SUB_ID = SA.SUB_ID) AS SUB_NM
+					     , PROG.PROG_ID AS MENU_ID
+						 , PROG.PROG_NM AS MENU_NM
+				         , PROG.MENU_ID AS PARENT_ID
+				         , (SELECT SA.MENU_NM
+					          FROM COM_MENU SA
+					         WHERE PROG.SYS_ID = SA.SYS_ID
+					           AND PROG.SUB_ID = SA.SUB_ID
+					           AND PROG.MENU_ID = SA.MENU_ID) AS PARENT_NM
+				         , PROG.URL_N AS URL
+				         , 3 AS MENU_LVL
+				         , 0 AS MENU_ST
+				         , PROG.SORT_SEQ
+				         , PROG.YEAR
+				         , PROG.TERM_CD
+				         , PROG.SCHEDULE_CD
+				         , PROG.PROG_NM_ENG
+				         , VPROG.SELECT_FLAG
+				         , VPROG.SAVE_FLAG
+				         , VPROG.PRINT_FLAG
+				         , VPROG.DOWNLOAD_FLAG
+				         , VPROG.SEND_FLAG
+				         , VPROG.PERSON_INFO_FLAG
+				         , VPROG.MANAGER_FLAG
+				  	  FROM COM_PROG PROG
+				  	     , COM_V_USER_PROG VPROG
+				  	 WHERE VPROG.SYS_ID  = PROG.SYS_ID
+				  	   AND VPROG.SUB_ID  = PROG.SUB_ID
+				  	   AND VPROG.MENU_ID = PROG.MENU_ID
+		   			   AND VPROG.PROG_ID = PROG.PROG_ID
+		   			   <isNotEmpty property="memberNo" >
+		   			   AND VPROG.MEMBER_NO= #memberNo#
+		   			   </isNotEmpty>
+		   			UNION   
+				    SELECT PROG.SYS_ID
+					     , (SELECT SYS_NM
+					          FROM COM_SYS SA
+					         WHERE PROG.SYS_ID = SA.SYS_ID) AS SYS_NM
+					     , PROG.SUB_ID
+					     , (SELECT SA.SUB_NM
+					          FROM COM_SUB SA
+					         WHERE PROG.SYS_ID = SA.SYS_ID
+					           AND PROG.SUB_ID = SA.SUB_ID) AS SUB_NM
+					     , PROG.PROG_ID AS MENU_ID
+						 , PROG.PROG_NM AS MENU_NM
+				         , PROG.MENU_ID AS PARENT_ID
+				         , (SELECT SA.MENU_NM
+					          FROM COM_MENU SA
+					         WHERE PROG.SYS_ID = SA.SYS_ID
+					           AND PROG.SUB_ID = SA.SUB_ID
+					           AND PROG.MENU_ID = SA.MENU_ID) AS PARENT_NM
+				         , PROG.URL_N AS URL
+				         , 3 AS MENU_LVL
+				         , 0 AS MENU_ST
+				         , PROG.SORT_SEQ
+				         , PROG.YEAR
+				         , PROG.TERM_CD
+				         , PROG.SCHEDULE_CD
+				         , PROG.PROG_NM_ENG
+				         , VPROG.SELECT_FLAG
+				         , VPROG.SAVE_FLAG
+				         , VPROG.PRINT_FLAG
+				         , VPROG.DOWNLOAD_FLAG
+				         , VPROG.SEND_FLAG
+				         , VPROG.PERSON_INFO_FLAG
+				         , VPROG.MANAGER_FLAG
+				  	  FROM COM_PROG PROG
+				  	     , COM_ROLE_PROG VPROG
+				  	     , COM_ROLE_USER_GB RUSR
+				  	     , VW_USER_LIST VUL
+				  	 WHERE VPROG.SYS_ID  = PROG.SYS_ID
+				  	   AND VPROG.SUB_ID  = PROG.SUB_ID
+				  	   AND VPROG.MENU_ID = PROG.MENU_ID
+		   			   AND VPROG.PROG_ID = PROG.PROG_ID
+		   			   AND VPROG.ROLE_ID = RUSR.ROLE_ID
+		   			   AND RUSR.USER_GB  = VUL.USER_GB
+		   			   <isNotEmpty property="memberNo" >
+		   			   AND VUL.MEMBER_NO= #memberNo#
+		   			   </isNotEmpty>
+			)
+			SELECT SYS_ID
+			     , SYS_NM
+				 , SUB_ID
+				 , SUB_NM
+				 , MENU_ID
+				 , MENU_NM
+				 , PARENT_ID
+				 , PARENT_NM
+				 , URL
+				 , MENU_LVL
+				 , MENU_ST
+				 , SORT_SEQ
+				 , select_flag
+				 , save_flag 
+				 , print_flag
+				 , download_flag
+				 , '1' as upload_flag
+				 , send_flag
+				 , PERSON_INFO_FLAG
+				 , MANAGER_FLAG
+				 , YEAR
+				 , TERM_CD
+				 , SCHEDULE_CD
+				 , PROG_NM_ENG
+			  FROM
+				 (
+					SELECT A.SYS_ID
+					     , (SELECT SA.SYS_NM
+					          FROM COM_SYS SA
+					         WHERE A.SYS_ID = SA.SYS_ID) AS SYS_NM
+					     , A.SUB_ID
+					     , (SELECT SA.SUB_NM
+					          FROM COM_SUB SA
+					         WHERE A.SYS_ID = SA.SYS_ID
+					           AND A.SUB_ID = SA.SUB_ID) AS SUB_NM
+					     , A.MENU_ID
+		       			 , A.MENU_NM
+		       			 , A.SUB_ID AS PARENT_ID
+		       			 , (SELECT SA.MENU_NM
+					          FROM COM_MENU SA
+					         WHERE A.SYS_ID = SA.SYS_ID
+					           AND A.SUB_ID = SA.SUB_ID
+					           AND A.MENU_ID = SA.MENU_ID) AS PARENT_NM
+		       			 , '' AS URL
+		       			 , 2 AS MENU_LVL
+		       			 , 0 AS MENU_ST
+		       			 , A.SORT_SEQ
+		       			 , '' AS YEAR
+		       			 , '' AS TERM_CD
+		       			 , '' AS SCHEDULE_CD
+		       			 , '' AS PROG_NM_ENG
+		       			 , '' AS SELECT_FLAG
+				         , '' AS SAVE_FLAG
+				         , '' AS PRINT_FLAG
+				         , '' AS DOWNLOAD_FLAG
+				         , '' AS SEND_FLAG
+				         , '' AS PERSON_INFO_FLAG
+				         , '' AS MANAGER_FLAG
+					  FROM COM_MENU A
+		             WHERE EXISTS (SELECT 1 FROM TA SA WHERE A.MENU_ID = SA.PARENT_ID)
+		             
+					UNION ALL
+	
+				   SELECT SYS_ID
+				        , SYS_NM
+				        , SUB_ID
+				        , SUB_NM
+				        , MENU_ID
+				        , MENU_NM
+				        , PARENT_ID
+				        , PARENT_NM
+				        , URL
+				        , MENU_LVL
+				        , MENU_ST
+				        , SORT_SEQ
+				        , YEAR
+				        , TERM_CD
+				        , SCHEDULE_CD
+				        , PROG_NM_ENG
+				        , SELECT_FLAG
+				        , SAVE_FLAG
+				        , PRINT_FLAG
+				        , DOWNLOAD_FLAG
+				        , SEND_FLAG
+				        , PERSON_INFO_FLAG
+				        , MANAGER_FLAG
+				    FROM TA
+				 ) A
+	       WHERE 1 = 1
+			<isNotEmpty property="strMenuId" >
+		     AND SUB_ID = #strMenuId#
+			</isNotEmpty>
+	    ORDER BY CASE WHEN SUB_ID = PARENT_ID THEN MENU_ID
+                      WHEN SUB_ID != PARENT_ID THEN PARENT_ID END , MENU_LVL, SORT_SEQ
+	</select>
+	
+	<select id="commMenuDAO.selectTreeMenu"  parameterClass="Map" resultClass="egovMap">
+			SELECT CONNECT_BY_ISLEAF AS LEAF
+			     , SYS_CONNECT_BY_PATH(MENU_ID, ',') AS CONN_PATH
+			     , MENU_ID
+				 , MENU_NM
+				 , PARENT_ID
+				 , URL
+				 , MENU_LVL
+				 , MENU_ST
+				 , SORT_SEQ
+				 , select_flag
+				 , save_flag 
+				 , print_flag
+				 , download_flag
+				 , send_flag
+				 , YEAR
+				 , TERM_CD
+				 , SCHEDULE_CD
+				 , 0 AS MENU_CHK
+				 , #memberNo# AS MEMBER_NO
+			  FROM
+				 (	SELECT SYS_ID AS MENU_ID
+				         , SYS_NM AS MENU_NM
+				         , '' AS PARENT_ID
+				         , '' AS URL
+				         , 1 AS MENU_LVL
+				         , 0 AS MENU_ST
+				         , SORT_SEQ
+				         , '' AS YEAR
+		       			 , '' AS TERM_CD
+		       			 , '' AS SCHEDULE_CD
+		       			 , '' AS SELECT_FLAG
+		       			 , '' AS SAVE_FLAG
+		       			 , '' AS PRINT_FLAG
+		       			 , '' AS DOWNLOAD_FLAG
+		       			 , '' AS SEND_FLAG
+		       		  FROM COM_SYS
+		       		  
+					UNION ALL
+	
+					SELECT PROG.PROG_ID AS MENU_ID
+						 , PROG.PROG_NM AS MENU_NM
+						 , PROG.SYS_ID AS PARENT_ID
+				         , PROG.URL_N AS URL
+				         , 4 AS MENU_LVL
+				         , 0 AS MENU_ST
+				         , PROG.SORT_SEQ
+				         , PROG.YEAR
+				         , PROG.TERM_CD
+				         , PROG.SCHEDULE_CD
+				         , VPROG.SELECT_FLAG
+                         , VPROG.SAVE_FLAG
+                         , VPROG.PRINT_FLAG
+                         , VPROG.DOWNLOAD_FLAG
+                         , VPROG.SEND_FLAG
+				  	  FROM COM_PROG PROG
+				  	     , COM_V_USER_PROG VPROG
+				  	 WHERE VPROG.SYS_ID  = PROG.SYS_ID
+				  	   AND VPROG.SUB_ID  = PROG.SUB_ID
+				  	   AND VPROG.MENU_ID = PROG.MENU_ID
+		   			   AND VPROG.PROG_ID = PROG.PROG_ID
+		   			   <isNotEmpty property="memberNo" >
+		   			   AND VPROG.MEMBER_NO= #memberNo#
+		   			   </isNotEmpty>
+				 )
+				 START WITH MENU_LVL = 1
+				 CONNECT BY PRIOR MENU_ID = PARENT_ID
+				 ORDER SIBLINGS BY SORT_SEQ
+	</select>
+	
+	<select id="commMenuDAO.selectTreeMenuPop"  parameterClass="Map" resultClass="egovMap">
+			SELECT CONNECT_BY_ISLEAF AS LEAF
+			     , SYS_CONNECT_BY_PATH(MENU_ID, ',') AS CONN_PATH
+			     , MENU_ID
+				 , MENU_NM
+				 , PARENT_ID
+				 , URL
+				 , MENU_LVL
+				 , MENU_ST
+				 , SORT_SEQ
+				 , select_flag
+				 , save_flag 
+				 , print_flag
+				 , download_flag
+				 , send_flag
+				 , YEAR
+				 , TERM_CD
+				 , SCHEDULE_CD
+				 , 0 AS MENU_CHK
+				 , #memberNo# AS MEMBER_NO
+			  FROM
+				 (	SELECT SYS_ID AS MENU_ID
+				         , SYS_NM AS MENU_NM
+				         , '' AS PARENT_ID
+				         , '' AS URL
+				         , 1 AS MENU_LVL
+				         , 0 AS MENU_ST
+				         , SORT_SEQ
+				         , '' AS YEAR
+		       			 , '' AS TERM_CD
+		       			 , '' AS SCHEDULE_CD
+		       			 , '' AS SELECT_FLAG
+		       			 , '' AS SAVE_FLAG
+		       			 , '' AS PRINT_FLAG
+		       			 , '' AS DOWNLOAD_FLAG
+		       			 , '' AS SEND_FLAG
+		       		  FROM COM_SYS
+		       		  
+		       		UNION ALL
+		       		
+		       		SELECT SUB_ID AS MENU_ID
+				         , SUB_NM AS MENU_NM
+				         , SYS_ID AS PARENT_ID
+				         , '' AS URL
+				         , 2 AS MENU_LVL
+				         , 0 AS MENU_ST
+				         , SORT_SEQ
+				         , '' AS YEAR
+		       			 , '' AS TERM_CD
+		       			 , '' AS SCHEDULE_CD
+		       			 , '' AS SELECT_FLAG
+		       			 , '' AS SAVE_FLAG
+		       			 , '' AS PRINT_FLAG
+		       			 , '' AS DOWNLOAD_FLAG
+		       			 , '' AS SEND_FLAG
+		       		  FROM COM_SUB 
+					
+					UNION ALL
+					
+					SELECT MENU_ID
+		       			 , MENU_NM
+		       			 , SUB_ID AS PARENT_ID
+		       			 , '' AS URL
+		       			 , 3 AS MENU_LVL
+		       			 , 0 AS MENU_ST
+		       			 , SORT_SEQ
+		       			 , '' AS YEAR
+		       			 , '' AS TERM_CD
+		       			 , '' AS SCHEDULE_CD
+		       			 , '' AS SELECT_FLAG
+		       			 , '' AS SAVE_FLAG
+		       			 , '' AS PRINT_FLAG
+		       			 , '' AS DOWNLOAD_FLAG
+		       			 , '' AS SEND_FLAG
+					  FROM COM_MENU
+
+					UNION ALL
+	
+					SELECT PROG.PROG_ID AS MENU_ID
+						 , PROG.PROG_NM AS MENU_NM
+				         , PROG.MENU_ID AS PARENT_ID
+				         , PROG.URL_N AS URL
+				         , 4 AS MENU_LVL
+				         , 0 AS MENU_ST
+				         , PROG.SORT_SEQ
+				         , PROG.YEAR
+				         , PROG.TERM_CD
+				         , PROG.SCHEDULE_CD
+				         , VPROG.SELECT_FLAG
+                         , VPROG.SAVE_FLAG
+                         , VPROG.PRINT_FLAG
+                         , VPROG.DOWNLOAD_FLAG
+                         , VPROG.SEND_FLAG
+				  	  FROM COM_PROG PROG
+				  	     , COM_V_USER_PROG VPROG
+				  	 WHERE VPROG.SYS_ID  = PROG.SYS_ID
+				  	   AND VPROG.SUB_ID  = PROG.SUB_ID
+				  	   AND VPROG.MENU_ID = PROG.MENU_ID
+		   			   AND VPROG.PROG_ID = PROG.PROG_ID
+		   			   <isNotEmpty property="memberNo" >
+		   			   AND VPROG.MEMBER_NO= #memberNo#
+		   			   </isNotEmpty>
+				 )
+				 START WITH MENU_LVL = 1
+				 CONNECT BY PRIOR MENU_ID = PARENT_ID
+				 ORDER SIBLINGS BY SORT_SEQ
+	</select>
+	
+	<select id="commMenuDAO.selectTreeFavoPop"  parameterClass="Map" resultClass="egovMap">
+			SELECT CONNECT_BY_ISLEAF AS LEAF
+			     , SYS_CONNECT_BY_PATH(MENU_ID, ',') AS CONN_PATH
+			     , '' AS ROW_STATUS
+			     , MENU_ID
+				 , MENU_NM
+				 , PARENT_ID
+				 , URL
+				 , MENU_LVL
+				 , MENU_ST
+				 , SORT_SEQ
+				 , select_flag
+				 , save_flag 
+				 , print_flag
+				 , download_flag
+				 , send_flag
+				 , PERSON_INFO_FLAG
+				 , MANAGER_FLAG
+				 , YEAR
+				 , TERM_CD
+				 , SCHEDULE_CD
+				 , 0 AS MENU_CHK
+				 , #memberNo# AS MEMBER_NO
+			  FROM
+				 (	SELECT DISTINCT
+				           A.SYS_ID AS MENU_ID
+				         , A.SYS_NM AS MENU_NM
+				         , '' AS PARENT_ID
+				         , '' AS URL
+				         , 1 AS MENU_LVL
+				         , 0 AS MENU_ST
+				         , A.SORT_SEQ
+				         , '' AS YEAR
+		       			 , '' AS TERM_CD
+		       			 , '' AS SCHEDULE_CD
+		       			 , '' AS SELECT_FLAG
+		       			 , '' AS SAVE_FLAG
+		       			 , '' AS PRINT_FLAG
+		       			 , '' AS DOWNLOAD_FLAG
+		       			 , '' AS SEND_FLAG
+		       			 , '' AS PERSON_INFO_FLAG
+		       			 , '' AS MANAGER_FLAG
+		       		  FROM COM_SYS A
+		       		     , COM_MY_MENU B
+		       		 WHERE A.SYS_ID = B.SYS_ID
+		       		
+		       		UNION ALL
+		       		
+		       		SELECT DISTINCT
+				           A.SUB_ID AS MENU_ID
+				         , A.SUB_NM AS MENU_NM
+				         , A.SYS_ID AS PARENT_ID
+				         , '' AS URL
+				         , 2 AS MENU_LVL
+				         , 0 AS MENU_ST
+				         , A.SORT_SEQ
+				         , '' AS YEAR
+		       			 , '' AS TERM_CD
+		       			 , '' AS SCHEDULE_CD
+		       			 , '' AS SELECT_FLAG
+		       			 , '' AS SAVE_FLAG
+		       			 , '' AS PRINT_FLAG
+		       			 , '' AS DOWNLOAD_FLAG
+		       			 , '' AS SEND_FLAG
+		       			 , '' AS PERSON_INFO_FLAG
+		       			 , '' AS MANAGER_FLAG
+		       		  FROM COM_SUB A
+		       		     , COM_MY_MENU B
+		       		 WHERE A.SYS_ID = B.SYS_ID
+		       		   AND A.SUB_ID = B.SUB_ID 
+					
+					UNION ALL
+					
+					SELECT DISTINCT
+				           A.MENU_ID
+		       			 , A.MENU_NM
+		       			 , A.SUB_ID AS PARENT_ID
+		       			 , '' AS URL
+		       			 , 3 AS MENU_LVL
+		       			 , 0 AS MENU_ST
+		       			 , A.SORT_SEQ
+		       			 , '' AS YEAR
+		       			 , '' AS TERM_CD
+		       			 , '' AS SCHEDULE_CD
+		       			 , '' AS SELECT_FLAG
+		       			 , '' AS SAVE_FLAG
+		       			 , '' AS PRINT_FLAG
+		       			 , '' AS DOWNLOAD_FLAG
+		       			 , '' AS SEND_FLAG
+		       			 , '' AS PERSON_INFO_FLAG
+		       			 , '' AS MANAGER_FLAG
+					  FROM COM_MENU A
+					     , COM_MY_MENU B
+					 WHERE A.SYS_ID = B.SYS_ID
+					   AND A.SUB_ID = B.SUB_ID
+					   AND A.MENU_ID = B.MENU_ID
+
+					UNION ALL
+	
+					SELECT DISTINCT
+				           A.PROG_ID AS MENU_ID
+						 , A.PROG_NM AS MENU_NM
+				         , A.MENU_ID AS PARENT_ID
+				         , A.URL_N AS URL
+				         , 4 AS MENU_LVL
+				         , 0 AS MENU_ST
+				         , A.SORT_SEQ
+				         , A.YEAR
+				         , A.TERM_CD
+				         , A.SCHEDULE_CD
+				         , B.SELECT_FLAG
+				         , B.SAVE_FLAG
+		       			 , B.PRINT_FLAG
+		       			 , B.DOWNLOAD_FLAG
+		       			 , B.SEND_FLAG
+		       			 , B.PERSON_INFO_FLAG
+		       			 , B.MANAGER_FLAG
+				  	  FROM COM_PROG A
+				  	     , COM_V_USER_PROG B
+				  	     , COM_MY_MENU C
+				  	 WHERE B.SYS_ID  = A.SYS_ID
+				  	   AND B.SUB_ID  = A.SUB_ID
+				  	   AND B.MENU_ID = A.MENU_ID
+		   			   AND B.PROG_ID = A.PROG_ID
+		   			   AND A.SYS_ID = C.SYS_ID
+		   			   AND A.SUB_ID = C.SUB_ID
+		   			   AND A.MENU_ID = C.MENU_ID
+		   			   AND A.PROG_ID = C.PROG_ID
+		   			   <isNotEmpty property="memberNo" >
+		   			   AND B.MEMBER_NO= #memberNo#
+		   			   </isNotEmpty>
+				 )
+				 START WITH MENU_LVL = 1
+				 CONNECT BY PRIOR MENU_ID = PARENT_ID
+				 ORDER SIBLINGS BY SORT_SEQ
+	</select>
+	
+	<select id="commMenuDAO.selectTreeFavo"  parameterClass="Map" resultClass="egovMap">
+			SELECT CONNECT_BY_ISLEAF AS LEAF
+			     , SYS_CONNECT_BY_PATH(MENU_ID, ',') AS CONN_PATH
+			     , '' AS ROW_STATUS
+			     , MENU_ID
+				 , MENU_NM
+				 , PARENT_ID
+				 , URL
+				 , MENU_LVL
+				 , MENU_ST
+				 , SORT_SEQ
+				 , select_flag
+				 , save_flag 
+				 , print_flag
+				 , download_flag
+				 , send_flag
+				 , PERSON_INFO_FLAG
+				 , MANAGER_FLAG
+				 , YEAR
+				 , TERM_CD
+				 , SCHEDULE_CD
+				 , 0 AS MENU_CHK
+				 , #memberNo# AS MEMBER_NO
+			  FROM
+				 (	SELECT DISTINCT
+				           A.SYS_ID AS MENU_ID
+				         , A.SYS_NM AS MENU_NM
+				         , '' AS PARENT_ID
+				         , '' AS URL
+				         , 1 AS MENU_LVL
+				         , 0 AS MENU_ST
+				         , A.SORT_SEQ
+				         , '' AS YEAR
+		       			 , '' AS TERM_CD
+		       			 , '' AS SCHEDULE_CD
+		       			 , '' AS SELECT_FLAG
+		       			 , '' AS SAVE_FLAG
+		       			 , '' AS PRINT_FLAG
+		       			 , '' AS DOWNLOAD_FLAG
+		       			 , '' AS SEND_FLAG
+		       			 , '' AS PERSON_INFO_FLAG
+		       			 , '' AS MANAGER_FLAG
+		       		  FROM COM_SYS A
+		       		     , COM_MY_MENU B
+		       		 WHERE A.SYS_ID = B.SYS_ID
+
+					UNION ALL
+	
+					SELECT DISTINCT
+				           A.PROG_ID AS MENU_ID
+						 , A.PROG_NM AS MENU_NM
+				         , A.SYS_ID AS PARENT_ID
+				         , A.URL_N AS URL
+				         , 4 AS MENU_LVL
+				         , 0 AS MENU_ST
+				         , A.SORT_SEQ
+				         , A.YEAR
+				         , A.TERM_CD
+				         , A.SCHEDULE_CD
+				         , B.SELECT_FLAG
+				         , B.SAVE_FLAG
+		       			 , B.PRINT_FLAG
+		       			 , B.DOWNLOAD_FLAG
+		       			 , B.SEND_FLAG
+		       			 , B.PERSON_INFO_FLAG
+		       			 , B.MANAGER_FLAG
+				  	  FROM COM_PROG A
+				  	     , COM_V_USER_PROG B
+				  	     , COM_MY_MENU C
+				  	 WHERE B.SYS_ID  = A.SYS_ID
+				  	   AND B.SUB_ID  = A.SUB_ID
+				  	   AND B.MENU_ID = A.MENU_ID
+		   			   AND B.PROG_ID = A.PROG_ID
+		   			   AND A.SYS_ID = C.SYS_ID
+		   			   AND A.SUB_ID = C.SUB_ID
+		   			   AND A.MENU_ID = C.MENU_ID
+		   			   AND A.PROG_ID = C.PROG_ID
+		   			   <isNotEmpty property="memberNo" >
+		   			   AND B.MEMBER_NO= #memberNo#
+		   			   </isNotEmpty>
+				 )
+				 START WITH MENU_LVL = 1
+				 CONNECT BY PRIOR MENU_ID = PARENT_ID
+				 ORDER SIBLINGS BY SORT_SEQ
+	</select>
+	
+	<insert id="commMenuDAO.insertTreeFavo" parameterClass="java.util.HashMap">
+    
+        INSERT INTO COM_MY_MENU (
+                    SYS_ID
+                  , SUB_ID
+                  , MENU_ID
+                  , PROG_ID
+                  , MEMBER_NO
+                  , CREATE_NO
+                  , CREATE_DT
+                  , CREATE_IP
+                  , ENTRY_NO
+                  , ENTRY_DT
+                  , ENTRY_IP
+                  , URL
+                  , YEAR
+                  , TERM_CD
+                  , SCHEDULE_CD
+                  ) VALUES (
+                    #sysId#
+                  , #subId#
+                  , #menuId#
+                  , #progId#
+                  , #memberNo#
+                  , #createNo#
+                  , #createDt#
+                  , #createIp#
+                  , #entryNo#
+                  , #entryDt#
+                  , #entryIp#
+                  , #url#
+                  , #year#
+                  , #termCd#
+                  , #scheduleCd#
+                  )                  
+    </insert>
+	
+	<delete id="commMenuDAO.deleteTreeFavo" parameterClass="java.util.HashMap">
+    
+        DELETE FROM COM_MY_MENU
+         WHERE SYS_ID = #sysId#
+           AND SUB_ID = #subId#
+           AND MENU_ID = #menuId#
+           AND PROG_ID = #progId#
+           
+    </delete>
+    
+	<select id="commMenuDAO.selectMenuCombo"  parameterClass="Map" resultClass="egovMap">
+			<isNotEmpty property="strAllGb" >
+			SELECT '' AS MENU_ID
+				 , '전체' AS MENU_NM
+			     , 0 AS SORT_SEQ
+			     , '전체' AS MENU_ORG_NM
+			     , 0 AS ALL_SORT_SEQ
+			 
+			
+			UNION ALL
+			</isNotEmpty>
+			
+			SELECT MENU_ID 
+			     , MENU_ID + ' - ' +MENU_NM AS MENU_NM
+			     , SORT_SEQ
+			     , MENU_NM AS MENU_ORG_NM
+			     , 0 AS ALL_SORT_SEQ
+			  FROM COM_MENU
+			 WHERE 1 = 1
+			<isNotEmpty prepend="AND" property="strSysId" >
+				SYS_ID = #strSysId# 
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="strSubId" >
+				SUB_ID = #strSubId# 
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="strMenuId" >
+				MENU_ID = #strMenuId# 
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="strMenuNm" >
+				MENU_NM = #strMenuNm# 
+			</isNotEmpty>
+			ORDER BY ALL_SORT_SEQ , SORT_SEQ ASC
+	</select>
+	
+	<select id="commMenuDAO.selectProgCombo"  parameterClass="Map" resultClass="egovMap">
+			<isNotEmpty property="strAllGb" >
+			SELECT '' AS PROG_ID
+				 , '전체' AS PROG_NM
+			     , 0 AS SORT_SEQ
+			     , '전체' AS PROG_ORG_NM
+			 
+			
+			UNION ALL
+			</isNotEmpty>
+			
+			SELECT PROG_ID 
+			     , PROG_ID + ' - ' +PROG_NM AS PROG_NM
+			     , SORT_SEQ
+			     , PROG_NM AS PROG_ORG_NM
+			  FROM COM_PROG
+			 WHERE 1 = 1
+			<isNotEmpty prepend="AND" property="strSysId" >
+				SYS_ID = #strSysId# 
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="strSubId" >
+				SUB_ID = #strSubId# 
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="strMenuId" >
+				MENU_ID = #strMenuId# 
+			</isNotEmpty>
+			ORDER BY SORT_SEQ ASC
+	</select>
+	
+	  <select id="commMenuDAO.selectDeptCombo" parameterClass="Map"  resultClass="egovMap">
+	 	 <isNotEmpty property="strAllGb" >
+		SELECT '' AS DEPT_CD
+		     , '전체' AS DEPT_NM_KOR
+		     , 'ALL' AS DEPT_NM_ENG
+		 
+		UNION ALL
+		 </isNotEmpty>
+	  	SELECT DEPT_CD
+		      ,DEPT_NM_KOR
+			  ,DEPT_NM_ENG
+		  FROM VW_COMM_DEPT
+		 WHERE CASE WHEN USE_FLAG IS NULL OR USE_FLAG = '' THEN '1' ELSE USE_FLAG END = '1' 
+		 ORDER BY CASE WHEN DEPT_CD = '' THEN 1 ELSE 2 END
+	  </select>
+	
+	<select id="commMenuDAO.selectMenuPopInfo"  parameterClass="Map" resultClass="egovMap">
+	
+		/* commMenuDAO.selectMenuPopInfo */
+	    SELECT PROG.SYS_ID
+		     , (SELECT SYS_NM
+		          FROM COM_SYS SA
+		         WHERE PROG.SYS_ID = SA.SYS_ID) AS SYS_NM
+		     , PROG.SUB_ID
+		     , (SELECT SA.SUB_NM
+		          FROM COM_SUB SA
+		         WHERE PROG.SYS_ID = SA.SYS_ID
+		           AND PROG.SUB_ID = SA.SUB_ID) AS SUB_NM
+		     , PROG.PROG_ID AS MENU_ID
+			 , PROG.PROG_NM AS MENU_NM
+	         , PROG.MENU_ID AS PARENT_ID
+	         , (SELECT SA.MENU_NM
+		          FROM COM_MENU SA
+		         WHERE PROG.SYS_ID = SA.SYS_ID
+		           AND PROG.SUB_ID = SA.SUB_ID
+		           AND PROG.MENU_ID = SA.MENU_ID) AS PARENT_NM
+	         , PROG.URL
+	         , '' as MENU_LVL
+	         , '' as MENU_ST
+	         , '' as SORT_SEQ
+	         , '' as YEAR
+	         , '' as TERM_CD
+	         , '' as SCHEDULE_CD
+	         , '' as PROG_NM_ENG
+	         , '' as MANUAL_URL
+	         , '1' as SELECT_FLAG
+	         , '1' as SAVE_FLAG
+	         , '1' as PRINT_FLAG
+	         , '1' as DOWNLOAD_FLAG
+	         , '1' as SEND_FLAG
+	         , '1' as PERSON_INFO_FLAG
+	         , '1' as MANAGER_FLAG
+	  	  FROM COM_PROG PROG
+	  	 WHERE 1=1
+		   <isNotEmpty property="menuId" >
+		   AND PROG.MENU_ID= #menuId#
+		   </isNotEmpty>
+		   <isNotEmpty property="progId" >
+		   AND PROG.PROG_ID= #progId#
+		   </isNotEmpty>
+	 			   
+	</select>
+	
+</sqlMap>

@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\default_typedef.xml"/>
+  <Form id="com02003_p01" classname="com020002" left="0" top="0" width="800" height="855" titletext="권한별사용자목록 팝업" onload="com02003_p01_onload">
+    <Layouts>
+      <Layout>
+        <Static id="Static37" taborder="10" text="w&#13;&#10;15" visible="false" left="98.55%" top="-314" right="0%" height="793" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static00" taborder="22" text="권한그룹에 포함된 사용자" cssclass="page_stitle" left="0" top="8" height="20" width="250"/>
+        <Grid id="grd_rollGroupUser" taborder="23" useinputpanel="false" autofittype="col" autosizingtype="col" left="5" top="37" height="370" binddataset="ds_roleGroupUser" right="5">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="30" band="left"/>
+                <Column size="140"/>
+                <Column size="140"/>
+                <Column size="140"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="사용자ID"/>
+                <Cell col="2" text="사용자명"/>
+                <Cell col="3" text="소속"/>
+              </Band>
+              <Band id="body">
+                <Cell text="expr:currow+1"/>
+                <Cell col="1" text="bind:memberNo"/>
+                <Cell col="2" text="bind:nm"/>
+                <Cell col="3" text="bind:deptNm"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static02" taborder="25" text="h10" visible="false" left="0%" top="27" right="0%" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Grid id="grd_rollGroupPgm" taborder="26" useinputpanel="false" autofittype="col" autosizingtype="col" left="5" top="431" right="5" height="395" binddataset="ds_roleGroupPgm">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="30" band="left"/>
+                <Column size="140"/>
+                <Column size="140"/>
+                <Column size="140"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="시스템"/>
+                <Cell col="2" text="서브시스템"/>
+                <Cell col="3" text="개수"/>
+              </Band>
+              <Band id="body">
+                <Cell text="expr:currow+1"/>
+                <Cell col="1" text="bind:sysNm"/>
+                <Cell col="2" text="bind:subNm"/>
+                <Cell col="3" text="bind:updateFlag"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static03" taborder="27" text="권한그룹에 포함된 프로그램" cssclass="page_stitle" left="0" top="410" height="20" width="200"/>
+        <Static id="sta_grdSub" taborder="32" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" top="829" height="20" style="border:0 none #808080ff ;align:right middle;" left="709" width="86"/>
+        <Static id="Static08" taborder="34" text="h5" visible="false" left="39.25%" top="408" right="51.75%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_grdDet" taborder="35" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" top="409" height="20" style="border:0 none #808080ff ;align:right middle;" left="697" width="98"/>
+        <Static id="Static09" taborder="36" text="h5" visible="false" left="39.25%" top="426" right="51.75%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_close" taborder="37" text="닫기" onclick="btn_close_onclick" left="380" top="830" width="41" height="22"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_roleGroupUser" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="roleId" type="STRING" size="256"/>
+          <Column id="roleNm" type="STRING" size="256"/>
+          <Column id="memberNo" type="STRING" size="256"/>
+          <Column id="nm" type="STRING" size="256"/>
+          <Column id="deptCd" type="STRING" size="256"/>
+          <Column id="deptNm" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_roleGroupPgm" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="sysNm" type="STRING" size="256"/>
+          <Column id="subNm" type="STRING" size="256"/>
+          <Column id="updateFlag" type="STRING" size="256"/>
+          <Column id="sysId" type="STRING" size="256"/>
+          <Column id="subId" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Bind/>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명        : com02003_p01.xfdl
+* 화면설명      : 권한별 사용자 목록 팝업
+* 작성자        : 최용현
+* 수정일          수정자         수정내용
+* --------------------------------------------------------------
+* 2015.11.04     최용현         최초생성
+* 2015.11.04     최용현         주석 수정
+******************************************************************************/
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+this.roleId = "";
+/******************************************************************************
+* 함 수 명 	: com02003_p01_onload
+* 함수설명 	: 화면 로드시 실행 함수
+*****************************************************************************/
+this.com02003_p01_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	this.roleId = this.parent.roleId;
+	
+	this.gfn_bindCmmnFunction();
+	
+	this.fn_find();
+}
+
+/*********************************************************************
+ * 함 수 명 	: btnFind_onclick()
+ * 함수설명 	: 조회 버튼 클릭 함수
+ *********************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_find();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preFind
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preFind = function()
+{
+	this.fn_clearDataset();
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_find
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_find = function()
+{
+	if(this.fn_preFind()){
+		var strArg = "strRoleId="  + nexacro.wrapQuote(this.roleId);
+		
+		this.gfn_transaction("FIND",
+							 "txComUrl::com/selectRoleGroupUser.do",
+							 "",
+							 "ds_roleGroupUser=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postFind
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postFind = function()
+{
+	this.gfn_getDatasetCount(this.ds_roleGroupUser, this.sta_grdDet);
+	this.fn_findDetPgm();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_findDetPgm
+ * 함수설명 	: 권한그룹 프로그램 조회 함수
+********************************************************************************/
+this.fn_findDetPgm = function()
+{
+	var strArg = "strRoleId="  + nexacro.wrapQuote(this.roleId);
+		
+	this.gfn_transaction("FINDPGM",
+						 "txComUrl::com/selectRoleGroupPgm.do",
+						 "",
+						 "ds_roleGroupPgm=resultList",
+						 strArg,
+						 "fn_callBack");
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postFindPgm
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postFindPgm = function()
+{
+	this.gfn_getDatasetCount(this.ds_roleGroupPgm, this.sta_grdSub);
+	this.btn_close.set_enable(true);
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.gfn_message("A", errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		}else if(trId == "FIND"){
+			this.fn_postFind();
+		}else if(trId == "FINDPGM"){
+			this.fn_postFindPgm();
+		}	
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_clearDataset
+ * 함수설명 	: dataset data 초기화 함수
+********************************************************************************/
+this.fn_clearDataset = function()
+{
+	this.ds_roleGroupUser.clearData();
+	this.ds_roleGroupPgm.clearData();
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_close_onclick
+ * 함수설명 	: 닫기 버튼 클릭 함수
+********************************************************************************/
+this.btn_close_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.close("close");
+}
+]]></Script>
+  </Form>
+</FDL>

@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Afd06SQL">
+
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias alias="hashMap" type="java.util.HashMap"/>
+	 
+	<select id="Afd06SQL.selectAfdAcntNoList" parameterClass="hashMap" resultClass="egovMap">
+		SELECT '0' AS CHK
+		     , '' AS ROW_STATUS
+			 , ACNT_NO
+			 , BANK_CD
+			 , dbo.F_COM_CODE_NM('CS005', BANK_CD, 'KOR') AS BANK_CD_NM
+			 , ACNT_KND
+			 , OP_DT
+			 , EXPIR_DT
+			 , CONTR_AMT
+			 , INT_RT
+			 , TERMN_YN
+			 , TERMN_DT
+			 , GB
+			 , RMK 
+			 , ACNT_ORD
+			 , NEW_ACNT_NO
+		  FROM AFD_BANK_NO WITH(NOLOCK)
+		 WHERE 1=1
+		 
+		 <isNotEmpty property = "acntNo"> 
+		   AND (    REPLACE(ACNT_NO, '-', '') LIKE '%' + REPLACE(#acntNo#, '-', '') + '%' )
+		 </isNotEmpty>
+		 <isNotEmpty property = "bankCd"> 
+		   AND BANK_CD = #bankCd#
+		 </isNotEmpty>
+		 
+		 <isNotEmpty property = "termnYn"> 
+		   AND TERMN_YN = #termnYn#
+		 </isNotEmpty>
+		 <isNotEmpty property = "acntKnd"> 
+		   AND ACNT_KND = #acntKnd#
+		 </isNotEmpty>
+		 
+		 ORDER BY ACNT_KND DESC , ACNT_ORD
+	</select>
+	
+	
+	
+	<insert id="Afd06SQL.insertAfd06010MainList" parameterClass="java.util.HashMap">
+		
+		INSERT INTO AFD_BANK_NO
+			      (
+			        ACNT_NO
+				  , BANK_CD
+				  , ACNT_KND
+				  , OP_DT
+				  , EXPIR_DT
+				  , CONTR_AMT
+				  , INT_RT
+				  , TERMN_YN
+				  , TERMN_DT
+				  , GB
+				  , ACNT_ORD
+				  , RMK  
+				  , NEW_ACNT_NO
+				  , INSERT_DT
+				  , INSERT_ID
+				  , INSERT_IP
+				  , INSERT_PGM
+				  ) 
+			VALUES 
+				  (
+				    #acntNo#
+				  , #bankCd#
+				  , #acntKnd#
+				  , #opDt#
+				  , #expirDt#
+				  , CONVERT(BIGINT, #contrAmt#)
+				  , CASE WHEN #intRt# IS NULL OR #intRt# = '' THEN NULL ELSE CONVERT(NUMERIC(5,2), CASE WHEN #intRt# = '' THEN null ELSE #intRt# END) END
+				  , #termnYn#
+				  , #termnDt#
+				  , #gb#
+				  , #acntOrd#
+				  , #rmk#
+				  , #newAcntNo#
+				  , GETDATE()
+				  , #insertId#
+				  , #insertIp#
+				  , 'afd06010.xfdl'
+				 )
+	</insert>
+	
+	<update id="Afd06SQL.updateAfd06010MainList" parameterClass="java.util.HashMap">
+		
+		UPDATE AFD_BANK_NO
+		   SET BANK_CD = #bankCd#
+			 , ACNT_KND = #acntKnd#
+			 , OP_DT = #opDt#
+			 , EXPIR_DT = #expirDt#
+			 , CONTR_AMT = CONVERT(BIGINT, #contrAmt#)
+			 , INT_RT = CASE WHEN #intRt# IS NULL OR #intRt# = '' THEN NULL ELSE CONVERT(NUMERIC(5,2), CASE WHEN #intRt# = '' THEN null ELSE #intRt# END) END
+			 , TERMN_YN = #termnYn#
+			 , TERMN_DT = #termnDt#
+			 , GB = #gb#
+			 , ACNT_ORD = CONVERT(INT, #acntOrd#)
+			 , RMK = #rmk#
+			 , NEW_ACNT_NO = #newAcntNo#
+			 , UPDATE_DT = GETDATE()
+			 , UPDATE_ID = #updateId#
+			 , UPDATE_IP = #updateIp#
+			 , UPDATE_PGM = 'afd06010.xfdl'
+		 WHERE ACNT_NO = #acntNo#
+		   
+	</update>
+	
+	<delete id="Afd06SQL.deleteAfd06010MainList" parameterClass="java.util.HashMap">
+		
+		DELETE 
+		  FROM AFD_BANK_NO 
+		 WHERE ACNT_NO = #acntNo#
+	
+	</delete>
+	
+	 <select id="Afd06SQL.selectAFD06020"  parameterClass="hashMap" resultClass="egovMap">
+    	SELECT '0' AS CHK
+             , '' AS ROW_STATUS
+             , A.BNKCD
+             , A.ACNO
+             , A.TDT
+             , A.TRNF_SEQ
+             , A.DEPS_AMT
+             , A.DFRY_AMT
+             , A.AFTRN_BAMT
+             , A.TRNS_HR
+             , A.TRNS_CNTN
+             , A.SYNP
+             , ISNULL(B.GB, '10') AS GB
+             , B.DEPT_NM
+             , B.BIGO
+             , ( SELECT COM_CD_NM
+                   FROM COM_COD
+                  WHERE COM_CD_DIV = 'COM_COD_12'
+                    AND COM_CD_REF2 = A.BNKCD  ) AS BANK_NM
+          FROM IF_TRNS_ITMZ_INQ_WO A
+            LEFT OUTER JOIN AFD_TRNS_ITMZ B
+             ON A.BNKCD = B.BNKCD
+              AND A.ACNO = B.ACNO
+              AND A.TDT = B.TDT
+              AND A.TRNF_SEQ = B.TRNF_SEQ
+            LEFT OUTER JOIN AC_BANK_NO C
+              ON REPLACE(A.ACNO,'-','') = REPLACE(C.ACNT_NO,'-','')
+         WHERE C.ACNT_KND = '40'
+           AND ( A.DFRY_AMT > 0 OR A.SYNP LIKE '%이자%' ) 
+           and A.TDT between #fromDt# and #toDt#
+           order by A.TDT DESC, A.TRNS_HR DESC, A.ACNO
+    </select>
+    
+    <update id="Afd06SQL.updateAfd06020MainList" parameterClass="java.util.HashMap">
+		 MERGE INTO AFD_TRNS_ITMZ A
+	          USING (SELECT #bnkcd# AS BNKCD
+	                      , #acno# AS ACNO
+	                      , #tdt# AS TDT
+	                      , #trnfSeq# AS TRNF_SEQ) B
+	             ON  A.BNKCD = B.BNKCD
+	             AND A.ACNO = B.ACNO
+	             AND A.TDT = B.TDT
+	             AND A.TRNF_SEQ = B.TRNF_SEQ
+	           WHEN MATCHED THEN
+		     UPDATE 
+		        SET GB = #gb#
+		          , DEPT_NM = #deptNm#
+		          , BIGO = #bigo#
+			   WHEN NOT MATCHED THEN
+			 INSERT ( BNKCD
+			        , ACNO
+			        , TDT
+			        , TRNF_SEQ
+			        , GB
+			        , DEPT_NM
+			        , BIGO
+			        )
+		            VALUES
+		            (#bnkcd#
+		            , #acno#
+		            , #tdt#
+		            , #trnfSeq#
+		            , #gb#
+		            , #deptNm#
+		            , #bigo#
+		            );
+    </update>
+    
+	 <select id="Afd06SQL.selectAFD06030"  parameterClass="hashMap" resultClass="egovMap">
+    	SELECT '0' AS CHK
+             , '' AS ROW_STATUS
+             , A.ACNT_NO
+             , A.DT
+             , A.SEQ
+             , A.INTEREST
+             , A.INC_TAX
+             , A.RES_TAX
+             , A.INC_TAX + A.RES_TAX AS TAX_AMT
+             , A.INTEREST - (A.INC_TAX + A.RES_TAX) AS DEDUCT_AMT
+             , A.RMK
+             , ( SELECT COM_CD_NM
+                   FROM COM_COD
+                  WHERE COM_CD_DIV = 'COM_COD_12'
+                    AND COM_CD = C.BANK_CD  ) AS BANK_NM
+             , C.ACNT_KND
+             , dbo.F_COM_CODE_NM('AC007', C.ACNT_KND, 'KOR') AS ACNT_KND_NM
+             , dbo.F_COM_CODE_NM('CS005', C.BANK_CD, 'KOR') AS BANK_CD_NM
+          FROM AFD_INTEREST A
+            LEFT OUTER JOIN AFD_BANK_NO C
+              ON REPLACE(A.ACNT_NO,'-','') = REPLACE(C.ACNT_NO,'-','')
+         WHERE 1=1
+         <isNotEmpty property="acntNo">
+           AND REPLACE(A.ACNT_NO,'-', '') LIKE '%' + REPLACE(#acntNo#,'-','') + '%'
+         </isNotEmpty>
+         <isNotEmpty property="frDt">
+           AND A.DT >= #ftDt#
+         </isNotEmpty>
+         <isNotEmpty property="toDt">
+           AND #toDt# >= A.DT
+         </isNotEmpty>
+    </select>
+    
+	<insert id="Afd06SQL.insertAfd06030MainList" parameterClass="java.util.HashMap">
+		
+		INSERT INTO AFD_INTEREST
+			      (
+			        ACNT_NO
+				  , DT
+				  , SEQ
+				  , INTEREST
+				  , INC_TAX
+				  , RES_TAX
+				  , RMK
+				  , INSERT_DT
+				  , INSERT_ID
+				  , INSERT_IP
+				  , INSERT_PGM
+				  ) 
+			VALUES 
+				  (
+				    #acntNo#
+				  , #dt#
+				  , ( SELECT ISNULL(MAX(SEQ), 0) + 1
+				        FROM AFD_INTEREST
+				       WHERE ACNT_NO = #acntNo# )
+				  , CONVERT(BIGINT, #interest#)
+				  , CONVERT(BIGINT, #incTax#)
+				  , CONVERT(BIGINT, #resTax#)
+				  , #rmk#
+				  , GETDATE()
+				  , #insertId#
+				  , #insertIp#
+				  , 'afd06030'
+				 )
+	</insert>
+	
+	<update id="Afd06SQL.updateAfd06030MainList" parameterClass="java.util.HashMap">
+		
+		UPDATE AFD_INTEREST
+		   SET INTEREST = CONVERT(BIGINT, #interest#)
+			 , INC_TAX = CONVERT(BIGINT, #incTax#)
+			 , RES_TAX = CONVERT(BIGINT, #resTax#)
+			 , RMK = #rmk#
+			 , UPDATE_DT = GETDATE()
+			 , UPDATE_ID = #updateId#
+			 , UPDATE_IP = #updateIp#
+			 , UPDATE_PGM = 'afd06030'
+		 WHERE ACNT_NO = #acntNo#
+		   AND DT = #dt#
+		   AND SEQ = CONVERT(INT, #seq#) 
+		   
+	</update>
+	
+	<delete id="Afd06SQL.deleteAfd06030MainList" parameterClass="java.util.HashMap">
+		
+		DELETE 
+		  FROM AFD_INTEREST 
+		 WHERE ACNT_NO = #acntNo#
+		   AND DT = #dt#
+		   AND SEQ = CONVERT(INT, #seq#) 
+	
+	</delete>
+	
+	 <select id="Afd06SQL.selectAFD06040"  parameterClass="hashMap" resultClass="egovMap">
+    	SELECT '0' AS CHK
+             , '' AS ROW_STATUS
+             , A.SEQ
+             , A.DT
+             , A.GB
+             , A.ITEM
+             , A.NM
+             , A.DEPT_NM
+             , A.POSITION
+             , A.AMT
+             , A.RMK
+          FROM AFD_GOODS A
+         WHERE 1=1
+         <isNotEmpty property="item">
+           AND A.ITEM LIKE '%' + #item# + '%'
+         </isNotEmpty>
+         <isNotEmpty property="frDt">
+           AND A.DT >= #ftDt#
+         </isNotEmpty>
+         <isNotEmpty property="toDt">
+           AND #toDt# >= A.DT
+         </isNotEmpty>
+    </select>
+    
+	<insert id="Afd06SQL.insertAfd06040MainList" parameterClass="java.util.HashMap">
+		
+		INSERT INTO AFD_GOODS
+			      (
+			        SEQ
+				  , DT
+				  , GB
+				  , ITEM
+				  , NM
+				  , DEPT_NM
+				  , POSITION
+				  , AMT
+				  , RMK
+				  , INSERT_DT
+				  , INSERT_ID
+				  , INSERT_IP
+				  , INSERT_PGM
+				  ) 
+			VALUES 
+				  (
+				    ( SELECT ISNULL(MAX(SEQ), 0) + 1
+				        FROM AFD_GOODS )
+				  , #dt#
+				  , #gb#
+				  , #item#
+				  , #nm#
+				  , #deptNm#
+				  , #position#
+				  , CONVERT(BIGINT, #amt# )
+				  , #rmk#
+				  , GETDATE()
+				  , #insertId#
+				  , #insertIp#
+				  , 'afd06040'
+				 )
+	</insert>
+	
+	<update id="Afd06SQL.updateAfd06040MainList" parameterClass="java.util.HashMap">
+		
+		UPDATE AFD_GOODS
+		   SET DT = #dt#
+			 , GB = #gb#
+			 , ITEM = #item#
+			 , NM = #nm#
+			 , DEPT_NM = #deptNm#
+			 , POSITION = #position#
+			 , AMT = CONVERT(BIGINT, #amt#)
+			 , RMK = #rmk#
+			 , UPDATE_DT = GETDATE()
+			 , UPDATE_ID = #updateId#
+			 , UPDATE_IP = #updateIp#
+			 , UPDATE_PGM = 'afd06040'
+		 WHERE SEQ = CONVERT(INT, #seq#) 
+		   
+	</update>
+	
+	<delete id="Afd06SQL.deleteAfd06040MainList" parameterClass="java.util.HashMap">
+		
+		DELETE 
+		  FROM AFD_GOODS
+		 WHERE SEQ = CONVERT(INT, #seq#) 
+	
+	</delete>
+	
+	 <select id="Afd06SQL.selectAFD06050"  parameterClass="hashMap" resultClass="egovMap">
+    	SELECT '0' AS CHK
+             , '' AS ROW_STATUS
+             , A.YYMM
+             , A.AMT_DIV
+             , A.DISP_DT
+             , A.IN_AMT
+             , A.OUT_AMT
+             , A.AFT_AMT
+             , A.TOT_AMT
+          FROM AFD_MM_AMT A
+         WHERE 1=1
+         <isNotEmpty property="yymm">
+           AND A.YYMM = #yymm#
+         </isNotEmpty>
+		ORDER BY A.YYMM, A.AMT_DIV
+    </select>
+    
+	<insert id="Afd06SQL.insertAfd06050MainList" parameterClass="java.util.HashMap">
+		
+		INSERT INTO AFD_MM_AMT
+			      (
+			        YYMM
+				  , AMT_DIV
+				  , DISP_DT
+				  , IN_AMT
+				  , OUT_AMT
+				  , AFT_AMT
+				  , TOT_AMT
+				  ) 
+			VALUES 
+				  (
+				    #yymm#
+				  , #amtDiv#
+				  , #dispDt#
+				  , CONVERT(BIGINT, #inAmt# )
+				  , CONVERT(BIGINT, #outAmt# )
+				  , CONVERT(BIGINT, #aftAmt# )
+				  , CONVERT(BIGINT, #totAmt# )
+				 )
+	</insert>
+	
+	<update id="Afd06SQL.updateAfd06050MainList" parameterClass="java.util.HashMap">
+		
+		UPDATE AFD_MM_AMT
+		   SET DISP_DT = #dispDt#
+			 , IN_AMT = CONVERT(BIGINT, #inAmt#)
+			 , OUT_AMT = CONVERT(BIGINT, #outAmt#)
+			 , AFT_AMT = CONVERT(BIGINT, #aftAmt#)
+			 , TOT_AMT = CONVERT(BIGINT, #totAmt#)
+		 WHERE YYMM = #yymm#
+		   AND AMT_DIV = #amtDiv# 
+		   
+	</update>
+	
+	<delete id="Afd06SQL.deleteAfd06050MainList" parameterClass="java.util.HashMap">
+		
+		DELETE 
+		  FROM AFD_MM_AMT
+		 WHERE YYMM = #yymm#
+		   AND AMT_DIV = #amtDiv# 
+	
+	</delete>
+	
+	 <select id="Afd06SQL.selectAFD06060"  parameterClass="hashMap" resultClass="egovMap">
+    	SELECT '0' AS CHK
+             , '' AS ROW_STATUS
+             , A.ACNT_YY
+             , A.ACNT_CD
+             , B.ACNT_NM
+             , A.C_AMT
+             , A.C_SUM
+             , A.D_AMT
+             , A.D_SUM
+             , A.SEQ
+             , A.GRP
+          FROM AFD_ACNT_AMT A
+          LEFT OUTER JOIN BG_ACNT_CD B
+           ON  A.ACNT_YY = B.ACNT_YY
+           AND B.ACNT_UNT = '20'
+           AND A.ACNT_CD = B.ACNT_CD
+         WHERE A.ACNT_YY = #acntYy#
+		ORDER BY A.ACNT_YY, A.GRP, A.SEQ, A.ACNT_CD
+    </select>
+    
+	<insert id="Afd06SQL.insertAfd06060MainList" parameterClass="java.util.HashMap">
+		
+		INSERT INTO AFD_ACNT_AMT
+			      (
+			        ACNT_YY
+				  , ACNT_CD
+				  , C_AMT
+				  , C_SUM
+				  , D_AMT
+				  , D_SUM
+				  , SEQ
+				  , GRP
+				  ) 
+			VALUES 
+				  (
+				    #acntYy#
+				  , #acntCd#
+				  , CONVERT(BIGINT, #cAmt# )
+				  , CONVERT(BIGINT, #cSum# )
+				  , CONVERT(BIGINT, #dAmt# )
+				  , CONVERT(BIGINT, #dSum# )
+				  , CONVERT(INT, #seq# )
+				  , #grp#
+				 )
+	</insert>
+	
+	<update id="Afd06SQL.updateAfd06060MainList" parameterClass="java.util.HashMap">
+		
+		UPDATE AFD_ACNT_AMT
+		   SET C_AMT = CONVERT(BIGINT, #cAmt#)
+			 , C_SUM = CONVERT(BIGINT, #cSum#)
+			 , D_AMT = CONVERT(BIGINT, #dAmt#)
+			 , D_SUM = CONVERT(BIGINT, #dSum#)
+			 , SEQ   = CONVERT(INT, #seq#)
+			 , GRP   = #grp#
+		 WHERE ACNT_YY = #acntYy#
+		   AND ACNT_CD = #acntCd# 
+		   
+	</update>
+	
+	<delete id="Afd06SQL.deleteAfd06060MainList" parameterClass="java.util.HashMap">
+		
+		DELETE 
+		  FROM AFD_ACNT_AMT
+		 WHERE ACNT_YY = #acntYy#
+		   AND ACNT_CD = #acntCd# 
+	
+	</delete>
+</sqlMap>

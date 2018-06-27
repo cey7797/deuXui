@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="NaviFrame" classname="NaviFrame" left="0" top="0" width="1040" height="23" scrollbars="none">
+    <Layouts>
+      <Layout>
+        <Button id="btnLogout" taborder="4" text="Logout" right="2" width="64" cssclass="topArea_btn" top="3" height="18" onclick="btnLogout_onclick"/>
+        <Button id="btn_userInfo" taborder="5" top="35" width="191" height="20" right="213" cssclass="tsideLogin" style="cursor:hand;" onclick="btn_userInfo_onclick" visible="false"/>
+        <Button id="btn_modi" taborder="6" text="수정요청" onclick="btn_modi_onclick" cssclass="topArea_btn" top="35" right="2" width="64" height="18" visible="false"/>
+        <Button id="btn_manual" taborder="7" text="업무매뉴얼" onclick="btn_manual_onclick" cssclass="topArea_btn" top="35" right="67" width="72" height="18" visible="false"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : NaviFrame.xfdl
+* 화면설명     : navigationFrame
+* 작성자       : 최용현
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2015.05.01     최용현         최초생성
+******************************************************************************/
+include "commJs::commonUtils.xjs";
+
+this.btnFull_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	application.mainframe.WorkFrame.form.Div00.set_width(0);//default:228
+	application.mainframe.WorkFrame.form.Div04.set_width(0);//default:228
+	application.mainframe.WorkFrame.form.div_menuLv1.set_height(0); //default:43  div02 - div_menuLv1
+	application.mainframe.WorkFrame.form.div_menuLv2.set_height(0); //default:23  div03 - div_menuLv2
+	application.mainframe.WorkFrame.form.workTab.set_left(0); //default:23
+	application.mainframe.WorkFrame.form.workTab.set_top(28); //default(left:242 top:94)
+	this.btnMini.set_visible(true);
+	this.btnFull.set_visible(false);
+	this.btnLeft.set_visible(false);
+	this.btnTop.set_visible(false);
+}
+
+this.btnLeft_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	application.mainframe.WorkFrame.form.Div00.set_width(0);//default:228
+	application.mainframe.WorkFrame.form.Div04.set_width(0);//default:228
+	application.mainframe.WorkFrame.form.Div01.set_left(0); //default:28
+	application.mainframe.WorkFrame.form.div_menuLv1.set_left(0); //default:43
+	application.mainframe.WorkFrame.form.div_menuLv2.set_left(0); //default:23
+	application.mainframe.WorkFrame.form.workTab.set_left(0); //default:23
+	this.btnMini.set_visible(true);
+	this.btnFull.set_visible(false);
+	this.btnLeft.set_visible(false);
+	this.btnTop.set_visible(false);
+}
+
+this.btnTop_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	application.mainframe.WorkFrame.form.div_menuLv1.set_height(0); //default:43
+	application.mainframe.WorkFrame.form.div_menuLv2.set_height(0); //default:23
+	application.mainframe.WorkFrame.form.workTab.set_top(28); //default(left:242 top:94)
+	this.btnMini.set_visible(true);
+	this.btnFull.set_visible(false);
+	this.btnLeft.set_visible(false);
+	this.btnTop.set_visible(false);
+}
+
+this.btnMini_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	application.mainframe.WorkFrame.form.Div00.set_width(242);//default:228
+	application.mainframe.WorkFrame.form.Div04.set_width(242);//default:228
+	application.mainframe.WorkFrame.form.div_menuLv1.set_height(43); //default:43
+	application.mainframe.WorkFrame.form.div_menuLv2.set_height(23); //default:23
+	application.mainframe.WorkFrame.form.div_topArea.set_left(242); //default:28
+	application.mainframe.WorkFrame.form.div_menuLv1.set_left(242); //default:43
+	application.mainframe.WorkFrame.form.div_menuLv2.set_left(242); //default:23
+	application.mainframe.WorkFrame.form.workTab.set_left(242);
+	application.mainframe.WorkFrame.form.workTab.set_top(94); //default(left:242 top:94)
+	this.btnMini.set_visible(false);
+	this.btnFull.set_visible(true);
+	this.btnLeft.set_visible(true);
+	this.btnTop.set_visible(true);
+}
+
+this.btn_userInfo_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var popupId = "com02001_p04";
+	var argumentsList = new Array();
+	var popupUrl = "com::com02001_p04.xfdl";
+	var popupCallback = "fn_popCallBackUser";
+	var obj = this;
+	
+	argumentsList['memberNo']   = application.gds_user.getColumn(0, "memberNo");
+	
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, obj);
+}
+
+this.btn_modi_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var sysId = application.gds_open.getColumn(application.gds_open.rowposition, "sysId");
+	var subId = application.gds_open.getColumn(application.gds_open.rowposition, "subId");
+	var menuId = application.gds_open.getColumn(application.gds_open.rowposition, "parentId");
+	var progId = application.gds_open.getColumn(application.gds_open.rowposition, "menuId");
+	var sysNm = application.gds_open.getColumn(application.gds_open.rowposition, "sysNm");
+	var subNm = application.gds_open.getColumn(application.gds_open.rowposition, "subNm");
+	var menuNm = application.gds_open.getColumn(application.gds_open.rowposition, "parentNm");
+	var progNm = application.gds_open.getColumn(application.gds_open.rowposition, "menuNm");
+
+	if(!this.gfn_isNull(progId)){
+		var popupId = "com03004_p01";
+		var argumentsList = new Array();
+		var popupUrl = "com::com03004_p01.xfdl";
+		var popupCallback = "fn_popCallBackUser";
+		var obj = this;
+
+		argumentsList['sysId']    = sysId;
+		argumentsList['subId']    = subId;
+		argumentsList['menuId']   = menuId;
+		argumentsList['progId']   = progId;
+		argumentsList['sysNm']    = sysNm;
+		argumentsList['subNm']    = subNm;
+		argumentsList['menuNm']   = menuNm;
+		argumentsList['progNm']   = progNm;
+		
+		this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, 900, 900, obj);
+	}else{
+		this.gfn_message("A", "현재 열려진 화면이 없습니다.");
+	}
+}
+
+this.btnLogout_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{//window.location.reload(true); 
+	this.gfn_transaction("LOGOUT",
+						 "txComUrl::com/comm/doLogout.do",
+						 "",
+						 "gds_user=resultList",
+						 "",
+						 "fn_callBack"); 
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId == "INIT"){
+			this.fn_postLogin();
+		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_manual_onclick
+ * 함수설명 	: 업무매뉴얼 버튼 클릭 함수
+ *********************************************************************/
+this.btn_manual_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	system.execBrowser("http://www.naver.com");
+	//http://pal.ust.co.kr/ust/proc_detail_view.jsp?custid="custid
+	//system.execBrowser("http://pal.ust.co.kr/ust/proc_detail_view.jsp?custid="+custid);
+}
+]]></Script>
+  </Form>
+</FDL>

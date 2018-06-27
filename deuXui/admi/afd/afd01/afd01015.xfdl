@@ -1,0 +1,463 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="com01001" classname="cmmnCodeMng" left="0" top="0" width="1038" height="855" titletext="예우코드정보관리" scrollbars="autoboth" dragscrolltype="both" onload="afd01015_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="0" top="0" height="39" right="15" scrollbars="none" cssclass="search" left="0">
+          <Layouts>
+            <Layout>
+              <Static id="Static02" taborder="5" text="사용유무" left="20" top="10" height="20" width="62" cssclass="search"/>
+              <Combo id="cmb_useYnSh" taborder="6" left="83" top="9" height="21" codecolumn="codecolumn" datacolumn="datacolumn" index="0" width="149" text="전체">
+                <Dataset id="innerdataset">
+                  <ColumnInfo>
+                    <Column id="codecolumn" size="256"/>
+                    <Column id="datacolumn" size="256"/>
+                  </ColumnInfo>
+                  <Rows>
+                    <Row>
+                      <Col id="codecolumn"/>
+                      <Col id="datacolumn">전체</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">0</Col>
+                      <Col id="datacolumn">미사용</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">1</Col>
+                      <Col id="datacolumn">사용</Col>
+                    </Row>
+                  </Rows>
+                </Dataset>
+              </Combo>
+              <Static id="Static33" taborder="7" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="0" top="0" width="20" height="39"/>
+              <Static id="Static14" taborder="8" text="W10" cssclass="tipGuide" visible="false" left="69" top="2" width="14" height="37"/>
+              <Static id="Static12" taborder="9" text="H9" cssclass="tipGuide" visible="false" left="117" top="0" width="30" height="9"/>
+              <Static id="Static11" taborder="10" text="H9" cssclass="tipGuide" visible="false" left="117" top="31" width="30" height="9"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Grid id="grd_main" taborder="5" useinputpanel="false" left="0" top="81" autofittype="none" binddataset="ds_main" suppresslevel="sameskip" right="15" onheadclick="grd_sub_onheadclick" autoenter="select" bottom="31">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="35" band="left"/>
+                <Column size="25" band="left"/>
+                <Column size="30" band="left"/>
+                <Column size="80"/>
+                <Column size="197"/>
+                <Column size="120"/>
+                <Column size="120"/>
+                <Column size="130"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="98"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox"/>
+                <Cell col="2" text="순번"/>
+                <Cell col="3" cssclass="req" text="코드"/>
+                <Cell col="4" text="코드명"/>
+                <Cell col="5" text="코드명(영문)"/>
+                <Cell col="6" text="코드약어"/>
+                <Cell col="7" text="약어_영문"/>
+                <Cell col="8" text="정렬순서"/>
+                <Cell col="9" text="사용여부"/>
+                <Cell col="10" text="행사예우구분"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="image" text="bind:rowStatus" expr="expr:rowStatus==2?&quot;URL('theme://images/icon/status_n.png')&quot;:rowStatus==4?&quot;URL('theme://images/icon/status_u.png')&quot;:rowStatus==8?&quot;URL('theme://images/icon/status_d.png')&quot;:&quot;&quot;"/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox" text="bind:chk"/>
+                <Cell col="2" text="expr:currow+1"/>
+                <Cell col="3" edittype="none" editfilter="upper,number" text="bind:comCd"/>
+                <Cell col="4" edittype="normal" style="align:left;" text="bind:comCdNm"/>
+                <Cell col="5" edittype="normal" editfilter="alpha,number" style="align:left;" text="bind:comEng"/>
+                <Cell col="6" edittype="normal" style="align:left;" text="bind:comYag"/>
+                <Cell col="7" edittype="normal" editfilter="alpha,number" style="align:left;" text="bind:comYagEng"/>
+                <Cell col="8" edittype="text" text="bind:sortSeq"/>
+                <Cell col="9" displaytype="checkbox" edittype="checkbox" text="bind:useYn"/>
+                <Cell col="10" displaytype="combo" edittype="combo" text="bind:comCdRef1" combodataset="ds_eventHlrtDiv" combocodecol="comCd" combodatacol="comCdNm"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="btn_search" taborder="14" text="조회" cssclass="search" top="54" height="22" tooltiptype="hover" tooltiptext="조회" width="60" right="201" onclick="btn_search_onclick" userBtnAuth="R"/>
+        <Button id="btn_newSub" taborder="18" text="추가" cssclass="new" top="54" height="22" tooltiptype="hover" tooltiptext="조회" width="60" right="139" position="absolute" onclick="btn_newSub_onclick" userBtnAuth="S"/>
+        <Button id="btn_delSub" taborder="19" text="삭제" cssclass="del" top="54" height="22" tooltiptype="hover" tooltiptext="조회" width="60" right="77" onclick="btn_delSub_onclick" userBtnAuth="S"/>
+        <Button id="btn_saveSub" taborder="20" text="저장" cssclass="save" top="54" height="22" tooltiptype="hover" tooltiptext="조회" width="60" right="15" onclick="btn_saveSub_onclick" userBtnAuth="S"/>
+        <Static id="Static00" taborder="21" text="h5" visible="false" left="0" top="76" right="2" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static76" taborder="23" text="예우코드관리" cssclass="page_stitle" left="0" top="55" width="324" height="20"/>
+        <Static id="Static03" taborder="25" text="w15" visible="false" top="0" height="830" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;" width="15" right="0"/>
+        <Static id="Static07" taborder="28" text="h5" visible="false" left="945" top="349" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;" right="15"/>
+        <Static id="Static08" taborder="29" text="w&#13;&#10;5" visible="false" left="1018" top="353" width="5" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="sta_grd" taborder="31" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" right="15" width="86" height="20" style="border:0 none #808080ff ;align:right middle;" bottom="4"/>
+        <Static id="Static05" taborder="32" text="h5" visible="false" left="945" top="824" width="93" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static06" taborder="33" text="w&#13;&#10;15" visible="false" top="828" height="22" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;" right="0" width="15"/>
+        <Static id="Static09" taborder="34" text="h15" visible="false" left="0" top="39" right="2" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static11" taborder="36" text="h5" visible="false" left="945" top="850" width="93" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_main" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="comCdNm" type="STRING" size="256"/>
+          <Column id="comCdDiv" type="STRING" size="256"/>
+          <Column id="useYn" type="STRING" size="256"/>
+          <Column id="comCd" type="STRING" size="256"/>
+          <Column id="comCdKey" type="STRING" size="256"/>
+          <Column id="comYag" type="STRING" size="256"/>
+          <Column id="comEng" type="STRING" size="256"/>
+          <Column id="comYagEng" type="STRING" size="256"/>
+          <Column id="comCdRef1" type="STRING" size="256"/>
+          <Column id="comCdRef2" type="STRING" size="256"/>
+          <Column id="comAmtRef1" type="STRING" size="256"/>
+          <Column id="comAmtRef2" type="STRING" size="256"/>
+          <Column id="comSetYn" type="STRING" size="256"/>
+          <Column id="upmuRef" type="STRING" size="256"/>
+          <Column id="comCdRef3" type="STRING" size="256"/>
+          <Column id="comCdRef4" type="STRING" size="256"/>
+          <Column id="comCdRef5" type="STRING" size="256"/>
+          <Column id="comCdRef6" type="STRING" size="256"/>
+          <Column id="comCdRef7" type="STRING" size="256"/>
+          <Column id="comCdRef8" type="STRING" size="256"/>
+          <Column id="comCdRef9" type="STRING" size="256"/>
+          <Column id="comCdRef10" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_eventHlrtDiv"/>
+    </Objects>
+    <Bind/>
+    <Script type="xscript5.0"><![CDATA[/******************************************************************************
+* 화면명       : afd01015.xfdl
+* 화면설명     : 예우코드정보관리
+* 작성자       : 배정현
+* 수정일        수정자         수정내용
+* --------------------------------------------------------------
+* 2016.05.13     배정현         최초생성
+******************************************************************************/
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+/******************************************************************************
+* 함 수 명 	: afd01015_onload
+* 함수설명 	: 화면 로드 후 함수
+*****************************************************************************/
+this.afd01015_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+
+	
+ 	var essGrd = new Array();
+		essGrd[0] = this.grd_main;
+ 	
+ 	this.gfn_essDataset(essGrd);
+	this.gfn_bindCmmnFunction();
+	
+	
+	
+	var arrDataSet = Array();
+		arrDataSet[0]  = "ds_eventHlrtDiv"; // 행사예우콤보
+	
+	var arrGrpCd = Array();
+		arrGrpCd[0]  = "AFD09";
+	
+	var arrUseYn =	Array();
+		arrUseYn[0]  =	"Y";
+	
+	var arrModeFg =	Array();
+		arrModeFg[0]  =	"S";
+	
+	var arrWhere =	Array();
+		arrWhere[0]  =	"X";//ABB_CD IN ('S','K')
+			
+ 	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);	
+}
+
+/*********************************************************************
+ * 함 수 명 	: grd_main_onheadclick
+ * 함수설명 	: 그리드 헤더 클릭 함수
+ *********************************************************************/
+this.grd_main_onheadclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	
+}
+
+
+
+/********************************************************************************
+ * 함 수 명 	: btn_search_onclick
+ * 함수설명 	: 조회버튼 클릭이벤트
+********************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();	
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preFind
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preFind = function()
+{
+	this.ds_main.clearData();
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_search = function()
+{
+	if(this.fn_preFind()){
+		var strArg = "pv_comCdDiv="  + "AFD02";
+		    strArg += " pv_useYn=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.cmb_useYnSh.value, ""));
+		
+		this.gfn_transaction("SEARCH"
+						,"txAdmUrl::com/admi/afd/afd01/selectAfdEvent.do"
+						,""
+						,"ds_main=resultList"
+						,strArg
+						,"");
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postFind
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postFind = function()
+{
+	this.gfn_getDatasetCount(this.ds_main, this.sta_grdMain);
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_searchSub
+ * 함수설명 	: 하단그리드 조회 함수
+********************************************************************************/
+this.fn_searchSub = function()
+{
+	var strArg = "pv_comCdDiv=" + nexacro.wrapQuote(this.ds_main.getColumn(this.ds_main.rowposition, "comCdDiv"));
+
+	this.gfn_transaction("FINDSUB",
+					     "txComUrl::com/selectComCdSub.do",
+						 "",
+						 "ds_main=resultList",
+						 strArg,
+						 "fn_callBack");
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postFindSub
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postFindSub = function()
+{
+	this.gfn_getDatasetCount(this.ds_main, this.sta_grd);
+}
+
+/********************************************************************************
+ * 함 수 명 	: ds_main_onrowposchanged
+ * 함수설명 	: ds_main rowposition 변경 시 함수
+********************************************************************************/
+this.ds_main_onrowposchanged = function(obj:Dataset, e:nexacro.DSRowPosChangeEventInfo)
+{
+	if(e.newrow < 0){
+		return false;
+	}	
+	this.fn_searchSub();
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_newSub_onclick
+ * 함수설명 	: Row를 추가한다.
+********************************************************************************/
+this.btn_newSub_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.ds_main.getRowCount()==0){
+		this.alert("코드구분을 먼저 선택해 주세요.");
+		return false;
+	}
+	this.gfn_addRow(this.ds_main);
+	
+	this.ds_main.setColumn(this.ds_main.rowposition, "comCdDiv", "AFD02");
+	this.ds_main.setColumn(this.ds_main.rowposition, "comCd", "자동채번");
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_delSub_onclick
+ * 함수설명 	: 선택한 Data를 삭제한다.
+ *********************************************************************/
+this.btn_delSub_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_deleteRow(this.ds_main,"this.fn_saveSub()");
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_preSave
+ * 함수설명 	: DataSet을 저장 전 처리 함수.
+ *********************************************************************/
+this.fn_preSave = function()
+{
+	if(!this.gfn_isUpdate(this.ds_main)){
+		this.alert("변경된 데이터가 없습니다.");
+		return false;
+	}
+	
+	//데이터 중복 체크
+	if(!this.gfn_chkValidation("ds_main", "comCdDiv", "코드구분")){
+		return false;
+	}
+	
+	/*
+	 * 필수값 입력 체크
+	 */
+	var colNm = "comCdDiv";
+	var korNm = "코드구분";
+	var cmpNm = "$";
+	
+	var result = this.gfn_chkEssItem("ds_main", colNm, korNm, cmpNm);
+	if (result[0] != "success") {
+		this.gfn_message("A", result[0]);
+		this.ds_main.set_rowposition(result[1]);
+		if(result[3] != ""){
+			this.objects[result[3]].setFocus();
+		}
+		return false;	
+	}
+	
+	return true;
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_save
+ * 함수설명 	: DataSet을 저장한다.
+ *********************************************************************/
+this.fn_save = function()
+{
+	if(this.fn_preSave()){
+		this.gfn_transaction("SAVE",
+							  "txComUrl::com/saveComCd.do",
+							  "resultList=ds_main:u",
+							  "",
+							  "",
+							  "fn_callBack");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSave
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postSave = function()
+{
+	this.alert("저장이 완료되었습니다.");
+	this.fn_search();
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_saveSub_onclick
+ * 함수설명 	: 저장버튼 클릭 event
+ *********************************************************************/
+this.btn_saveSub_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{	
+	this.fn_saveSub();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_preSave
+ * 함수설명 	: DataSet을 저장 전 처리 함수.
+ *********************************************************************/
+this.fn_preSaveSub = function()
+{
+	if(!this.gfn_isUpdate(this.ds_main)){
+		this.alert("변경된 데이터가 없습니다.");
+		return false;
+	}
+	
+	//데이터 중복 체크
+	if(!this.gfn_chkValidation("ds_main", "comCdDiv$comCd", "코드구분, 코드")){
+		return false;
+	}
+	
+	/*
+	 * 필수값 입력 체크
+	 */
+	var colNm = "comCd";
+	var korNm = "코드";
+	var cmpNm = "$";
+	
+	var result = this.gfn_chkEssItem("ds_main", colNm, korNm, cmpNm);
+	if (result[0] != "success") {
+		this.gfn_message("A", result[0]);
+		this.ds_main.set_rowposition(result[1]);
+		if(result[3] != ""){
+			this.objects[result[3]].setFocus();
+		}
+		return false;	
+	}
+	
+	return true;
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_save
+ * 함수설명 	: DataSet을 저장한다.
+ *********************************************************************/
+this.fn_saveSub = function()
+{
+	if(this.fn_preSaveSub()){
+		this.gfn_transaction("SAVESUB",
+							  "txAdmUrl::com/admi/afd/afd01/saveAfdEvent.do",
+							  "resultList=ds_main:u",
+							  "",
+							  "");
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postSave
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postSaveSub = function()
+{
+	this.alert("저장이 완료되었습니다.");
+	this.fn_searchSub();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId == "FIND"){
+			this.fn_postFind();
+		}else if(trId == "FINDSUB"){
+			this.fn_postFindSub();
+		}else if(trId == "SAVE"){
+			this.fn_postSave();
+		}else if(trId == "SAVESUB"){
+			this.fn_postSaveSub();
+		}
+	}
+}
+
+
+this.grd_main_onkeydown = function(obj:Grid, e:nexacro.KeyEventInfo)
+{
+	this.gfn_gridOnkeydown(obj, e);
+}
+
+]]></Script>
+  </Form>
+</FDL>

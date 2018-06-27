@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="fd05010_d03" classname="aac01001_001" left="0" top="0" width="500" height="753" titletext="연말정산기부금 확정총괄" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_printForm" taborder="37" text="div_printForm" left="-1" top="1" height="752" width="500">
+          <Layouts>
+            <Layout>
+              <Static id="Static14" taborder="0" cssclass="detail_bg" left="0" top="1" height="30" style="border:1 solid #c7c9ccff,0 none #808080ff;" right="0"/>
+              <Static id="Static05" taborder="1" text="년도" cssclass="detail_title" left="-1" top="1" width="100" height="30" style="align:left;"/>
+              <Static id="Static16" taborder="47" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="528" top="1" width="20" height="503"/>
+              <Static id="Static18" taborder="49" text="H10" cssclass="tipGuide" visible="false" left="-1" top="86" width="502" height="10"/>
+              <Spin id="spn_Yy" taborder="62" value="0" left="20.4%" top="6" right="65.4%" height="20" max="2100" min="1900"/>
+              <Static id="Static00" taborder="63" text="년" left="175" top="5" width="22" height="23" style="align:left middle;"/>
+              <Grid id="grd_excel" taborder="64" binddataset="ds_excel" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" visible="false" left="0" top="103" right="-1" bottom="515">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="31" band="left"/>
+                      <Column size="113" band="left"/>
+                      <Column size="159"/>
+                      <Column size="80"/>
+                      <Column size="146"/>
+                      <Column size="116"/>
+                      <Column size="197"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="37" band="head"/>
+                      <Row size="24"/>
+                      <Row size="24" band="summ"/>
+                    </Rows>
+                    <Band id="head">
+                      <Cell/>
+                      <Cell col="1" text="영수증번호"/>
+                      <Cell col="2" text="주민(사업자)등록번호"/>
+                      <Cell col="3" text="날짜"/>
+                      <Cell col="4" text="성명(기관)"/>
+                      <Cell col="5" text="금액(원)"/>
+                      <Cell col="6" text="주소"/>
+                    </Band>
+                    <Band id="body">
+                      <Cell displaytype="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;checkbox&quot; : &quot;none&quot;" edittype="expr:endYn == &quot;N&quot; &amp;&amp; yymm != &quot;전체&quot; ? &quot;checkbox&quot; : &quot;none&quot;" text="bind:chk"/>
+                      <Cell col="1" text="bind:receiptNo"/>
+                      <Cell col="2" text="bind:juminNo"/>
+                      <Cell col="3" text="bind:payFrtoDt"/>
+                      <Cell col="4" style="align:left;" text="bind:memberNmKor"/>
+                      <Cell col="5" style="align:left;" text="bind:payAmt"/>
+                      <Cell col="6" text="bind:addrFull"/>
+                    </Band>
+                    <Band id="summary">
+                      <Cell/>
+                      <Cell col="1"/>
+                      <Cell col="2"/>
+                      <Cell col="3"/>
+                      <Cell col="4"/>
+                      <Cell col="5"/>
+                      <Cell col="6"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Button id="btn_excel" taborder="41" text="엑셀" onclick="btn_excel_onclick" cssclass="btn_WF_Common" top="65" right="1" width="60" height="22" tooltiptype="hover" tooltiptext="Excel" userBtnAuth="D"/>
+        <Static id="Static01" taborder="42" cssclass="detail_bg" left="0" top="30" right="0" height="30" style="border:1 solid #c7c9ccff,0 none #808080ff;"/>
+        <Static id="Static02" taborder="43" text="구분" cssclass="detail_title" left="-1" top="30" width="100" height="30" style="align:left;"/>
+        <Radio id="Radio_USAGE" taborder="44" index="0" codecolumn="codecolumn" datacolumn="datacolumn" direction="vertical" onitemchanged="Radio00_onitemchanged" top="37" right="71" width="324" height="19" onitemclick="Radio_USAGE_onitemclick">
+          <Dataset id="innerdataset">
+            <ColumnInfo>
+              <Column id="codecolumn" size="256"/>
+              <Column id="datacolumn" size="256"/>
+            </ColumnInfo>
+            <Rows>
+              <Row>
+                <Col id="codecolumn"/>
+                <Col id="datacolumn">전체</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">1</Col>
+                <Col id="datacolumn">주민등록번호</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">2</Col>
+                <Col id="datacolumn">사업자번호</Col>
+              </Row>
+            </Rows>
+          </Dataset>
+        </Radio>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_dummy"/>
+      <Dataset id="ds_excel"/>
+    </Objects>
+    <Bind>
+      <BindItem id="item1" compid="Div00.cmb_pfmBudgCd" propid="value" datasetid="ds_bgFrmn" columnid="budgCd"/>
+      <BindItem id="item3" compid="Div00.Radio00" propid="value" datasetid="ds_bgFrmn" columnid="balDiv"/>
+      <BindItem id="item2" compid="Div00.cmb_pfmAcntUnt" propid="value" datasetid="ds_bgFrmn" columnid="acntUnt"/>
+      <BindItem id="item0" compid="Div00.spn_acntYy00" propid="value" datasetid="ds_bgFrmn" columnid="acntYy"/>
+      <BindItem id="item18" compid="div_searchForm.spn_acntYy" propid="value" datasetid="ds_bgBiz" columnid="begYy"/>
+      <BindItem id="item9" compid="div_searchForm.cmb_acntUnt" propid="value" datasetid="ds_bgBiz" columnid="acntUnt"/>
+      <BindItem id="item4" compid="div_searchForm.cmb_acntUnt00" propid="value" datasetid="ds_bgBiz" columnid="acntUnt"/>
+      <BindItem id="item5" compid="div_searchForm.cmb_acntUnt01" propid="value" datasetid="ds_bgBiz" columnid="acntUnt"/>
+      <BindItem id="item6" compid="div_searchForm.cmb_acntUnt02" propid="value" datasetid="ds_bgBiz" columnid="acntUnt"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+
+/******************************************************************************
+* 함 수 명 	: form_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+
+	//조회년도
+	this.div_printForm.spn_Yy.set_value(this.gfn_getCurrentDate("YYYY"));
+}
+ 
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0)
+	{
+		this.gfn_message("A", errMsg);
+	}
+}
+
+this.btn_endwPop_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var popupId = "afd02020_p01";
+	var popupUrl = "afd02::afd02020_p01.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var argumentsList = new Array();
+
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, this);
+}
+/****************************************************************************
+* 함 수 명 	: fn_popCallBack
+* 함수설명 	: 팝업 callback함수
+*****************************************************************************/
+this.fn_popCallBack = function(strID, rtnVal) 
+{
+	if("close" == rtnVal) 
+	{
+		return;
+	}
+		
+	//기금팝업
+	if("afd02020_p01" == strID) 
+	{
+		this.ds_dummy.loadXML(rtnVal);
+
+		this.edt_endwCd.set_value(this.ds_dummy.getColumn(0, "endwCd"));
+		this.edt_endwNm.set_value(this.ds_dummy.getColumn(0, "endwNm"));
+	}
+}
+
+this.btn_excel_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	//년도 null체크
+	if(this.gfn_isNull(this.div_printForm.spn_Yy.value))
+	{
+		this.gfn_message("A", "년도는 필수입력입니다.");
+		return false;
+	}
+
+	var strArg = "yy=" + nexacro.wrapQuote(this.gfn_nvl(this.div_printForm.spn_Yy.value, ""));//조회시작년월
+		strArg += "div=" + nexacro.wrapQuote(this.gfn_nvl(this.Radio_USAGE.value, ""));//조회년월
+		
+		this.gfn_transaction("SEARCH_EXCEL_01"
+						,"txAdmUrl::com/admi/afd/afd05/selectExcel.do"
+						,""
+						,"ds_excel=resultList"
+						,strArg
+						,""
+						,false);
+						
+	var excelGrd = new Array();
+		excelGrd[0] = this.div_printForm.grd_excel;
+ 	this.gfn_excelDown(excelGrd, "연말정산기부금 확정총괄");
+}
+
+this.Radio_USAGE_onitemclick = function(obj:Radio, e:nexacro.RadioMouseEventInfo)
+{
+	
+}
+]]></Script>
+  </Form>
+</FDL>

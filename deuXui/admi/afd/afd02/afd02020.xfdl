@@ -1,0 +1,1644 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd02020" classname="afd02020" left="0" top="0" width="1038" height="558" titletext="약정관리" onload="afd02020_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="20" left="0" top="0" right="15" height="69" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static05" taborder="118" text="회원성명" cssclass="search_req" left="15" top="10" width="59" height="22" class="search_bul"/>
+              <Edit id="edt_sMemberNo" taborder="120" left="79" top="10" width="91" height="22" canchange="div_search_edt_sMemberNo_canchange" style="border:1 solid #ccccccff ;" cssclass="compulsory"/>
+              <Button id="btn_popup" taborder="121" cssclass="popupDetail" left="172" top="10" width="22" height="22" tooltiptype="hover" tooltiptext="조회" onclick="div_search_btn_popup_onclick" userBtnAuth="R"/>
+              <Edit id="edt_sMemberNmKor" taborder="125" left="196" top="10" width="162" height="22" readonly="true" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static10" taborder="127" text="주민번호" cssclass="search" left="425" top="10" width="58" height="22" class="search_bul" visible="false"/>
+              <Static id="Static03" taborder="130" text="총약정수" cssclass="search" left="15" top="37" width="59" height="22" class="search_bul"/>
+              <Edit id="edt_sEnggMgnCnt" taborder="132" left="79" top="37" width="110" height="22" readonly="true" displaynulltext="0" style="align:right middle;"/>
+              <Static id="Static12" taborder="133" text="총약정액" cssclass="search" left="209" top="37" width="58" height="22" class="search_bul"/>
+              <Static id="Static08" taborder="136" text="총입금액" cssclass="search" left="425" top="37" width="58" height="22" class="search_bul"/>
+              <MaskEdit id="msk_sWsJuminNo" taborder="139" readonly="true" left="490" top="10" width="131" height="22" mask="######-#{######}" type="string" visible="false"/>
+              <MaskEdit id="msk_sSumEnggAmt" taborder="140" readonly="true" mask="#,###" left="274" top="37" width="131" height="22" displaynulltext="0"/>
+              <MaskEdit id="msk_sSumPaymentAmt" taborder="141" readonly="true" mask="#,###" left="490" top="37" width="131" height="22" displaynulltext="0"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static29" taborder="26" cssclass="detail_bg" left="0" top="111" right="15" height="30"/>
+        <Static id="Static10" taborder="29" text="약정번호" cssclass="detail_title" left="0" top="111" width="110" height="30"/>
+        <Combo id="cmb_enggMgnNo" taborder="50" innerdataset="@ds_enggMgnNo" codecolumn="enggMgnNo" datacolumn="endwNm" left="115" top="115" width="223" height="22" onitemchanged="cmb_enggMgnNo_onitemchanged" displayrowcount="10"/>
+        <Button id="btn_new" taborder="138" text="추가" cssclass="new" top="84" right="139" width="60" height="22" tooltiptype="hover" tooltiptext="추가" onclick="btn_new_onclick" userBtnAuth="S" visible="true"/>
+        <Button id="btn_del" taborder="139" text="삭제" cssclass="del" top="84" right="77" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" onclick="btn_del_onclick" userBtnAuth="S"/>
+        <Button id="btn_save" taborder="140" text="저장" cssclass="save" top="84" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="저장" onclick="btn_save_onclick" userBtnAuth="S"/>
+        <Edit id="edt_endwCd00" taborder="173" readonly="true" visible="false" left="484" top="115" width="223" height="22"/>
+        <Static id="Static09" taborder="228" cssclass="detail_bg" left="0" top="246" right="15" height="30"/>
+        <Static id="Static41" taborder="229" cssclass="detail_bg" left="0" top="188" right="15" height="30"/>
+        <Static id="Static01" taborder="230" cssclass="detail_bg" left="0" top="217" right="15" height="30"/>
+        <Static id="Static64" taborder="231" text="약정총액" cssclass="detail_title" left="682" top="217" width="113" height="30"/>
+        <Static id="Static72" taborder="232" text="기탁형태" cssclass="detail_title" left="0" top="217" width="111" height="30"/>
+        <Static id="Static66" taborder="233" text="기금" cssclass="detail_title" left="0" top="188" width="111" height="30"/>
+        <Button id="btn_endwPop" taborder="234" onclick="btn_endwPop_onclick" cssclass="popupDetail" left="313" top="192" width="24" height="22" tooltiptype="hover" tooltiptext="조회" enable="false"/>
+        <Edit id="edt_endwNm" taborder="235" readonly="true" left="115" top="192" width="196" height="22" cssclass="compulsory"/>
+        <MaskEdit id="msk_enggAmt" taborder="236" mask="###,###,###,###" limitbymask="integer" canchange="msk_enggAmt_canchange" enable="true" left="798" top="221" width="217" height="22" style="align:right;" cssclass="compulsory" onchanged="msk_enggAmt_onchanged" oneditclick="msk_enggAmt_oneditclick"/>
+        <Combo id="cmb_paymthd" taborder="237" value="01" text="현금" codecolumn="codecolumn" datacolumn="datacolumn" index="1" onitemchanged="cmb_paymthd_onitemchanged" enable="true" left="115" top="221" width="223" height="22" cssclass="compulsory" style="background:#ffffffff URL('theme://images/compulsory.png') left top;">
+          <Dataset id="innerdataset">
+            <ColumnInfo>
+              <Column id="codecolumn" size="256"/>
+              <Column id="datacolumn" size="256"/>
+            </ColumnInfo>
+            <Rows>
+              <Row>
+                <Col id="codecolumn"/>
+                <Col id="datacolumn">선택</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">01</Col>
+                <Col id="datacolumn">현금</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">02</Col>
+                <Col id="datacolumn">부동산</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">03</Col>
+                <Col id="datacolumn">유가증권</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">04</Col>
+                <Col id="datacolumn">기타</Col>
+              </Row>
+            </Rows>
+          </Dataset>
+        </Combo>
+        <Static id="Static13" taborder="238" text="입금계좌" cssclass="detail_title" left="340" top="217" width="112" height="30"/>
+        <Static id="Static15" taborder="239" text="부산은행 264-13-000086-4" left="454" top="220" width="225" height="23" style="border:0 none #808080ff ;color:mediumblue;align:center;font:11 arial;"/>
+        <Static id="Static16" taborder="240" cssclass="detail_bg" left="0" top="275" right="15" height="30"/>
+        <Static id="Static02" taborder="241" cssclass="detail_bg" left="0" top="304" right="15" height="30"/>
+        <Static id="Static19" taborder="242" text="기탁방법" cssclass="detail_title" left="0" top="246" width="111" height="88"/>
+        <CheckBox id="chk_payType1" taborder="243" text="일회성 (기탁예정일 :" value="0" truevalue="1" falsevalue="0" canchange="chk_payType_canchange" onchanged="chk_payType1_onchanged" enable="true" left="115" top="250" width="143" height="22"/>
+        <CheckBox id="chk_payType2" taborder="244" text="정기적 (이체일 :" value="0" truevalue="1" falsevalue="0" canchange="chk_payType_canchange" onchanged="chk_payType2_onchanged" enable="true" left="115" top="279" width="143" height="22"/>
+        <CheckBox id="chk_payType3" taborder="245" text="교직원 급여공제 (매월 " value="0" truevalue="1" falsevalue="0" canchange="chk_payType_canchange" onchanged="chk_payType3_onchanged" enable="true" left="115" top="308" width="143" height="22"/>
+        <Calendar id="cal_payType1_dt" taborder="246" dateformat="yyyy-MM-dd" enable="false" left="263" top="250" width="119" height="22"/>
+        <Static id="Static20" taborder="247" text=")" left="389" top="250" width="18" height="23"/>
+        <Calendar id="cal_payType2_fromDt" taborder="248" dateformat="yyyy-MM-dd" enable="false" left="263" top="279" width="119" height="22"/>
+        <Static id="Static21" taborder="249" text="~" left="391" top="279" width="18" height="23"/>
+        <Calendar id="cal_payType2_toDt" taborder="250" dateformat="yyyy-MM-dd" enable="false" left="408" top="279" width="121" height="22"/>
+        <Static id="Static22" taborder="251" text="(총" left="536" top="279" width="18" height="22"/>
+        <Edit id="edt_payType2_cnt" taborder="252" maxlength="3" enable="false" left="559" top="279" width="34" height="22" style="border:1 solid #ccccccff ;" onchanged="edt_engg_month_onchanged"/>
+        <Static id="Static03" taborder="253" text="회)/ 월" left="599" top="279" width="43" height="22"/>
+        <MaskEdit id="msk_payType2_monthAmt" taborder="254" mask="###,###,###,###" limitbymask="integer" enable="false" left="646" top="279" width="121" height="22" style="align:right;" onchanged="msk_engg_monthAmt_onchanged"/>
+        <Static id="Static25" taborder="255" text="원씩" left="774" top="279" width="36" height="22"/>
+        <MaskEdit id="msk_payType3_monthAmt" taborder="256" mask="###,###,###,###" limitbymask="integer" enable="false" left="263" top="308" width="119" height="22" style="align:right;" onchanged="msk_engg_monthAmt_onchanged"/>
+        <Static id="Static26" taborder="257" text="원," left="389" top="308" width="36" height="22"/>
+        <Edit id="edt_payType3_month" taborder="258" maxlength="3" enable="false" left="408" top="308" width="34" height="22" style="border:1 solid #ccccccff ;" onchanged="edt_engg_month_onchanged"/>
+        <Static id="Static27" taborder="259" text=")" left="761" top="309" width="42" height="22"/>
+        <Edit id="edt_endwCd" taborder="260" visible="false" left="352" top="192" width="196" height="22" style="border:1 solid #ccccccff ;"/>
+        <Div id="div_endwForm1" taborder="261" left="1054" top="48" width="1034" height="120" visible="false">
+          <Layouts>
+            <Layout>
+              <Static id="Static01" taborder="13" cssclass="detail_bg" left="0" top="58" right="1" height="30"/>
+              <Static id="Static18" taborder="14" cssclass="detail_bg" left="0" top="0" right="1" height="30"/>
+              <Static id="Static00" taborder="15" cssclass="detail_bg" left="0" top="29" right="1" height="30"/>
+              <CheckBox id="chk_type1" taborder="17" text="대학에 일임" value="0" truevalue="1" falsevalue="0" canchange="div_endwForm1_chk_type_canchange" onchanged="div_endwForm1_chk_type_onchanged" left="117" top="4" width="88" height="22"/>
+              <CheckBox id="chk_type2_type2" taborder="18" text="장학금(" value="0" truevalue="1" falsevalue="0" canchange="div_endwForm1_chk_type_canchange" onchanged="div_endwForm1_chk_type_onchanged" enable="false" left="208" top="62" width="65" height="22"/>
+              <CheckBox id="chk_type2_type2A" taborder="19" text="학부," value="0" truevalue="1" falsevalue="0" canchange="div_endwForm1_chk_type_canchange" onchanged="div_endwForm1_chk_type_onchanged" enable="false" left="274" top="62" width="50" height="22"/>
+              <CheckBox id="chk_type2_type2B" taborder="20" text="대학원)" value="0" truevalue="1" falsevalue="0" canchange="div_endwForm1_chk_type_canchange" onchanged="div_endwForm1_chk_type_onchanged" enable="false" left="330" top="62" width="68" height="22"/>
+              <Edit id="edt_type2_type2_deptNm" taborder="21" maxlength="10" enable="false" left="399" top="62" width="217" height="22" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static22" taborder="22" text="학과" left="627" top="62" width="35" height="22"/>
+              <CheckBox id="chk_type2_type1" taborder="23" text="일반" value="0" truevalue="1" falsevalue="0" canchange="div_endwForm1_chk_type_canchange" onchanged="div_endwForm1_chk_type_onchanged" enable="false" left="208" top="33" width="67" height="22"/>
+              <Static id="Static02" taborder="24" cssclass="detail_bg" left="110" top="29" width="93" height="59"/>
+              <CheckBox id="chk_type2" taborder="25" text="용도지정" value="0" truevalue="1" falsevalue="0" canchange="div_endwForm1_chk_type_canchange" onchanged="div_endwForm1_chk_type_onchanged" left="117" top="29" width="89" height="59" visible="true"/>
+              <Static id="Static04" taborder="26" cssclass="detail_bg" left="0" top="87" right="1" height="30"/>
+              <Static id="Static03" taborder="16" text="용도" cssclass="detail_title" left="0" top="0" width="111" height="117"/>
+              <Static id="Static08" taborder="27" text="은행" cssclass="detail_title" left="110" top="87" width="93" height="30"/>
+              <Combo id="cmb_type3_bankCd" taborder="28" innerdataset="ds_bankCd" codecolumn="comCd" datacolumn="comCdNm" onitemchanged="cmb_paymthd_onitemchanged" left="206" top="91" width="168" height="22" displayrowcount="10"/>
+              <Static id="Static10" taborder="29" text="계좌번호" cssclass="detail_title" left="377" top="87" width="116" height="30"/>
+              <Edit id="cmb_type3_acno" taborder="30" maxlength="10" left="497" top="91" width="168" height="22" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static11" taborder="31" text="예금주명" cssclass="detail_title" left="668" top="87" width="111" height="30"/>
+              <Edit id="cmb_type3_dpwnm" taborder="32" maxlength="10" left="784" top="91" width="168" height="22" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static12" taborder="33" text="납부자번호" cssclass="detail_title" left="668" top="29" width="111" height="30"/>
+              <Edit id="cmb_type3_payNo" taborder="34" maxlength="10" left="784" top="33" width="168" height="22" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static05" taborder="35" text="지정기탁구분" cssclass="detail_title" left="668" top="58" width="111" height="30"/>
+              <Combo id="cmb_type3_fixCd" taborder="36" innerdataset="@ds_pfm_fixCd" codecolumn="comCd" datacolumn="comCdNm" displayrowcount="10" left="784" top="62" width="168" height="22"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Div id="div_endwForm2" taborder="262" left="1054" top="205" width="1034" height="90" visible="false">
+          <Layouts>
+            <Layout>
+              <Static id="Static09" taborder="46" cssclass="detail_bg" left="0" top="58" right="1" height="30"/>
+              <Static id="Static18" taborder="29" cssclass="detail_bg" left="0" top="0" right="1" height="30"/>
+              <Static id="Static00" taborder="30" cssclass="detail_bg" left="0" top="29" right="1" height="30"/>
+              <Static id="Static03" taborder="31" text="신청구좌" cssclass="detail_title" left="0" top="0" width="111" height="30"/>
+              <Edit id="edt_type2_type2A_monthCnt" taborder="32" maxlength="10" enable="false" left="241" top="33" width="42" height="22" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static22" taborder="33" text="개월)" left="287" top="33" width="35" height="22"/>
+              <Static id="Static01" taborder="34" text="기한" cssclass="detail_title" left="0" top="29" width="111" height="30"/>
+              <CheckBox id="chk_type2_type2B" taborder="35" text="기한(" value="0" truevalue="1" falsevalue="0" canchange="div_endwForm2_chk_type_canchange" onchanged="div_endwForm2_chk_type_onchanged" left="187" top="33" width="50" height="22"/>
+              <CheckBox id="chk_type2_type2A" taborder="36" text="무기한" value="0" truevalue="1" falsevalue="0" canchange="div_endwForm2_chk_type_canchange" onchanged="div_endwForm2_chk_type_onchanged" left="117" top="33" width="65" height="22"/>
+              <Edit id="edt_type1_cnt" taborder="37" maxlength="10" left="125" top="4" width="42" height="22" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static02" taborder="38" text=") 구좌(\2,000원/1구좌)" left="172" top="4" width="149" height="22"/>
+              <Static id="Static04" taborder="39" text="계좌이체일" cssclass="detail_title" left="327" top="29" width="116" height="30"/>
+              <Edit id="edt_type2_monthDate" taborder="40" maxlength="10" left="484" top="33" width="43" height="22" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static05" taborder="41" text="일)" left="530" top="33" width="37" height="22"/>
+              <Static id="Static06" taborder="42" text="(" left="117" top="4" width="7" height="22"/>
+              <Static id="Static07" taborder="43" text="매월(" left="451" top="33" width="37" height="22"/>
+              <Static id="Static08" taborder="44" text="은행" cssclass="detail_title" left="0" top="58" width="111" height="30"/>
+              <Combo id="cmb_type3_bankCd" taborder="45" innerdataset="ds_bankCd" codecolumn="comCd" datacolumn="comCdNm" onitemchanged="cmb_paymthd_onitemchanged" left="115" top="62" width="208" height="22" displayrowcount="10"/>
+              <Static id="Static10" taborder="47" text="계좌번호" cssclass="detail_title" left="327" top="58" width="116" height="30"/>
+              <Edit id="cmb_type3_acno" taborder="48" maxlength="10" left="447" top="62" width="208" height="22" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static11" taborder="49" text="예금주명" cssclass="detail_title" left="659" top="58" width="111" height="30"/>
+              <Edit id="cmb_type3_dpwnm" taborder="50" maxlength="10" left="775" top="62" width="208" height="22" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static12" taborder="51" text="납부자번호" cssclass="detail_title" left="659" top="29" width="111" height="30"/>
+              <Edit id="cmb_type3_payNo" taborder="52" maxlength="10" left="775" top="33" width="208" height="22" style="border:1 solid #ccccccff ;"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Div id="div_endwForm3" taborder="263" left="1054" top="309" width="1034" height="61" visible="false">
+          <Layouts>
+            <Layout>
+              <Static id="Static18" taborder="55" cssclass="detail_bg" left="0" top="0" right="1" height="30"/>
+              <Static id="Static00" taborder="56" cssclass="detail_bg" left="0" top="29" right="1" height="30"/>
+              <Static id="Static03" taborder="57" text="신청구좌" cssclass="detail_title" left="0" top="0" width="111" height="59"/>
+              <CheckBox id="chk_type1" taborder="58" text="1구좌 (5만원)" value="0" truevalue="1" falsevalue="0" canchange="div_endwForm3_chk_type_canchange" onchanged="div_endwForm3_chk_type_onchanged" left="117" top="4" width="113" height="22"/>
+              <CheckBox id="chk_type2" taborder="59" text="2구좌 (10만원)" value="0" truevalue="1" falsevalue="0" canchange="div_endwForm3_chk_type_canchange" onchanged="div_endwForm3_chk_type_onchanged" left="236" top="4" width="115" height="22"/>
+              <CheckBox id="chk_type3" taborder="60" text="3구좌 (15만원)" value="0" truevalue="1" falsevalue="0" canchange="div_endwForm3_chk_type_canchange" onchanged="div_endwForm3_chk_type_onchanged" left="365" top="4" width="114" height="22"/>
+              <CheckBox id="chk_type4" taborder="61" text="4구좌 (20만원)" value="0" truevalue="1" falsevalue="0" canchange="div_endwForm3_chk_type_canchange" onchanged="div_endwForm3_chk_type_onchanged" left="485" top="4" width="113" height="22"/>
+              <CheckBox id="chk_type5" taborder="62" text="기타(" value="0" truevalue="1" falsevalue="0" canchange="div_endwForm3_chk_type_canchange" onchanged="div_endwForm3_chk_type_onchanged" left="117" top="33" width="54" height="22"/>
+              <Edit id="chk_type5_cnt" taborder="63" maxlength="10" enable="false" left="171" top="33" width="43" height="22" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static02" taborder="64" text="구좌" left="217" top="33" width="37" height="22"/>
+              <MaskEdit id="chk_type5_amt" taborder="65" mask="###,###,###,###" limitbymask="integer" enable="false" left="248" top="33" width="131" height="22" style="align:right;"/>
+              <Static id="Static04" taborder="66" text="원)     ※업체추천서 및 사업자등록증 사본 1부 제출 요망" left="385" top="33" width="325" height="22"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Div id="div_endwForm4" taborder="264" left="1054" top="381" width="1034" height="32" visible="false">
+          <Layouts>
+            <Layout>
+              <Static id="Static18" taborder="68" cssclass="detail_bg" left="0" top="0" right="1" height="30"/>
+              <Static id="Static03" taborder="69" text="신청구좌" cssclass="detail_title" left="0" top="0" width="111" height="30"/>
+              <Edit id="chk_type1_cnt" taborder="70" maxlength="10" left="125" top="4" width="44" height="22" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static02" taborder="71" text="구좌(\1,000원/1구좌)     ※최저 1구좌(1000원)부터 최고 5구좌(5000원)까지 가입 가능(급여공제)" left="171" top="4" width="534" height="22"/>
+              <Static id="Static01" taborder="72" text="(" left="117" top="4" width="10" height="22"/>
+              <Div id="div_endwForm4" taborder="73" left="1062" top="389" width="1034" height="32" visible="false">
+                <Layouts>
+                  <Layout>
+                    <Static id="Static18" taborder="73" cssclass="detail_bg" left="0" top="0" right="1" height="30"/>
+                    <Static id="Static03" taborder="74" text="신청구좌" cssclass="detail_title" left="0" top="0" width="111" height="30"/>
+                    <Edit id="chk_type1_cnt" taborder="75" maxlength="10" left="125" top="4" width="44" height="22" style="border:1 solid #ccccccff ;"/>
+                    <Static id="Static02" taborder="76" text="구좌(\1,000원/1구좌)     ※최저 1구좌(1000원)부터 최고 5구좌(5000원)까지 가입 가능(급여공제)" left="171" top="4" width="534" height="22"/>
+                    <Static id="Static01" taborder="77" text="(" left="117" top="4" width="10" height="22"/>
+                  </Layout>
+                </Layouts>
+              </Div>
+              <Div id="div_endwForm00" taborder="74" left="1062" top="389" width="1034" height="32" visible="false">
+                <Layouts>
+                  <Layout>
+                    <Static id="Static18" taborder="74" cssclass="detail_bg" left="0" top="0" right="1" height="30"/>
+                    <Static id="Static03" taborder="75" text="신청구좌" cssclass="detail_title" left="0" top="0" width="111" height="30"/>
+                    <Edit id="chk_type1_cnt" taborder="76" maxlength="10" left="125" top="4" width="44" height="22" style="border:1 solid #ccccccff ;"/>
+                    <Static id="Static02" taborder="77" text="구좌(\1,000원/1구좌)     ※최저 1구좌(1000원)부터 최고 5구좌(5000원)까지 가입 가능(급여공제)" left="171" top="4" width="534" height="22"/>
+                    <Static id="Static01" taborder="78" text="(" left="117" top="4" width="10" height="22"/>
+                    <Div id="div_endwForm4" taborder="79" left="1062" top="389" width="1034" height="32" visible="false">
+                      <Layouts>
+                        <Layout>
+                          <Static id="Static18" taborder="78" cssclass="detail_bg" left="0" top="0" right="1" height="30"/>
+                          <Static id="Static03" taborder="79" text="신청구좌" cssclass="detail_title" left="0" top="0" width="111" height="30"/>
+                          <Edit id="chk_type1_cnt" taborder="80" maxlength="10" left="125" top="4" width="44" height="22" style="border:1 solid #ccccccff ;"/>
+                          <Static id="Static02" taborder="81" text="구좌(\1,000원/1구좌)     ※최저 1구좌(1000원)부터 최고 5구좌(5000원)까지 가입 가능(급여공제)" left="171" top="4" width="534" height="22"/>
+                          <Static id="Static01" taborder="82" text="(" left="117" top="4" width="10" height="22"/>
+                        </Layout>
+                      </Layouts>
+                    </Div>
+                  </Layout>
+                </Layouts>
+              </Div>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Div id="div_search00" taborder="265" left="0" top="143" right="15" height="43" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static02" taborder="0" text="약정정보" cssclass="page_stitle" left="9" top="14" width="182" height="20"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Edit id="edt_mentFormDiv" taborder="266" visible="false" left="563" top="192" width="196" height="22" style="border:1 solid #ccccccff ;"/>
+        <CheckBox id="chk_boruYn" taborder="267" text="보류" left="344" top="115" width="55" height="22" enable="false" truevalue="1" falsevalue="0"/>
+        <Calendar id="cal_payType3_fromDt" taborder="268" dateformat="yyyy-MM-dd" enable="false" left="487" top="308" width="119" height="22"/>
+        <Static id="Static00" taborder="269" text="~" left="615" top="308" width="18" height="23"/>
+        <Calendar id="cal_payType3_toDt" taborder="270" dateformat="yyyy-MM-dd" enable="false" left="632" top="308" width="121" height="22" oneditclick="cal_payType3_toDt_oneditclick"/>
+        <Static id="Static04" taborder="271" text="개월" left="449" top="308" width="42" height="22"/>
+        <Static id="Static05" taborder="272" text="증감액" left="815" top="279" width="43" height="22"/>
+        <MaskEdit id="msk_payType2_lastMonthAmt" taborder="273" mask="###,###,###,###" limitbymask="integer" onchanged="msk_engg_monthAmt_onchanged" enable="false" left="862" top="279" width="121" height="22" style="align:right;"/>
+        <Div id="div_endwForm5" taborder="289" left="1054" top="421" width="1034" height="32" visible="false">
+          <Layouts>
+            <Layout>
+              <Static id="Static18" taborder="74" cssclass="detail_bg" left="0" top="0" right="1" height="30"/>
+              <Static id="Static03" taborder="75" text="추천인 성명" cssclass="detail_title" left="0" top="0" width="111" height="30"/>
+              <Edit id="edt_memberRecommendName" taborder="76" maxlength="10" left="115" top="4" width="88" height="22" style="border:1 solid #ccccccff ;"/>
+              <Div id="div_endwForm4" taborder="79" left="1062" top="389" width="1034" height="32" visible="false">
+                <Layouts>
+                  <Layout>
+                    <Static id="Static18" taborder="78" cssclass="detail_bg" left="0" top="0" right="1" height="30"/>
+                    <Static id="Static03" taborder="79" text="신청구좌" cssclass="detail_title" left="0" top="0" width="111" height="30"/>
+                    <Edit id="chk_type1_cnt" taborder="80" maxlength="10" left="125" top="4" width="44" height="22" style="border:1 solid #ccccccff ;"/>
+                    <Static id="Static02" taborder="81" text="구좌(\1,000원/1구좌)     ※최저 1구좌(1000원)부터 최고 5구좌(5000원)까지 가입 가능(급여공제)" left="171" top="4" width="534" height="22"/>
+                    <Static id="Static01" taborder="82" text="(" left="117" top="4" width="10" height="22"/>
+                  </Layout>
+                </Layouts>
+              </Div>
+              <Static id="Static00" taborder="80" text="추천인 소속" cssclass="detail_title" left="344" top="0" width="111" height="30"/>
+              <Edit id="edt_memberRecommendDept" taborder="81" maxlength="10" left="459" top="4" width="223" height="22" style="border:1 solid #ccccccff ;"/>
+              <Edit id="edt_memberRecommendCode" taborder="82" maxlength="10" left="229" top="4" width="108" height="22" style="border:1 solid #ccccccff ;"/>
+              <Button id="btn_sPopup" taborder="83" onclick="div_search_btn_sPopup_onclick" cssclass="popupDetail" left="205" top="4" width="22" height="22" tooltiptype="hover" tooltiptext="조회"/>
+            </Layout>
+          </Layouts>
+        </Div>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_paymthd">
+        <ColumnInfo>
+          <Column id="paymthdCd" type="STRING" size="256"/>
+          <Column id="paymthdNm" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="paymthdCd">1</Col>
+            <Col id="paymthdNm">계좌이체</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_enggSttus"/>
+      <Dataset id="ds_enggMgnNo"/>
+      <Dataset id="ds_dummy"/>
+      <Dataset id="ds_afdCntrct">
+        <ColumnInfo>
+          <Column id="thanksSndngYn" type="string" size="32"/>
+          <Column id="acthngKnd" type="string" size="32"/>
+          <Column id="paymthd" type="string" size="32"/>
+          <Column id="fpyPrearngeDt" type="string" size="32"/>
+          <Column id="remark" type="string" size="32"/>
+          <Column id="endwCd" type="string" size="32"/>
+          <Column id="endwNm" type="string" size="32"/>
+          <Column id="enggMgnNo" type="string" size="32"/>
+          <Column id="rlPrearngeDt" type="string" size="32"/>
+          <Column id="payResrveYn" type="string" size="32"/>
+          <Column id="reservepdTo" type="string" size="32"/>
+          <Column id="enggCanclDesc" type="string" size="32"/>
+          <Column id="enggDt" type="string" size="32"/>
+          <Column id="rcpmnyGdccYn" type="string" size="32"/>
+          <Column id="reservepdFr" type="string" size="32"/>
+          <Column id="enggSttus" type="string" size="32"/>
+          <Column id="inspyMonthCnt" type="string" size="32"/>
+          <Column id="chk" type="string" size="32"/>
+          <Column id="onlineEnggYn" type="string" size="32"/>
+          <Column id="frstEnggAmt" type="string" size="32"/>
+          <Column id="rcpmnyerNm" type="string" size="32"/>
+          <Column id="mtInspyAmt" type="string" size="32"/>
+          <Column id="frstInspyPrearngeDt" type="string" size="32"/>
+          <Column id="rowStatus" type="string" size="32"/>
+          <Column id="recmndrMemNo" type="string" size="32"/>
+          <Column id="memberNo" type="string" size="32"/>
+          <Column id="enggAmt" type="string" size="32"/>
+          <Column id="cntrType" type="string" size="32"/>
+          <Column id="enggDiv" type="STRING" size="256"/>
+          <Column id="paymthd1" type="STRING" size="256"/>
+          <Column id="paymthd2" type="STRING" size="256"/>
+          <Column id="paymthd3" type="STRING" size="256"/>
+          <Column id="endwDiv1" type="STRING" size="256"/>
+          <Column id="endwDiv2" type="STRING" size="256"/>
+          <Column id="usageDiv1" type="STRING" size="256"/>
+          <Column id="usageDiv2" type="STRING" size="256"/>
+          <Column id="usageDiv3" type="STRING" size="256"/>
+          <Column id="usageDiv4" type="STRING" size="256"/>
+          <Column id="usageDiv5" type="STRING" size="256"/>
+          <Column id="usageDiv21" type="STRING" size="256"/>
+          <Column id="usageDiv22" type="STRING" size="256"/>
+          <Column id="usageDiv221" type="STRING" size="256"/>
+          <Column id="usageDiv222" type="STRING" size="256"/>
+          <Column id="usageDeptName" type="STRING" size="256"/>
+          <Column id="accountsCnt" type="STRING" size="256"/>
+          <Column id="payMonthCnt" type="STRING" size="256"/>
+          <Column id="payDt" type="STRING" size="256"/>
+          <Column id="accountsAmt" type="STRING" size="256"/>
+          <Column id="bankcd" type="STRING" size="256"/>
+          <Column id="acno" type="STRING" size="256"/>
+          <Column id="dpwnm" type="STRING" size="256"/>
+          <Column id="payNo" type="STRING" size="256"/>
+          <Column id="mentFormDiv" type="STRING" size="256"/>
+          <Column id="boruYn" type="STRING" size="256"/>
+          <Column id="enggChangesAmt" type="STRING" size="256"/>
+          <Column id="fixCd" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_divSearch"/>
+      <Dataset id="ds_afdNewCntrct"/>
+      <Dataset id="ds_endw"/>
+      <Dataset id="ds_chgegbn"/>
+      <Dataset id="ds_cntrType"/>
+      <Dataset id="ds_bankCd"/>
+      <Dataset id="ds_pfm_fixCd"/>
+    </Objects>
+    <Bind>
+      <BindItem id="item0" compid="div_search.msk_sWsJuminNo" propid="value" datasetid="ds_search" columnid=""/>
+      <BindItem id="item5" compid="edt_endwCd00" propid="value" datasetid="ds_afdCntrct" columnid="enggMgnNo"/>
+      <BindItem id="item32" compid="edt_endwNm" propid="value" datasetid="ds_afdCntrct" columnid="endwNm"/>
+      <BindItem id="item7" compid="msk_enggAmt" propid="value" datasetid="ds_afdCntrct" columnid="enggAmt"/>
+      <BindItem id="item2" compid="cmb_paymthd" propid="value" datasetid="ds_afdCntrct" columnid="enggDiv"/>
+      <BindItem id="item18" compid="chk_payType1" propid="value" datasetid="ds_afdCntrct" columnid="paymthd1"/>
+      <BindItem id="item19" compid="chk_payType2" propid="value" datasetid="ds_afdCntrct" columnid="paymthd2"/>
+      <BindItem id="item27" compid="chk_payType3" propid="value" datasetid="ds_afdCntrct" columnid="paymthd3"/>
+      <BindItem id="item24" compid="cal_payType1_dt" propid="value" datasetid="ds_afdCntrct" columnid="frstInspyPrearngeDt1"/>
+      <BindItem id="item25" compid="cal_payType2_fromDt" propid="value" datasetid="ds_afdCntrct" columnid="frstInspyPrearngeDt"/>
+      <BindItem id="item26" compid="cal_payType2_toDt" propid="value" datasetid="ds_afdCntrct" columnid="fpyPrearngeDt"/>
+      <BindItem id="item28" compid="edt_payType2_cnt" propid="value" datasetid="ds_afdCntrct" columnid="inspyMonthCnt1"/>
+      <BindItem id="item31" compid="msk_payType2_monthAmt" propid="value" datasetid="ds_afdCntrct" columnid="mtInspyAmt1"/>
+      <BindItem id="item33" compid="msk_payType3_monthAmt" propid="value" datasetid="ds_afdCntrct" columnid="mtInspyAmt2"/>
+      <BindItem id="item34" compid="edt_payType3_month" propid="value" datasetid="ds_afdCntrct" columnid="inspyMonthCnt2"/>
+      <BindItem id="item1" compid="edt_endwCd" propid="value" datasetid="ds_afdCntrct" columnid="endwCd"/>
+      <BindItem id="item3" compid="div_endwForm1.chk_type1" propid="value" datasetid="ds_afdCntrct" columnid="usageDiv1"/>
+      <BindItem id="item4" compid="div_endwForm1.chk_type2" propid="value" datasetid="ds_afdCntrct" columnid="usageDiv2"/>
+      <BindItem id="item6" compid="div_endwForm1.chk_type2_type1" propid="value" datasetid="ds_afdCntrct" columnid="usageDiv21"/>
+      <BindItem id="item8" compid="div_endwForm1.chk_type2_type2" propid="value" datasetid="ds_afdCntrct" columnid="usageDiv22"/>
+      <BindItem id="item9" compid="div_endwForm1.chk_type2_type2A" propid="value" datasetid="ds_afdCntrct" columnid="usageDiv221"/>
+      <BindItem id="item10" compid="div_endwForm1.chk_type2_type2B" propid="value" datasetid="ds_afdCntrct" columnid="usageDiv222"/>
+      <BindItem id="item11" compid="div_endwForm1.edt_type2_type2_deptNm" propid="value" datasetid="ds_afdCntrct" columnid="usageDeptName"/>
+      <BindItem id="item12" compid="div_endwForm2.edt_type1_cnt" propid="value" datasetid="ds_afdCntrct" columnid="accountsCnt"/>
+      <BindItem id="item13" compid="div_endwForm2.chk_type2_type2A" propid="value" datasetid="ds_afdCntrct" columnid="usageDiv1"/>
+      <BindItem id="item14" compid="div_endwForm2.chk_type2_type2B" propid="value" datasetid="ds_afdCntrct" columnid="usageDiv2"/>
+      <BindItem id="item15" compid="div_endwForm2.edt_type2_type2A_monthCnt" propid="value" datasetid="ds_afdCntrct" columnid=""/>
+      <BindItem id="item16" compid="div_endwForm2.edt_type2_monthDate" propid="value" datasetid="ds_afdCntrct" columnid="payDt"/>
+      <BindItem id="item17" compid="div_endwForm3.chk_type1" propid="value" datasetid="ds_afdCntrct" columnid="usageDiv1"/>
+      <BindItem id="item20" compid="div_endwForm3.chk_type2" propid="value" datasetid="ds_afdCntrct" columnid="usageDiv2"/>
+      <BindItem id="item21" compid="div_endwForm3.chk_type3" propid="value" datasetid="ds_afdCntrct" columnid="usageDiv3"/>
+      <BindItem id="item22" compid="div_endwForm3.chk_type4" propid="value" datasetid="ds_afdCntrct" columnid="usageDiv4"/>
+      <BindItem id="item23" compid="div_endwForm3.chk_type5" propid="value" datasetid="ds_afdCntrct" columnid="usageDiv5"/>
+      <BindItem id="item29" compid="div_endwForm3.chk_type5_cnt" propid="value" datasetid="ds_afdCntrct" columnid="accountsCnt"/>
+      <BindItem id="item30" compid="div_endwForm3.chk_type5_amt" propid="value" datasetid="ds_afdCntrct" columnid="accountsAmt"/>
+      <BindItem id="item35" compid="div_endwForm4.chk_type1_cnt" propid="value" datasetid="ds_afdCntrct" columnid="accountsCnt"/>
+      <BindItem id="item57" compid="edt_mentFormDiv" propid="value" datasetid="ds_afdCntrct" columnid="mentFormDiv"/>
+      <BindItem id="item53" compid="div_endwForm2.cmb_type3_bankCd" propid="value" datasetid="ds_afdCntrct" columnid="bankcd"/>
+      <BindItem id="item54" compid="div_endwForm2.cmb_type3_acno" propid="value" datasetid="ds_afdCntrct" columnid="acno"/>
+      <BindItem id="item55" compid="div_endwForm2.cmb_type3_dpwnm" propid="value" datasetid="ds_afdCntrct" columnid="dpwnm"/>
+      <BindItem id="item56" compid="div_endwForm2.cmb_type3_payNo" propid="value" datasetid="ds_afdCntrct" columnid="payNo"/>
+      <BindItem id="item36" compid="chk_boruYn" propid="value" datasetid="ds_afdCntrct" columnid="boruYn"/>
+      <BindItem id="item37" compid="cal_payType3_fromDt" propid="value" datasetid="ds_afdCntrct" columnid="frstInspyPrearngeDt2"/>
+      <BindItem id="item38" compid="cal_payType3_toDt" propid="value" datasetid="ds_afdCntrct" columnid="fpyPrearngeDt2"/>
+      <BindItem id="item40" compid="div_endwForm1.cmb_type3_bankCd" propid="value" datasetid="ds_afdCntrct" columnid="bankcd"/>
+      <BindItem id="item41" compid="div_endwForm1.cmb_type3_acno" propid="value" datasetid="ds_afdCntrct" columnid="acno"/>
+      <BindItem id="item42" compid="div_endwForm1.cmb_type3_dpwnm" propid="value" datasetid="ds_afdCntrct" columnid="dpwnm"/>
+      <BindItem id="item43" compid="div_endwForm1.cmb_type3_payNo" propid="value" datasetid="ds_afdCntrct" columnid="payNo"/>
+      <BindItem id="item44" compid="msk_payType2_lastMonthAmt" propid="value" datasetid="ds_afdCntrct" columnid="enggChangesAmt"/>
+      <BindItem id="item39" compid="div_endwForm1.cmb_type3_fixCd" propid="value" datasetid="ds_afdCntrct" columnid="fixCd"/>
+      <BindItem id="item48" compid="div_endwForm5.edt_memberRecommendName" propid="value" datasetid="ds_afdCntrct" columnid="memberRecommendName"/>
+      <BindItem id="item49" compid="div_endwForm5.edt_memberRecommendDept" propid="value" datasetid="ds_afdCntrct" columnid="memberRecommendDept"/>
+      <BindItem id="item50" compid="div_endwForm5.edt_memberRecommendCode" propid="value" datasetid="ds_afdCntrct" columnid="memberRecommendCode"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::frameUtils.xjs";
+include "commJs::lib_String.xjs";
+include "commJs::lib_Util.xjs";
+
+var endwForm_posititon_left = 0;
+var endwForm_posititon_top = 333;
+
+/****************************************************************************
+* 함 수 명 	: afd02020_onload
+* 함수설명 	: 화면 로드 이벤트
+*****************************************************************************/
+this.afd02020_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	var arrDataSet = Array();
+		arrDataSet[0]  = "ds_bankCd"; // 은행코드
+	
+	var arrGrpCd = Array();
+		arrGrpCd[0]  = "COM_COD_12";
+	
+	var arrUseYn =	Array();
+		arrUseYn[0]  =	"Y";
+	
+	var arrModeFg =	Array();
+		arrModeFg[0]  =	"S";
+	
+	var arrWhere =	Array();
+		arrWhere[0]  =	"X";//ABB_CD IN ('S','K')
+			
+ 	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_search_fix_combo
+* 함수설명 	: 지정기탁 콤보조회 함수
+*****************************************************************************/
+this.fn_search_fix_combo = function() 
+{		
+	this.gfn_transaction("FIX_COMBO"
+						,"txAdmUrl::com/admi/afd/afd02/selectFixCdComboList.do"
+						,""
+						,"ds_pfm_fixCd=resultList"
+						,""
+						,"");
+}
+  
+/****************************************************************************
+* 함 수 명 	: fn_search
+* 함수설명 	: 조회 함수
+*****************************************************************************/
+this.fn_search = function() 
+{
+	var strArg = "memberNo=" + nexacro.wrapQuote(this.div_search.edt_sMemberNo.value);
+	    strArg += " enggMgnNo=" + nexacro.wrapQuote(this.cmb_enggMgnNo.value);
+		
+	this.gfn_transaction("SEARCH"
+						,"txAdmUrl::com/admi/afd/afd02/retrieveAfdCntrct.do"
+						,""
+						,"ds_afdCntrct=resultList"
+						,strArg
+						,""
+						,false);
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_save_onclick
+* 함수설명 	: 저장 버튼 이벤트
+*****************************************************************************/
+this.btn_save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.fn_preSave()) 
+	{
+		this.fn_save();
+	}	
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_preSave
+* 함수설명 	: 저장 전 함수
+*****************************************************************************/
+this.fn_preSave = function() 
+{
+	if(!this.gfn_isUpdate(this.ds_afdCntrct)){
+		this.gfn_message("A", "변경된 데이터가 없습니다.");
+		return false;
+	}
+
+	var colNm = "endwCd$endwNm$enggAmt";
+	var korNm = "기금$기금$약정금액";
+	var cmpNm = "$";
+	var result = this.gfn_chkEssItem("ds_afdCntrct", colNm, korNm, cmpNm);
+	
+	if (result[0] != "success") 
+	{
+		this.gfn_message("A", result[0]);
+		this.ds_afdCntrct.set_rowposition(result[1]);
+		return false;	
+	}
+	return true;
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_save
+* 함수설명 	: 저장 함수
+*****************************************************************************/
+this.fn_save = function() 
+{	
+	if ( this.chk_payType3.value == true) {
+		if ( this.cal_payType3_fromDt.value == "" || this.cal_payType3_fromDt.value == null ) {
+			this.alert("급여공제시작일을 입력하세요.");
+			this.cal_payType3_fromDt.setFocus();
+			return;
+		}
+	
+
+		//급여공제시 일 고정
+		var fromDt = this.cal_payType3_fromDt.value;
+			fromDt = this.gfn_Left(fromDt, 6)+'25';
+		
+		var toDt = "";
+		
+		if(this.cal_payType3_toDt.value!=null && this.cal_payType3_toDt.value!="")
+		{
+			toDt = this.cal_payType3_toDt.value;
+			toDt = this.gfn_Left(toDt, 6)+'25';
+		} else {
+		
+			if ( this.gfn_isNull(this.edt_payType3_month.value) ) {
+				toDt = "99991225";
+			} else {
+				toDt = this.gfn_AddMonth(fromDt, nexacro.toNumber(this.edt_payType3_month.value) - 1);
+			}
+		}
+
+		this.ds_afdCntrct.setColumn(this.ds_afdCntrct.rowposition, "frstInspyPrearngeDt2", fromDt);
+		this.ds_afdCntrct.setColumn(this.ds_afdCntrct.rowposition, "fpyPrearngeDt2", toDt);
+
+	}
+
+	this.gfn_transaction("SAVE"
+						,"txAdmUrl::com/admi/afd/afd02/saveAfdCntrct.do"
+						,"resultList=ds_afdCntrct:u"
+						,"ds_afdNewCntrct=resultList1"
+						,""
+						,"");
+	
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_postSave
+* 함수설명 	: 저장 후 함수
+*****************************************************************************/
+this.fn_postSave = function() 
+{	
+	this.cmb_enggMgnNo.set_enable(true);//약정번호 활성화	
+	this.btn_endwPop.set_enable(false);//기금팝업
+	
+	this.fn_retrieveCntrctMember();//조회조건 회원정보 셋팅	
+	this.fn_retrieveEnggMgnNo();//약정번호 콤보 조회
+	
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_retrieveCntrctMember
+* 함수설명 	: 조회조건 회원정보 셋팅
+*****************************************************************************/
+this.fn_retrieveCntrctMember = function() 
+{
+	var strArg = "memberNo=" + nexacro.wrapQuote(this.div_search.edt_sMemberNo.value);
+	
+	this.gfn_transaction("CNTRCT_MEMBER"
+						,"txAdmUrl::com/admi/afd/afd02/retrieveCntrctMember.do"
+						,""
+						,"ds_divSearch=resultList"
+						,strArg
+						,"");	
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_retrieveEnggMgnNo
+* 함수설명 	: 약정번호 콤보 조회
+*****************************************************************************/
+this.fn_retrieveEnggMgnNo = function() 
+{
+	var strArg = "disStr=" + nexacro.wrapQuote("S");
+		strArg += " memberNo=" + nexacro.wrapQuote(this.div_search.edt_sMemberNo.value);
+		
+	this.gfn_transaction("ENGG_MGN_NO"
+						,"txAdmUrl::com/admi/afd/afd02/retrieveEnggMgnNo.do"
+						,""
+						,"ds_enggMgnNo=resultList"
+						,strArg
+						,"");
+}
+
+/******************************************************************************
+* 함 수 명 	: div_search_btn_popup_onclick
+* 함수설명 	: 조회조건 회원팝업 클릭이벤트
+*****************************************************************************/
+this.div_search_btn_popup_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var popupId = "afd02020_p02";
+	var popupUrl = "afd02::afd02020_p02.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var argumentsList = new Array();
+		argumentsList['memberNo'] = this.gfn_nvl(this.div_search.edt_sMemberNo.value, "");
+	
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, this);
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_endwPop_onclick
+* 함수설명 	: 기금 팝업 클릭 이벤트
+*****************************************************************************/
+this.btn_endwPop_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var popupId = "afd02020_p01";
+	var popupUrl = "afd02::afd02020_p01.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var argumentsList = new Array();
+
+	this.gfn_popupOpen(popupId, argumentsList, popupUrl, popupCallback, this);
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_new_onclick
+* 함수설명 	: 추가 버튼 이벤트
+*****************************************************************************/
+this.btn_new_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.gfn_isNull(this.div_search.edt_sMemberNmKor.value)){
+		this.gfn_message("A", "약정회원을 선택하셔야 합니다.");
+		return false;	
+	}
+	
+	this.cmb_enggMgnNo.set_enable(false);//약정번호 비활성화
+	
+	this.gfn_addRow(this.ds_afdCntrct);
+	this.ds_afdCntrct.setColumn(this.ds_afdCntrct.rowposition, "memberNo", this.div_search.edt_sMemberNo.value);	
+	
+	this.btn_endwPop.set_enable(true);//기금팝업
+	
+	this.btn_endwPop_onclick();//기금팝업호출
+}
+
+/****************************************************************************
+* 함 수 명 	: btn_del_onclick
+* 함수설명 	: 삭제 버튼 이벤트
+*****************************************************************************/
+this.btn_del_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.ds_afdCntrct.setColumn(0, "rowStatus", "8");
+	this.fn_save();
+}
+
+/****************************************************************************
+* 함 수 명 	: cmb_enggMgnNo_onitemchanged
+* 함수설명 	: 약정번호 변경 후 이벤트 
+*****************************************************************************/
+this.cmb_enggMgnNo_onitemchanged = function(obj:Combo, e:nexacro.ItemChangeEventInfo)
+{
+	this.ds_afdCntrct.clearData();
+	
+	if(!this.gfn_isNull(this.cmb_enggMgnNo.value)) 
+	{
+		this.chk_boruYn.set_enable(true);
+		this.fn_search();
+		
+		if(this.ds_afdCntrct.getColumn(0, "paymthd") == "1")
+		{
+			this.cal_payType1_dt.set_enable(true);
+			
+			this.cal_payType2_fromDt.set_enable(false);
+			this.cal_payType2_toDt.set_enable(false);
+			this.edt_payType2_cnt.set_enable(false);
+			this.msk_payType2_monthAmt.set_enable(false);
+			
+			this.msk_payType3_monthAmt.set_enable(false);
+			this.edt_payType3_month.set_enable(false);
+			this.cal_payType3_fromDt.set_enable(false);
+			this.cal_payType3_toDt.set_enable(false);
+		}
+		else if(this.ds_afdCntrct.getColumn(0, "paymthd") == "2")
+		{
+			this.cal_payType2_fromDt.set_enable(true);
+			this.cal_payType2_toDt.set_enable(true);
+			this.edt_payType2_cnt.set_enable(true);
+			this.msk_payType2_monthAmt.set_enable(true);
+			
+			this.cal_payType1_dt.set_enable(false);
+			
+			this.msk_payType3_monthAmt.set_enable(false);
+			this.edt_payType3_month.set_enable(false);
+			this.cal_payType3_fromDt.set_enable(false);
+			this.cal_payType3_toDt.set_enable(false);
+		}
+		else if(this.ds_afdCntrct.getColumn(0, "paymthd") == "3")
+		{
+			this.msk_payType3_monthAmt.set_enable(true);
+			this.edt_payType3_month.set_enable(true);
+			this.cal_payType3_fromDt.set_enable(true);
+			this.cal_payType3_toDt.set_enable(true);
+			
+			this.cal_payType1_dt.set_enable(false);
+			this.cal_payType2_fromDt.set_enable(false);
+			this.cal_payType2_toDt.set_enable(false);
+			this.edt_payType2_cnt.set_enable(false);
+			this.msk_payType2_monthAmt.set_enable(false);
+		}
+	}
+	else 
+	{
+		this.chk_boruYn.set_enable(false);
+	}
+
+}
+
+/****************************************************************************
+* 함 수 명 	: cmb_paymthd_onitemchanged
+* 함수설명 	: 기탁형태 선택 후 이벤트
+*****************************************************************************/
+this.cmb_paymthd_onitemchanged = function(obj:Combo, e:nexacro.ItemChangeEventInfo)
+{
+	//기탁형태 선택 값 체크
+	if(this.gfn_isNull(this.cmb_paymthd.value))
+	{	
+		//약정총액
+		this.msk_enggAmt.set_enable(false);
+		this.msk_enggAmt.set_value("");
+		
+		//기탁방법
+		this.chk_payType1.set_enable(false);
+		this.chk_payType2.set_enable(false);
+		this.chk_payType3.set_enable(false);
+	}
+	else 
+	{
+		//약정총액
+		this.msk_enggAmt.set_enable(true);
+		this.msk_enggAmt.setFocus();
+		
+		//기탁방법
+		this.chk_payType1.set_enable(true);
+		this.chk_payType2.set_enable(true);
+		this.chk_payType3.set_enable(true);
+	}
+	
+	//파라메타(기금코드)로 넘어온 기금코드 값으로 Div를 호출 한다.
+	this.fn_endwDivCall(this.edt_mentFormDiv.value);
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_endwDivCall
+* 함수설명 	: 파라메타(기금코드)로 넘어온 기급코드 값으로 Div를 호출 한다.
+*****************************************************************************/
+this.fn_endwDivCall = function(mentFormDiv)
+{
+	//호출 div기본 위치값을 변수에 셋팅
+	var div_endwForm_left = 1054;
+	var div_endwForm1_top = 48;
+	var div_endwForm2_top = 149;
+	var div_endwForm3_top = 221;
+	var div_endwForm4_top = 293;
+	var div_endwForm5_top = 333;
+
+	/*
+		010101 - 일반기탁(무통장입금)
+		010102 - 동의백년(자동이체)
+		010103 - 후원의집
+		010104 - 교직원장학금
+	*/
+	//기탁형태
+	if(!this.gfn_isNull(this.cmb_paymthd.value))
+	{
+		//동문지정장학회, CMS
+		if(mentFormDiv == "10")
+		{
+			this.div_endwForm1.set_left(endwForm_posititon_left);
+			this.div_endwForm1.set_top(endwForm_posititon_top);
+			this.div_endwForm1.set_visible(true);
+			
+			this.div_endwForm2.set_left(div_endwForm_left);
+			this.div_endwForm2.set_top(div_endwForm2_top);
+			this.div_endwForm2.set_visible(false);
+			
+			this.div_endwForm3.set_left(div_endwForm_left);
+			this.div_endwForm3.set_top(div_endwForm3_top);
+			this.div_endwForm3.set_visible(false);
+			
+			this.div_endwForm4.set_left(div_endwForm_left);
+			this.div_endwForm4.set_top(div_endwForm4_top);
+			this.div_endwForm4.set_visible(false);
+			
+			this.div_endwForm5.set_left(endwForm_posititon_left);
+			this.div_endwForm5.set_top(endwForm_posititon_top+116);
+			this.div_endwForm5.set_visible(true);
+		}
+		//
+		else if(mentFormDiv == "20")
+		{
+		
+			this.div_endwForm1.set_left(div_endwForm_left);
+			this.div_endwForm1.set_top(div_endwForm1_top);
+			this.div_endwForm1.set_visible(false);
+			
+			this.div_endwForm2.set_left(endwForm_posititon_left);
+			this.div_endwForm2.set_top(endwForm_posititon_top);
+			this.div_endwForm2.set_visible(true);
+			
+			this.div_endwForm3.set_left(div_endwForm_left);
+			this.div_endwForm3.set_top(div_endwForm3_top);
+			this.div_endwForm3.set_visible(false);
+			
+			this.div_endwForm4.set_left(div_endwForm_left);
+			this.div_endwForm4.set_top(div_endwForm4_top);
+			this.div_endwForm4.set_visible(false);
+			
+			this.div_endwForm5.set_left(endwForm_posititon_left);
+			this.div_endwForm5.set_top(endwForm_posititon_top+87);
+			this.div_endwForm5.set_visible(true);
+		}
+		//일반기탁2
+		else if(mentFormDiv == "30")
+		{
+			this.div_endwForm1.set_left(endwForm_posititon_left);
+			this.div_endwForm1.set_top(endwForm_posititon_top);
+			this.div_endwForm1.set_visible(true);
+			
+			this.div_endwForm2.set_left(div_endwForm_left);
+			this.div_endwForm2.set_top(div_endwForm2_top);
+			this.div_endwForm2.set_visible(false);
+			
+			this.div_endwForm3.set_left(endwForm_posititon_left);
+			this.div_endwForm3.set_top(endwForm_posititon_top+87);
+			this.div_endwForm3.set_visible(true);
+			
+			this.div_endwForm4.set_left(div_endwForm_left);
+			this.div_endwForm4.set_top(div_endwForm4_top);
+			this.div_endwForm4.set_visible(false);
+			
+			this.div_endwForm5.set_left(endwForm_posititon_left);
+			this.div_endwForm5.set_top(endwForm_posititon_top+58+87);
+			this.div_endwForm5.set_visible(true);
+		}
+		//월별공제
+		else if(mentFormDiv == "40")
+		{
+			this.div_endwForm1.set_left(div_endwForm_left);
+			this.div_endwForm1.set_top(div_endwForm1_top);
+			this.div_endwForm1.set_visible(false);
+			
+			this.div_endwForm2.set_left(div_endwForm_left);
+			this.div_endwForm2.set_top(div_endwForm2_top);
+			this.div_endwForm2.set_visible(false);
+			
+			this.div_endwForm3.set_left(div_endwForm_left);
+			this.div_endwForm3.set_top(div_endwForm3_top);
+			this.div_endwForm3.set_visible(false);
+			
+			this.div_endwForm4.set_left(endwForm_posititon_left);
+			this.div_endwForm4.set_top(endwForm_posititon_top);
+			this.div_endwForm4.set_visible(true);
+			
+			this.div_endwForm5.set_left(endwForm_posititon_left);
+			this.div_endwForm5.set_top(endwForm_posititon_top+29);
+			this.div_endwForm5.set_visible(true);
+		}
+		else 
+		{
+			this.div_endwForm1.set_left(div_endwForm_left);
+			this.div_endwForm1.set_top(div_endwForm1_top);
+			this.div_endwForm1.set_visible(false);
+			
+			this.div_endwForm2.set_left(div_endwForm_left);
+			this.div_endwForm2.set_top(div_endwForm2_top);
+			this.div_endwForm2.set_visible(false);
+			
+			this.div_endwForm3.set_left(div_endwForm_left);
+			this.div_endwForm3.set_top(div_endwForm3_top);
+			this.div_endwForm3.set_visible(false);
+			
+			this.div_endwForm4.set_left(div_endwForm_left);
+			this.div_endwForm4.set_top(div_endwForm4_top);
+			this.div_endwForm4.set_visible(false);
+			
+			this.div_endwForm5.set_left(endwForm_posititon_left);
+			this.div_endwForm5.set_top(div_endwForm5_top);
+			this.div_endwForm5.set_visible(true);
+		}
+	}
+	else
+	{
+		this.div_endwForm1.set_left(div_endwForm_left);
+		this.div_endwForm1.set_top(div_endwForm1_top);
+		this.div_endwForm1.set_visible(false);
+		
+		this.div_endwForm2.set_left(div_endwForm_left);
+		this.div_endwForm2.set_top(div_endwForm2_top);
+		this.div_endwForm2.set_visible(false);
+		
+		this.div_endwForm3.set_left(div_endwForm_left);
+		this.div_endwForm3.set_top(div_endwForm3_top);
+		this.div_endwForm3.set_visible(false);
+		
+		this.div_endwForm4.set_left(div_endwForm_left);
+		this.div_endwForm4.set_top(div_endwForm4_top);
+		this.div_endwForm4.set_visible(false);
+		
+		this.div_endwForm5.set_left(endwForm_posititon_left);
+		this.div_endwForm5.set_top(div_endwForm5_top);
+		this.div_endwForm5.set_visible(true);
+	}
+	
+	//값초기화(신규,수정만해당)
+	if(this.ds_afdCntrct.getRowType(0) == 2 || this.ds_afdCntrct.getRowType(0) == 4)
+	{
+		//10
+		this.div_endwForm1.chk_type1.set_value("0");//대학에일임
+		this.div_endwForm1.chk_type2.set_value("0");//용도지정
+		this.div_endwForm1.chk_type2_type1.set_value("0");//용도지정 > 일반
+		this.div_endwForm1.chk_type2_type2.set_value("0");//용도지정 > 장학금
+		this.div_endwForm1.chk_type2_type2A.set_value("0");//용도지정 > 장학금 > 학부
+		this.div_endwForm1.chk_type2_type2B.set_value("0");//용도지정 > 장학금 > 대학원
+		this.div_endwForm1.edt_type2_type2_deptNm.set_value("");//학과
+		
+		//20
+		this.div_endwForm2.edt_type1_cnt.set_value("");//구좌
+		this.div_endwForm2.chk_type2_type2A.set_value("0");//무기한
+		this.div_endwForm2.chk_type2_type2B.set_value("0");//기한
+		this.div_endwForm2.edt_type2_type2A_monthCnt.set_value("");//개월
+		this.div_endwForm2.edt_type2_monthDate.set_value("");//계좌이체일	
+		this.div_endwForm2.cmb_type3_payNo.set_value("");//납부자번호
+		this.div_endwForm2.cmb_type3_bankCd.set_index(0);//은행
+		this.div_endwForm2.cmb_type3_acno.set_value("");//계좌번호
+		this.div_endwForm2.cmb_type3_dpwnm.set_value("");//예금주명
+		
+		//30
+		this.div_endwForm3.chk_type1.set_value("0");//1구좌
+		this.div_endwForm3.chk_type2.set_value("0");//2구좌
+		this.div_endwForm3.chk_type3.set_value("0");//3구좌
+		this.div_endwForm3.chk_type4.set_value("0");//4구좌
+		this.div_endwForm3.chk_type5.set_value("0");//기타
+		this.div_endwForm3.chk_type5_cnt.set_value("");//구좌
+		this.div_endwForm3.chk_type5_amt.set_value("");//금액
+		
+		//40
+		this.div_endwForm4.chk_type1_cnt.set_value("");//구좌
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: chk_payType_canchange
+* 함수설명 	: 기탁방법 선택 하기 전 체크
+*                 (기탁방법은 1건만 선택할 수 있는 로직)
+*****************************************************************************/
+this.chk_payType_canchange = function(obj:CheckBox,  e:nexacro.ChangeEventInfo)
+{	
+	var cnt = 1;
+
+	//일회성
+	if(e.postvalue == "1" && obj.name == "chk_payType1")
+	{
+		cnt += nexacro.toNumber(this.chk_payType2.value);
+		cnt += nexacro.toNumber(this.chk_payType3.value);
+	}
+	//정기적
+	if(e.postvalue == "1" && obj.name == "chk_payType2")
+	{
+		cnt += nexacro.toNumber(this.chk_payType1.value);
+		cnt += nexacro.toNumber(this.chk_payType3.value);
+	}
+	//교직원
+	if(e.postvalue == "1" && obj.name == "chk_payType3")
+	{
+		cnt += nexacro.toNumber(this.chk_payType1.value);
+		cnt += nexacro.toNumber(this.chk_payType2.value);
+	}
+
+	if(cnt > 1)
+	{
+		this.gfn_message("A", "기탁방법은 1건만 선택할 수 있습니다.");
+		return false;
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: chk_payType1_onchanged
+* 함수설명 	: 기탁방법 : 일회성
+*****************************************************************************/
+this.chk_payType1_onchanged = function(obj:CheckBox, e:nexacro.CheckBoxChangeEventInfo)
+{	
+	if(e.postvalue == "1")
+	{
+		this.cal_payType1_dt.set_enable(true);
+	}
+	else 
+	{
+		this.cal_payType1_dt.set_enable(false);
+	}
+	
+	//row type를 체크한다.
+	if(this.fn_rowTypeFlg())
+	{
+		this.cal_payType1_dt.set_value("");
+		this.msk_enggAmt.set_value("");//약정총액
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: chk_payType2_onchanged
+* 함수설명 	: 기탁방법 : 정기적
+*****************************************************************************/
+this.chk_payType2_onchanged = function(obj:CheckBox, e:nexacro.CheckBoxChangeEventInfo)
+{
+	if(e.postvalue == "1")
+	{
+		this.cal_payType2_fromDt.set_enable(true);	//정기이체시작일
+		this.cal_payType2_toDt.set_enable(true);	//정기이체종료일
+		this.edt_payType2_cnt.set_enable(true);		//총횟수(월)
+		this.msk_payType2_monthAmt.set_enable(true);//월기탁금액
+	}
+	else 
+	{
+		this.cal_payType2_fromDt.set_enable(false);	//정기이체시작일
+		this.cal_payType2_toDt.set_enable(false);	//정기이체종료일
+		this.edt_payType2_cnt.set_enable(false);	//총횟수(월)
+		this.msk_payType2_monthAmt.set_enable(false);//월기탁금액
+	}
+	
+	//row type를 체크한다.
+	if(this.fn_rowTypeFlg())
+	{
+		this.cal_payType2_fromDt.set_value("");	//정기이체시작일
+		this.cal_payType2_toDt.set_value("");	//정기이체종료일
+		this.edt_payType2_cnt.set_value("");	//총횟수(월)
+		this.msk_payType2_monthAmt.set_value("");//월기탁금액
+		this.msk_enggAmt.set_value("");//약정총액
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: chk_payType3_onchanged
+* 함수설명 	: 기탁방법 : 교직원 급여공제
+*****************************************************************************/
+this.chk_payType3_onchanged = function(obj:CheckBox, e:nexacro.CheckBoxChangeEventInfo)
+{
+	if(e.postvalue == "1")
+	{
+		this.msk_payType3_monthAmt.set_enable(true);//매월급여공제금액
+		this.edt_payType3_month.set_enable(true);	//매월급여공제개월
+		this.cal_payType3_fromDt.set_enable(true);
+		this.cal_payType3_toDt.set_enable(true);
+		this.cal_payType3_fromDt.set_value(this.gfn_getCurrentDate("YYYYMM")+"25");
+	}
+	else 
+	{
+		this.msk_payType3_monthAmt.set_enable(false);//매월급여공제금액
+		this.edt_payType3_month.set_enable(false);	//매월급여공제개월
+		this.cal_payType3_fromDt.set_enable(false);
+		this.cal_payType3_toDt.set_enable(false);
+		
+		this.msk_payType3_monthAmt.set_value("");//매월급여공제금액
+		this.edt_payType3_month.set_value("");	//매월급여공제개월
+		this.msk_enggAmt.set_value("");//약정총액
+		this.cal_payType3_fromDt.set_value("");	//정기이체시작일
+		this.cal_payType3_toDt.set_value("");	//정기이체종료일
+	}
+	
+	/*
+	//row type를 체크한다.
+	if(this.fn_rowTypeFlg())
+	{
+		this.msk_payType3_monthAmt.set_value("");//매월급여공제금액
+		this.edt_payType3_month.set_value("");	//매월급여공제개월
+		this.msk_enggAmt.set_value("");//약정총액
+		this.cal_payType3_fromDt.set_value("");	//정기이체시작일
+		this.cal_payType3_toDt.set_value("");	//정기이체종료일
+	}
+	
+	
+	if(e.postvalue == "1" && this.ds_afdCntrct.getRowType(this.ds_afdCntrct.rowposition) != "0")
+	{
+		this.cal_payType3_fromDt.set_value(this.gfn_getCurrentDate("YYYYMM")+"25");
+	}
+	*/
+	
+}
+
+/****************************************************************************
+* 함 수 명 	: div_endwForm1_chk_type_canchange
+* 함수설명 	: 일반기탁(무통장입금) DIV 체크 전
+*****************************************************************************/
+this.div_endwForm1_chk_type_canchange = function(obj:CheckBox,  e:nexacro.ChangeEventInfo)
+{
+	var cnt = 1;
+
+	//대학에일임
+	if(e.postvalue == "1" && obj.name == "chk_type1")
+	{
+		cnt += nexacro.toNumber(this.div_endwForm1.chk_type1.value);
+		cnt += nexacro.toNumber(this.div_endwForm1.chk_type2.value);
+	}
+	//용도지정
+	if(e.postvalue == "1" && obj.name == "chk_type2")
+	{
+		cnt += nexacro.toNumber(this.div_endwForm1.chk_type1.value);
+		cnt += nexacro.toNumber(this.div_endwForm1.chk_type2.value);
+	}
+
+	if(cnt > 1)
+	{
+		this.gfn_message("A", "용도는 1건만 선택할 수 있습니다.");
+		return false;
+	}
+	
+	//cnt초기화
+	cnt = 1;
+	
+	//용도지정 체크확인
+	if(e.postvalue == "1" && this.div_endwForm1.chk_type2.value == "1")
+	{
+		//용도지정 > 일반
+		if(e.postvalue == "1" && obj.name == "chk_type2_type1")
+		{
+			cnt += nexacro.toNumber(this.div_endwForm1.chk_type2_type1.value);
+			cnt += nexacro.toNumber(this.div_endwForm1.chk_type2_type2.value);
+		}
+		//용도지정 > 장학금
+		else if(e.postvalue == "1" && obj.name == "chk_type2_type2") 
+		{
+			cnt += nexacro.toNumber(this.div_endwForm1.chk_type2_type1.value);
+			cnt += nexacro.toNumber(this.div_endwForm1.chk_type2_type2.value);
+		}
+		
+		if(cnt > 1)
+		{
+			this.gfn_message("A", "용도지정은 1건만 선택할 수 있습니다.");
+			return false;
+		}
+		
+		//용도지정 > 장학금 체크확인
+		if(e.postvalue == "1" && this.div_endwForm1.chk_type2_type2.value == "1")
+		{
+			//cnt초기화
+			cnt = 1;
+			
+			//용도지정 > 장학금 > 학부
+			if(e.postvalue == "1" && obj.name == "chk_type2_type2A")
+			{
+				cnt += nexacro.toNumber(this.div_endwForm1.chk_type2_type2A.value);
+				cnt += nexacro.toNumber(this.div_endwForm1.chk_type2_type2B.value);
+			}
+			//용도지정 > 장학금 > 대학원 
+			else if(e.postvalue == "1" && obj.name == "chk_type2_type2B") 
+			{
+				cnt += nexacro.toNumber(this.div_endwForm1.chk_type2_type2A.value);
+				cnt += nexacro.toNumber(this.div_endwForm1.chk_type2_type2B.value);
+			}
+			
+			if(cnt > 1)
+			{
+				this.gfn_message("A", "장학금은 1건만 선택할 수 있습니다.");
+				return false;
+			}
+		}
+		
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: div_endwForm1_chk_type_onchanged
+* 함수설명 	: 일반기탁(무통장입금) DIV 체크 후
+*****************************************************************************/
+this.div_endwForm1_chk_type_onchanged = function(obj:CheckBox, e:nexacro.CheckBoxChangeEventInfo)
+{
+	//용도지정 선택
+	if(obj.name == "chk_type2")
+	{
+		if(e.postvalue == "1")
+		{
+			this.div_endwForm1.chk_type2_type1.set_enable(true);//일반
+			this.div_endwForm1.chk_type2_type2.set_enable(true);//장학금
+			this.div_endwForm1.chk_type2_type2A.set_enable(false);//학부
+			this.div_endwForm1.chk_type2_type2B.set_enable(false);//대학원
+			this.div_endwForm1.edt_type2_type2_deptNm.set_enable(false);//학과
+		}
+		else 
+		{
+			this.div_endwForm1.chk_type2_type1.set_enable(false);//일반
+			this.div_endwForm1.chk_type2_type2.set_enable(false);//장학금
+			this.div_endwForm1.chk_type2_type2A.set_enable(false);//학부
+			this.div_endwForm1.chk_type2_type2B.set_enable(false);//대학원
+			this.div_endwForm1.edt_type2_type2_deptNm.set_enable(false);//학과
+		}
+		this.div_endwForm1.chk_type2_type1.set_value("0");//일반
+		this.div_endwForm1.chk_type2_type2.set_value("0");//장학금
+		this.div_endwForm1.chk_type2_type2A.set_value("0");//학부
+		this.div_endwForm1.chk_type2_type2B.set_value("0");//대학원
+		
+		if(this.ds_afdCntrct.getRowType(0) == 2 || this.ds_afdCntrct.getRowType(0) == 4)
+		{
+			this.div_endwForm1.edt_type2_type2_deptNm.set_value("");//학과
+		}
+	}
+	//용도지정 > 장학금 선택
+	else if(obj.name == "chk_type2_type2")
+	{
+		if(e.postvalue == "1")
+		{
+			this.div_endwForm1.chk_type2_type2A.set_enable(true);//학부
+			this.div_endwForm1.chk_type2_type2B.set_enable(true);//대학원
+			this.div_endwForm1.edt_type2_type2_deptNm.set_enable(true);//학과
+		}
+		else 
+		{
+			this.div_endwForm1.chk_type2_type2A.set_enable(false);//학부
+			this.div_endwForm1.chk_type2_type2B.set_enable(false);//대학원
+			this.div_endwForm1.edt_type2_type2_deptNm.set_enable(false);//학과
+		}
+		this.div_endwForm1.chk_type2_type2A.set_value("0");//학부
+		this.div_endwForm1.chk_type2_type2B.set_value("0");//대학원
+		
+		if(this.ds_afdCntrct.getRowType(0) == 2 || this.ds_afdCntrct.getRowType(0) == 4)
+		{
+			this.div_endwForm1.edt_type2_type2_deptNm.set_value("");//학과
+		}
+	}
+	
+}
+
+/****************************************************************************
+* 함 수 명 	: div_endwForm1_chk_type_canchange
+* 함수설명 	: 동의백년(자동이체) DIV 체크 전
+*****************************************************************************/
+this.div_endwForm2_chk_type_canchange = function(obj:CheckBox,  e:nexacro.ChangeEventInfo)
+{
+	var cnt = 1;
+
+	//무기한 선택
+	if(e.postvalue == "1" && obj.name == "chk_type2_type2A")
+	{
+		cnt += nexacro.toNumber(this.div_endwForm2.chk_type2_type2A.value);
+		cnt += nexacro.toNumber(this.div_endwForm2.chk_type2_type2B.value);
+	}
+	//기한 선택
+	if(e.postvalue == "1" && obj.name == "chk_type2_type2B")
+	{
+		cnt += nexacro.toNumber(this.div_endwForm2.chk_type2_type2A.value);
+		cnt += nexacro.toNumber(this.div_endwForm2.chk_type2_type2B.value);
+	}
+
+	if(cnt > 1)
+	{
+		this.gfn_message("A", "기한은 1건만 선택할 수 있습니다.");
+		return false;
+	}
+}
+/****************************************************************************
+* 함 수 명 	: div_endwForm1_chk_type_onchanged
+* 함수설명 	: 동의백년(자동이체) DIV 체크 후
+*****************************************************************************/
+this.div_endwForm2_chk_type_onchanged = function(obj:CheckBox, e:nexacro.CheckBoxChangeEventInfo)
+{
+	//기한 선택
+	if(obj.name == "chk_type2_type2B") 
+	{
+		if(e.postvalue == "1")
+		{
+			this.div_endwForm2.edt_type2_type2A_monthCnt.set_enable(true);//개월수
+		}
+		else 
+		{
+			this.div_endwForm2.edt_type2_type2A_monthCnt.set_enable(false);//개월수
+		}
+		this.div_endwForm2.edt_type2_type2A_monthCnt.set_value("");//개월수
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: div_endwForm1_chk_type_canchange
+* 함수설명 	: 후원의집 DIV 체크 전
+*****************************************************************************/
+this.div_endwForm3_chk_type_canchange = function(obj:CheckBox,  e:nexacro.ChangeEventInfo)
+{
+	var cnt = 0;
+	
+	//1구좌 선택
+	if(e.postvalue == "1" && obj.name == "chk_type1")
+	{
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type1.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type2.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type3.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type4.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type5.value);
+	}
+	//2구좌 선택
+	if(e.postvalue == "1" && obj.name == "chk_type2")
+	{
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type1.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type2.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type3.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type4.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type5.value);
+	}
+	//3구좌 선택
+	if(e.postvalue == "1" && obj.name == "chk_type2")
+	{
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type1.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type2.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type3.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type4.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type5.value);
+	}
+	//4구좌 선택
+	if(e.postvalue == "1" && obj.name == "chk_type2")
+	{
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type1.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type2.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type3.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type4.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type5.value);
+	}
+	//기타
+	if(e.postvalue == "1" && obj.name == "chk_type2")
+	{
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type1.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type2.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type3.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type4.value);
+		cnt += nexacro.toNumber(this.div_endwForm3.chk_type5.value);
+	}
+
+	if(cnt > 1)
+	{
+		this.gfn_message("A", "신청구좌는 1건만 선택할 수 있습니다.");
+		return false;
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: div_endwForm1_chk_type_onchanged
+* 함수설명 	: 후원의집 DIV 체크 후
+*****************************************************************************/
+this.div_endwForm3_chk_type_onchanged = function(obj:CheckBox, e:nexacro.CheckBoxChangeEventInfo)
+{
+	//기타 선택
+	if(obj.name == "chk_type5") 
+	{
+		if(e.postvalue == "1")
+		{
+			this.div_endwForm3.chk_type5_cnt.set_enable(true);//구좌
+			this.div_endwForm3.chk_type5_amt.set_enable(true);//원
+		}
+		else 
+		{
+			this.div_endwForm3.chk_type5_cnt.set_enable(false);//구좌
+			this.div_endwForm3.chk_type5_amt.set_enable(false);//원
+		}
+		this.div_endwForm3.chk_type5_cnt.set_value("");//구좌
+		this.div_endwForm3.chk_type5_amt.set_value("");//원
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_rowTypeFlg
+* 함수설명 	: row type를 체크한다.
+*****************************************************************************/
+this.fn_rowTypeFlg = function()
+{
+	if(this.ds_afdCntrct.getRowType(0) == 2 || this.ds_afdCntrct.getRowType(0) == 4)
+	{
+		return true;
+	}
+	return false;
+}
+
+/****************************************************************************
+* 함 수 명 	: edt_engg_month_onchanged
+* 함수설명 	: 약정개월수 입력 이벤트
+*****************************************************************************/
+this.edt_engg_month_onchanged = function(obj:Edit, e:nexacro.ChangeEventInfo)
+{
+	if(obj.name == "edt_payType2_cnt")
+	{
+		if(this.gfn_isNull(this.msk_enggAmt.value))
+		{
+			this.msk_enggAmt.set_value(this.fn_get_enggAmt(this.edt_payType2_cnt.value, this.msk_payType2_monthAmt.value));//약정총액
+		}
+		else
+		{
+			this.msk_payType2_lastMonthAmt.set_value(this.fn_get_lastMonthAmt(this.msk_enggAmt.value, this.edt_payType2_cnt.value));//증감액
+			this.msk_payType2_monthAmt.set_value(this.fn_get_monthAmt(this.msk_enggAmt.value, this.edt_payType2_cnt.value));//월금액
+		}
+	}
+	else if(obj.name == "edt_payType3_month")
+	{
+		this.msk_enggAmt.set_value(this.fn_get_enggAmt(this.edt_payType3_month.value, this.msk_payType3_monthAmt.value));//약정총액
+		
+		if ( this.gfn_isNull(this.cal_payType3_fromDt.value) ) {
+			this.cal_payType3_fromDt.set_value(this.gfn_getCurrentDate("YYYYMM")+"25");
+		}
+		
+		this.cal_payType3_toDt.set_value(this.gfn_AddMonth(this.cal_payType3_fromDt.value, nexacro.toNumber(this.edt_payType3_month.value) - 1));
+		
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: msk_engg_monthAmt_onchanged
+* 함수설명 	: 약정 월 납입액 입력 이벤트
+*****************************************************************************/
+this.msk_engg_monthAmt_onchanged = function(obj:MaskEdit, e:nexacro.ChangeEventInfo)
+{
+	if(obj.name == "msk_payType2_monthAmt")
+	{
+		this.msk_enggAmt.set_value(this.fn_get_enggAmt(this.edt_payType2_cnt.value, this.msk_payType2_monthAmt.value));//약정총액
+		this.msk_payType2_lastMonthAmt.set_value('');
+	}
+	else if(obj.name == "msk_payType3_monthAmt")
+	{
+		this.msk_enggAmt.set_value(this.fn_get_enggAmt(this.edt_payType3_month.value, this.msk_payType3_monthAmt.value));//약정총액
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_get_enggAmt
+* 함수설명 	: 약정금액 계산 함수
+*****************************************************************************/
+this.fn_get_enggAmt = function(p_momth, p_momthAmt)
+{
+	var rtn_enggAmt = 0;
+	var v_month = this.gfn_nvl(p_momth,0);
+	var v_momthAmt = this.gfn_nvl(p_momthAmt,0);
+
+	rtn_enggAmt = v_month * v_momthAmt;
+	
+	return rtn_enggAmt;
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_get_lastMonthAmt
+* 함수설명 	: 증감액 계산 함수
+*****************************************************************************/
+this.fn_get_lastMonthAmt = function(p_enggAmt, p_momth)
+{
+	var rtn_lastMonth = 0;
+	var v_enggAmt = this.gfn_nvl(p_enggAmt, 0);
+	var v_month = this.gfn_nvl(p_momth,0);
+	var v_momthAmt;
+	
+	if(v_month != 0){
+		v_momthAmt = v_enggAmt/v_month;
+		v_momthAmt = nexacro.floor(v_momthAmt, -3)
+		rtn_lastMonth = v_enggAmt-(v_momthAmt*v_month);
+	}
+	
+	return rtn_lastMonth;
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_get_monthAmt
+* 함수설명 	: 월금액 계산 함수
+*****************************************************************************/
+this.fn_get_monthAmt = function(p_enggAmt, p_momth)
+{
+	var v_enggAmt = this.gfn_nvl(p_enggAmt, 0);
+	var v_month = this.gfn_nvl(p_momth,0);
+	var rtn_momthAmt = 0;
+	
+	if(v_month != 0){
+		v_momthAmt = v_enggAmt/v_month;
+		rtn_momthAmt = nexacro.floor(v_momthAmt, -3);
+	}
+	
+	return rtn_momthAmt;
+}
+
+/****************************************************************************
+* 함 수 명 	: msk_enggAmt_onchanged
+* 함수설명 	: 
+*****************************************************************************/
+this.msk_enggAmt_onchanged = function(obj:MaskEdit, e:nexacro.ChangeEventInfo)
+{
+	if(this.chk_payType2.value == 1)
+	{
+		this.msk_payType2_lastMonthAmt.set_value(this.fn_get_lastMonthAmt(this.msk_enggAmt.value, this.edt_payType2_cnt.value));//증감액
+		this.msk_payType2_monthAmt.set_value(this.fn_get_monthAmt(this.msk_enggAmt.value, this.edt_payType2_cnt.value));//월금액
+	}
+
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_popCallBack
+* 함수설명 	: popup콜백 함수
+*****************************************************************************/
+this.fn_popCallBack = function(strID, rtnVal) 
+{
+	if("close" == strID) 
+	{
+		return;
+	}
+	else 
+	{
+		//조회조건의 회원팝업
+		if("afd02020_p02" == strID) 
+		{
+			this.ds_divSearch.loadXML(rtnVal);
+			
+			if(this.ds_divSearch.getRowCount() == 0)
+			{
+				return false;
+			}
+			
+			this.div_search.edt_sMemberNo.set_value(this.ds_divSearch.getColumn(0, "memberNo"));//회원번호
+			this.div_search.edt_sMemberNmKor.set_value(this.ds_divSearch.getColumn(0, "memberNmKor"));//회원번호명
+			this.div_search.msk_sWsJuminNo.set_value(this.ds_divSearch.getColumn(0, "wsJuminNo"));//주민번호
+			this.div_search.edt_sEnggMgnCnt.set_value(this.gfn_nvl(this.ds_divSearch.getColumn(0, "enggMgnCnt"), "0"));//총약정수
+			this.div_search.msk_sSumEnggAmt.set_value(this.gfn_nvl(this.ds_divSearch.getColumn(0, "sumEnggAmt"), "0"));//총약정액
+			this.div_search.msk_sSumPaymentAmt.set_value(this.gfn_nvl(this.ds_divSearch.getColumn(0, "sumPaymentAmt"), "0"));//총입금액
+			
+			//약정번호 콤보 조회
+			this.fn_retrieveEnggMgnNo();		
+		}
+		//기금팝업
+		else if("afd02020_p01" == strID) 
+		{
+			this.ds_endw.loadXML(rtnVal);
+
+			this.edt_endwNm.set_value(this.ds_endw.getColumn(0, "endwNm"));
+			this.edt_endwCd.set_value(this.ds_endw.getColumn(0, "endwCd"));
+			this.edt_mentFormDiv.set_value(this.ds_endw.getColumn(0, "mentFormDiv"));//관리화면구분
+			
+			//기금을 값 선택 후 처리
+			if(!this.gfn_isNull(this.edt_endwCd.value))
+			{
+				//기탁형태
+				this.cmb_paymthd.set_enable(true);	
+				this.cmb_paymthd.set_index(0);
+				this.cmb_paymthd.setFocus();
+				
+				this.cmb_paymthd.set_value("01");//현금01
+				this.cmb_paymthd_onitemchanged();//기탁형태 변경 이벤트 호출
+				
+				//기금종류에 따라 DIV호출
+				this.fn_endwDivCall(this.edt_mentFormDiv.value);
+			}
+			else
+			{
+				//기탁형태
+				this.cmb_paymthd.set_enable(false);
+				this.cmb_paymthd.set_value("");
+			}
+			
+		}else if("afd01010_p01" == strID) 
+		{
+			this.ds_dummy.loadXML(rtnVal);
+
+			this.div_endwForm5.edt_memberRecommendCode.set_value(this.ds_dummy.getColumn(0, "memberNo"));
+			this.div_endwForm5.edt_memberRecommendName.set_value(this.ds_dummy.getColumn(0, "memberNmKor"));
+			
+		}
+	}
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_callBack
+* 함수설명 	: 콜백 함수
+*****************************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg) 
+{
+	if(errCd < 0 ) 
+	{
+		this.gfn_message("A", errMsg);
+		return false;
+	}
+	else 
+	{
+		//
+		if("ENGG_MGN_NO" == trId) 
+		{
+			if(this.ds_afdNewCntrct.getRowCount() > 0) 
+			{
+				this.cmb_enggMgnNo.set_value(this.ds_afdNewCntrct.getColumn(0, "enggMgnNo"));	
+			}
+			else 
+			{
+				this.cmb_enggMgnNo.set_index(0);
+			}
+			
+			this.ds_afdNewCntrct.clearData();
+			this.fn_search();
+		}
+		//
+		else if("LOAD" == trId)
+		{
+			this.fn_search_fix_combo();
+		}
+		//
+		else if("SEARCH" == trId) 
+		{
+			//기금종류에 따라 DIV호출
+			this.fn_endwDivCall(this.ds_afdCntrct.getColumn(0,"mentFormDiv"));
+		}
+		//
+		else if("SAVE" == trId) 
+		{
+			this.gfn_message("A","정상적으로 처리되었습니다.");
+			this.fn_postSave();
+		}
+		//
+		else if("CNTRCT_MEMBER" == trId) 
+		{
+			this.div_search.edt_sMemberNo.set_value(this.ds_divSearch.getColumn(0, "memberNo"));
+			this.div_search.edt_sMemberNmKor.set_value(this.ds_divSearch.getColumn(0, "memberNmKor"));
+			this.div_search.msk_sWsJuminNo.set_value(this.ds_divSearch.getColumn(0, "wsJuminNo"));
+			this.div_search.edt_sEnggMgnCnt.set_value(this.gfn_nvl(this.ds_divSearch.getColumn(0, "enggMgnCnt"), "0"));
+			this.div_search.msk_sSumEnggAmt.set_value(this.gfn_nvl(this.ds_divSearch.getColumn(0, "sumEnggAmt"), "0"));
+			this.div_search.msk_sSumPaymentAmt.set_value(this.gfn_nvl(this.ds_divSearch.getColumn(0, "sumPaymentAmt"), "0"));
+		}
+		//지정기탁 콤보조회
+		else if("FIX_COMBO" == trId) 
+		{
+			
+		}
+	}
+}
+this.div_search_btn_sPopup_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_pop("afd01010_p01");
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_pop
+* 함수설명 	: 약정회원 검색 팝업
+*****************************************************************************/
+this.fn_pop = function(popId) 
+{
+	var popupId = popId;
+	var popupUrl = "afd02::afd02020_p02.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var argumentsList = new Array();
+	argumentsList['memberNo']   = this.gfn_nvl(this.div_endwForm5.edt_memberRecommendCode.value, "");
+	
+	this.gfn_popupOpen(popupId, "", popupUrl, popupCallback, this);
+}]]></Script>
+  </Form>
+</FDL>

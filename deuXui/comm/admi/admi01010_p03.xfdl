@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="admi01010_p03" classname="Component_Guide" inheritanceid="" position="absolute" scrollbars="none" left="0" top="0" width="790" height="522" titletext="사업조회팝업" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="20" position="absolute" cssclass="search" left="15" top="45" height="39" width="760">
+          <Layouts>
+            <Layout>
+              <Static id="Static07" taborder="9" text="사업명" cssclass="search" left="21" top="9" width="35" height="22"/>
+              <Static id="Static00" taborder="12" text="사용여부" cssclass="search" left="268" top="9" width="48" height="22"/>
+              <Combo id="cmb_useYn" taborder="13" left="326" top="9" width="76" height="21" datacolumn="comCdNm" codecolumn="comCd" innerdataset="@ds_cmb_useYn"/>
+              <Edit id="edt_bizNm" taborder="21" left="9.21%" top="9" right="67.37%" height="21" onkeydown="div_search_edt_bizNm_onkeydown" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static33" taborder="22" text="W&#13;&#10;20" cssclass="tipGuide" visible="false" left="1" top="0" width="20" height="39"/>
+              <Static id="Static14" taborder="23" text="W10" cssclass="tipGuide" visible="false" left="56" top="1" width="14" height="37"/>
+              <Static id="Static12" taborder="24" text="H9" cssclass="tipGuide" visible="false" left="144" top="0" width="30" height="9"/>
+              <Static id="Static11" taborder="25" text="H9" cssclass="tipGuide" visible="false" left="144" top="30" width="30" height="9"/>
+              <Static id="Static13" taborder="26" text="W20" cssclass="tipGuide" visible="false" left="248" top="1" width="20" height="37"/>
+              <Static id="Static28" taborder="27" text="W10" cssclass="tipGuide" visible="false" left="316" top="1" width="1.32%" height="37"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Grid id="grd_bgBizPopList" taborder="23" useinputpanel="false" autofittype="none" nodatatext="No Data" position="absolute" left="15" top="99" height="363" width="760" binddataset="ds_bgBizPopList" treeinitstatus="expand,all" oncelldblclick="grd_bgBizPopList_oncelldblclick" autosizingtype="none" cellsizingtype="col">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="30" band="left"/>
+                <Column size="103"/>
+                <Column size="80"/>
+                <Column size="260"/>
+                <Column size="80"/>
+                <Column size="120"/>
+                <Column size="63"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="상위사업"/>
+                <Cell col="2" text="사업레벨"/>
+                <Cell col="3" text="사업명"/>
+                <Cell col="4" text="사업구분"/>
+                <Cell col="5" text="재원"/>
+                <Cell col="6" text="개시연도"/>
+              </Band>
+              <Band id="body">
+                <Cell text="expr:currow+1"/>
+                <Cell col="1" style="align:left;" text="bind:uprBizNm"/>
+                <Cell col="2" displaytype="combo" style="align:center;" text="bind:bizLvl" combodataset="ds_grdBizLvl" combocodecol="comCd" combodatacol="comCdNm"/>
+                <Cell col="3" displaytype="normal" style="align:left;" text="bind:bizNm"/>
+                <Cell col="4" displaytype="combo" style="align: ;" text="bind:bizDivCd" combodataset="ds_grdBizDivCd" combocodecol="comCd" combodatacol="comCdNm"/>
+                <Cell col="5" style="align:left;" text="bind:fincNm"/>
+                <Cell col="6" text="bind:begYy"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static00" taborder="31" text="사업조회팝업" cssclass="sta_WF_Title" left="15" top="9" width="170" height="29"/>
+        <Static id="Static34" taborder="32" text="h45" cssclass="tipGuide" visible="false" left="198" top="0" width="74" height="45"/>
+        <Static id="Static02" taborder="33" text="w15" cssclass="tipGuide" visible="false" left="0" top="6" width="15" height="503"/>
+        <Static id="Static06" taborder="34" text="w15" cssclass="tipGuide" visible="false" top="6" right="0" width="15" height="503"/>
+        <Static id="Static21" taborder="35" text="h15" cssclass="tipGuide" visible="false" left="119" top="84" right="329" height="15"/>
+        <Static id="bg" taborder="36" cssclass="sta_POP_bottomBg" left="15" height="41" positionstep="-1" top="477" width="760"/>
+        <Button id="btn_close" taborder="39" text="닫기" onclick="btn_close_onclick" cssclass="btn_POP_Common" left="715" top="487" width="60" height="21"/>
+        <Static id="Static03" taborder="40" text="h10" cssclass="tipGuide" visible="false" left="741" top="0" width="34" height="10"/>
+        <Button id="btn_search" taborder="41" text="조회" cssclass="btn_WF_commonSearch" top="10" right="15" width="60" height="25" onclick="btn_search_onclick"/>
+        <Static id="Static04" taborder="42" text="h10" cssclass="tipGuide" visible="false" left="741" top="35" width="34" height="10"/>
+        <Static id="Static05" taborder="43" text="h15" cssclass="tipGuide" visible="false" right="15" bottom="45" width="760" height="15"/>
+        <Static id="Static28" taborder="44" text="10" cssclass="tipGuide" visible="false" right="15" bottom="35" width="136" height="10"/>
+        <Static id="Static01" taborder="45" text="10" cssclass="tipGuide" visible="false" right="15" bottom="4" width="136" height="10"/>
+        <Static id="Static22" taborder="46" text="h17" cssclass="tipGuide" visible="false" left="36" top="0" width="74" height="17"/>
+        <Static id="Static23" taborder="47" text="h14" cssclass="tipGuide" visible="false" left="36" top="31" width="74" height="14"/>
+        <Button id="btn_confirm" taborder="48" text="확인" cssclass="btn_POP_Common" left="650" top="487" width="60" height="21" onclick="btn_confirm_onclick"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_bgBizPopList" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+      <Dataset id="ds_dummy" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" onrowposchanged="ds_account_onrowposchanged"/>
+      <Dataset id="ds_grdBizLvl" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" onrowposchanged="ds_account_onrowposchanged"/>
+      <Dataset id="ds_grdBizDivCd" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" onrowposchanged="ds_account_onrowposchanged"/>
+      <Dataset id="ds_cmb_useYn" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" onrowposchanged="ds_account_onrowposchanged"/>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[/* ====================================================================
+ * 01. 업무구분	: 행정공통
+ * 02. 화면명		: admi01010_p03.xfdl
+ * 03. 화면설명	: 사업조회 화면이다.
+ * 04. 작성일		: 2015.11.30
+ * 05. 작성자		: 김현수
+ * 06. 수정이력	: 2015-12-11
+					  1. 사용여부 콤보 innerdataset 공통코드 수정
+ * ====================================================================
+ *     수정일     수정자   내용
+ * ====================================================================
+ *
+ * ==================================================================== */
+ 
+/* ====================================================================
+ * 1. 공통 라이브러리
+ * ==================================================================== */
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+
+/* ====================================================================
+ * 2. 변수 선언부
+ * ==================================================================== */
+var acntUnt; 	//회계단위
+var acntYy;    	//회계년도
+var uprBizCd;   //상위사업레벨
+var befBizCd;   //이전사업레벨
+var bizLvlCd; 	//사업레벨
+var bizNm;      //사업명
+var autoClose;  //자동종료옵션
+var autoSearch; //자동조회옵션
+
+/* ====================================================================
+ * 3. Event 처리 부분
+ * ==================================================================== */
+
+/******************************************************************************
+* 함 수 명 	: admi01010_p03_onload
+* 함수설명 	: 폼변수 호출 후 함수
+*****************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	//this.fn_postLoad();
+
+	var arrDataSet = Array(2);
+		arrDataSet[0]  = "ds_grdBizLvl";  			//사업레벨
+		arrDataSet[1]  = "ds_grdBizDivCd";  		//사업구분 
+		arrDataSet[2]  = "ds_cmb_useYn";  		//사업구분 
+	
+	var arrGrpCd = Array(2);
+		arrGrpCd[0]  = "BG013";
+		arrGrpCd[1]  = "BG014";
+		arrGrpCd[2]  = "CS002";
+	
+	// 사용여부	지정할 아큐먼트를 넘긴다.
+	var arrUseYn =	Array(2);
+		arrUseYn[0]  =	"Y";
+		arrUseYn[1]  =	"Y";
+		arrUseYn[2]  =	"Y";
+	
+	// T:전체,S:선택,X:없음 
+	var arrModeFg =	Array(2);
+		arrModeFg[0]  =	"X";
+		arrModeFg[1]  =	"X";
+		arrModeFg[2]  =	"X";
+
+	// WHERE절 내용 "X":없음
+	var arrWhere =	Array(2);
+		arrWhere[0]  =	"X";
+		arrWhere[1]  =	"X";
+		arrWhere[2]  =	"X";
+	
+	/* 메소드명     : ComboLoad
+	 * 설명         : 공통코드 테이블을 조회하여 콤보박스를 생성한다.
+	 * 메소드인수1  : DataSet명의 배열
+	 * 메소드인수2  : 그룹코드번호의 배열
+	 * 메소드인수3  : 캠퍼스구분 배열 ("T":전체, "C":공통만, "S":서울, "K":경주)
+	 * 메소드인수4  : 조건문의 배열 (1:사용, 0:사용안함)
+	 * 메소드인수5  : 전체공란 첨부여부 "T": 전체, "S":선택, "X" : 데이터시작
+	 * 메소드인수6  : WHERE절 내용 "X":없음
+	 */
+
+ 	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postLoad()
+ * 함수설명 	: 화면 로드 이벤트 후 함수
+********************************************************************************/
+this.fn_postLoad = function()
+{
+	this.acntUnt 	= this.parent.acntUnt; 							//회계단위
+	this.acntYy		= this.gfn_nvl(this.parent.acntYy,'');    		//회계년도
+	this.uprBizCd	= this.gfn_nvl(this.parent.uprBizCd,'');  		//상위사업레벨
+	this.befBizCd	= this.gfn_nvl(this.parent.befBizCd,'');  		//이전사업레벨
+	this.bizLvlCd	= this.gfn_nvl(this.parent.bizLvlCd,'');		//사업레벨
+	this.bizNm		= this.gfn_nvl(this.parent.bizNm,'');			//사업명
+	this.autoClose	= this.gfn_nvl(this.parent.autoClose,false);	//자동선택후 종료옵션
+	this.autoSearch = this.gfn_nvl(this.parent.autoSearch,false);	//자동조회 옵션
+
+	if(this.gfn_isNull(this.acntUnt)) {
+		this.alert("회계단위가 없습니다.");
+		this.close();
+	}
+	
+	this.div_search.cmb_useYn.set_index(0);
+	this.div_search.edt_bizNm.set_value(this.bizNm);
+		
+	if(this.autoSearch) {
+		this.fn_search();
+	} else {
+		this.div_search.edt_bizNm.setFocus();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_confirm_onclick
+ * 함수설명 	: 확인
+ *********************************************************************/
+this.btn_confirm_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_confirm();
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_confirm
+ * 함수설명 	: 부모로 리턴
+ *********************************************************************/
+this.fn_confirm = function()
+{
+	this.ds_dummy.copyData(this.ds_bgBizPopList);
+	this.ds_dummy.clearData();
+	
+	var addRow = this.ds_dummy.addRow();
+	this.ds_dummy.copyRow(addRow, this.ds_bgBizPopList, this.ds_bgBizPopList.rowposition);
+	this.close(this.ds_dummy.saveXML());
+}
+
+/*********************************************************************
+ * 함 수 명 	: btn_close_onclick
+ * 함수설명 	: 화면 종료
+ *********************************************************************/
+this.btn_close_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.close("close");
+}
+
+/********************************************************************************
+ * 함 수 명 	: btn_search_onclick
+ * 함수설명 	: 조회 버튼 클릭 함수
+********************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preSearch
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preSearch = function()
+{
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_search
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_search = function()
+{
+	if(this.fn_preSearch()){
+		var strArg  = "acntUnt="  + nexacro.wrapQuote(this.acntUnt);					// 회계단위
+			//strArg += " acntYy=" + nexacro.wrapQuote(this.acntYy);					// 회계년도
+			strArg += " bizNm=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_bizNm.value,''));	// 사업명
+			strArg += " bizLvlCd=" + nexacro.wrapQuote(this.bizLvlCd);					// 사업레벨
+			strArg += " uprBizCd=" + nexacro.wrapQuote(this.uprBizCd);					// 상위사업레벨
+			strArg += " befBizCd=" + nexacro.wrapQuote(this.befBizCd);					// 이전사업레벨
+			strArg += " useYn=" + nexacro.wrapQuote(this.div_search.cmb_useYn.value);	// 사용여부
+			
+		this.gfn_transaction("SEARCH",
+							 "txAdmUrl::com/admi/adcom/selectBgBizPopList.do",
+							 "",
+							 "ds_bgBizPopList=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postSearch
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearch = function()
+{
+	if(this.autoClose && this.ds_bgBizPopList.rowcount == 1){
+		this.fn_confirm();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: grd_bgBizPopList_oncelldblclick
+ * 함수설명 	: 그리드 더블클릭
+ *********************************************************************/
+this.grd_bgBizPopList_oncelldblclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	this.fn_confirm();
+}
+
+/*********************************************************************
+ * 함 수 명 	: div_search_edt_acntCdNm_onkeydown
+ * 함수설명 	: 엔터키
+ *********************************************************************/
+this.div_search_edt_bizNm_onkeydown = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	if(e.keycode == "13") {
+		this.fn_search();
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_callBack
+ * 함수설명 	: 서버 통신 후 callBack 함수.
+ *********************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.alert(errMsg);
+	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+		} else if(trId=="SEARCH"){
+			this.fn_postSearch();
+		}
+	}
+}]]></Script>
+  </Form>
+</FDL>

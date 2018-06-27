@@ -1,0 +1,550 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd02040" classname="aac01001_001" left="0" top="0" width="1038" height="855" titletext="기금행사예우관리" onload="afd02040_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="0" left="0" top="0" right="15" height="69" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static03" taborder="90" text="행사/예우명" cssclass="search" left="15" top="42" width="66" height="22" class="search_bul"/>
+              <Static id="Static01" taborder="85" text="구분" cssclass="search" left="15" top="10" width="66" height="22" class="search_bul"/>
+              <Combo id="cmb_sEventHlrtDiv" taborder="86" innerdataset="@ds_sEventHlrtDiv" codecolumn="comCd" datacolumn="comCdNm" left="98" top="10" width="100" height="22" class="essential" onitemchanged="div_search_cmb_sEventHlrtDiv_onitemchanged"/>
+              <Static id="Static08" taborder="87" text="행사/예우일자" cssclass="search" left="216" top="10" width="80" height="22" class="search_bul"/>
+              <Calendar id="cal_sEventHlrtFromDt" taborder="93" dateformat="yyyy-MM-dd" left="304" top="10" height="22" width="100"/>
+              <Calendar id="cal_sEventHlrtToDt" taborder="94" dateformat="yyyy-MM-dd" left="430" top="10" height="22" width="100"/>
+              <Static id="Static17" taborder="95" text="~" left="413" top="10" height="23" style="align:left middle;" width="14"/>
+              <Combo id="cmb_sEventHlrtCd" taborder="96" innerdataset="@ds_sEventHlrtCd" codecolumn="comCd" datacolumn="comCdNm" onitemchanged="div_search_cmb_sEvntCate_onitemchanged" left="98" top="42" width="432" height="22" class="essential"/>
+              <Static id="Static00" taborder="97" text="w8" visible="false" left="0" top="12" width="15" height="46" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Grid id="grd_afdEventDtl" taborder="1" binddataset="ds_afdEventDtl" autoenter="select" useinputpanel="false" cellsizingtype="col" cellmovingtype="col" autofittype="col" left="0" top="111" right="15" height="262">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="35" band="left"/>
+                <Column size="26"/>
+                <Column size="40"/>
+                <Column size="69"/>
+                <Column size="300"/>
+                <Column size="465"/>
+                <Column size="100"/>
+              </Columns>
+              <Rows>
+                <Row size="24" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox"/>
+                <Cell col="2" text="순번"/>
+                <Cell col="3" text="구분"/>
+                <Cell col="4" text="행사/예우명"/>
+                <Cell col="5" text="행사/예우상세명"/>
+                <Cell col="6" text="행사/예우일자"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="image" style="align:center middle;" text="bind:rowStatus" expr="expr:rowStatus==2?&quot;URL('theme://images/ico_i.png')&quot;:rowStatus==4?&quot;URL('theme://images/ico_u.png')&quot;:rowStatus==8?&quot;URL('theme://images/ico_d.png')&quot;:&quot;&quot;"/>
+                <Cell col="1" displaytype="checkbox" edittype="checkbox" text="bind:chk"/>
+                <Cell col="2" text="expr:currow+1"/>
+                <Cell col="3" displaytype="combo" text="bind:eventHlrtDiv" combodataset="ds_lEventHlrtDiv" combocodecol="comCd" combodatacol="comCdNm"/>
+                <Cell col="4" displaytype="combo" style="align:left middle;" text="bind:eventHlrtCd" combodataset="ds_lEventHlrtCd" combocodecol="comCd" combodatacol="comCdNm"/>
+                <Cell col="5" displaytype="normal" style="align:left middle;" text="bind:eventHlrtDetailNm"/>
+                <Cell col="6" text="bind:eventHlrtDt" mask="####-##-##"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static14" taborder="2" text="행사/예우목록" cssclass="page_stitle" left="0" top="85" width="145" height="20"/>
+        <Button id="btn_search" taborder="3" text="조회" cssclass="search" top="84" right="201" width="60" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R" onclick="btn_search_onclick"/>
+        <Button id="btn_add" taborder="4" text="추가" cssclass="new" top="84" right="139" width="60" height="22" tooltiptype="hover" tooltiptext="추가" userBtnAuth="S" onclick="btn_add_onclick"/>
+        <Button id="btn_del" taborder="5" text="삭제" onclick="btn_del_onclick" cssclass="del" top="84" right="77" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" userBtnAuth="S"/>
+        <Button id="btn_save" taborder="6" text="저장" onclick="btn_save_onclick" cssclass="save" top="84" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S"/>
+        <Tab id="tab_event" taborder="8" left="0" top="388" right="15" bottom="10" tabindex="0" scrollbars="autoboth" style="showextrabutton:false;" canchange="tab_event_canchange" onchanged="tab_event_onchanged">
+          <Tabpages>
+            <Tabpage id="tp_evntDetail" text="행사/예우정보">
+              <Layouts>
+                <Layout width="1023" height="426">
+                  <Static id="Static02" taborder="0" cssclass="detail_bg" left="0" top="99" right="15" height="77"/>
+                  <Static id="Static12" taborder="3" cssclass="detail_bg" left="0%" top="71" right="15" height="30"/>
+                  <Div id="div_dtl08" taborder="8" left="34.82%" top="129" right="2.48%" height="30">
+                    <Layouts>
+                      <Layout/>
+                    </Layouts>
+                  </Div>
+                  <Static id="Static18" taborder="9" cssclass="detail_bg" left="0%" top="42" right="15" height="30"/>
+                  <Div id="div_dtl01" taborder="11" left="0" top="41" right="66.87%" height="33">
+                    <Layouts>
+                      <Layout>
+                        <Static id="Static03" taborder="6" text="구분" cssclass="detail_title" left="0" top="1" width="110" height="30"/>
+                        <Combo id="cmb_eventHlrtDiv" taborder="7" innerdataset="@ds_eventHlrtDiv" codecolumn="comCd" datacolumn="comCdNm" cssclass="essential" left="115" top="5" right="0" height="22" onitemchanged="tab_event_tp_evntDetail_div_dtl01_cmb_eventHlrtDiv_onitemchanged"/>
+                      </Layout>
+                    </Layouts>
+                  </Div>
+                  <Div id="div_dtl02" taborder="12" left="34.8%" top="42" right="0.68%" height="31">
+                    <Layouts>
+                      <Layout>
+                        <Static id="Static11" taborder="6" text="행사/예우명" cssclass="detail_title" left="0" top="0" width="110" height="30"/>
+                        <Combo id="cmb_eventHlrtCd" taborder="7" innerdataset="@ds_eventHlrtCd" codecolumn="comCd" datacolumn="comCdNm" onitemchanged="div_dtl02_cmb_evntGrp_onitemchanged" cssclass="essential" left="115" top="4" right="18" height="22"/>
+                      </Layout>
+                    </Layouts>
+                  </Div>
+                  <Div id="div_dtl03" taborder="17" left="0" top="70" right="66.87%" height="33">
+                    <Layouts>
+                      <Layout>
+                        <Static id="Static03" taborder="8" text="행사예우일자" cssclass="detail_title" left="0" top="1" width="110" height="30"/>
+                        <Calendar id="cal_eventHlrtDt" taborder="9" dateformat="yyyy-MM-dd" left="115" top="5" right="23.65%" height="22"/>
+                      </Layout>
+                    </Layouts>
+                  </Div>
+                  <Div id="div_dtl04" taborder="18" text="Div01" left="34.82%" top="71" right="0.69%" height="30">
+                    <Layouts>
+                      <Layout>
+                        <Static id="Static09" taborder="4" text="행사/예우상세명" onclick="tb_ivt_tp_ivt_detl_Static09_onclick" cssclass="detail_title" left="0" top="0" width="110" height="30"/>
+                        <Edit id="edt_eventHlrtDetailNm" taborder="5" left="115" top="4" right="2.77%" height="22" style="border:1 solid #ccccccff ;"/>
+                      </Layout>
+                    </Layouts>
+                  </Div>
+                  <Static id="Static03" taborder="19" text="h15" visible="false" left="18" top="0" width="966" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+                  <Static id="Static05" taborder="20" text="h15" visible="false" left="1042" top="8" width="15" height="530" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+                  <Static id="Static06" taborder="25" text="비고" onclick="tb_ivt_tp_ivt_detl_Static16_onclick" cssclass="detail_title" left="0" top="100" width="110" height="76"/>
+                  <TextArea id="txt_remark" taborder="26" left="115" top="104" right="2.48%" height="68"/>
+                  <Static id="Static00" taborder="27" text="행사/예우상세정보" cssclass="page_stitle" left="0%" top="16" right="81.55%" height="20"/>
+                </Layout>
+              </Layouts>
+            </Tabpage>
+            <Tabpage id="tp_eventng" text="행사예우대상자">
+              <Layouts>
+                <Layout>
+                  <Static id="Static00" taborder="25" text="행사/예우대상자정보" cssclass="page_stitle" left="0%" top="16" right="81.59%" height="20"/>
+                  <Static id="Static16" taborder="26" text="h5" visible="false" left="12.4%" top="36" right="82.84%" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+                  <Button id="btn_new" taborder="27" text="추가" cssclass="new" top="15" right="201" height="22" tooltiptype="hover" tooltiptext="추가" onclick="tab_event_tp_eventng_btn_new_onclick" width="60"/>
+                  <Button id="btn_del" taborder="28" text="삭제" cssclass="del" top="15" right="139" height="22" tooltiptype="hover" tooltiptext="삭제" onclick="tab_event_tp_eventng_btn_del_onclick" width="60"/>
+                  <Button id="btn_save" taborder="29" text="저장" cssclass="save" top="15" height="22" tooltiptype="hover" tooltiptext="저장" onclick="tab_event_tp_eventng_btn_save_onclick" width="60" right="77"/>
+                  <Button id="btn_excel" taborder="30" text="엑셀" onclick="btn_excel_onclick" cssclass="btn_WF_Common" top="15" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="Excel" userBtnAuth="D"/>
+                  <Grid id="grd_eventNg" taborder="31" useinputpanel="false" left="0" top="41" right="15" binddataset="ds_eventNg" autofittype="col" autoenter="select" bottom="11" onexpandup="fn_pop">
+                    <Formats>
+                      <Format id="default">
+                        <Columns>
+                          <Column size="24"/>
+                          <Column size="26"/>
+                          <Column size="40"/>
+                          <Column size="80"/>
+                          <Column size="150"/>
+                          <Column size="120"/>
+                          <Column size="100"/>
+                          <Column size="120"/>
+                          <Column size="338"/>
+                        </Columns>
+                        <Rows>
+                          <Row size="24" band="head"/>
+                          <Row size="24"/>
+                        </Rows>
+                        <Band id="head">
+                          <Cell displaytype="normal"/>
+                          <Cell col="1" displaytype="checkbox" edittype="checkbox"/>
+                          <Cell col="2" text="순번"/>
+                          <Cell col="3" text="회원번호"/>
+                          <Cell col="4" text="성명"/>
+                          <Cell col="5" text="생년월일"/>
+                          <Cell col="6" text="회원구분"/>
+                          <Cell col="7" text="행사/예우여부"/>
+                          <Cell col="8" text="비고"/>
+                        </Band>
+                        <Band id="body">
+                          <Cell displaytype="image" text="bind:rowStatus" expr="expr:rowStatus=='2'?&quot;URL('theme://images/icon/status_n.png')&quot;:rowStatus=='4'?&quot;URL('theme://images/icon/status_u.png')&quot;:rowStatus=='8'?&quot;URL('theme://images/icon/status_d.png')&quot;:&quot;&quot;"/>
+                          <Cell col="1" displaytype="checkbox" edittype="checkbox" text="bind:chk"/>
+                          <Cell col="2" expr="expr:currow+1"/>
+                          <Cell col="3" text="bind:memberNo"/>
+                          <Cell col="4" edittype="expr:rowStatus==2?&quot;normal&quot;:&quot;none&quot;" text="bind:memberNmKor" editdisplay="edit" expandshow="expr:rowStatus==2?&quot;show&quot;:&quot;hide&quot;" expandimage="URL('theme://images\ico_expand.png')"/>
+                          <Cell col="5" displaytype="date" text="bind:birthDt"/>
+                          <Cell col="6" displaytype="combo" text="bind:memberDivCd" combodataset="ds_membas" combocodecol="memberDivCd" combodatacol="memberDivNm"/>
+                          <Cell col="7" displaytype="combo" edittype="combo" text="bind:atndncYn" combodataset="ds_atndncYn" combocodecol="comCd" combodatacol="comCdNm" combodisplay="display"/>
+                          <Cell col="8" text="bind:remark"/>
+                        </Band>
+                      </Format>
+                    </Formats>
+                  </Grid>
+                </Layout>
+              </Layouts>
+            </Tabpage>
+          </Tabpages>
+        </Tab>
+        <Static id="Static11" taborder="9" text="w&#13;&#10;15" visible="false" top="0" right="0" width="15" height="855" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_afdEventDtl" onrowposchanged="ds_afdEventDtl_onrowposchanged">
+        <ColumnInfo>
+          <Column id="remark" type="string" size="32"/>
+          <Column id="eventHlrtDetailCd" type="string" size="32"/>
+          <Column id="eventAgent" type="string" size="32"/>
+          <Column id="eventHlrtDetailNm" type="string" size="32"/>
+          <Column id="eventHlrtDiv" type="string" size="32"/>
+          <Column id="eventHlrtCd" type="string" size="32"/>
+          <Column id="eventSpc" type="string" size="32"/>
+          <Column id="closeYn" type="string" size="32"/>
+          <Column id="chk" type="string" size="32"/>
+          <Column id="eventHlrtDt" type="string" size="32"/>
+          <Column id="eventTime" type="string" size="32"/>
+          <Column id="regDt" type="string" size="32"/>
+          <Column id="rowStatus" type="string" size="32"/>
+          <Column id="eventPartcptCnt" type="string" size="32"/>
+          <Column id="ivtDesc" type="string" size="32"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_sEventHlrtDiv"/>
+      <Dataset id="ds_eventHlrtDiv"/>
+      <Dataset id="ds_sEventHlrtCd"/>
+      <Dataset id="ds_eventHlrtCd"/>
+      <Dataset id="ds_lEventHlrtCd"/>
+      <Dataset id="ds_lEventHlrtDiv"/>
+      <Dataset id="ds_membas"/>
+      <Dataset id="ds_atndncYn"/>
+      <Dataset id="ds_rtnVal"/>
+      <Dataset id="ds_eventNg"/>
+    </Objects>
+    <Bind>
+      <BindItem id="item6" compid="div_search.cal_sEventHlrtFromDt" propid="value" datasetid="ds_evnt_list" columnid="evntFromDt"/>
+      <BindItem id="item7" compid="div_search.cal_sEventHlrtToDt" propid="value" datasetid="ds_evnt_list" columnid="evntToDt"/>
+      <BindItem id="item16" compid="tab_evnt.tp_evnt_detail.txt_remark" propid="value" datasetid="ds_evnt_list" columnid="remark"/>
+      <BindItem id="item0" compid="tab_event.tp_evntDetail.div_dtl01.cmb_eventHlrtDiv" propid="value" datasetid="ds_afdEventDtl" columnid="eventHlrtDiv"/>
+      <BindItem id="item1" compid="tab_event.tp_evntDetail.div_dtl02.cmb_eventHlrtCd" propid="value" datasetid="ds_afdEventDtl" columnid="eventHlrtCd"/>
+      <BindItem id="item2" compid="tab_event.tp_evntDetail.div_dtl03.cal_eventHlrtDt" propid="value" datasetid="ds_afdEventDtl" columnid="eventHlrtDt"/>
+      <BindItem id="item3" compid="tab_event.tp_evntDetail.div_dtl04.edt_eventHlrtDetailNm" propid="value" datasetid="ds_afdEventDtl" columnid="eventHlrtDetailNm"/>
+      <BindItem id="item4" compid="tab_event.tp_evntDetail.txt_remark" propid="value" datasetid="ds_afdEventDtl" columnid="remark"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::frameUtils.xjs";
+include "commJs::lib_String.xjs";
+
+/****************************************************************************
+* 함 수 명 	: afd02040_onload
+* 함수설명 	: 화면로드 이벤트
+*****************************************************************************/
+this.afd02040_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	var essGrd = new Array();
+ 		essGrd[0] = this.grd_afdEventDtl;
+ 		essGrd[1] = this.tab_event.tp_eventng.grd_eventNg;
+ 		
+	this.gfn_essDataset(essGrd);//그리드헤더처리
+	this.gfn_bindCmmnFunction();
+	
+	var arrDataSet = Array();
+		arrDataSet[0]  = "ds_eventHlrtDiv";
+		arrDataSet[1]  = "ds_sEventHlrtDiv";
+		arrDataSet[2]  = "ds_lEventHlrtDiv";
+		arrDataSet[3]  = "ds_eventHlrtCd";
+		arrDataSet[4]  = "ds_sEventHlrtCd";
+		arrDataSet[5]  = "ds_lEventHlrtCd";
+		arrDataSet[6]  = "ds_atndncYn";
+			
+	var arrGrpCd = Array();
+		arrGrpCd[0]  = "AFD09";
+		arrGrpCd[1]  = "AFD09";
+		arrGrpCd[2]  = "AFD09";
+		arrGrpCd[3]  = "AFD02";
+		arrGrpCd[4]  = "AFD02";
+		arrGrpCd[5]  = "AFD02";
+		arrGrpCd[6]  = "AFD07";
+			
+	// 사용여부	지정할 아큐먼트를 넘긴다.
+	var arrUseYn =	Array();
+		arrUseYn[0]  =	"Y";
+		arrUseYn[1]  =	"Y";
+		arrUseYn[2]  =	"Y";
+		arrUseYn[3]  =	"Y";
+		arrUseYn[4]  =	"Y";
+		arrUseYn[5]  =	"Y";
+		arrUseYn[6]  =	"Y";
+
+	// T:전체,S:선택,X:없음 
+	var arrModeFg =	Array();
+		arrModeFg[0]  =	"S";
+		arrModeFg[1]  =	"T";
+		arrModeFg[2]  =	"S";
+		arrModeFg[3]  =	"S";
+		arrModeFg[4]  =	"T";
+		arrModeFg[5]  =	"S";
+		arrModeFg[6]  =	"X";
+
+	// WHERE절 내용 "X":없음
+	var arrWhere =	Array();
+		arrWhere[0]  =	"X";//ABB_CD IN ('S','K')
+		arrWhere[1]  =	"X";//ABB_CD IN ('S','K')
+		arrWhere[2]  =	"X";//ABB_CD IN ('S','K')
+		arrWhere[3]  =	"X";//ABB_CD IN ('S','K')
+		arrWhere[4]  =	"X";//ABB_CD IN ('S','K')
+		arrWhere[5]  =	"X";//ABB_CD IN ('S','K')
+		arrWhere[6]  =	"X";//ABB_CD IN ('S','K')
+		
+ 	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+}
+
+/****************************************************************************
+* 함 수 명 	: fn_membasCd
+* 함수설명 	: 회원구분기준정보 조회
+*****************************************************************************/
+this.fn_membasCd = function() 
+{
+	this.gfn_transaction("MEMBAS"
+						,"txAdmUrl::com/admi/afd/afd02/retrieveMembas.do"
+						,""
+						,"ds_membas=resultList"
+						,""
+						,"");
+}
+
+/****************************************************************************
+* 함 수 명 	: div_search_cmb_sEventHlrtDiv_onitemchanged
+* 함수설명 	: 구분선택 후 이벤트
+*****************************************************************************/
+this.div_search_cmb_sEventHlrtDiv_onitemchanged = function(obj:Combo, e:nexacro.ItemChangeEventInfo)
+{
+
+	if(this.gfn_isNull(this.div_search.cmb_sEventHlrtDiv.value)==true){
+	
+		this.gfn_filterDsCombo(this.div_search.cmb_sEventHlrtDiv, "", this.div_search.cmb_sEventHlrtCd, this.ds_sEventHlrtCd, "comCd", "comCdNm");	
+	}
+	else{
+		
+		this.gfn_filterDsCombo(this.div_search.cmb_sEventHlrtDiv, "comCdRef1", this.div_search.cmb_sEventHlrtCd, this.ds_sEventHlrtCd, "comCd", "comCdNm");	
+	}
+
+	this.div_search.cmb_sEventHlrtCd.set_index(0);
+}
+
+/****************************************************************************
+* 함 수 명 	: tab_event_tp_evntDetail_div_dtl01_cmb_eventHlrtDiv_onitemchanged
+* 함수설명 	: 구분선택 후 이벤트
+*****************************************************************************/
+this.tab_event_tp_evntDetail_div_dtl01_cmb_eventHlrtDiv_onitemchanged = function(obj:Combo, e:nexacro.ItemChangeEventInfo)
+{
+	this.gfn_filterDsCombo(this.tab_event.tp_evntDetail.div_dtl01.cmb_eventHlrtDiv, "comCdRef1", this.tab_event.tp_evntDetail.div_dtl02.cmb_eventHlrtCd, this.ds_eventHlrtCd, "comCd", "comCdNm");
+}
+
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{	
+	this.fn_search();
+}
+
+this.fn_search = function() 
+{
+	var strArg = "eventHlrtDiv=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.cmb_sEventHlrtDiv.value, ""));
+		strArg += " eventHlrtDetailCd=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.cmb_sEventHlrtCd.value, ""));
+		strArg += " eventHlrtFromDt=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.cal_sEventHlrtFromDt.value, "19000101"));
+		strArg += " eventHlrtToDt=" + nexacro.wrapQuote(this.gfn_nvl(this.div_search.cal_sEventHlrtToDt.value, "21001231"));
+	
+	this.gfn_transaction("SEARCH"
+						,"txAdmUrl::com/admi/afd/afd02/retrieveEventDtl.do"
+						,""
+						,"ds_afdEventDtl=resultList"
+						,strArg
+						,"");
+}
+
+this.btn_add_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.tab_event.tabindex != 0) 
+	{
+		this.tab_event.set_tabindex(0);
+	}
+	
+	this.gfn_addRow(this.ds_afdEventDtl);
+	this.tab_event.tp_evntDetail.div_dtl01.cmb_eventHlrtDiv.set_index(0);
+	this.gfn_filterDsCombo(this.tab_event.tp_evntDetail.div_dtl01.cmb_eventHlrtDiv, "comCdRef1", this.tab_event.tp_evntDetail.div_dtl02.cmb_eventHlrtCd, this.ds_eventHlrtCd, "comCd", "comCdNm");
+	this.tab_event.tp_evntDetail.div_dtl03.cal_eventHlrtDt.set_value(this.gfn_getCurrentDate("YYYYMMDD"));
+	
+}
+
+this.btn_del_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_deleteRow(this.ds_afdEventDtl, "this.fn_save()");
+}
+
+this.btn_save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.fn_preSave()){
+		this.fn_save();
+	}
+}
+
+this.fn_save = function() 
+{
+	this.gfn_transaction("SAVE"
+							 ,"txAdmUrl::com/admi/afd/afd02/saveEventDtl.do"
+							 ,"resultList=ds_afdEventDtl:u"
+							 ,""
+							 ,""
+							 ,"");
+}
+
+this.fn_preSave = function() 
+{
+	if(!this.gfn_isUpdate(this.ds_afdEventDtl))
+	{
+		this.gfn_message("A", "변경된 데이터가 없습니다.");
+		return false;
+	}
+
+	/*
+	 * 필수값 입력 체크
+	 */
+	var colNm = "eventHlrtDiv$eventHlrtCd$eventHlrtDt$eventHlrtDetailNm";
+	var korNm = "구분$행사/예우명$행사/예우일자$행사예우상세명";
+	var cmpNm = "$";
+	var result = this.gfn_chkEssItem("ds_afdEventDtl", colNm, korNm, cmpNm);
+	
+	if (result[0] != "success") 
+	{
+		this.gfn_message("A", result[0]);
+		this.ds_afdEventDtl.set_rowposition(result[1]);
+		if(result[3] != ""){		
+			this.objects[result[3]].set_focus();
+		}
+		return false;	
+	}
+	return true;
+}
+
+this.tab_event_canchange = function(obj:Tab, e:nexacro.TabIndexChangeEventInfo)
+{
+	if(this.ds_afdEventDtl.getRowCount() == 0) {
+		this.gfn_message("A", "행사예우목록을 선택하세요");
+		return false;
+	}
+}
+
+this.tab_event_onchanged = function(obj:Tab, e:nexacro.TabIndexChangeEventInfo)
+{
+	if(obj.tabindex == 1) {
+		this.fn_searchT1();
+	}
+}
+
+this.fn_searchT1 = function() 
+{
+	var strArg = "eventHlrtDetailCd=" + nexacro.wrapQuote(this.gfn_nvl(this.ds_afdEventDtl.getColumn(this.ds_afdEventDtl.rowposition, "eventHlrtDetailCd"), ""));
+		strArg +=" eventHlrtDt=" + nexacro.wrapQuote(this.gfn_nvl(this.ds_afdEventDtl.getColumn(this.ds_afdEventDtl.rowposition, "eventHlrtDt"), ""));
+		
+	this.gfn_transaction("SEARCH_T1"
+						,"txAdmUrl::com/admi/afd/afd02/retrieveEventng.do"
+						,""
+						,"ds_eventNg=resultList"
+						,strArg
+						,"");
+}
+
+this.tab_event_tp_eventng_btn_new_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_addRow(this.ds_eventNg);
+// 	this.ds_eventng.setColumn(this.ds_eventng.rowposition, "eventHlrtDetailCd" , this.ds_afdEventDtl.getColumn(this.ds_afdEventDtl.rowposition, "eventHlrtDetailCd"));
+// 	this.ds_eventng.setColumn(this.ds_eventng.rowposition, "atndncYn", "0");
+	
+}
+
+this.tab_event_tp_eventng_btn_del_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.gfn_deleteRow(this.ds_eventNg,"this.fn_saveT1()");
+}
+
+this.tab_event_tp_eventng_btn_save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_saveT1();
+}
+
+this.fn_saveT1 = function() 
+{
+	this.gfn_transaction("SAVE_T1"
+						,"txAdmUrl::com/admi/afd/afd02/saveEventng.do"
+						,"resultList=ds_eventNg:u"
+						,""
+						,""
+						,"");
+}
+
+this.btn_excel_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	var excelGrd = new Array();
+		excelGrd[0] = this.tab_event.tp_eventng.grd_eventng;	//다운로드 대상 grid
+	var excelFileNm = "행사예우대상자정보";	// 엑셀 파일명		
+	
+	this.gfn_excelDown(excelGrd, excelFileNm);
+}
+
+this.fn_pop = function() 
+{
+	var popupId = "afd01050_p01";
+	var popupUrl = "afd01::afd01050_p01.xfdl";
+	var popupCallback = "fn_popCallBack";
+	var argumentsList = new Array();
+		argumentsList['memberNmKor']   = this.gfn_nvl(this.ds_eventNg.getColumn(this.ds_eventNg.rowposition, "memberNmKor"), "");
+	
+	this.gfn_popupOpen(popupId, "", popupUrl, popupCallback, this);
+}
+
+this.ds_afdEventDtl_onrowposchanged = function(obj:Dataset, e:nexacro.DSRowPosChangeEventInfo)
+{	
+	if(this.tab_event.tabindex == 1) {
+		this.fn_searchT1();
+	}
+}
+
+this.fn_popCallBack = function(strID, rtnVal) 
+{
+	if("close" == rtnVal) {
+		return;
+	}
+	
+	this.ds_rtnVal.clearData();
+	this.ds_rtnVal.loadXML(rtnVal);
+	
+	this.ds_eventNg.setColumn(this.ds_eventNg.rowposition, "memberNo", this.ds_rtnVal.getColumn(0, "memberNo"));
+	this.ds_eventNg.setColumn(this.ds_eventNg.rowposition, "memberNmKor", this.ds_rtnVal.getColumn(0, "memberNmKor"));
+	this.ds_eventNg.setColumn(this.ds_eventNg.rowposition, "birthDt", this.ds_rtnVal.getColumn(0, "birthDt"));
+}
+
+this.fn_callBack = function(trId, errCd, errMsg) 
+{
+	if(errCd < 0 ) 
+	{
+		this.gfn_message("A", errMsg);
+		return false;
+	}
+	
+	if("LOAD" == trId) 
+	{
+		this.div_search.cmb_sEventHlrtDiv.set_index(0);
+		this.tab_event.tp_evntDetail.div_dtl01.cmb_eventHlrtDiv.set_index(0);
+ 		//this.gfn_filterDsCombo(this.div_search.cmb_sEventHlrtDiv, "comCdRef1", this.div_search.cmb_sEventHlrtCd, this.ds_sEventHlrtCd, "comCd", "comCdNm");
+ 		this.div_search.cmb_sEventHlrtCd.set_index(0);
+ 		
+ 		//회원구분기준정보 조회
+		this.fn_membasCd();
+	}
+	else if("SAVE" == trId) 
+	{
+		
+		this.gfn_message("A", "정상적으로 처리 되었습니다.");
+		this.fn_search();
+	}
+	else if("SEARCH" == trId) 
+	{
+		
+	}
+	else if("MEMBAS" == trId) 
+	{
+	
+	}
+	else if("SAVE_T1" == trId) 
+	{
+		this.gfn_message("A", "정상적으로 처리 되었습니다.");
+		this.fn_searchT1();
+	}	
+}]]></Script>
+  </Form>
+</FDL>

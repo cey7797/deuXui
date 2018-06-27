@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Bg04SQL">
+
+    <typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>    
+    
+    <!--
+    #########################################################################################################################################
+    # 예산통제관리(admi/bg/bg04/bg04010.xfdl)
+    #########################################################################################################################################
+    -->
+    
+	<select id="bg04DAO.selectBg04010_01"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		
+		SELECT '' AS CHK
+		     , '' AS ROW_STATUS
+		     , A.ACNT_YY AS ACNT_YY
+		     , A.ACNT_UNT AS ACNT_UNT
+		     , (
+		        SELECT ACNT_UNT_NM
+		          FROM BG_UNT
+		         WHERE 1=1
+		           AND ACNT_UNT = A.ACNT_UNT 
+		       ) AS ACNT_UNT_NM
+		     , A.VOU_NO AS VOU_NO
+		     , A.VOU_ORG_ID AS VOU_ORG_ID
+		     , dbo.F_COM_DEPT_NM(A.VOU_ORG_ID, 'DEPT_NM_KOR') AS VOU_ORG_ID_NM
+		     , A.VOU_KND AS VOU_KND 
+		     , dbo.F_COM_CODE_NM('AC001', A.VOU_KND, 'KOR') AS VOU_KND_NM 
+		     , A.VOU_TTL AS VOU_TTL 
+		     , A.STA_CD AS STA_CD 
+		     , dbo.F_COM_CODE_NM('AC002', A.STA_CD, 'KOR') AS STA_CD_NM 
+		     , ISNULL(C.VOU_SEQ, 0) AS VOU_SEQ_CNT
+		     , dbo.F_AC_GET_VOU_AMT_SUM(A.ACNT_UNT, A.ACNT_YY, A.VOU_NO) AS APLY_AMT_SUM
+		     , A.APLY_USER_ID AS APLY_USER_ID
+       		 , dbo.F_COM_USER_NM(A.APLY_USER_ID, 'NM') AS APLY_USER_ID_NM
+       		 , A.APLY_DT AS APLY_DT
+	         , A.CTRL_USER_ID AS CTRL_USER_ID
+       		 , dbo.F_COM_USER_NM(A.CTRL_USER_ID, 'NM') AS CTRL_USER_ID_NM
+       		 , A.CTRL_DT AS CTRL_DT
+       	     , A.APPRO_USER_ID AS APPRO_USER_ID
+       		 , dbo.F_COM_USER_NM(A.APPRO_USER_ID, 'NM') AS APPRO_USER_ID_NM
+             , A.APPRO_DT AS APPRO_DT
+		     , A.RECV_USER_ID AS RECV_USER_ID
+       		 , dbo.F_COM_USER_NM(A.RECV_USER_ID, 'NM') AS RECV_USER_ID_NM
+       		 , A.RECV_DT AS RECV_DT
+	         , D.SLIP_CFM_USER_ID AS SLIP_CFM_USER_ID
+             , dbo.F_COM_USER_NM(D.SLIP_CFM_USER_ID, 'NM') AS SLIP_CFM_USER_ID_NM
+             , D.SLIP_CFM_DT AS SLIP_CFM_DT
+             
+             , A.CTRLER_USER_ID1 AS CTRLER_USER_ID1
+             , dbo.F_COM_USER_NM(A.CTRLER_USER_ID1, 'NM') AS CTRLER_USER_ID1_NM
+			 , A.CTRLER_DT1 AS CTRLER_DT1 
+			 , A.CTRLER_USER_ID2 AS CTRLER_USER_ID2 
+			 , dbo.F_COM_USER_NM(A.CTRLER_USER_ID2, 'NM') AS CTRLER_USER_ID2_NM
+			 , A.CTRLER_DT2 AS CTRLER_DT2 
+			 , A.CTRLER_USER_ID3 AS CTRLER_USER_ID3 
+			 , dbo.F_COM_USER_NM(A.CTRLER_USER_ID3, 'NM') AS CTRLER_USER_ID3_NM
+			 , A.CTRLER_DT3 AS CTRLER_DT3 
+			 , A.LINK_ID AS LINK_ID
+		     , CASE WHEN A.CTRLER_USER_ID1 IS NULL THEN 0
+                    WHEN A.CTRLER_USER_ID2 IS NULL THEN 1
+                    WHEN A.CTRLER_USER_ID3 IS NULL THEN 2
+                                                   ELSE 3
+                END AS APPRO_SEQ
+                
+		  FROM AC_VOU A WITH(NOLOCK)
+		 INNER 
+		  JOIN (
+		        SELECT DISTINCT A.ACNT_UNT
+		             , A.ACNT_YY
+		             , A.VOU_NO
+		          FROM AC_VOU A WITH(NOLOCK)
+		          LEFT 
+		         OUTER 
+		          JOIN AC_VOU_DET B WITH(NOLOCK)
+		            ON A.ACNT_UNT = B.ACNT_UNT
+		           AND A.ACNT_YY = B.ACNT_YY
+		           AND A.VOU_NO = B.VOU_NO
+		         WHERE 1=1         
+		        <isNotEmpty property="bizCd">
+		           AND B.BIZ_CD = #bizCd#
+		        </isNotEmpty>
+		        <isNotEmpty property="acntCd">
+		           AND B.ACNT_CD = #acntCd#
+		        </isNotEmpty>
+		      ) B
+		   ON A.ACNT_UNT = B.ACNT_UNT
+		  AND A.ACNT_YY = B.ACNT_YY
+		  AND A.VOU_NO = B.VOU_NO
+		 LEFT 
+		OUTER 
+		 JOIN ( 
+		        SELECT ACNT_UNT
+		             , ACNT_YY
+		             , VOU_NO
+		             , SUM(APLY_AMT) AS APLY_AMT
+		             , COUNT(1) AS VOU_SEQ
+		          FROM AC_VOU_DET WITH(NOLOCK)
+		         GROUP BY ACNT_UNT, ACNT_YY, VOU_NO 
+		      ) C
+		   ON A.ACNT_UNT = C.ACNT_UNT
+		  AND A.ACNT_YY = C.ACNT_YY
+		  AND A.VOU_NO = C.VOU_NO
+		 LEFT
+		OUTER
+		 JOIN AC_SLIP D WITH(NOLOCK)
+		   ON A.ACNT_UNT = D.ACNT_UNT
+		  AND A.ACNT_YY = D.ACNT_YY
+		  AND A.SLIP_NO = D.SLIP_NO
+		  AND A.VOU_NO = D.VOU_NO
+		WHERE 1=1
+		  AND A.ACNT_YY = #acntYy#
+		  AND A.ACNT_UNT = #acntUnt#
+				  
+		<isNotEmpty property="vouOrgId">
+		  AND A.VOU_ORG_ID = #vouOrgId#
+		</isNotEmpty>
+			   
+		<isNotEmpty property="vouKnd">
+		  AND A.VOU_KND = #vouKnd#
+		</isNotEmpty>
+
+		<isNotEmpty property="dtDiv">
+
+			<isEqual property="dtDiv" compareValue="10">
+		  		<isNotEmpty property="sttDt">
+		  			AND A.APLY_DT &gt;= #sttDt#
+		  		</isNotEmpty>
+		  		
+		  		<isNotEmpty property="endDt">
+		  			AND A.APLY_DT &lt;= #endDt# 
+		  		</isNotEmpty>
+		  		
+		  		<isNotEmpty property="userId">
+		  			AND A.APLY_USER_ID = #userId# 
+		  		</isNotEmpty>  		  		  		
+		  	</isEqual>
+			
+			<isEqual property="dtDiv" compareValue="20">
+		  		<isNotEmpty property="sttDt">
+		  			AND A.CTRL_DT &gt;= #sttDt#
+				</isNotEmpty>
+				
+				<isNotEmpty property="endDt">
+		  			AND A.CTRL_DT &lt;= #endDt#
+				</isNotEmpty>
+				
+				<isNotEmpty property="userId">
+		  			AND A.CTRL_USER_ID = #userId#
+				</isNotEmpty>
+		  	</isEqual>
+		  	
+		</isNotEmpty>
+		
+			   
+		<isNotEmpty property="vouNo">
+		  AND A.VOU_NO LIKE '%' + #vouNo# + '%'
+		</isNotEmpty>
+		   
+		<isNotEmpty property="vouTtl">
+		  AND A.VOU_TTL LIKE '%' + #vouTtl# + '%'
+		</isNotEmpty>
+		
+		
+		<isNotEmpty property="approYn">
+		
+			<isEqual property="approSeq" compareValue="1">
+				AND A.CTRLER_USER_ID1 IS NULL
+				AND A.CTRLER_USER_ID2 IS NULL
+		  		AND A.CTRLER_USER_ID3 IS NULL
+			</isEqual>
+		  
+		  	<isEqual property="approSeq" compareValue="2">
+				AND A.CTRLER_USER_ID1 IS NOT NULL
+				AND A.CTRLER_USER_ID2 IS NULL
+		  		AND A.CTRLER_USER_ID3 IS NULL
+			</isEqual>
+			
+			<isEqual property="approSeq" compareValue="3">
+				AND A.CTRLER_USER_ID1 IS NOT NULL
+				AND A.CTRLER_USER_ID2 IS NOT NULL
+		  		AND A.CTRLER_USER_ID3 IS NULL
+			</isEqual>
+		  
+		  
+		</isNotEmpty>
+ 		
+				
+     ORDER BY A.ACNT_YY, A.ACNT_UNT, A.VOU_NO, A.STA_CD
+  	 
+    </select>
+    
+    
+    
+    
+    <select id="bg04DAO.selectBg04010_02"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		SELECT '' AS CHK
+		     , '' AS ROW_STATUS
+		     , ACNT_YY AS ACNT_YY
+		     , ACNT_UNT AS ACNT_UNT
+		     , VOU_NO AS VOU_NO
+		     , VOU_SEQ AS VOU_SEQ
+		     , BUDG_ORG_ID AS BUDG_ORG_ID
+		     , dbo.F_COM_DEPT_NM(BUDG_ORG_ID, 'DEPT_NM_KOR') AS BUDG_ORG_ID_NM
+		     , BIZ_CD
+		     , dbo.F_AC_GET_BIZ_NM(ACNT_UNT, BIZ_CD, 'BIZ_NM') AS BIZ_CD_NM
+		     , dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '40', '') AS ACNT_CD_MOK_NM
+		     , ACNT_CD
+		     , dbo.F_AC_GET_ACNT_INFO(ACNT_YY, ACNT_UNT, ACNT_CD, '',  CASE WHEN BAL_DIV = '10' THEN 'ACNT_INC_NM' ELSE 'ACNT_EXP_NM' END) AS ACNT_CD_NM
+		     , BAL_DIV
+		     , DRCR_CD
+		     , FINC_CD
+		     , dbo.F_AC_GET_BIZ_NM(ACNT_UNT, BIZ_CD, 'FINC_NM') AS FINC_CD_NM
+		     , ACNT_NO
+		     , dbo.F_AC_GET_VOU_AMT(ACNT_UNT, ACNT_YY, VOU_NO, VOU_SEQ) AS APLY_AMT
+		     , dbo.F_AC_ASGN_AMT_SUM(ACNT_YY, ACNT_UNT, BUDG_ORG_ID, BIZ_CD, ACNT_CD, BAL_DIV, '') AS ASGN_AMT_SUM
+		     , dbo.F_AC_EXEC_AMT_SUM(ACNT_YY, ACNT_UNT, BUDG_ORG_ID, BIZ_CD, ACNT_CD, BAL_DIV, '') AS EXEC_AMT_SUM
+		     , (dbo.F_AC_ASGN_AMT_SUM(ACNT_YY, ACNT_UNT, BUDG_ORG_ID, BIZ_CD, ACNT_CD, BAL_DIV, ''))
+				-
+			   (dbo.F_AC_EXEC_AMT_SUM(ACNT_YY, ACNT_UNT, BUDG_ORG_ID, BIZ_CD, ACNT_CD, BAL_DIV, '')) AS BUDG_BAL
+		     , CFM_AMT
+		     , USE_ORG_ID
+		     , dbo.F_COM_DEPT_NM(USE_ORG_ID, 'DEPT_NM_KOR') AS USE_ORG_ID_NM
+		  FROM AC_VOU_DET WITH(NOLOCK)
+		 WHERE 1=1
+		   AND ACNT_YY = #acntYy#
+		   AND ACNT_UNT = #acntUnt#
+		   AND VOU_NO = #vouNo#
+		   
+		   <isEqual property="vouKnd" compareValue="33">
+				AND BIZ_CD IS NOT NULL
+		   </isEqual>
+		   
+		 ORDER BY ACNT_YY, ACNT_UNT, VOU_NO, VOU_SEQ
+    </select> 
+    
+    
+    
+    
+    <select id="bg04DAO.selectBg04010_ctrler_cnt"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		SELECT APPRO_SEQ
+		     , COUNT(MEMBER_NO) AS CNT
+		  FROM BG_CTRLER_REG WITH(NOLOCK)
+		 WHERE 1=1
+		   AND USE_YN = '1'
+		   AND ACNT_UNT = #acntUnt#
+		   AND MEMBER_NO = #memberNo#
+	  GROUP BY APPRO_SEQ
+    </select> 
+    
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 예산통제 결재 처리 SP
+    #########################################################################################################################################
+    -->
+    
+    <parameterMap id="P_AC_CTRLER_APPRO_param" class="java.util.HashMap">
+        
+        <parameter property="acntYy" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" /> 
+        <parameter property="acntUnt" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" /> 
+        <parameter property="vouNo" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" /> 
+        <parameter property="msg" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" /> 
+        <parameter property="approSeq" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" /> 
+        <parameter property="procCd" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+        <parameter property="userId" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" /> 
+        <parameter property="userIp" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" /> 
+        <parameter property="userPgm" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" /> 
+        <parameter property="OUT_CNT" jdbcType="INTEGER" javaType="java.lang.Integer" resultMap="result" mode="OUT" /> 
+        <parameter property="OUT_MSG" jdbcType="VARCHAR" javaType="java.lang.String" resultMap="result" mode="OUT" />
+   </parameterMap>
+   
+    <procedure id="bg04DAO.P_AC_CTRLER_APPRO" parameterMap = "P_AC_CTRLER_APPRO_param"> 
+           {call dbo.SP_AC_CTRLER_APPRO(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}              
+    </procedure>
+    
+    
+    
+    
+    
+    
+</sqlMap>

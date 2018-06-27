@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Afd03SQL">
+
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias alias="hashMap" type="java.util.HashMap"/>
+	
+	<select id="Afd03SQL.createReceiptNo" parameterClass="hashMap" resultClass="String">
+		SELECT #yy#+'01'+dbo.FN_LPAD(ISNULL(MAX(SUBSTRING(RECEIPT_NO,7,4)),0)+1,4,0) FROM AFD_RCIPTISSU WHERE RECEIPT_ISSUE_YY = #yy#
+	</select>
+	
+	<select id="Afd03SQL.selectReceiptNo" parameterClass="hashMap" resultClass="egovMap">
+		SELECT RECEiPT_NO
+		  FROM AFD_RCIPTISSU
+		 WHERE RECEIPT_NO = #receiptNo#
+	</select>
+	
+	<select id="Afd03SQL.retrieveRcpter" parameterClass="hashMap" resultClass="egovMap">
+		
+		/* Afd03SQL.retrieveRcpter */
+		SELECT '' CHK
+	 		 	 , '0' ROW_STATUS
+	             , A.YY AS CERTIFICATE_YY
+	             , B.MEMBER_NO
+			     , CASE WHEN D.RECEIPT_NO IS NOT NULL THEN SUBSTRING(D.RECEIPT_NO,1,4)+'-'+SUBSTRING(D.RECEIPT_NO,5,2)+'-'+SUBSTRING(D.RECEIPT_NO,7,4)
+			            WHEN D.RECEIPT_NO IS NULL THEN '생성전' END AS RECEIPT_NO
+			     , D.RECEIPT_ISSUE_YY
+			     , D.RECEIPT_ISSUE_DT
+			     , C.MEMBER_NM_KOR
+			     , ISNULL(C.ADDR1, '')+' '+ISNULL(C.ADDR2, '') AS ADDR
+			     , case when LEN(C.JUMIN_NO)>=13 then SUBSTRING(C.JUMIN_NO,1,6) + '-' + SUBSTRING(C.JUMIN_NO,7,7) 
+						when LEN(C.JUMIN_NO)>=10 then SUBSTRING(C.JUMIN_NO,1,3) + '-' + SUBSTRING(C.JUMIN_NO,4,2) + '-' + SUBSTRING(C.JUMIN_NO,6,5)
+					else C.JUMIN_NO
+					end AS JUMIN_NO /* 주민(사업자)등록번호 */
+			     , CASE WHEN D.RECEIPT_ISSUE_YY IS NOT NULL THEN D.RECEIPT_FR_DT
+			            WHEN D.RECEIPT_ISSUE_YY IS NULL THEN MIN(A.SPEN_DT) END AS RCPMNY_FROM_DT
+			     , CASE WHEN D.RECEIPT_ISSUE_DT IS NOT NULL THEN D.RECEIPT_TO_DT
+			            WHEN D.RECEIPT_ISSUE_DT IS NULL THEN MAX(A.SPEN_DT) END  AS RCPMNY_TO_DT
+			     , CASE WHEN D.RECEIPT_AMT IS NOT NULL THEN D.RECEIPT_AMT
+			            WHEN D.RECEIPT_AMT IS NULL THEN SUM(A.AMT) END AS SUM_PAYMENT_AMT
+			  FROM (SELECT SUBSTRING(A.SPEN_DT,1,4) AS YY
+			             , A.ENGG_MM_AMT AS AMT
+			             , A.ENGG_MGN_NO
+			             , A.SPEN_DT
+			             , A.RECEIPT_NO
+			             , '급여공제' AS CONT
+			          FROM AFD_SAL_DEDUCT A
+			         WHERE A.SPEN_DT BETWEEN #certificateYy#+'0101' AND #certificateYy#+'1231'
+	 		     	   AND A.ENGG_MM_AMT >0
+			           UNION ALL
+			        SELECT SUBSTRING(A.WDRAW_DT,1,4) AS YY 
+			             , A.WDRAW_AMT AS AMT
+			             , A.ENGG_MGN_NO
+			             , A.WDRAW_DT AS SPEN_DT
+			             , A.RECEIPT_NO
+			             , 'CMS' AS CONT
+			          FROM AFD_CMS A
+			         WHERE A.WDRAW_DT BETWEEN #certificateYy#+'01' AND #certificateYy#+'12'
+	 		     	   AND A.WDRAW_AMT >0
+			           UNION ALL
+			        SELECT SUBSTRING(A.RCPMNY_DT,1,4) AS YY
+			             , A.PAYMENT_AMT AS AMT
+			             , A.ENGG_MGN_NO
+			             , A.RCPMNY_DT AS SPEN_DT
+			             , A.RECEIPT_NO
+			             , '무통장입금' AS CONT
+			          FROM AFD_RCPMNY A
+			         WHERE A.RCPMNY_DT BETWEEN #certificateYy#+'0101' AND #certificateYy#+'1231'
+	 		     	   AND A.PAYMENT_AMT >0
+	 		     	   AND ISNULL(A.DEL_YN,'0') ='0'
+			        ) A
+			       JOIN AFD_CNTRCT B ON A.ENGG_MGN_NO = B.ENGG_MGN_NO
+			       JOIN AFD_MASTER C ON B.MEMBER_NO = C.MEMBER_NO
+			       LEFT OUTER JOIN AFD_RCIPTISSU D ON  A.RECEIPT_NO = D.RECEIPT_NO
+			 WHERE 1 = 1
+                  <isNotEmpty property="memberNo"> 
+                    AND C.MEMBER_NO = #memberNo# /* 약정인 */ 
+                  </isNotEmpty>
+			 GROUP BY A.YY
+			     , B.MEMBER_NO
+			     , D.RECEIPT_NO
+			     , D.RECEIPT_ISSUE_YY
+			     , D.RECEIPT_ISSUE_DT
+			     , C.MEMBER_NM_KOR
+			     , ISNULL(C.ADDR1, '')+' '+ISNULL(C.ADDR2, '')
+			     , C.JUMIN_NO
+			     , D.RECEIPT_FR_DT
+				 , D.RECEIPT_TO_DT
+				 , D.RECEIPT_NO
+			     , D.RECEIPT_AMT
+			 ORDER BY B.MEMBER_NO, D.RECEIPT_NO
+		   
+	</select>
+	
+	<select id="Afd03SQL.retrieveRcpmny" parameterClass="hashMap" resultClass="egovMap">
+	
+		/* Afd03SQL.retrieveRcpmny 입금내역목록 조회 */
+		
+		SELECT '' CHK 
+ 		 	 , '0' ROW_STATUS ,
+ 		 	   MAIN.YY,
+			   B.MEMBER_NO,
+		       B.RCPMNYER_NM,
+		       C.MEMBER_NM_KOR,
+		       MAIN.ENGG_MGN_NO,
+		       MAIN.RCPMNY_DT,
+		       MAIN.CONT as CNTR_TYPE_NM,
+		       MAIN.AMT AS PAYMENT_AMT,
+		       MAIN.REMARK,
+		       ISNULL(MAIN.RECEIPT_NO,'생성전') AS RECEIPT_NO,
+		       B.ACNO AS PAYMENT_BAND_CD
+		  FROM
+		       (SELECT SUBSTRING(A.SPEN_DT,1,4) AS YY ,
+		       		A.SPEN_DT AS RCPMNY_DT,
+		              A.ENGG_MM_AMT AS AMT,
+		              A.ENGG_MGN_NO ,
+		              A.SPEN_DT ,
+		              A.RECEIPT_NO,
+		              A.REMARK,
+		              '급여공제' AS CONT
+		         FROM AFD_SAL_DEDUCT A
+		        WHERE A.SPEN_DT BETWEEN #certificateYy#+'0101' AND #certificateYy#+'1231'
+		          AND A.ENGG_MM_AMT >0
+		           UNION ALL
+		       SELECT SUBSTRING(A.YYMM,1,4) AS YY ,
+		       		A.WDRAW_DT AS RCPMNY_DT,
+		              A.WDRAW_AMT AS AMT,
+		              A.ENGG_MGN_NO ,
+		              A.WDRAW_DT AS SPEN_DT ,
+		              A.RECEIPT_NO,
+		              '' REMARK,
+		              'CMS' AS CONT
+		         FROM AFD_CMS A
+		        WHERE A.WDRAW_DT BETWEEN #certificateYy#+'01' AND #certificateYy#+'12'
+		          AND A.WDRAW_AMT > 0
+		           UNION ALL
+		       SELECT SUBSTRING(A.RCPMNY_DT,1,4) AS YY ,
+		       		A.RCPMNY_DT AS RCPMNY_DT,
+		              A.PAYMENT_AMT AS AMT,
+		              A.ENGG_MGN_NO ,
+		              A.RCPMNY_DT AS SPEN_DT,
+		              A.RECEIPT_NO,
+		              A.REMARK,
+		              '무통장입금' AS CONT
+		         FROM AFD_RCPMNY A
+		        WHERE A.RCPMNY_DT BETWEEN #certificateYy#+'0101' AND #certificateYy#+'1231'
+		          AND A.PAYMENT_AMT >0
+		          AND ISNULL(A.DEL_YN,'0') ='0'
+		        ) MAIN
+		       JOIN AFD_CNTRCT B ON MAIN.ENGG_MGN_NO = B.ENGG_MGN_NO
+		       JOIN AFD_MASTER C ON B.MEMBER_NO = c.MEMBER_NO
+		       LEFT OUTER JOIN AFD_RCIPTISSU D ON MAIN.RECEIPT_NO = D.RECEIPT_NO
+		 WHERE C.MEMBER_NO = #memberNo# 
+			<isNotEmpty property="receiptNo"> 
+	             AND MAIN.RECEIPT_NO = REPLACE(#receiptNo#, '-', '') 
+	        </isNotEmpty>
+	        <isEmpty property="receiptNo">
+	        	AND MAIN.RECEIPT_NO is null
+	        </isEmpty> 
+
+		ORDER BY C.MEMBER_NO, RCPMNY_DT
+		   
+		
+		
+<!-- 		SELECT '' CHK -->
+<!-- 		 	 , '0' ROW_STATUS -->
+<!-- 		 	 , A.ENGG_MGN_NO -->
+<!--     		 , A.RCPMNY_DT -->
+<!--     		 , B.CNTR_TYPE -->
+<!--     		 , '' as CNTR_TYPE_NM -->
+<!--     		 , A.REMARK -->
+<!--     		 , A.PAYMENT_AMT -->
+<!--     		 , A.PAYMENT_BANK_CD -->
+<!--     		 , '' as PAYMENT_BANK_NM -->
+<!-- 	      FROM AFD_RCPMNY A -->
+<!--              , AFD_CNTRCT B -->
+<!-- 	     WHERE 1=1 -->
+<!-- 	       AND A.ENGG_MGN_NO = B.ENGG_MGN_NO -->
+<!-- 	       AND B.MEMBER_NO = #memberNo# -->
+<!-- 	       AND SUBSTRING(A.RCPMNY_DT,1,4) = #certificateYy# -->
+	       
+	</select>
+	
+	
+	<insert id="Afd03SQL.saveRciptissu" parameterClass="hashMap">
+	
+		/* Afd03SQL.saveRciptissu 기부금영수증 저장 */
+		MERGE INTO AFD_RCIPTISSU A
+	          USING (SELECT #receiptNo# AS RECEIPT_NO) B
+	             ON (A.RECEIPT_NO = B.RECEIPT_NO)
+	           WHEN MATCHED THEN
+		     UPDATE 
+		        SET ENTRY_NO = #entryNo#
+				  , ENTRY_DT = #entryDt#
+				  , ENTRY_IP = #entryIp#
+			   WHEN NOT MATCHED THEN
+			 INSERT ( RECEIPT_NO                 <!-- 영수증번호[년도(4)+순번(4)] -->
+			        , RECEIPT_NM                  <!-- 회원ID -->
+			        , MEMBER_NO
+			        , RECEIPT_FR_DT                      <!-- 기간FROM -->
+			        , RECEIPT_TO_DT                      <!-- 기간TO -->
+			        , RECEIPT_AMT                        <!-- 금액 -->
+			        , RECEIPT_ISSUE_YY             <!-- 영수증발급연도 -->
+			        , RECEIPT_ISSUE_DT             <!-- 영수증발급일자 -->
+			        , JUMIN_NO
+			        , ADDR
+			        , REMARK                     <!-- 비고 -->
+			        , PRINT_YN                   <!-- 출력여부 -->
+			        , CREATE_NO                  <!-- 생성자 -->
+			        , CREATE_DT                  <!-- 생성일시 -->
+			        , CREATE_IP                  <!-- 생성IP -->
+			        )
+		            VALUES
+		            (#receiptNo#
+		            , #receiptNm#
+		            , #memberNo#
+		            , #receiptFrDt#
+		            , #receiptToDt#
+		            , #receiptAmt#
+		            , #yy#
+		            , CONVERT(CHAR(8),GETDATE(),112)
+		            , REPLACE(#juminNo#, '-', '')
+		            , #addr#
+		            , #remark#
+		            , ISNULL(#printYn#,'1')
+		            , #createNo#
+		            , GETDATE()
+		            , #createIp#
+		            );
+	            
+	</insert>
+
+	<update id="Afd03SQL.updateNo1" parameterClass="hashMap" >
+		 UPDATE AFD_RCPMNY
+           SET RECEIPT_NO =  #receiptNo# 
+		where #cntrTypeNm# = '무통장입금'
+		  and RCPMNY_DT = #rcpmnyDt#
+		  and ENGG_MGN_NO = #enggMgnNo#       
+	</update>
+	
+	<update id="Afd03SQL.updateNo2" parameterClass="hashMap" >
+		 UPDATE AFD_CMS
+           SET RECEIPT_NO =  #receiptNo# 
+		where MEMBER_NO = #memberNo#
+		  and #cntrTypeNm# = 'CMS'
+		  and WDRAW_DT = #rcpmnyDt#
+		  and ENGG_MGN_NO = #enggMgnNo#       
+	</update>
+
+	<update id="Afd03SQL.updateNo3" parameterClass="hashMap" >
+		 UPDATE AFD_SAL_DEDUCT
+           SET RECEIPT_NO =  #receiptNo# 
+		where MEMBER_NO = #memberNo#
+		  and #cntrTypeNm# = '급여공제'
+		  and SPEN_DT = #rcpmnyDt#
+		  and ENGG_MGN_NO = #enggMgnNo#       
+	</update>
+
+	<select id="Afd03SQL.test" parameterClass="hashMap" resultClass="egovMap">
+	
+		/* Afd03SQL.test */
+		SELECT cmid
+		     , umid
+		     , msg_type
+		     , status
+		     , request_time
+		     , send_time
+		     , report_time
+		     , dest_phone
+		     , dest_name
+		     , send_phone
+		     , send_name
+		     , subject
+		     , msg_body
+		     , wap_url
+		     , cover_flag
+		     , sms_flag
+		     , reply_flag
+		     , retry_cnt
+		     , fax_file
+		     , vxml_file
+		     , call_result
+		     , use_page
+		     , use_time
+		     , sn_result
+		     , wap_info
+		     , cinfo
+		     , etc1
+		     , etc2
+		     , etc3
+		     , etc4
+		     , etc5
+		  FROM ums_data
+		   
+	</select>		
+	
+    <parameterMap id="P_AFD_CREATE_RCIPTISSU_param" class="java.util.HashMap">
+    	<parameter property="IN_YY" jdbcType="VARCHAR" javaType="java.lang.String" resultMap="result" mode="IN" />
+        <parameter property="OUT_CNT" jdbcType="INTEGER" javaType="java.lang.Integer" resultMap="result" mode="OUT" /> 
+        <parameter property="OUT_MSG" jdbcType="VARCHAR" javaType="java.lang.String" resultMap="result" mode="OUT" />
+   </parameterMap>
+   
+    <procedure id="Afd03SQL.P_AFD_CREATE_RCIPTISSU_PROC" parameterMap="P_AFD_CREATE_RCIPTISSU_param"> 
+        {call dbo.SP_AFD_CREATE_RCIPTISSU(?, ?, ?)}              
+    </procedure>
+</sqlMap>

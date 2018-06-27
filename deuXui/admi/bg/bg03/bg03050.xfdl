@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="bg04030" classname="bg04030" left="0" top="0" width="1038" height="855" titletext="실험실습비관리" onload="bg04030_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="0" left="0" top="0" right="15" height="42" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout width="1038" height="42">
+              <Static id="Static00" taborder="34" text="회계연도" onclick="div_search_Static00_onclick" cssclass="search" left="15" top="12" width="60" height="22"/>
+              <Static id="Static01" taborder="35" text="회계단위" onclick="div_search_Static00_onclick" cssclass="search" left="206" top="10" width="61" height="22"/>
+              <Button id="btn_save00" taborder="37" text="  저장" onclick="btn_save_onclick" cssclass="save" top="89" right="18" width="64" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S"/>
+              <Spin id="spn_acntYy" taborder="40" value="0" left="83" top="10" width="103" height="22" onspin="div_search_spn_acntYy_onspin"/>
+              <Combo id="cmb_acntUnt" taborder="41" autoselect="true" innerdataset="ds_acntUntCmb" codecolumn="cd" datacolumn="nm" onitemchanged="div_search_cmb_acntUnt_onitemchanged" left="270" top="10" width="135" height="22" class="essential"/>
+              <Static id="Static03" taborder="53" text="w8" visible="false" left="258" top="1" width="8" height="32" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static04" taborder="1" text="w&#13;&#10;15" visible="false" top="10" right="0" width="15" height="814" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static20" taborder="2" text="h15" visible="false" left="0" top="42" width="1023" height="15" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Button id="btn_search" taborder="3" text="조회" cssclass="search" top="57" right="140" width="64" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R" onclick="btn_search_onclick"/>
+        <Static id="Static22" taborder="4" text="h5" visible="false" left="0" top="79" width="1023" height="5" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static76" taborder="5" text="실험실습비 목록" cssclass="page_stitle" left="0" top="59" width="324" height="20"/>
+        <Static id="Static05" taborder="6" text="H5" cssclass="tipGuide" visible="false" left="930" top="844" width="93" height="5"/>
+        <Static id="sta_grdMain" taborder="7" text="총 &lt;b v='true'&gt;[0]건&lt;/b&gt;" usedecorate="true" cssclass="inquiry_icon" top="829" right="15" width="86" style="border:0 none #808080ff ;align:right middle;" bottom="6"/>
+        <Static id="Static07" taborder="8" text="H5" cssclass="tipGuide" visible="false" left="930" top="828" width="93" height="5"/>
+        <Grid id="grid_biz" taborder="9" binddataset="ds_main" formatid="10" useinputpanel="false" autofittype="col" nodatatext="No Data" treeinitstatus="expand,all" left="0" top="84" right="15" bottom="28" autoenter="none">
+          <Formats>
+            <Format id="10">
+              <Columns>
+                <Column size="35" band="left"/>
+                <Column size="40" band="left"/>
+                <Column size="110"/>
+                <Column size="128"/>
+                <Column size="176"/>
+                <Column size="110"/>
+                <Column size="110"/>
+                <Column size="110"/>
+                <Column size="110"/>
+                <Column size="110"/>
+                <Column size="110"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" text="순번"/>
+                <Cell col="2" text="부서코드"/>
+                <Cell col="3" text="상위부서명"/>
+                <Cell col="4" text="부서명"/>
+                <Cell col="5" text="집행액"/>
+                <Cell col="6" text="실예산"/>
+                <Cell col="7" text="회계예산"/>
+                <Cell col="8" text="회계잔액"/>
+                <Cell col="9" text="실잔액"/>
+                <Cell col="10" text="집행율"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="image" text="bind:rowStatus" expr="expr:rowStatus==2?&quot;URL('theme://images/ico_i.png')&quot;:rowStatus==4?&quot;URL('theme://images/ico_u.png')&quot;:rowStatus==8?&quot;URL('theme://images/ico_d.png')&quot;:&quot;&quot;"/>
+                <Cell col="1" style="selectcolor: ;" text="expr:currow + 1"/>
+                <Cell col="2" displaytype="normal" style="align:center;" text="bind:deptCd"/>
+                <Cell col="3" displaytype="normal" style="align:left;" text="bind:upDeptNm"/>
+                <Cell col="4" style="align:left;selectcolor: ;" text="bind:deptNm"/>
+                <Cell col="5" displaytype="number" style="align:right;selectcolor: ;" text="bind:execAmt"/>
+                <Cell col="6" displaytype="number" edittype="masknumber" style="align:right;selectcolor: ;" text="bind:realBudgAmt" editautoselect="true" editdisplay="display"/>
+                <Cell col="7" displaytype="number" style="align:right;selectcolor: ;" text="bind:asgnAmt"/>
+                <Cell col="8" displaytype="number" style="align:right;selectcolor: ;" text="expr:asgnAmt - execAmt"/>
+                <Cell col="9" displaytype="number" style="align:right;selectcolor: ;" text="expr:realBudgAmt - execAmt"/>
+                <Cell col="10" displaytype="number" style="align:right;color:EXPR(nexacro.round(  (execAmt / asgnAmt ) * 100 , 2) &gt;= 80 ? 'red' : '#555555');color2:EXPR(nexacro.round(  (execAmt / asgnAmt ) * 100 , 2) &gt;= 80 ? 'red' : '#555555');selectcolor:EXPR(nexacro.round(  (execAmt / asgnAmt ) * 100 , 2) &gt;= 80 ? 'red' : '#555555');" text="expr:asgnAmt == 0 ? 0 + '%'  :nexacro.round(  (execAmt / asgnAmt ) * 100 , 2) + '%'"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1"/>
+                <Cell col="2"/>
+                <Cell col="3"/>
+                <Cell col="4"/>
+                <Cell col="5" displaytype="number" style="align:right;" text="expr:dataset.getSum(&quot;execAmt&quot;)"/>
+                <Cell col="6" displaytype="number" style="align:right;" text="expr:dataset.getSum(&quot;realBudgAmt&quot;)"/>
+                <Cell col="7" displaytype="number" style="align:right;" text="expr:dataset.getSum(&quot;asgnAmt&quot;)"/>
+                <Cell col="8" displaytype="number" style="align:right;" text="expr:dataset.getSum(&quot;asgnAmt&quot;) - dataset.getSum(&quot;execAmt&quot;)"/>
+                <Cell col="9" displaytype="number" style="align:right;" text="expr:dataset.getSum(&quot;realBudgAmt&quot;) - dataset.getSum(&quot;execAmt&quot;)"/>
+                <Cell col="10" displaytype="number" style="align:right;"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="btn_save" taborder="10" text="저장" onclick="btn_save_onclick" cssclass="save" top="57" right="77" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S"/>
+        <Edit id="edt_aplyOrgNm" taborder="11" imemode="hangul" autoselect="true" onkeyup="edt_aplyOrgNm_onkeyup" left="220" top="57" width="155" height="22" style="border:1 solid #ccccccff ;"/>
+        <Button id="btn_deptFind" taborder="12" text="부서찾기" onclick="btn_deptFind_onclick" cssclass="btn_WF_Common" left="384" top="57" width="68" height="22" tooltiptype="hover" tooltiptext="학부추가" userBtnAuth="S"/>
+        <Button id="btn_excel" taborder="13" text="엑셀" onclick="btn_excel_Ctrl_onclick" cssclass="btn_WF_Common" top="57" right="15" width="60" height="22" tooltiptype="hover" tooltiptext="Excel" userBtnAuth="D"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_main" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" onrowposchanged="ds_biz_onrowposchanged">
+        <ColumnInfo>
+          <Column id="acntYy" type="STRING" size="256"/>
+          <Column id="acntUnt" type="STRING" size="256"/>
+          <Column id="balDiv" type="STRING" size="256"/>
+          <Column id="budgOrgId" type="STRING" size="256"/>
+          <Column id="budgOrgNm" type="STRING" size="256"/>
+          <Column id="bizCd" type="STRING" size="256"/>
+          <Column id="bizCdNm" type="STRING" size="256"/>
+          <Column id="acntCdMokNm" type="STRING" size="256"/>
+          <Column id="acntCd" type="STRING" size="256"/>
+          <Column id="acntCdNm" type="STRING" size="256"/>
+          <Column id="asgnAmtSum" type="BIGDECIMAL" size="256"/>
+          <Column id="execAmtSum" type="BIGDECIMAL" size="256"/>
+          <Column id="budgBal" type="BIGDECIMAL" size="256"/>
+          <Column id="fincCd" type="STRING" size="256"/>
+          <Column id="fincCdNm" type="STRING" size="256"/>
+          <Column id="mgtAcntNo" type="STRING" size="256"/>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_cmd_acnt_yy" oncolumnchanged="ds_cmd_acnt_yy_oncolumnchanged"/>
+      <Dataset id="ds_acntUntCmb"/>
+      <Dataset id="ds_dummy"/>
+    </Objects>
+    <Bind>
+      <BindItem id="item0" compid="div_search.spn_acntYy" propid="value" datasetid="ds_cmd_acnt_yy" columnid="acntYy"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[// [프로젝트]	동의대학교 예산회계시스템 구축
+// [시스템명]	행정
+// [부시스템]	예산관리
+// [프로그램]	예산통제 > 부서별예산현황
+// [설명] 
+//	         
+// [작성자명]	라병수
+// [작성일자]	2016.06.15
+//////////////////////////////////[수정이력]//////////////////////////////////
+// [수정일자] 
+// [수 정 자] 
+// [수정내용]
+
+
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+
+var strBudgBiz;
+
+this.bg04030_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{ 	
+ 	//회계년도Combo
+	this.cfn_acntYy("ds_cmd_acnt_yy");
+	
+	//회계단위Combo
+	this.cfn_acntUntCombo("ds_acntUntCmb", this.div_search.spn_acntYy.value, "", "", "0", "bg04020");
+	
+	this.fn_postLoad();
+}
+
+//온로드 후처리
+this.fn_postLoad = function()
+{
+	this.gfn_bindCmmnFunction();
+}
+
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_preSearchOrgBudg
+ * 함수설명 	: 조회 전 처리 함수
+********************************************************************************/
+this.fn_preSearch = function()
+{
+	if(this.gfn_isNull(this.div_search.spn_acntYy.value)) {
+		this.gfn_messsage("A", "회계연도를 입력하세요.");
+		this.div_search.spn_acntYy.setFocus();
+		return false;
+	}
+	if(this.gfn_isNull(this.div_search.cmb_acntUnt.value)) {
+		this.gfn_messsage("A", "회계단위를 선택하세요.");
+		this.div_search.cmb_acntUnt.setFocus();
+		return false;
+	}
+
+	return true;
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_searchOrgBudg
+ * 함수설명 	: 조회 함수
+********************************************************************************/
+this.fn_search = function()
+{
+	
+	if(this.fn_preSearch()){
+	
+	
+		var strArg   = "acntYy="   + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.spn_acntYy.value));
+			strArg  += " acntUnt=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(this.div_search.cmb_acntUnt.value));
+					
+		this.gfn_transaction("SEARCH",
+							 "txAdmUrl::com/admi/selectBg03050.do",
+							 "",
+							 "ds_main=resultList",
+							 strArg,
+							 "fn_callBack");
+	}
+}
+
+/********************************************************************************
+ * 함 수 명 	: fn_postSearchOrgBudg
+ * 함수설명 	: 조회 후 처리 함수
+********************************************************************************/
+this.fn_postSearch = function()
+{	
+	this.gfn_getDatasetCount(this.ds_main, this.sta_grdMain);
+}
+
+
+//서버 통신 후 callBack
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0){
+		this.gfn_message("A", errMsg);
+ 	}else{
+		if(trId=="LOAD"){
+			this.fn_postLoad();
+ 		}else if(trId == "SEARCH"){
+ 			this.fn_postSearch();
+		}
+		else if(trId == "ACNTUNTCOMBO"){
+			this.div_search.cmb_acntUnt.set_index(0);
+ 		}else if(trId == "SAVE"){
+ 			this.fn_postSave();
+		}
+ 	}
+}
+
+this.div_search_spn_acntYy_onspin = function(obj:Spin, e:nexacro.SpinEventInfo)
+{
+	//회계단위Combo
+	this.cfn_acntUntCombo("ds_acntUntCmb", this.div_search.spn_acntYy.value, "", "", "0", "bg03050");
+}
+
+this.ds_cmd_acnt_yy_oncolumnchanged = function(obj:Dataset, e:nexacro.DSColChangeEventInfo)
+{
+	//회계단위Combo
+	this.cfn_acntUntCombo("ds_acntUntCmb", this.div_search.spn_acntYy.value, "", "", "0", "bg03050");
+}
+
+
+this.btn_save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(!this.gfn_isUpdate(this.ds_main)){
+		this.gfn_message("A", "변경된 데이터가 없습니다.");
+		return false;
+	}
+	
+	this.gfn_transaction("SAVE",
+						 "txAdmUrl::com/admi/saveBg03050.do",
+						 "resultList=ds_main:u",
+						 "",
+						 "",
+						 "fn_callBack");
+}
+
+this.fn_postSave = function()
+{
+	this.gfn_message("A", "저장이 완료되었습니다.");
+	this.fn_search();	
+}
+
+this.btn_deptFind_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.gfn_isNull(this.edt_aplyOrgNm.value)) {
+		this.gfn_message("A", "검색어가 없습니다.");
+		this.edt_aplyOrgNm.setFocus();
+		return;
+	}
+	
+	var nRow = this.ds_main.findRowAs("deptNm", this.edt_aplyOrgNm.value, this.ds_main.rowposition + 1);
+	
+	if (nRow >= 0) {
+		this.ds_main.set_rowposition(nRow);
+	} else {
+		nRow = this.ds_main.findRowAs("deptNm", this.edt_aplyOrgNm.value);
+		
+		if (nRow >= 0 ) {
+			this.ds_main.set_rowposition(nRow);
+		}
+	}
+}
+this.edt_aplyOrgNm_onkeyup = function(obj:Edit, e:nexacro.KeyEventInfo)
+{
+	if ( e.keycode == 13 ) {
+		this.btn_deptFind_onclick();
+	}
+}
+
+this.btn_excel_Ctrl_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.cfn_excelExport(this.grid_biz,  "실험실습비내역");
+}
+]]></Script>
+  </Form>
+</FDL>

@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd04030_d02" classname="cte02002" left="0" top="0" width="1040" height="800" titletext="기금메뉴선택" onload="form_onload">
+    <Layouts>
+      <Layout>
+        <Div id="divBg" taborder="1" left="0%" top="281" right="0%" height="294" style="background:transparent URL('theme://images\login\login_bg.png') repeat-x;" cssclass="loginBody"/>
+        <Div id="div_footer" taborder="3" left="350" top="548" width="542" height="46">
+          <Layouts>
+            <Layout>
+              <Static id="Static00" taborder="2" text="(47340) 부산광역시 부산진구 엄광로 176 동의대학교 TEL: 051-890-1114 Fax:051-890-1234" left="2" top="5" width="512" height="13" style="color:#707070ff;"/>
+              <Static id="Static01" taborder="3" text="Copyright 2012 university of science and technology. all right reserved." visible="false" left="2" top="30" right="28" height="13" style="color:#707070ff;"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <ImageViewer id="ivLogo" taborder="4" image="URL('theme://images\login\txt_login.png')" cssclass="logo" left="265" top="139" width="504" height="141" style="background:transparent;border:1 none #e5e5e5ff ;" visible="false"/>
+        <Div id="div_idLogin" taborder="5" left="362" top="373" width="309" height="109" scrollbars="none">
+          <Layouts>
+            <Layout>
+              <Button id="btn_afd04010" taborder="0" text="온라인약정" cssclass="btn_WF_Common" left="26" top="22" width="121" height="65" onclick="btn_afd04010_onclick"/>
+              <Button id="btn_afd04020" taborder="1" text="나의기부현황" cssclass="btn_WF_Common" left="157" top="22" width="121" height="65" onclick="btn_afd04020_onclick"/>
+            </Layout>
+          </Layouts>
+        </Div>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_noti"/>
+    </Objects>
+    <Bind/>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::lib_String.xjs";
+
+/******************************************************************************
+* 함 수 명 	: form_onload
+* 함수설명 	: 화면로드 이벤트
+******************************************************************************/
+this.form_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+
+}
+
+/******************************************************************************
+* 함 수 명 	: btn_afd04010_onclick
+* 함수설명 	: 화면로드 이벤트
+******************************************************************************/
+this.btn_afd04010_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.close("afd04010");
+	//this.parent.fn_url_navigation("afd04010");
+}
+
+/******************************************************************************
+* 함 수 명 	: btn_afd04020_onclick
+* 함수설명 	: 화면로드 이벤트
+******************************************************************************/
+this.btn_afd04020_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.close("afd04020");
+	//this.parent.fn_url_navigation("afd04020");
+}]]></Script>
+  </Form>
+</FDL>

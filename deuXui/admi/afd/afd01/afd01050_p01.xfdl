@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="afd01050_p01" classname="ctc01001_p01" left="0" top="0" width="730" height="420" titletext="회원조회팝업" cssclass="popup_bg" onload="afd01050_p01_onload">
+    <Layouts>
+      <Layout>
+        <Div id="div_search" taborder="39" left="2.05%" top="45" right="2.05%" height="43" scrollbars="none" cssclass="search" ondrag="div_sCstmr_ondrag">
+          <Layouts>
+            <Layout width="919" height="69">
+              <Static id="Static05" taborder="63" text="회원번호" cssclass="search" left="15" top="10" height="22" class="search_bul" width="65"/>
+              <Static id="Static00" taborder="66" text="성명" cssclass="search" left="207" top="10" right="65.84%" height="22" class="search_bul"/>
+              <Edit id="edt_sMemberNo" taborder="72" top="10" height="22" width="107" left="80" style="border:1 solid #ccccccff ;"/>
+              <Edit id="edt_sMemberNmKor" taborder="75" top="10" height="22" width="120" left="245" style="border:1 solid #ccccccff ;"/>
+              <Static id="Static01" taborder="76" text="주민번호" cssclass="search" left="385" top="10" height="22" class="search_bul" width="61" visible="false"/>
+              <MaskEdit id="msk_wsJuminNo" taborder="77" left="451" top="10" width="140" height="22" mask="######-#######" maskchar=" " visible="false"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static28" taborder="6" text="w&#13;&#10;15" visible="false" top="115" height="177" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;" left="0" width="15"/>
+        <Grid id="grd_afdMaster" taborder="23" useinputpanel="false" autofittype="col" nodatatext="No Data" left="15" top="120" right="15" binddataset="ds_afdMaster" height="243" oncelldblclick="grd_afdMaster_oncelldblclick">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="87"/>
+                <Column size="110"/>
+                <Column size="195"/>
+                <Column size="170"/>
+                <Column size="125"/>
+              </Columns>
+              <Rows>
+                <Row size="26" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="회원번호"/>
+                <Cell col="1" text="이름"/>
+                <Cell col="2" text="소속"/>
+                <Cell col="3" text="휴대폰번호"/>
+                <Cell col="4" text="생년월일"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="normal" text="bind:memberNo"/>
+                <Cell col="1" text="bind:memberNmKor"/>
+                <Cell col="2" text="bind:deptCdNm"/>
+                <Cell col="3" text="bind:hpNo"/>
+                <Cell col="4" displaytype="number" text="bind:birthDt" mask="####-##-##"/>
+              </Band>
+            </Format>
+            <Format id="single">
+              <Columns>
+                <Column size="40" band="left"/>
+                <Column size="77"/>
+                <Column size="101"/>
+                <Column size="195"/>
+                <Column size="156"/>
+                <Column size="85"/>
+                <Column size="220"/>
+              </Columns>
+              <Rows>
+                <Row size="26" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="업무구분"/>
+                <Cell col="2" text="이름"/>
+                <Cell col="3" text="이메일"/>
+                <Cell col="4" text="전화(휴대폰)번호"/>
+                <Cell col="5" text="생년월일"/>
+                <Cell col="6" text="소속기관(학교)/부서(학과)"/>
+              </Band>
+              <Band id="body">
+                <Cell expr="expr:currow +1"/>
+                <Cell col="1" displaytype="combo" text="bind:taskCd" combodataset="ds_grdTaskGbn" combocodecol="comCd" combodatacol="comCdNm"/>
+                <Cell col="2" text="bind:nmKor" expr="expr:nmKor==''?nmEng:nmKor"/>
+                <Cell col="3" text="bind:email"/>
+                <Cell col="4" expr="expr:mobileNo==''?telNo:mobileNo"/>
+                <Cell col="5" expr="expr:juminNo.substr(0,2)+'.'+juminNo.substr(2,2)+'.'+juminNo.substr(4,2)"/>
+                <Cell col="6" text="expr:deptNm+' / '+majorNm"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static76" taborder="24" text="목록" cssclass="page_stitle" left="1.52%" top="98" right="80.87%" height="20" onclick="Static76_onclick"/>
+        <Button id="btn_search" taborder="29" text="조회" cssclass="search" top="93" right="15" height="22" tooltiptype="hover" tooltiptext="조회" width="60" userBtnAuth="R" onclick="btn_search_onclick"/>
+        <Static id="Static33" taborder="42" text="h10" visible="false" left="442" top="38" right="18.37%" height="10" style="linespace:0;background:#fa9999ff;color:#000000ff;align:center;font:Dotum,8;opacity:60;"/>
+        <Static id="Static34" taborder="47" text="h45" cssclass="tipGuide" visible="false" left="198" top="0" width="74" height="45"/>
+        <Static id="Static22" taborder="48" text="h17" cssclass="tipGuide" visible="false" left="36" top="0" width="74" height="17"/>
+        <Static id="Static23" taborder="49" text="h14" cssclass="tipGuide" visible="false" left="36" top="31" width="74" height="14"/>
+        <Static id="Static02" taborder="50" text="w15" cssclass="tipGuide" visible="false" left="0" top="6" width="15" height="414"/>
+        <Static id="Static06" taborder="51" text="w15" cssclass="tipGuide" visible="false" left="715" top="1" width="15" height="419"/>
+        <Static id="Static00" taborder="52" text="기본정보팝업" cssclass="sta_WF_Title" left="15" top="9" width="170" height="29"/>
+        <Static id="bg" taborder="53" cssclass="sta_POP_bottomBg" left="15" top="379" width="700" height="41" positionstep="-1"/>
+        <Button id="btn_close00" taborder="54" text="닫기" onclick="btn_close_onclick" cssclass="btn_POP_Common" left="655" top="388" width="60" height="21"/>
+        <Static id="Static05" taborder="55" text="h15" cssclass="tipGuide" visible="false" right="15" bottom="42" width="700" height="15"/>
+        <Static id="Static03" taborder="56" text="10" cssclass="tipGuide" visible="false" right="15" bottom="32" width="136" height="10"/>
+        <Static id="Static07" taborder="57" text="10" cssclass="tipGuide" visible="false" right="15" bottom="1" width="136" height="10"/>
+        <Button id="btn_confirm" taborder="58" text="확인" onclick="btn_ok_onclick" cssclass="btn_POP_Common" left="590" top="388" width="60" height="21"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_dummy" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+      <Dataset id="ds_rtnVal" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+      <Dataset id="ds_afdMaster">
+        <ColumnInfo>
+          <Column id="sex" type="string" size="32"/>
+          <Column id="remark" type="string" size="32"/>
+          <Column id="annymtyYn" type="string" size="32"/>
+          <Column id="wrcTelNo" type="string" size="32"/>
+          <Column id="title" type="string" size="32"/>
+          <Column id="deptNm" type="string" size="32"/>
+          <Column id="occupationDiv" type="string" size="32"/>
+          <Column id="dmDiv" type="string" size="32"/>
+          <Column id="pcpsklRelDesc" type="string" size="32"/>
+          <Column id="eMail" type="string" size="32"/>
+          <Column id="rcver" type="string" size="32"/>
+          <Column id="dmOvseaAddr" type="string" size="32"/>
+          <Column id="telNo" type="string" size="32"/>
+          <Column id="vipYn" type="string" size="32"/>
+          <Column id="deathYn" type="string" size="32"/>
+          <Column id="memberNo" type="string" size="32"/>
+          <Column id="wsJuminNo" type="string" size="32"/>
+          <Column id="nationDiv" type="string" size="32"/>
+          <Column id="zip" type="string" size="32"/>
+          <Column id="wrcNm" type="string" size="32"/>
+          <Column id="rankNm" type="string" size="32"/>
+          <Column id="wrcZip" type="string" size="32"/>
+          <Column id="pcpsklRel" type="string" size="32"/>
+          <Column id="delYn" type="string" size="32"/>
+          <Column id="dmZip" type="string" size="32"/>
+          <Column id="wrcFaxNo" type="string" size="32"/>
+          <Column id="birthDt" type="string" size="32"/>
+          <Column id="esdngExcp" type="string" size="32"/>
+          <Column id="dmExcpYn" type="string" size="32"/>
+          <Column id="dmRetrnYn" type="string" size="32"/>
+          <Column id="hpNo" type="string" size="32"/>
+          <Column id="chk" type="string" size="32"/>
+          <Column id="addr1" type="string" size="32"/>
+          <Column id="dmAddr1" type="string" size="32"/>
+          <Column id="addr2" type="string" size="32"/>
+          <Column id="dmAddr2" type="string" size="32"/>
+          <Column id="memberNmKor" type="string" size="32"/>
+          <Column id="wrcAddr1" type="string" size="32"/>
+          <Column id="rowStatus" type="string" size="32"/>
+          <Column id="wrcAddr2" type="string" size="32"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::lib_String.xjs";
+
+var memberNo = this.parent.memberNo;
+var memberNmKor = this.parent.memberNmKor;
+
+/******************************************************************************
+* 함 수 명 	: afd01050_p01_onload
+* 함수설명 	: 로드이벤트
+******************************************************************************/
+this.afd01050_p01_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+//	this.gfn_getAuth();
+	
+// 	var essGrd = new Array();
+// 		essGrd[0] = this.grd_afdMaster;
+// 	
+// 	this.gfn_essDataset(essGrd);
+// 	this.gfn_bindCmmnFunction(); 
+	
+	if(!this.gfn_isNull(memberNo) || !this.gfn_isNull(memberNmKor) ) {
+		this.div_search.edt_sMemberNo.set_value(memberNo);
+		this.div_search.edt_sMemberNmKor.set_value(memberNmKor);
+		this.fn_search();
+	}	
+}
+
+/******************************************************************************
+* 함 수 명 	: btn_search_onclick
+* 함수설명 	: 조회버튼
+******************************************************************************/
+this.btn_search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_search();
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_search
+* 함수설명 	: 조회 함수
+******************************************************************************/
+this.fn_search = function() 
+{
+	var strArg = "memberNo="+nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_sMemberNo.value, ""));
+		strArg += " memberNmKor="+nexacro.wrapQuote(this.gfn_nvl(this.div_search.edt_sMemberNmKor.value, ""));
+		strArg += " wsJuminNo="+nexacro.wrapQuote(this.gfn_nvl(this.div_search.msk_wsJuminNo.value, ""));
+		
+	this.gfn_transaction("SEARCH"
+						, "txAdmUrl::com/admi/afd/afd01/retrieveAfdMaster.do"
+						, ""
+						, "ds_afdMaster=resultList"
+						, strArg
+						, "");
+}
+
+/******************************************************************************
+* 함 수 명 	: btn_close_onclick
+* 함수설명 	: 닫기버튼 클릭 이벤트
+******************************************************************************/
+this.btn_close_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.close("close");
+}
+
+/******************************************************************************
+* 함 수 명 	: btn_ok_onclick
+* 함수설명 	: 확인버튼 클릭 이벤트
+******************************************************************************/
+this.btn_ok_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_ok();
+}
+
+/******************************************************************************
+* 함 수 명 	: grd_afdMaster_oncelldblclick
+* 함수설명 	: 그리드 더블클릭 이벤트
+******************************************************************************/
+this.grd_afdMaster_oncelldblclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	this.fn_ok();
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_ok
+* 함수설명 	: 확인 함수
+******************************************************************************/
+this.fn_ok = function() 
+{
+	if(this.ds_afdMaster.getRowCount() == 0) 
+	{
+		this.close("close");
+	} 
+	else 
+	{
+		this.ds_rtnVal.copyData(this.ds_afdMaster);
+		this.ds_rtnVal.clearData();
+		
+		var addRow = this.ds_rtnVal.addRow();
+		this.ds_rtnVal.copyRow(this.ds_rtnVal.rowposition, this.ds_afdMaster, this.ds_afdMaster.rowposition);
+		this.close(this.ds_rtnVal.saveXML());
+	}	
+}
+
+/******************************************************************************
+* 함 수 명 	: fn_callBack
+* 함수설명 	: 트랙젝션 콜백함수. 
+*****************************************************************************/
+this.fn_callBack = function(trId, errCd, errMsg) 
+{
+	if(errCd < 0 ) 
+	{
+		this.gfn_message("A", errMsg);
+	}
+	//조회
+	if("SEARCH" == trId) 
+	{
+		
+	}
+}]]></Script>
+  </Form>
+</FDL>

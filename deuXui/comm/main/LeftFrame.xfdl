@@ -1,0 +1,431 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\default_typedef.xml"/>
+  <Form id="LeftFrame" classname="LeftFrame" left="0" top="0" width="198" height="820" style="border:0 none #808080ff,0 solid #c2c4bfff,0 none #808080ff,0 none #808080ff;" onload="form_onload" scrollbars="none" titletext="Left메뉴영역">
+    <Layouts>
+      <Layout>
+        <Div id="div_MyMenu" taborder="1" left="0" top="0" width="198" text="Div00" scrollbars="none" cssclass="div_LF_bg" visible="false" bottom="1">
+          <Layouts>
+            <Layout>
+              <Grid id="grd_MyMenu" cssclass="grd_LF_bookmark" taborder="9" binddataset="ds_mymenu" useinputpanel="false" autofittype="col" left="0" top="77" bottom="0" width="197" oncelldblclick="div_MyMenu_grd_MyMenu_oncelldblclick" oncellclick="div_MyMenu_grd_MyMenu_oncellclick" onmousemove="div_MyMenu_grd_MyMenu_onmousemove">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="25"/>
+                      <Column size="145"/>
+                      <Column size="25"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="22"/>
+                    </Rows>
+                    <Band id="body">
+                      <Cell displaytype="normal" text="bind:sortSeq"/>
+                      <Cell col="1" style="align:left middle;padding:0 5 0 5;" text="bind:menuNm"/>
+                      <Cell col="2" displaytype="image" edittype="expand" style="cursor:hand;" expandshow="show" expandsize="30" expandimage="URL('theme://images/extrabutton.png')"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+              <Button id="btn_save" taborder="11" text="저장" cssclass="btn_LF_control" left="124" top="50" width="42" height="20" visible="false"/>
+              <Button id="btn_mymenuSet" taborder="12" onclick="btn_mymenuSet_onclick" cssclass="btn_LF_Setting" left="171" top="50" width="20" height="20" visible="false"/>
+              <Button id="btn_DeleteAll" taborder="10" text="전체삭제" cssclass="btn_LF_control" left="103" top="50" width="63" height="20" onclick="div_MyMenu_btn_DeleteAll_onclick" visible="false"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Div id="div_Menu" taborder="2" left="0" bottom="1" width="198" text="Div00" cssclass="div_LF_bg" top="0" scrollbars="none">
+          <Layouts>
+            <Layout width="198" height="">
+              <Grid id="grd_Menu" cssclass="grd_LF_reserv" taborder="0" binddataset="ds_menu" useinputpanel="false" autofittype="none" treeusecheckbox="false" left="0" top="77" oncellclick="div_Menu_grd_Menu_oncellclick" bottom="216" right="0" onmousemove="div_Menu_grd_Menu_onmousemove" autosizingtype="none" extendsizetype="none" cellsizingtype="none" selecttype="cell" tooltiptype="default">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="195"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="24"/>
+                    </Rows>
+                    <Band id="body">
+                      <Cell displaytype="tree" edittype="tree" text="bind:menuNm" wordwrap="none" treestartlevel="2" treelevel="bind:menuLvl" tooltiptext="bind:menuNm" autosizerow="default"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+              <Static id="sta_MenuExpand" taborder="1" cssclass="sta_LF_menuClose" left="6" top="51" width="17" height="17" onclick="div_Menu_sta_MenuExpand_onclick"/>
+              <Static id="sta_SubMenu" taborder="2" cssclass="sta_LF_titleText" left="28" top="50" width="155" height="21"/>
+              <Static id="Static00" taborder="3" text="* 예산관련문의 &#13;&#10;        : 예산팀(1115)" left="4.57%" right="6.09%" height="37" bottom="132"/>
+              <Static id="Static01" taborder="4" text="* 회계관련문의 &#13;&#10;       : 경리팀(1101~3)" left="4.57%" right="6.09%" height="44" bottom="85"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Div id="div_RecentMenu" taborder="4" left="256" bottom="0" width="198" height="280" style="border:0 none #808080ff,1 solid #c2c4bfff,0 none #808080ff,0 none #808080ff;" text="Div00" cssclass="div_LF_bg" visible="false">
+          <Layouts>
+            <Layout>
+              <Button id="btn_RecentMenu" taborder="8" text="최근메뉴" onclick="btn_RecentMenu_onclick" cssclass="btn_LF_titlebg" left="0" top="0" right="0" height="39"/>
+              <Button id="btn_LateDelAll" taborder="6" text="전체삭제" cssclass="btn_LF_control" left="127" top="9" width="63" height="20" onclick="div_RecentMenu_btn_LateDelAll_onclick"/>
+              <Grid id="grd_RecentMenu" cssclass="grd_LF_lately" taborder="7" binddataset="gds_late" useinputpanel="false" autofittype="none" left="0" bottom="0" oncellclick="div_RecentMenu_grd_RecentMenu_oncellclick" selecttype="cell" height="241" right="0" scrollbars="autovert">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="30"/>
+                      <Column size="140"/>
+                      <Column size="25"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="22"/>
+                    </Rows>
+                    <Band id="body">
+                      <Cell displaytype="normal" style="background:transparent URL('theme://images/grd_numberbox.png') center middle;background2:transparent URL('theme://images/grd_numberbox.png') center middle;color:#2b7de1ff;color2:#2b7de1ff;font:9 Dotum;selectbackground:transparent URL('theme://images/grd_numberbox.png') center middle;selectcolor:#2b7de1ff;selectfont:9 Dotum;" expr="currow+1"/>
+                      <Cell col="1" style="align:left middle;" text="bind:TITLE"/>
+                      <Cell col="2" displaytype="image" edittype="expand" style="cursor:hand;" expandshow="show" expandsize="30" expandimage="URL('theme://images/extrabutton.png')"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Button id="btn_Menu" taborder="5" text="MENU" cssclass="btn_LF_menu_S" left="7" top="15" width="66" height="23" onclick="btn_Menu_onclick" visible="true"/>
+        <Button id="btn_menuClose" taborder="6" left="166" top="15" width="32" height="23" onclick="btn_menuClose_onclick" cssclass="btn_LF_Close" visible="false"/>
+        <Button id="btn_Menu00" taborder="7" text="MENU" onclick="btn_Menu_onclick" cssclass="btn_LF_menu" left="246" top="15" width="66" height="23" visible="false"/>
+        <Button id="btn_MyMenu00" taborder="8" text="MY MENU" onclick="btn_MyMenu_onclick" cssclass="btn_LF_mymenu_S" left="312" top="15" width="93" height="23" visible="false"/>
+        <Button id="btn_Menu01" taborder="9" text="MENU" onclick="btn_Menu_onclick" cssclass="btn_LF_menu_S" left="246" top="63" width="66" height="23" visible="false"/>
+        <Button id="btn_MyMenu01" taborder="10" text="MY MENU" onclick="btn_MyMenu_onclick" cssclass="btn_LF_mymenu" left="312" top="63" width="93" height="23" visible="false"/>
+        <Static id="Static28" taborder="13" text="MY MENU가 선택됬을때 : btn_LF_mymenu_S" cssclass="Guide_number" visible="false" left="208.08%" top="15" right="-263.13%" height="23" style="align:left middle;"/>
+        <Static id="Static00" taborder="14" text="MENU가 선택됬을때 : btn_LF_menu_S" cssclass="Guide_number" visible="false" left="412" top="63" width="307" height="23" style="align:left middle;"/>
+        <Button id="btn_MyMenu" taborder="0" cssclass="btn_LF_mymenu_S" left="73" top="15" width="93" height="23" onclick="btn_MyMenu_onclick" visible="true"/>
+        <Static id="Static01" taborder="16" cssclass="sta_LF_menuClose" visible="false" left="246" top="147" width="17" height="17"/>
+        <Static id="Static04" taborder="17" cssclass="sta_LF_menuOpen" visible="false" left="246" top="187" width="17" height="17"/>
+        <Static id="Static05" taborder="18" text="국제교환학생(OUT) : 기본" cssclass="sta_LF_titleText" left="268" top="146" width="254" height="21"/>
+        <Button id="btn_RecentMenu" taborder="19" text="연락처" onclick="btn_RecentMenu_onclick" left="0" right="4" height="39" cssclass="btn_LF_titlebg" bottom="173"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_menu">
+        <ColumnInfo>
+          <Column id="SYST_DIV_CD" type="string" size="9" prop=""/>
+          <Column id="MENU_ID" type="string" size="10" prop=""/>
+          <Column id="MENU_NM" type="string" size="50" prop=""/>
+          <Column id="MENU_ENM" type="string" size="50" prop=""/>
+          <Column id="MENU_EXPR" type="string" size="600" prop=""/>
+          <Column id="HG_MENU_ID" type="string" size="10" prop=""/>
+          <Column id="MENU_LEVEL" type="bigdecimal" size="22" prop=""/>
+          <Column id="PROG_PATH" type="string" size="200" prop=""/>
+          <Column id="MENU_GROUP" type="string" size="200" prop=""/>
+          <Column id="PROG_ID" type="string" size="30" prop=""/>
+          <Column id="SORT_SEQ" type="bigdecimal" size="22" prop=""/>
+          <Column id="USE_YN" type="string" size="1" prop=""/>
+          <Column id="SEARCH_YN" type="string" size="1" prop=""/>
+          <Column id="NEW_YN" type="string" size="1" prop=""/>
+          <Column id="DEL_YN" type="string" size="1" prop=""/>
+          <Column id="SAVE_YN" type="string" size="1" prop=""/>
+          <Column id="PRT_YN" type="string" size="1" prop=""/>
+          <Column id="HELP_YN" type="string" size="1" prop=""/>
+          <Column id="DAT_LOG_YN" type="string" size="1" prop=""/>
+          <Column id="PRT_LOG_YN" type="string" size="1" prop=""/>
+          <Column id="PROG_DIV" type="string" size="1" prop=""/>
+          <Column id="BSS_DIV_CD" type="string" size="8" prop=""/>
+          <Column id="DTL_BSS_DIV_CD" type="string" size="8" prop=""/>
+          <Column id="NOTE" type="string" size="400" prop=""/>
+          <Column id="MENU_FULL_NM" type="string" size="200" prop=""/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_mymenu">
+        <ColumnInfo>
+          <Column id="USER_ID" type="STRING" size="10"/>
+          <Column id="MENU_ID" type="STRING" size="10"/>
+          <Column id="SYST_DIV_CD" type="STRING" size="9"/>
+          <Column id="MENU_NM" type="STRING" size="50"/>
+          <Column id="PROG_ID" type="STRING" size="30"/>
+          <Column id="PROG_PATH" type="STRING" size="200"/>
+          <Column id="SORT_NUMB" type="BIGDECIMAL" size="22"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.0"><![CDATA[include "commJs::lib_Data.xjs";
+
+/* ====================================================================
+ * 01. 업무구분 : LeftFrame
+ * 02. 화면명   : LeftFrame.xfdl
+ * 03. 화면설명 : 프레임 메뉴화면
+ * 04. 작성일   :
+ * 05. 작성자   :
+ * 06. 수정이력 :
+ * ====================================================================
+ *     수정일     수정자   내용
+ * ====================================================================
+ *
+ * ==================================================================== */
+ 
+/* ====================================================================
+ * 1. 공통 라이브러리
+ * ==================================================================== */
+ 
+/* ====================================================================
+ * 2. 변수 선언부
+ * ==================================================================== */
+ 
+/* ====================================================================
+ * 3. Event 처리 부분
+ * ==================================================================== */
+ 
+/* ==================================================================== 
+ * 4. Local Function(사용자 FUNCTION 영역)
+ * ==================================================================== */
+//leftTreeMenu를 조회한다.
+this.fn_leftTreeMenu = function(subId)
+{
+	var filterExpr = "";
+	
+	var strArg  = "memberNo="   + nexacro.wrapQuote(application.gds_user.getColumn(application.gds_user.rowposition, "memberNo"));
+		strArg += " strMenuId=" + nexacro.wrapQuote(subId);
+		strArg += " gv_langFg=" + nexacro.wrapQuote(application.gv_langFg);
+	
+	this.transaction("",
+					 "txComUrl::com/comm/selectLeftMenu.do",
+					 "",
+					 "gds_menu=resultList",
+					 strArg,
+					 "",
+					 false);
+					 
+	this.ds_menu.copyData(application.gds_menu,true);
+}
+//메뉴그리드 클릭이벤트
+this.div_Menu_grd_Menu_oncellclick = function(obj:Grid, e:nexacro.GridClickEventInfo)
+{
+	if(this.ds_menu.getColumn(this.ds_menu.rowposition, "menuLvl") == 2) {
+		if(e.clickitem == "text") {		
+			var treeRow = this.div_Menu.grd_Menu.getTreeRow(e.row);
+			var treeStatus = this.div_Menu.grd_Menu.getTreeStatus(treeRow);
+			
+			if(treeStatus == 0) {
+				this.div_Menu.grd_Menu.setTreeStatus(treeRow,true);
+			} else if(treeStatus == 1) {
+				this.div_Menu.grd_Menu.setTreeStatus(treeRow,false);
+			}
+		}
+	} else 
+	if(this.ds_menu.getColumn(this.ds_menu.rowposition, "menuLvl") == 3){
+		var menuUrl			= this.ds_menu.getColumn(this.ds_menu.rowposition, "url");
+		var sysId			= this.ds_menu.getColumn(this.ds_menu.rowposition, "sysId");
+		var sysNm			= this.ds_menu.getColumn(this.ds_menu.rowposition, "sysNm");
+		var subId			= this.ds_menu.getColumn(this.ds_menu.rowposition, "subId");
+		var subNm			= this.ds_menu.getColumn(this.ds_menu.rowposition, "subNm");
+		var menuId			= this.ds_menu.getColumn(this.ds_menu.rowposition, "menuId");
+		var menuNm			= this.ds_menu.getColumn(this.ds_menu.rowposition, "menuNm");
+		var parentId		= this.ds_menu.getColumn(this.ds_menu.rowposition, "parentId");
+		var parentNm		= this.ds_menu.getColumn(this.ds_menu.rowposition, "parentNm");
+		var year			= this.ds_menu.getColumn(this.ds_menu.rowposition, "year");
+		var termCd			= this.ds_menu.getColumn(this.ds_menu.rowposition, "termCd");
+		var scheduleCd		= this.ds_menu.getColumn(this.ds_menu.rowposition, "scheduleCd");
+		var selectFlag		= this.ds_menu.getColumn(this.ds_menu.rowposition, "selectFlag");
+		var saveFlag		= this.ds_menu.getColumn(this.ds_menu.rowposition, "saveFlag");
+		var printFlag		= this.ds_menu.getColumn(this.ds_menu.rowposition, "printFlag");
+		var downloadFlag	= this.ds_menu.getColumn(this.ds_menu.rowposition, "downloadFlag");
+		var uploadFlag		= this.ds_menu.getColumn(this.ds_menu.rowposition, "uploadFlag");
+		var sendFlag		= this.ds_menu.getColumn(this.ds_menu.rowposition, "sendFlag");
+		var personInfoFlag	= this.ds_menu.getColumn(this.ds_menu.rowposition, "personInfoFlag");
+		var managerFlag		= this.ds_menu.getColumn(this.ds_menu.rowposition, "managerFlag");		
+		var tabCnt			= application.apMDIFrame.form.workTab.getTabpageCount();
+		var tabIndex		= application.apMDIFrame.form.workTab.getIndex();
+		var uniqueId		= "ChildFrame_"+ menuId;
+		
+		if(application.gds_open.findRow("menuId", menuId)<0){
+			
+			if(tabCnt > 9){
+				this.alert("화면은 한번에 10개까지만 열 수 있습니다.");
+				return false;
+			}
+			//MDI Tab버튼 추가
+			application.apMDIFrame.form.workTab.insertTabpage("tab"+parentId+menuId,tabCnt, "", menuNm);
+			var addRow = application.gds_open.addRow();
+			
+			application.gds_open.setColumn(addRow, 'sysId', sysId);
+			application.gds_open.setColumn(addRow, 'sysNm', sysNm);
+			application.gds_open.setColumn(addRow, 'subId', subId);
+			application.gds_open.setColumn(addRow, 'subNm', subNm);
+			application.gds_open.setColumn(addRow, 'menuId', menuId);
+			application.gds_open.setColumn(addRow, 'menuNm', menuNm);
+			application.gds_open.setColumn(addRow, 'parentId', parentId);
+			application.gds_open.setColumn(addRow, 'parentNm', parentNm);
+			application.gds_open.setColumn(addRow, 'year', year);
+			application.gds_open.setColumn(addRow, 'termCd', termCd);
+			application.gds_open.setColumn(addRow, 'scheduleCd', scheduleCd);
+			application.gds_open.setColumn(addRow, 'selectFlag', selectFlag);
+			application.gds_open.setColumn(addRow, 'saveFlag', saveFlag);
+			application.gds_open.setColumn(addRow, 'printFlag', printFlag);
+			application.gds_open.setColumn(addRow, 'downloadFlag', downloadFlag);
+			application.gds_open.setColumn(addRow, 'uploadFlag', uploadFlag);
+			application.gds_open.setColumn(addRow, 'sendFlag', sendFlag);
+			application.gds_open.setColumn(addRow, 'personInfoFlag', personInfoFlag);
+			application.gds_open.setColumn(addRow, 'managerFlag', managerFlag);
+			
+			var objNewForm = new ChildFrame();
+			objNewForm.init(uniqueId, "absolute", 0, 0, null, null, 0, 45, menuUrl);
+			application.apMainFrameSet.addChild(uniqueId, objNewForm);
+			var cmd = "application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet."+uniqueId+".set_showtitlebar(false)";
+			eval(cmd);
+			
+			objNewForm.show();			
+		} else {
+			if(application.gds_open.findRowExpr("menuId =='"+menuId+"'&& parentId =='"+parentId+"'")<0){
+				if(tabCnt > 9){
+					this.alert("화면은 한번에 10개까지만 열 수 있습니다.");
+					return false;
+				}
+				//MDI Tab버튼 추가
+				this.apMDIFrame.form.workTab.insertTabpage("tab"+parentId+menuId,tabCnt, "", menuNm);
+				var addRow = application.gds_open.addRow();
+				application.gds_open.setColumn(addRow, 'sysId', sysId);
+				application.gds_open.setColumn(addRow, 'sysNm', sysNm);
+				application.gds_open.setColumn(addRow, 'subId', subId);
+				application.gds_open.setColumn(addRow, 'subNm', subNm);
+				application.gds_open.setColumn(addRow, 'menuId', menuId);
+				application.gds_open.setColumn(addRow, 'menuNm', menuNm);
+				application.gds_open.setColumn(addRow, 'parentId', parentId);
+				application.gds_open.setColumn(addRow, 'parentNm', parentNm);
+				application.gds_open.setColumn(addRow, 'year', year);
+				application.gds_open.setColumn(addRow, 'termCd', termCd);
+				application.gds_open.setColumn(addRow, 'scheduleCd', scheduleCd);
+				application.gds_open.setColumn(addRow, 'selectFlag', selectFlag);
+				application.gds_open.setColumn(addRow, 'saveFlag', saveFlag);
+				application.gds_open.setColumn(addRow, 'printFlag', printFlag);
+				application.gds_open.setColumn(addRow, 'downloadFlag', downloadFlag);
+				application.gds_open.setColumn(addRow, 'uploadFlag', uploadFlag);
+				application.gds_open.setColumn(addRow, 'sendFlag', sendFlag);
+				application.gds_open.setColumn(addRow, 'personInfoFlag', personInfoFlag);
+				application.gds_open.setColumn(addRow, 'managerFlag', managerFlag);
+				
+				var objNewForm = new ChildFrame();
+				
+				objNewForm.init(uniqueId, "absolute", 0, 0, null, null, 0, 45, menuUrl);
+				
+				application.apMainFrameSet.addChild(uniqueId, objNewForm);
+				var cmd = "application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet."+uniqueId+".set_showtitlebar(false)";
+				eval(cmd);
+				
+				objNewForm.show();
+			}else{
+				//선택된 메뉴 활성화
+				var nRow = application.gds_open.findRowExpr("menuId =='"+menuId+"'&& parentId =='"+parentId+"'");
+				application.apMDIFrame.form.workTab.set_tabindex(application.gds_open.findRowExpr("menuId =='"+menuId+"'&& parentId =='"+parentId+"'"));
+				var cmd = "application.mainframe.VFrameSet.MiddleFrameSet.BizFrameSet.MainFrameSet."+uniqueId+".setFocus()";
+				
+				eval(cmd);
+			}
+			
+		}
+		
+	} 
+// 	else{
+// 		if ( this.tab_menuLv3.tpg_menu.grd_menuLv3.getTreeStatus(this.tab_menuLv3.tpg_menu.grd_menuLv3.getTreeRow(application.gds_menu.rowposition)) == 0 ) {
+// 			this.tab_menuLv3.tpg_menu.grd_menuLv3.setTreeStatus(this.tab_menuLv3.tpg_menu.grd_menuLv3.getTreeRow(application.gds_menu.rowposition), true);
+// 		} else {
+// 			this.tab_menuLv3.tpg_menu.grd_menuLv3.setTreeStatus(this.tab_menuLv3.tpg_menu.grd_menuLv3.getTreeRow(application.gds_menu.rowposition), false);
+// 		}
+// 	}
+
+// 	var objDs = obj.binddataset;
+// 	var nRow = this.objects[objDs].rowposition;
+// 	
+// 	var sMenuId = this.objects[objDs].getColumn(nRow, "menuId");
+// 	var pgmurl = this.objects[objDs].getColumn(nRow, "url");
+// 	
+// 	if (this.gfn_isNull(pgmurl) == false){
+// 		this.gfn_openMenu(sMenuId);
+// 	}
+}
+
+/**
+ * @class 메뉴 아이디를 기준으로 신규 윈도우 화면을 생성하고 open 시킴
+ * @param menuid: 메뉴아이디
+ * @param bReload: Reload 여부
+ * @param oArgs: 넘겨줄 Argument
+ * @param bClose: 
+ * @return None
+ */  
+this.gfn_openMenu = function (menuid, bReload, oArgs, bClose)
+{
+	if (this.gfn_isNull(menuid)){
+		return;
+	}
+	
+	var nRow = -1;
+	var menuFilterGrp ='';
+	nRow = this.gfn_findData(application.gds_menu, "menuId", menuid);
+	bClose = (this.gfn_isNull(bClose)) ? false : bClose;
+	if (nRow == -1){
+		this.alert("Menu가 존재하지 않습니다.");
+		return;
+	}
+	
+	//url을 가져온다.
+	if (this.gfn_isNull(this.gfn_getMenuInfo(menuid, "url"))){
+		return;
+	}
+	
+	var winid = this.gfn_getLookupData(application.gds_open, "menuId", menuid, "url");
+	if (this.gfn_isNull(winid) == false){
+		//trace("winid : " + winid + " bReload : " + bReload + " oArgs : " + oArgs);
+		if (this.gfn_activeFrame(winid,bReload,oArgs) == true){
+			application.gv_workFrame.frames[winid].form.setFocus();
+			if (application.id == "RECL"||application.id == "OUTER"){
+				application.gv_vFrameSet.set_separatesize("0,47,*,0");
+			} else {
+				application.gv_mdiFrame.form.fn_moveTab(winid);
+			}
+			return;
+		}
+	}
+	
+    if (bClose){
+		var winKey = this.gfn_getFrameAguments("winKey");
+		application.gv_workFrame.frames[winKey].form.close();
+		this.gfn_openMenuRow(menuid,nRow,oArgs);
+    } else {
+		if (application.gds_openMenu.rowcount >= application.gv_openMaxFrame){
+			this.alert("열린화면 갯수가 "+application.gv_openMaxFrame+" 이상은 열 수 없습니다.");
+			return;
+		}
+		this.gfn_openMenuRow(menuid,nRow,oArgs);
+	}
+}
+
+/**
+ * @class menuid 를 기준으로 해당 메뉴의 컬럼값을 전달
+ * @param menuid: 메뉴아이디
+ * @param menuInfo: 메뉴컬럼
+ * @return 메뉴컬럼값
+ */  
+this.gfn_getMenuInfo = function (menuid, menuInfo)
+{
+	return this.gfn_getLookupData(application.gds_menu, "menuId", menuid, menuInfo);
+}
+
+/**
+ * @class Dataset object에서 키에 해당되는 Row를 찾아서 칼럼값을 전달
+ * @param ObjDs     - Dataset
+ * @param strIdCol  - 키칼럼
+ * @param strId     - 키값
+ * @param strInfo   - Dataset 칼럼
+ * @param strSubCol - 서브키칼럼
+ * @param strSubId  - 서브키값
+ * @return 칼럼값
+ */   
+this.gfn_getLookupData = function (ObjDs, strIdCol, strId, strInfo, strSubCol, strSubId)
+{
+	var strVal;
+	var curRow = this.gfn_findData(ObjDs, strIdCol, strId, strSubCol, strSubId);
+	if (curRow < 0){
+		return "";
+	}
+	
+	strVal = ObjDs.getColumn(curRow, strInfo);
+	if (this.gfn_isNull(strVal)){
+		return "";
+	}
+
+	return strVal;
+}]]></Script>
+  </Form>
+</FDL>

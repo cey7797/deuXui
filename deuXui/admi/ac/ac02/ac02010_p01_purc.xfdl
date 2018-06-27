@@ -1,0 +1,1497 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\..\..\default_typedef.xml"/>
+  <Form id="ac02010_p01_purc" classname="ac02010_p01" left="0" top="0" width="1038" height="850" titletext="기안" onload="ac02010_p01_onload">
+    <Layouts>
+      <Layout>
+        <Tab id="tab01" taborder="0" left="1" top="92" right="15" height="755" tabindex="0" scrollbars="autoboth" canchange="tab01_canchange" onchanged="tab01_onchanged" cssclass="tab_normal">
+          <Tabpages>
+            <Tabpage id="tabpage1" text="기안내역" scrollbars="autoboth">
+              <Layouts>
+                <Layout width="1023" height="283">
+                  <Div id="div_search" taborder="0" left="0" top="52" right="0" height="103" scrollbars="none" cssclass="search">
+                    <Layouts>
+                      <Layout>
+                        <Static id="Static00" taborder="104" text="*기안제목" cssclass="search" left="12" top="69" width="56" height="22"/>
+                        <Static id="Static12" taborder="107" text="H9" cssclass="tipGuide" visible="false" left="117" top="2" width="30" height="9"/>
+                        <Static id="Static11" taborder="108" text="H9" cssclass="tipGuide" visible="false" left="117" top="32" width="30" height="9"/>
+                        <Static id="Static02" taborder="109" text="H9" cssclass="tipGuide" visible="false" left="311" top="2" width="30" height="9"/>
+                        <Static id="Static03" taborder="110" text="H9" cssclass="tipGuide" visible="false" left="311" top="32" width="30" height="9"/>
+                        <Static id="Static07" taborder="112" text="*기안종류" cssclass="search" left="12" top="10" width="56" height="22"/>
+                        <Combo id="S_VOU_KND" taborder="113" innerdataset="@ds_cmb_vou_knd" codecolumn="comCd" datacolumn="comCdNm" left="72" top="11" width="132" height="21" class="essential" style=":disabled {color:black;}" onitemchanged="tab01_tabpage1_div_search_S_VOU_KND_onitemchanged"/>
+                        <Static id="Static04" taborder="114" text="진행상태" cssclass="search" left="18" top="39" width="48" height="22"/>
+                        <Combo id="S_STA_CD" taborder="115" innerdataset="@ds_cmb_sta_cd" codecolumn="comCd" datacolumn="comCdNm" left="72" top="40" width="132" height="21" class="essential" enable="false" style=":disabled {color:black;}" onitemchanged="tab01_tabpage1_div_search_S_STA_CD_onitemchanged"/>
+                        <Edit id="D_VOU_TTL" taborder="116" maxlength="4000" left="72" top="70" width="451" height="21" style="border:1 solid #ccccccff ;color:black;"/>
+                        <Static id="Static01" taborder="117" text="H9" cssclass="tipGuide" visible="false" left="117" top="61" width="30" height="9"/>
+                        <Static id="Static15" taborder="118" text="기안금액" onclick="div_search_Static00_onclick" cssclass="search" left="342" top="10" width="49" height="22"/>
+                        <MaskEdit id="D_APLY_AMT_SUM" taborder="120" type="number" mask="###,###,###,##0" onkeydown="div_search_S_RES_NO_onkeydown" left="396" top="11" width="127" height="21" style="border:1 solid #ccccccff ;align:right middle; :disabled {color:black;}" enable="false"/>
+                        <Edit id="D_ORIGY_VOU" taborder="121" inputtype="number" maxlength="20" enable="false" left="396" top="40" width="127" height="21" style="border:1 solid #ccccccff ; :disabled {color:black;align:right middle;font:9 Dotum;}"/>
+                        <Static id="Static05" taborder="122" text="*원기안번호" onclick="div_search_Static00_onclick" cssclass="search" left="323" top="39" width="65" height="22"/>
+                        <Button id="btn_elecSearch" taborder="123" text="기안문보기" onclick="tab01_tabpage1_btn_elecSearch_onclick" cssclass="btn_WF_Common" left="92.66%" top="1" right="0.1%" height="22" tabstop="false"/>
+                        <CheckBox id="preExpYn" taborder="125" text="선지출여부" left="222" top="11" height="21" width="88" visible="false"/>
+                      </Layout>
+                    </Layouts>
+                  </Div>
+                  <Div id="div_info" taborder="9" left="0" top="158" right="0" height="558" scrollbars="none" cssclass="search">
+                    <Layouts>
+                      <Layout>
+                        <Static id="Static07" taborder="145" text="H15" cssclass="tipGuide" visible="false" left="0" top="0" width="523" height="15"/>
+                        <Static id="Static04" taborder="151" text="H5" cssclass="tipGuide" visible="false" left="0" top="37" width="523" height="5"/>
+                        <Calendar id="S_APLY_DT" taborder="154" enable="false" left="157" top="15" width="120" height="22" style=":disabled {color:black;}"/>
+                        <Edit id="S_APLY_USER_NM" taborder="156" maxlength="3" enable="false" left="157" top="39" width="120" height="21" style="border:1 solid #ccccccff ; :disabled {color:black;}"/>
+                        <Edit id="S_APLY_USER_ID" taborder="157" maxlength="3" enable="false" left="285" top="39" width="120" height="21" style="border:1 solid #ccccccff ; :disabled {color:black;}" visible="false"/>
+                        <Static id="Static06" taborder="158" text="기안신청일자" cssclass="detail_title" left="14" top="15" width="136" height="22" style="align:left;"/>
+                        <Static id="Static08" taborder="159" text="기안신청자" cssclass="detail_title" left="14" top="39" width="136" height="22" style="align:left;"/>
+                        <Static id="Static05" taborder="160" text="기안승인일자" cssclass="detail_title" left="438" top="15" width="136" height="22" style="align:left;"/>
+                        <Calendar id="D_CTRL_DT" taborder="161" enable="false" left="581" top="15" width="120" height="22" style=":disabled {color:black;}"/>
+                        <Edit id="D_CTRL_USER_NM" taborder="162" maxlength="3" enable="false" left="589" top="87" width="120" height="21" style="border:1 solid #ccccccff ; :disabled {color:black;}" visible="false"/>
+                        <Static id="Static09" taborder="163" text="예산통제(승인)자" cssclass="detail_title" left="446" top="87" width="136" height="22" style="align:left;" visible="false"/>
+                        <Edit id="D_CTRL_USER_ID" taborder="164" maxlength="3" enable="false" left="717" top="87" width="120" height="21" style="border:1 solid #ccccccff ; :disabled {color:black;}" visible="false"/>
+                        <Static id="Static10" taborder="165" text="결의(접수)일자" cssclass="detail_title" left="14" top="62" width="136" height="22" style="align:left;"/>
+                        <Calendar id="D_RECV_DT" taborder="166" enable="false" left="157" top="62" width="120" height="22" style=":disabled {color:black;}"/>
+                        <Edit id="D_RECV_USER_NM" taborder="167" maxlength="3" enable="false" left="157" top="86" width="120" height="21" style="border:1 solid #ccccccff ; :disabled {color:black;}"/>
+                        <Edit id="D_RECV_USER_ID" taborder="168" maxlength="3" enable="false" left="285" top="86" width="120" height="21" style="border:1 solid #ccccccff ; :disabled {color:black;}" visible="false"/>
+                        <Static id="Static11" taborder="169" text="결의(접수)자" cssclass="detail_title" left="14" top="86" width="136" height="22" style="align:left;"/>
+                        <Static id="Static12" taborder="170" text="전표확정일자" cssclass="detail_title" left="438" top="39" width="136" height="22" style="align:left;"/>
+                        <Calendar id="D_SLIP_CFM_DT" taborder="171" enable="false" left="581" top="39" width="120" height="22" style=":disabled {color:black;}"/>
+                        <Static id="Static00" taborder="173" top="155" height="372" style="background:white;align:left top;" left="13" right="13"/>
+                        <Static id="Static02" taborder="174" text="H30" cssclass="tipGuide" visible="false" left="0" top="527" width="1022" height="30"/>
+                        <Static id="Static33" taborder="175" text="W&#13;&#10;15" cssclass="tipGuide" visible="false" left="1023" top="0" width="15" height="838"/>
+                      </Layout>
+                    </Layouts>
+                  </Div>
+                  <Static id="Static11" taborder="10" text="H15" cssclass="tipGuide" visible="false" left="0" top="0" width="1023" height="15"/>
+                  <Static id="Static07" taborder="11" text="H15" cssclass="tipGuide" visible="false" left="0" top="37" width="1023" height="15"/>
+                  <Button id="btn_Search" taborder="12" cssclass="search" top="15" right="125" width="60" height="22" tooltiptype="hover" tooltiptext="조회" userBtnAuth="R" onclick="tab01_tabpage1_btn_Search_onclick" style="image:URL('theme://images/btn_WF_commonResetD.png');imagealign:center middle;" tabstop="false"/>
+                  <Button id="btn_Del" taborder="13" text="삭제" cssclass="del" top="15" right="63" width="60" height="22" tooltiptype="hover" tooltiptext="삭제" userBtnAuth="S" onclick="tab01_tabpage1_btn_Del_onclick" tabstop="false"/>
+                  <Button id="btn_Save" taborder="14" text="저장" cssclass="save" top="15" right="1" width="60" height="22" tooltiptype="hover" tooltiptext="저장" userBtnAuth="S" onclick="tab01_tabpage1_btn_Save_onclick" tabstop="false"/>
+                </Layout>
+              </Layouts>
+            </Tabpage>
+            <Tabpage id="tabpage2" text="계정/증빙내역" style="background:transparent;">
+              <Layouts>
+                <Layout width="1022" height="724"/>
+              </Layouts>
+            </Tabpage>
+          </Tabpages>
+        </Tab>
+        <Static id="Static11" taborder="1" text="H15" cssclass="tipGuide" visible="false" left="0" top="40" width="1023" height="15"/>
+        <Static id="Static33" taborder="4" text="W&#13;&#10;15" cssclass="tipGuide" visible="false" left="1023" top="0" width="15" height="838"/>
+        <Div id="div_search" taborder="6" left="0" top="0" right="14" height="41" scrollbars="none" cssclass="search">
+          <Layouts>
+            <Layout>
+              <Static id="Static00" taborder="141" text="회계연도" cssclass="search" left="20" top="10" width="48" height="22"/>
+              <Static id="Static01" taborder="142" text="회계단위" cssclass="search" left="186" top="10" width="48" height="22"/>
+              <Combo id="S_ACNT_UNT" taborder="143" innerdataset="@ds_acntUntCmb" codecolumn="cd" datacolumn="nm" enable="false" left="240" top="11" width="124" height="21" style=":disabled {color:black;font:bold 9 Dotum;}" class="essential"/>
+              <Static id="Static12" taborder="144" text="H9" cssclass="tipGuide" visible="false" left="117" top="2" width="30" height="9"/>
+              <Static id="Static11" taborder="145" text="H9" cssclass="tipGuide" visible="false" left="117" top="32" width="30" height="9"/>
+              <Static id="Static02" taborder="146" text="H9" cssclass="tipGuide" visible="false" left="311" top="2" width="30" height="9"/>
+              <Static id="Static03" taborder="147" text="H9" cssclass="tipGuide" visible="false" left="311" top="32" width="30" height="9"/>
+              <Spin id="S_ACNT_YY" taborder="148" value="0" enable="false" left="74" top="11" width="100" height="21" style=":disabled {color:black;font:bold 9 Dotum;}"/>
+              <Edit id="S_VOU_NO" taborder="153" inputtype="number" maxlength="12" enable="false" left="432" top="11" width="143" height="21" style="border:1 solid #ccccccff ; :disabled {color:black;font:bold 9 Dotum;}"/>
+              <Static id="Static15" taborder="154" text="기안번호" onclick="div_search_Static00_onclick" cssclass="search" left="378" top="10" width="49" height="22"/>
+              <Combo id="S_VOU_ORG_ID" taborder="155" innerdataset="@ds_cmb_dept" codecolumn="deptCd" datacolumn="deptNmKor" left="642" top="10" width="370" height="22" style=":disabled {color:black;font:bold 9 Dotum;}" class="essential" enable="false"/>
+              <Static id="Static06" taborder="156" text="기안부서" cssclass="search" left="587" top="10" width="48" height="22"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Button id="btn_StaCd_R" taborder="7" onclick="btn_StaCd_R_onclick" left="86.32%" top="55" right="1.35%" height="26" style="background:URL('theme://images/btn_WF_SearchN.png') stretch 4,0;color:white;font:bold 9 Dotum;"/>
+        <Static id="Static02" taborder="8" text="*기안내역" cssclass="page_stitle" visible="false" left="1104" top="16" width="219" height="20" style="font:9 Dotum;"/>
+        <TextArea id="D_DRAFT_DESC" taborder="9" maxlength="4000" visible="false" left="1104" top="42" width="515" height="511" style="color:black;"/>
+        <Static id="Static00" taborder="10" text="반려사유" cssclass="detail_title" visible="false" left="1624" top="243" width="104" height="309" style="align:left;"/>
+        <Grid id="grid_ac_vou" taborder="11" binddataset="ds_ac_vou_rcl" autoenter="select" useinputpanel="false" cellmovingtype="col" visible="false" left="1735" top="243" right="-1088" bottom="6">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="40" band="left"/>
+                <Column size="100"/>
+                <Column size="200"/>
+                <Column size="100"/>
+                <Column size="0"/>
+                <Column size="100"/>
+              </Columns>
+              <Rows>
+                <Row size="28" band="head"/>
+                <Row size="28"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="순번"/>
+                <Cell col="1" text="상태"/>
+                <Cell col="2" text="반려사유"/>
+                <Cell col="3" text="반려자"/>
+                <Cell col="4"/>
+                <Cell col="5" text="반려일자"/>
+              </Band>
+              <Band id="body">
+                <Cell style="align:center;" text="bind:rclSeq"/>
+                <Cell col="1" text="bind:staCdNm"/>
+                <Cell col="2" style="align:left;" text="bind:rclRsn"/>
+                <Cell col="3" text="bind:rclUserIdNm"/>
+                <Cell col="4"/>
+                <Cell col="5" displaytype="date" text="bind:rclDt" calendardisplaynulltype="nulltext"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static01" taborder="12" cssclass="tipGuide" visible="false" left="0" top="0" width="15" height="838"/>
+        <Static id="Static03" taborder="13" text="H30" cssclass="tipGuide" visible="false" left="0" top="405" width="1022" height="30"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_ac_vou">
+        <ColumnInfo>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="acntUnt" type="STRING" size="256"/>
+          <Column id="acntYy" type="STRING" size="256"/>
+          <Column id="vouNo" type="STRING" size="256"/>
+          <Column id="vouOrgId" type="STRING" size="256"/>
+          <Column id="vouKnd" type="STRING" size="256"/>
+          <Column id="vouTtl" type="STRING" size="256"/>
+          <Column id="draftDesc" type="STRING" size="256"/>
+          <Column id="staCd" type="STRING" size="256"/>
+          <Column id="aplyUserId" type="STRING" size="256"/>
+          <Column id="aplyUserIdNm" type="STRING" size="256"/>
+          <Column id="aplyDt" type="STRING" size="256"/>
+          <Column id="approUserId" type="STRING" size="256"/>
+          <Column id="approUserIdNm" type="STRING" size="256"/>
+          <Column id="approDt" type="STRING" size="256"/>
+          <Column id="ctrlUserId" type="STRING" size="256"/>
+          <Column id="ctrlUserIdNm" type="STRING" size="256"/>
+          <Column id="ctrlDt" type="STRING" size="256"/>
+          <Column id="slipNo" type="STRING" size="256"/>
+          <Column id="slipCfmDt" type="STRING" size="256"/>
+          <Column id="recvUserId" type="STRING" size="256"/>
+          <Column id="recvUserIdNm" type="STRING" size="256"/>
+          <Column id="recvDt" type="STRING" size="256"/>
+          <Column id="fileId" type="STRING" size="256"/>
+          <Column id="linkId" type="STRING" size="256"/>
+          <Column id="aplyAmtSum" type="STRING" size="256"/>
+          <Column id="insertId" type="STRING" size="256"/>
+          <Column id="insertIp" type="STRING" size="256"/>
+          <Column id="insertPgms" type="STRING" size="256"/>
+          <Column id="origyVouNo" type="STRING" size="256"/>
+          <Column id="elecApproId" type="STRING" size="256"/>
+          <Column id="approvalDocid" type="STRING" size="256"/>
+          <Column id="preExpYn" type="STRING" size="256"/>
+          <Column id="calcYn" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_cmb_acnt_yy"/>
+      <Dataset id="ds_acntUntCmb"/>
+      <Dataset id="ds_cmb_vou_org_id"/>
+      <Dataset id="ds_cmb_vou_knd"/>
+      <Dataset id="ds_cmb_sta_cd"/>
+      <Dataset id="ds_result"/>
+      <Dataset id="ds_cmb_dept"/>
+      <Dataset id="ds_ac_vou_rcl"/>
+      <Dataset id="ds_ac_vou_insert">
+        <ColumnInfo>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="acntUnt" type="STRING" size="256"/>
+          <Column id="acntYy" type="STRING" size="256"/>
+          <Column id="vouNo" type="STRING" size="256"/>
+          <Column id="vouOrgId" type="STRING" size="256"/>
+          <Column id="vouKnd" type="STRING" size="256"/>
+          <Column id="vouTtl" type="STRING" size="256"/>
+          <Column id="draftDesc" type="STRING" size="256"/>
+          <Column id="staCd" type="STRING" size="256"/>
+          <Column id="aplyUserId" type="STRING" size="256"/>
+          <Column id="aplyUserIdNm" type="STRING" size="256"/>
+          <Column id="aplyDt" type="STRING" size="256"/>
+          <Column id="approUserId" type="STRING" size="256"/>
+          <Column id="approUserIdNm" type="STRING" size="256"/>
+          <Column id="approDt" type="STRING" size="256"/>
+          <Column id="ctrlUserId" type="STRING" size="256"/>
+          <Column id="ctrlUserIdNm" type="STRING" size="256"/>
+          <Column id="ctrlDt" type="STRING" size="256"/>
+          <Column id="slipNo" type="STRING" size="256"/>
+          <Column id="slipCfmDt" type="STRING" size="256"/>
+          <Column id="recvUserId" type="STRING" size="256"/>
+          <Column id="recvUserIdNm" type="STRING" size="256"/>
+          <Column id="recvDt" type="STRING" size="256"/>
+          <Column id="fileId" type="STRING" size="256"/>
+          <Column id="linkId" type="STRING" size="256"/>
+          <Column id="aplyAmtSum" type="STRING" size="256"/>
+          <Column id="insertId" type="STRING" size="256"/>
+          <Column id="insertIp" type="STRING" size="256"/>
+          <Column id="insertPgms" type="STRING" size="256"/>
+          <Column id="origyVouNo" type="STRING" size="256"/>
+          <Column id="preExpYn" type="STRING" size="256"/>
+          <Column id="calcYn" type="STRING" size="256"/>
+          <Column id="recvOrgId" type="STRING" size="256"/>
+          <Column id="addrDept" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_vou_det_bill_inc_evdc_cnt"/>
+      <Dataset id="ds_P_AC_STA_CD_PROC">
+        <ColumnInfo>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="acntUnt" type="STRING" size="256"/>
+          <Column id="acntYy" type="STRING" size="256"/>
+          <Column id="vouNo" type="STRING" size="256"/>
+          <Column id="msg" type="STRING" size="256"/>
+          <Column id="procCd" type="STRING" size="256"/>
+          <Column id="userId" type="STRING" size="256"/>
+          <Column id="userIp" type="STRING" size="256"/>
+          <Column id="userPgm" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_P_AC_STA_CD_PROC_result"/>
+      <Dataset id="ds_msg">
+        <ColumnInfo>
+          <Column id="msg" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_dummy" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false"/>
+      <Dataset id="ds_vou_det_biz_cnt"/>
+      <Dataset id="ds_elecInput">
+        <ColumnInfo>
+          <Column id="acntUnt" type="STRING" size="256"/>
+          <Column id="acntYy" type="STRING" size="256"/>
+          <Column id="aplyOrgId" type="STRING" size="256"/>
+          <Column id="chgSeq" type="STRING" size="256"/>
+          <Column id="id" type="STRING" size="256"/>
+          <Column id="formId" type="STRING" size="256"/>
+          <Column id="title" type="STRING" size="256"/>
+          <Column id="subjId" type="STRING" size="256"/>
+          <Column id="subtitle" type="STRING" size="256"/>
+          <Column id="body" type="STRING" size="256"/>
+          <Column id="approvalDiv" type="STRING" size="256"/>
+          <Column id="approvalUserid" type="STRING" size="256"/>
+          <Column id="approvalDt" type="STRING" size="256"/>
+          <Column id="userId" type="STRING" size="256"/>
+          <Column id="updDt" type="STRING" size="256"/>
+          <Column id="chk" type="STRING" size="256"/>
+          <Column id="rowStatus" type="STRING" size="256"/>
+          <Column id="vouNo" type="STRING" size="256"/>
+          <Column id="strElecId" type="STRING" size="256"/>
+          <Column id="strAcntYy" type="STRING" size="256"/>
+          <Column id="msg" type="STRING" size="256"/>
+          <Column id="procCd" type="STRING" size="256"/>
+          <Column id="userIp" type="STRING" size="256"/>
+          <Column id="userPgm" type="STRING" size="256"/>
+          <Column id="cfmDt" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_elec"/>
+      <Dataset id="ds_ac_vou_link">
+        <ColumnInfo>
+          <Column id="acntUnt" type="STRING" size="256"/>
+          <Column id="acntYy" type="STRING" size="256"/>
+          <Column id="vouNo" type="STRING" size="256"/>
+          <Column id="vouOrgId" type="STRING" size="256"/>
+          <Column id="staCd" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Bind>
+      <BindItem id="item8" compid="div_search.S_ACNT_YY" propid="value" datasetid="ds_ac_vou" columnid="acntYy"/>
+      <BindItem id="item9" compid="div_search.S_ACNT_UNT" propid="value" datasetid="ds_ac_vou" columnid="acntUnt"/>
+      <BindItem id="item5" compid="edt_bizNm" propid="value" datasetid="ds_acntList" columnid="acntIncNm"/>
+      <BindItem id="item1" compid="SearchDiv.S_ACNT_YY" propid="value" datasetid="ds_cmd_acnt_yy" columnid="acntYy"/>
+      <BindItem id="item0" compid="tab01.tabpage1.div_search.D_VOU_TTL" propid="value" datasetid="ds_ac_vou" columnid="vouTtl"/>
+      <BindItem id="item2" compid="tab01.tabpage1.div_info.S_APLY_DT" propid="value" datasetid="ds_ac_vou" columnid="aplyDt"/>
+      <BindItem id="item3" compid="tab01.tabpage1.div_info.S_APLY_USER_NM" propid="value" datasetid="ds_ac_vou" columnid="aplyUserIdNm"/>
+      <BindItem id="item4" compid="tab01.tabpage1.div_info.S_APLY_USER_ID" propid="value" datasetid="ds_ac_vou" columnid="aplyUserId"/>
+      <BindItem id="item6" compid="tab01.tabpage1.div_search.S_VOU_KND" propid="value" datasetid="ds_ac_vou" columnid="vouKnd"/>
+      <BindItem id="item7" compid="tab01.tabpage1.div_search.S_STA_CD" propid="value" datasetid="ds_ac_vou" columnid="staCd"/>
+      <BindItem id="item10" compid="div_search.S_VOU_NO" propid="value" datasetid="ds_ac_vou" columnid="vouNo"/>
+      <BindItem id="item11" compid="div_search.S_VOU_ORG_ID" propid="value" datasetid="ds_ac_vou" columnid="vouOrgId"/>
+      <BindItem id="item12" compid="tab01.tabpage1.div_info.D_CTRL_USER_NM" propid="value" datasetid="ds_ac_vou" columnid="ctrlUserIdNm"/>
+      <BindItem id="item13" compid="tab01.tabpage1.div_info.D_CTRL_USER_ID" propid="value" datasetid="ds_ac_vou" columnid="ctrlUserId"/>
+      <BindItem id="item14" compid="tab01.tabpage1.div_info.D_CTRL_DT" propid="value" datasetid="ds_ac_vou" columnid="approvalDt"/>
+      <BindItem id="item15" compid="tab01.tabpage1.div_info.D_RECV_DT" propid="value" datasetid="ds_ac_vou" columnid="recvDt"/>
+      <BindItem id="item17" compid="tab01.tabpage1.div_info.D_RECV_USER_NM" propid="value" datasetid="ds_ac_vou" columnid="recvUserIdNm"/>
+      <BindItem id="item18" compid="tab01.tabpage1.div_info.D_RECV_USER_ID" propid="value" datasetid="ds_ac_vou" columnid="recvUserId"/>
+      <BindItem id="item19" compid="tab01.tabpage1.div_info.D_SLIP_CFM_DT" propid="value" datasetid="ds_ac_vou" columnid="slipCfmDt"/>
+      <BindItem id="item20" compid="tab01.tabpage1.div_search.D_APLY_AMT_SUM" propid="value" datasetid="ds_ac_vou" columnid="aplyAmtSum"/>
+      <BindItem id="item21" compid="tab01.tabpage1.div_search.D_ORIGY_VOU" propid="value" datasetid="ds_ac_vou" columnid="origyVouNo"/>
+      <BindItem id="item22" compid="tab01.tabpage1.div_search.preExpYn" propid="value" datasetid="ds_ac_vou" columnid="preExpYn"/>
+      <BindItem id="item16" compid="D_DRAFT_DESC" propid="value" datasetid="ds_ac_vou" columnid="draftDesc"/>
+    </Bind>
+    <Script type="xscript5.0"><![CDATA[// [프로젝트]	동의대학교 예산회계시스템 구축
+// [시스템명]	행정
+// [부시스템]	회계관리
+// [프로그램]	결의관리 > 결의서등록 > 결의서등록 팝업
+// [설명] 
+//	         
+// [작성자명]	박 태 희
+// [작성일자]	2015-12-27
+//////////////////////////////////[수정이력]//////////////////////////////////
+// [수정일자] 2016-03-03
+// [수 정 자] 박 태 희
+// [수정내용] 1. 계정대체 추가
+//             2. 자금대체 추가
+//             3. 결산대체 추가
+//
+// [수정일자] 2016-03-21
+// [수 정 자] 박 태 희
+// [수정내용] 연계ID 추가 (단위업무 연동)
+
+include "commJs::commonUtils.xjs";
+include "commJs::commonGrid.xjs";
+include "commJs::admiCommon.xjs";
+
+var F_ROLE_CD = this.parent.ROLE_CD;			//사용자권한
+
+//var F_FORM_FLAG = this.parent.FORM_FLAG;		//화면구분(팝업이 어느 화면에서 호출되었는지)
+var F_FORM_FLAG = "1";												//1:결의서등록
+												//2:예산통제관리
+
+var F_FLAG = application.gv_f_flag;					//2:등록
+												//0:조회(ROW_STATUS)
+												
+//var F_ACNT_YY = this.parent.ACNT_YY;			//회계년도
+//var F_ACNT_UNT = this.parent.ACNT_UNT;			//회계단위
+//var F_VOU_NO = this.parent.VOU_NO;				//결의번호
+
+var F_ACNT_YY = "";			//회계년도
+var F_ACNT_UNT = "";			//회계단위
+var F_VOU_NO = "";				//결의번호
+
+//var F_VOU_ORG_ID = this.parent.VOU_ORG_ID;		//결의부서
+//var F_VOU_KND = this.parent.VOU_KND;			//결의종류
+//var F_STA_CD = this.parent.STA_CD;				//진행상태
+//var F_LINK_ID = this.parent.LINK_ID;			//연계ID
+
+var F_VOU_ORG_ID = "";		//결의부서
+var F_STA_CD = "";				//진행상태
+var F_LINK_ID = application.gv_link_id;			//연계ID
+
+//2016.02.03
+var autoClose = this.gfn_nvl(this.parent.autoClose,false);		//자동종료옵션
+var autoSearch = this.gfn_nvl(this.parent.autoSearch,false);	//자동조회옵션
+
+var sMemberNo = application.gds_user.getColumn(application.gds_user.rowposition, "memberNo");	//사용자ID
+var sNm = application.gds_user.getColumn(application.gds_user.rowposition, "nm");				//사용자명
+var sIpAddr = application.gds_user.getColumn(application.gds_user.rowposition, "ipAddr");		//사용자IP
+
+var gAcntYy = "";
+var gAcntUnt = "";
+var gVouNo = "";
+
+var strAcntYy = "";
+var strAcntUnt = "";
+var strVouNo = "";
+var strVouOrgId = "";
+var strVouKnd = "";
+var strStaCd = "";
+var strLinkId = "";
+
+var strBalDiv = "";
+var strDrcrCd = "";
+
+var strFormFlag = "";
+
+var strLinkId = "";
+
+this.ac02010_p01_onload = function(obj:Form, e:nexacro.LoadEventInfo)
+{
+	var arrDataSet = Array(2);
+		arrDataSet[0]  = "ds_cmb_vou_knd";	//결의종류
+		arrDataSet[1]  = "ds_cmb_sta_cd";  //진행상태
+		
+	
+	var arrGrpCd = Array(2);
+		arrGrpCd[0]  = "AC001";
+		arrGrpCd[1]  = "AC002";
+		
+
+	// 사용여부	지정할 아큐먼트를 넘긴다.
+	var arrUseYn =	Array(2);
+		arrUseYn[0]  =	"Y";
+		arrUseYn[1]  =	"Y";
+		
+	
+	// T:전체,S:선택,X:없음 
+	var arrModeFg =	Array(2);
+		arrModeFg[0]  =	"X";
+		arrModeFg[1]  =	"X";
+		
+	
+	// WHERE절 내용 "X":없음
+	var arrWhere =	Array(2);
+		arrWhere[0]  =	"X";
+		arrWhere[1]  =	"X";
+		
+	/* 메소드명     : ComboLoad
+	 * 설명			 : 공통코드 테이블을 조회하여 콤보박스를 생성한다.
+	 * 메소드인수1  : DataSet명의 배열
+	 * 메소드인수2  : 그룹코드번호의 배열
+	 * 메소드인수3  : 캠퍼스구분 배열 ("T":전체, "C":공통만, "S":서울, "K":경주)
+	 * 메소드인수4  : 조건문의 배열 (1:사용, 0:사용안함)
+	 * 메소드인수5  : 전체공란 첨부여부 "T": 전체, "S":선택, "X" : 데이터시작
+	 * 메소드인수6  : WHERE절 내용 "X":없음
+	 */
+
+ 	this.gfn_comboLoad(arrDataSet, arrGrpCd, arrUseYn, arrModeFg, arrWhere);
+	
+	//회계년도Combo
+	this.cfn_acntYy("ds_cmb_acnt_yy");
+	
+	//회계단위Combo
+	this.cfn_acntUntCombo("ds_acntUntCmb", "", "", "", "0", "ac02010_p01");
+	
+	//결의부서Combo
+	this.gfn_findDeptCombo("ds_cmb_dept");
+	
+}
+
+//온로드 후처리
+this.fn_postLoad = function()
+{
+	
+	this.fn_link_search();
+	
+	this.fn_setting();
+	
+	this.tab01.tabpage2.set_async(false);
+	
+	this.gfn_bindCmmnFunction();
+	
+	this.fn_vou_det_biz_cnt();
+	
+	this.fn_elec_search();
+}
+
+this.fn_link_search = function(){
+		var strArg  = "linkId=" + nexacro.wrapQuote(F_LINK_ID);
+
+		this.gfn_transaction("LINK",
+							 "txComUrl::com/admi/ac02/selectAc02010p01_01_link.do",
+							 "",
+							 "ds_ac_vou_link=resultList",
+							 strArg,
+							 "fn_callBack",
+							 false);
+							 				 
+}
+
+// this.fn_link_post_search = function(){
+// 	
+// 	var F_ACNT_YY = this.ds_ac_vou_link.getColumn(0,"acntYy");			//회계년도
+// 	var F_ACNT_UNT = this.ds_ac_vou_link.getColumn(0,"acntUnt");			//회계단위
+// 	var F_VOU_NO = this.ds_ac_vou_link.getColumn(0,"vouNo");				//결의번호
+// 	var F_VOU_ORG_ID = this.ds_ac_vou_link.getColumn(0,"vouOrgId");		//결의부서
+// 	var F_STA_CD = this.ds_ac_vou_link.getColumn(0,"staCd");				//진행상태
+// 	
+// 	
+// 	this.fn_setting();
+// }
+this.fn_setting = function()
+{
+	var F_ACNT_YY = this.ds_ac_vou_link.getColumn(0,"acntYy");			//회계년도
+	var F_ACNT_UNT = this.ds_ac_vou_link.getColumn(0,"acntUnt");			//회계단위
+	var F_VOU_NO = this.ds_ac_vou_link.getColumn(0,"vouNo");				//결의번호
+	var F_VOU_ORG_ID = this.ds_ac_vou_link.getColumn(0,"vouOrgId");		//결의부서
+	var F_STA_CD = this.ds_ac_vou_link.getColumn(0,"staCd");				//진행상태
+	
+	
+	//결의서등록 "추가"
+	if(F_FLAG == "2")	{
+		this.gfn_addRow(this.ds_ac_vou);
+		
+		this.ds_ac_vou.setColumn(0, "rowStatus", F_FLAG);
+				
+		this.ds_ac_vou.setColumn(0, "acntYy", F_ACNT_YY); // 회계년도
+		this.ds_ac_vou.setColumn(0, "acntUnt", F_ACNT_UNT); // 회계단위
+		this.ds_ac_vou.setColumn(0, "vouNo", F_VOU_NO); // 결의번호
+		this.ds_ac_vou.setColumn(0, "vouOrgId", F_VOU_ORG_ID); // 결의부서
+		
+		//this.ds_ac_vou.setColumn(0, "vouKnd", F_VOU_KND); // 결의종류
+		this.ds_ac_vou.setColumn(0, "staCd", F_STA_CD); // 진행상태
+		//this.ds_ac_vou.setColumn(0, "linkId", F_LINK_ID); // 연계ID
+		
+		/*
+		//신청정보는 [예산통제신청]시 처리 2016-02-03 박태희
+		this.ds_ac_vou.setColumn(0, "aplyDt", this.gfn_getCurrentDate()); // 신청일자
+	
+		this.ds_ac_vou.setColumn(0, "aplyUserId", sMemberNo); // 신청자
+		this.ds_ac_vou.setColumn(0, "aplyUserIdNm", sNm); // 신청자명
+		*/
+		
+		this.ds_ac_vou.setColumn(0, "insertIp", sIpAddr);
+		this.ds_ac_vou.setColumn(0, "insertId", sMemberNo);
+		this.ds_ac_vou.setColumn(0, "insertPgms", "ac02010_p01.xfdl");
+		
+		this.fn_setEnable(F_FLAG);
+		this.fn_staCdChg();
+	} 
+	else if(F_FLAG == "0")	{
+		
+		this.gfn_addRow(this.ds_ac_vou);
+		
+		this.ds_ac_vou.setColumn(0, "rowStatus", F_FLAG);
+				
+		this.ds_ac_vou.setColumn(0, "acntYy", F_ACNT_YY); // 회계년도
+		this.ds_ac_vou.setColumn(0, "acntUnt", F_ACNT_UNT); // 회계단위
+		this.ds_ac_vou.setColumn(0, "vouNo", F_VOU_NO); // 결의번호
+				
+		this.fn_Search();
+		
+		this.fn_setEnable(F_FLAG);
+		this.fn_staCdChg();
+	}
+}
+
+
+
+//서버 통신 후 callBack
+this.fn_callBack = function(trId, errCd, errMsg)
+{
+	if(errCd < 0)
+	{
+		this.gfn_message("A", errMsg);
+ 	}
+ 	else
+ 	{
+		if(trId=="LOAD")
+		{
+			this.fn_postLoad();
+ 		}
+  		else if(trId == "SEARCH")
+  		{
+			this.fn_postSearch();
+  		}
+		else if(trId == "SAVE")
+		{
+ 			this.fn_postSave();
+ 		}
+ 		else if(trId == "RUN")
+ 		{
+			gAcntYy = this.ds_result.getColumn(0, "OUT_ACNT_YY");
+			gAcntUnt = this.ds_result.getColumn(0, "OUT_ACNT_UNT");
+			gVouNo = this.ds_result.getColumn(0, "OUT_VOU_NO");
+			this.fn_postRun();
+			this.fn_Search();
+		}
+		else if(trId == "DEL")
+		{
+			this.fn_postDel();
+		}
+		else if(trId == "VOU_RCL_SEARCH")
+		{
+			
+		}
+		else if(trId == "VOU_DET_BILL_INC_EVDC_CNT")
+		{
+			
+		}
+		else if(trId == "P_AC_STA_CD_PROC")
+		{
+			this.fn_postP_AC_STA_CD_PROC();
+		}
+		else if(trId == "VOU_DET_BIZ_CNT")
+		{
+			
+		}
+		else if(trId == "APPROVAL")
+		{
+			this.fn_postApproval();
+		}
+// 		else if(trId == "LINK")
+// 		{
+// 			this.fn_link_post_search();
+// 		}
+	}
+}
+
+/*********************************************************************
+ * 함 수 명 	: fn_postApproval
+ * 함수설명 	: DataSet을 저장 후 처리 함수.
+ *********************************************************************/
+this.fn_postApproval = function()
+{
+	//trace(this.ds_elec.saveXML());
+	
+	var OUT_CNT = "";
+	var OUT_MSG = "";
+	
+	OUT_CNT = this.ds_elec.getColumn(0, "OUT_CNT");
+	OUT_MSG = this.ds_elec.getColumn(0, "OUT_MSG");
+	
+	if(OUT_CNT == 0)
+	{
+		this.gfn_message("A", OUT_MSG);
+		
+		system.execBrowser("https://gw.deu.ac.kr/frmLinkageTransfer1.aspx?linkkey="+this.ds_elec.getColumn(0,"id")+"&userid="+this.ds_elec.getColumn(0,"userId")+"");
+		this.close("close");
+	}
+	else
+	{
+		this.gfn_message("A", OUT_MSG);
+		
+		return false;
+	}
+}
+
+//진행상태 처리 SP 후처리
+this.fn_postP_AC_STA_CD_PROC = function()
+{
+	var OUT_CNT = "";
+	var OUT_MSG = "";
+	
+	OUT_CNT = this.ds_P_AC_STA_CD_PROC_result.getColumn(0, "OUT_CNT");
+	OUT_MSG = this.ds_P_AC_STA_CD_PROC_result.getColumn(0, "OUT_MSG");
+	
+	if(OUT_CNT == 0)
+	{
+		this.gfn_message("A", OUT_MSG);
+		
+		this.close(this.ac02010_p01_purc);
+		//this.fn_Search();
+	}
+	else
+	{
+		this.gfn_message("A", OUT_MSG);
+		
+		return false;
+	}
+}
+
+//조회버튼 이벤트
+this.tab01_tabpage1_btn_Search_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_Search();
+}
+
+//조회 전 처리
+this.fn_preSearch = function()
+{
+	return true;
+}
+
+//조회 액션
+this.fn_Search = function()
+{	
+	if(this.fn_preSearch()) {
+ 		 		
+		if(gAcntYy == "")
+		{
+			gAcntYy = this.div_search.S_ACNT_YY.value;
+		}
+		
+		if(gAcntUnt == "")
+		{
+			gAcntUnt = this.div_search.S_ACNT_UNT.value;
+		}
+		
+		if(gVouNo == "")
+		{
+			gVouNo = this.div_search.S_VOU_NO.value;
+		}
+		
+		var strArg  = "acntYy=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(gAcntYy));
+			strArg += " acntUnt=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(gAcntUnt));
+			strArg += " vouNo=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(gVouNo));
+		  		
+		this.gfn_transaction("SEARCH",
+							 "txComUrl::com/admi/ac02/selectAc02010p01_01.do",
+							 "",
+							 "ds_ac_vou=resultList",
+							 strArg,
+							 "fn_callBack");
+ 		
+	}
+}
+
+
+//조회 후 처리
+this.fn_postSearch = function()
+{
+	this.fn_vouRclSearch();
+	
+	this.fn_vou_det_bill_inc_evdc_cnt();
+}
+
+//반려이력 조회
+this.fn_vouRclSearch = function()
+{
+	var strArg  = "acntYy=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(gAcntYy));
+		strArg += " acntUnt=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(gAcntUnt));
+		strArg += " vouNo=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(gVouNo));
+			
+	this.gfn_transaction("VOU_RCL_SEARCH",
+						 "txComUrl::com/admi/ac02/selectAc02010p01_02.do",
+						 "",
+						 "ds_ac_vou_rcl=resultList",
+						 strArg,
+						 "fn_callBack");
+}
+
+
+
+
+
+
+//저장버튼 클릭
+this.tab01_tabpage1_btn_Save_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	this.fn_Save();
+}
+
+//저장 전 처리
+this.fn_preSave = function()
+{
+	if(!this.gfn_isUpdate(this.ds_ac_vou)){
+		this.gfn_message("A", "변경된 데이터가 없습니다.");
+		return false;
+	}
+
+ 	//데이터 중복 체크
+	if(!this.gfn_chkValidation("ds_ac_vou", "acntUnt$acntYy$vouNo", "회계단위, 회계연도, 기안번호")){
+		return false;
+	}
+		
+ 	//필수값 입력 체크
+	if(this.tab01.tabpage1.div_search.S_VOU_KND.value == "31")
+	{
+		var colNm = "vouKnd$vouTtl$origyVouNo";
+		var korNm = "*기안종류$*기안제목$*원결의번호";
+	}
+	else
+	{
+		var colNm = "vouKnd$vouTtl";
+		var korNm = "*기안종류$*기안제목$";
+	}
+	
+	var cmpNm = " $ ";
+
+	var result = this.gfn_chkEssItem("ds_ac_vou", colNm, korNm, cmpNm);
+	if (result[0] != "success") {
+		this.gfn_message("A", result[0]);
+		
+		/*
+		this.ds_ac_vou.set_rowposition(result[1]);
+		if(result[3] != ""){
+			this.objects[result[3]].setFocus();
+		}
+		*/
+		
+		return false;	
+	}
+	
+	return true;	
+}
+
+//저장 액션
+this.fn_Save = function()
+{
+	if(this.fn_preSave()){
+		
+		//결의서등록 > 저장
+		if(F_FLAG == "2")	{
+		
+			var addRow = this.ds_ac_vou_insert.addRow();	
+			
+			this.ds_ac_vou_insert.setColumn(addRow, "rowStatus", this.ds_ac_vou.getColumn(0, "rowStatus"));
+			this.ds_ac_vou_insert.setColumn(addRow, "acntYy", this.ds_ac_vou.getColumn(0, "acntYy"));
+			this.ds_ac_vou_insert.setColumn(addRow, "acntUnt", this.ds_ac_vou.getColumn(0, "acntUnt"));
+			this.ds_ac_vou_insert.setColumn(addRow, "vouOrgId", this.ds_ac_vou.getColumn(0, "vouOrgId"));
+			this.ds_ac_vou_insert.setColumn(addRow, "vouKnd", this.ds_ac_vou.getColumn(0, "vouKnd"));
+			this.ds_ac_vou_insert.setColumn(addRow, "vouTtl", this.ds_ac_vou.getColumn(0, "vouTtl"));
+			this.ds_ac_vou_insert.setColumn(addRow, "draftDesc", this.ds_ac_vou.getColumn(0, "draftDesc"));
+			this.ds_ac_vou_insert.setColumn(addRow, "staCd", this.ds_ac_vou.getColumn(0, "staCd"));
+			this.ds_ac_vou_insert.setColumn(addRow, "aplyUserId", this.ds_ac_vou.getColumn(0, "aplyUserId"));
+			this.ds_ac_vou_insert.setColumn(addRow, "aplyDt", this.ds_ac_vou.getColumn(0, "aplyDt"));
+			this.ds_ac_vou_insert.setColumn(addRow, "approUserId", this.ds_ac_vou.getColumn(0, "approUserId"));
+			this.ds_ac_vou_insert.setColumn(addRow, "approDt", this.ds_ac_vou.getColumn(0, "approDt"));
+			this.ds_ac_vou_insert.setColumn(addRow, "ctrlUserId", this.ds_ac_vou.getColumn(0, "ctrlUserId"));
+			this.ds_ac_vou_insert.setColumn(addRow, "ctrlDt", this.ds_ac_vou.getColumn(0, "ctrlDt"));
+			this.ds_ac_vou_insert.setColumn(addRow, "slipNo", this.ds_ac_vou.getColumn(0, "slipNo"));
+			this.ds_ac_vou_insert.setColumn(addRow, "slipCfmDt", this.ds_ac_vou.getColumn(0, "slipCfmDt"));
+			this.ds_ac_vou_insert.setColumn(addRow, "recvUserId", this.ds_ac_vou.getColumn(0, "recvUserId"));
+			this.ds_ac_vou_insert.setColumn(addRow, "recvDt", this.ds_ac_vou.getColumn(0, "recvDt"));
+			this.ds_ac_vou_insert.setColumn(addRow, "fileId", this.ds_ac_vou.getColumn(0, "fileId"));
+			this.ds_ac_vou_insert.setColumn(addRow, "linkId", this.ds_ac_vou.getColumn(0, "linkId"));
+			this.ds_ac_vou_insert.setColumn(addRow, "origyVouNo", this.ds_ac_vou.getColumn(0, "origyVouNo"));
+			this.ds_ac_vou_insert.setColumn(addRow, "preExpYn", this.ds_ac_vou.getColumn(0, "preExpYn"));
+			this.ds_ac_vou_insert.setColumn(addRow, "insertId", sMemberNo);
+			this.ds_ac_vou_insert.setColumn(addRow, "insertIp", sIpAddr);
+			this.ds_ac_vou_insert.setColumn(addRow, "insertPgms", "ac02010_p01.xfdl");
+					
+			this.gfn_transaction("RUN",
+								 "txComUrl::com/admi/ac02/saveVouNoSp.do",
+								 "resultList=ds_ac_vou_insert:u",
+								 "ds_result=resultList",
+								 //strArg,
+								 "",
+								 "fn_callBack");
+		}
+		//조회 > 저장
+		else if(F_FLAG == "0")	{
+			this.gfn_transaction("SAVE",
+							  "txComUrl::com/admi/ac02/saveAc02010p01_01.do",
+							  "resultList=ds_ac_vou:u",
+							  "",
+							  "",
+							 "fn_callBack");
+		}
+		
+	}
+}
+
+//저장 후 처리
+this.fn_postSave = function()
+{
+	this.gfn_message("A", "저장이 완료되었습니다.");
+	
+	F_FLAG = "0";
+	this.fn_setEnable(F_FLAG);
+	this.fn_staCdChg();
+}
+
+//결의서등록 > 저장 (SP) 후 처리
+this.fn_postRun = function()
+{
+	this.gfn_message("A", "기안 저장이 완료되었습니다.");
+	
+	F_FLAG = "0";
+	this.fn_setEnable(F_FLAG);
+	this.fn_staCdChg();
+	
+}
+
+
+
+
+
+
+
+
+
+//삭제버튼 이벤트
+this.tab01_tabpage1_btn_Del_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	if(this.ds_ac_vou.getColumn(0, "staCd") != "11")
+	{
+		this.gfn_message("A", "진행상태가 '작성'일 경우만 삭제 가능 합니다.");
+		return false;
+	}
+	
+	//결의(상세)내역, 증빙, 원천 cnt (계정별이 아닌, 결의번호 기준)
+	this.fn_vou_det_bill_inc_evdc_cnt();
+	
+	//결의(상세)내역 존재여부
+	if(this.ds_vou_det_bill_inc_evdc_cnt.getColumn(0, "acVouDetCnt") > 0)
+	{
+		this.gfn_message("A", "기안(상세)내역이 존재할 경우 삭제 할수 없습니다.\n기안(상세)내역을 삭제 하십시요.");
+		return false;
+	}
+	
+	//증빙내역 존재여부
+	if(this.ds_vou_det_bill_inc_evdc_cnt.getColumn(0, "acBillEvdcCnt") > 0)
+	{
+		this.gfn_message("A", "증빙내역이 존재할 경우 삭제 할수 없습니다.\n관리자에게 문의 바랍니다.");
+		return false;
+	}
+	
+	//원천세 존재여부
+	if(this.ds_vou_det_bill_inc_evdc_cnt.getColumn(0, "acIncEvdcCnt") > 0)
+	{
+		this.gfn_message("A", "원천세가 존재할 경우 삭제 할수 없습니다.\n관리자에게 문의 바랍니다.");
+		return false;
+	}
+	
+	//계좌내역(입금) 존재여부
+	if(this.ds_vou_det_bill_inc_evdc_cnt.getColumn(0, "acRcptDescCnt") > 0)
+	{
+		this.gfn_message("A", "계좌내역(입금) 존재할 경우 삭제 할수 없습니다.\n관리자에게 문의 바랍니다.");
+		return false;
+	}
+	
+	this.ds_ac_vou.setColumn(0, "chk", "1");
+		
+	if(!this.gfn_deleteRow(this.ds_ac_vou, "this.fn_Del()")) 
+	{
+		this.ds_ac_vou.reset();	//alert 취소시
+	}
+}
+
+//삭제 액션
+this.fn_Del = function()
+{
+	this.gfn_transaction("DEL",
+						  "txComUrl::com/admi/ac02/saveAc02010p01_01.do",
+						  "resultList=ds_ac_vou:u",
+						  "",
+						  "",
+						 "fn_callBack");	
+}
+
+//삭제 후 처리
+this.fn_postDel = function()
+{
+	this.close("close");
+}
+
+
+//컴포넌트 통제
+this.fn_setEnable = function(flag)
+{
+	//결의서 등록 상태일경우
+	if(flag == "2")	
+	{
+		this.tab01.tabpage1.btn_Search.set_visible(false);	//조회버튼F
+		this.tab01.tabpage1.btn_Del.set_visible(false);		//삭제버튼F
+		this.tab01.tabpage1.btn_Save.set_visible(true);		//저장버튼T
+		this.fn_staCdChg();
+		
+		this.tab01.tabpage1.div_search.S_VOU_KND.set_enable(true);	//결의종류T
+				
+		this.btn_StaCd_R.set_visible(false);	//진행상태버튼F
+		this.btn_StaCd_R.set_text("");
+	}
+	//결의서 조회 상태일경우
+	else if (flag == "0") 
+	{
+		this.tab01.tabpage1.div_search.S_VOU_KND.set_enable(false);	//결의종류F
+				
+		/*
+		작성11 : Y : 예산통제신청
+		예산통제신청21 : C : 예산통제회수
+		예산통제승인22 : Y : 전자결재신청
+		예산통제반려23 : Y : 예산통제신청
+		전자결제신청31 : C : 전자결재회수
+		전자결제반려33 : Y : 전자결재신청
+		접수반려42 : Y : 접수신청
+		
+		*/
+
+		//작성11 : Y : 결의접수신청
+		if(this.ds_ac_vou.getColumn(0, "staCd") == "11")
+		{
+			this.btn_StaCd_R.set_visible(true);			        //진행상태버튼T
+			this.btn_StaCd_R.set_text("결의접수신청");
+			
+			//자금대체 결의서일경우 작성후 전자결재신청 상태 처리
+// 			if(this.ds_ac_vou.getColumn(0, "vouKnd") == "32")
+// 			{
+// 				this.btn_StaCd_R.set_text("전자결재신청");
+//			}
+			//예산통제신청의 필요가 없어짐	16-04-28 라병수
+// 			else
+// 			{
+// 				this.btn_StaCd_R.set_text("예산통제신청");
+// 			}
+
+			
+			
+			//결의내역tab
+			this.tab01.tabpage1.btn_Search.set_visible(true);	//조회버튼T
+			this.tab01.tabpage1.btn_Del.set_visible(true);		//삭제버튼T
+			this.tab01.tabpage1.btn_Save.set_visible(true);	    //저장버튼T
+			this.fn_staCdChg();
+			
+			this.tab01.tabpage1.div_search.D_VOU_TTL.set_enable(true);	//결의제목T
+			//this.tab01.tabpage1.div_info.D_DRAFT_DESC.set_enable(true);	//기안내역T
+
+		}
+		
+		//예산통제신청의 필요가 없어짐	16-04-28 라병수
+		//예산통제신청21 : C : 예산통제회수
+// 		else if(this.ds_ac_vou.getColumn(0, "staCd") == "21")
+// 		{
+// 			this.btn_StaCd_R.set_visible(true);			        //진행상태버튼T
+// 			this.btn_StaCd_R.set_text("예산통제회수");
+// 			
+// 			//결의내역tab
+// 			this.tab01.tabpage1.btn_Search.set_visible(false);	//조회버튼F
+// 			this.tab01.tabpage1.btn_Del.set_visible(false);		//삭제버튼F
+// 			this.tab01.tabpage1.btn_Save.set_visible(false);	//저장버튼F
+// 			
+// 			this.tab01.tabpage1.div_search.D_VOU_TTL.set_enable(false);	//결의제목F
+// 			this.tab01.tabpage1.div_info.D_DRAFT_DESC.set_enable(false);	//기안내역F
+// 		}
+		
+		//예산통제승인22 : Y : 전자결재신청
+// 		else if(this.ds_ac_vou.getColumn(0, "staCd") == "22")
+// 		{
+// 			this.btn_StaCd_R.set_visible(true);			//진행상태버튼T
+// 			this.btn_StaCd_R.set_text("전자결재신청");
+// 			
+// 			//결의내역tab
+// 			this.tab01.tabpage1.btn_Search.set_visible(false);	//조회버튼F
+// 			this.tab01.tabpage1.btn_Del.set_visible(false);		//삭제버튼F
+// 			this.tab01.tabpage1.btn_Save.set_visible(false);	//저장버튼F
+// 			
+// 			this.tab01.tabpage1.div_search.D_VOU_TTL.set_enable(false);	//결의제목F
+// 			this.tab01.tabpage1.div_info.D_DRAFT_DESC.set_enable(false);	//기안내역F
+// 		}
+		
+		//예산통제반려23 : Y : 예산통제신청
+// 		else if(this.ds_ac_vou.getColumn(0, "staCd") == "23")
+// 		{
+// 			this.btn_StaCd_R.set_visible(true);			        //진행상태버튼T
+// 			this.btn_StaCd_R.set_text("예산통제신청");
+// 			
+// 			//결의내역tab
+// 			this.tab01.tabpage1.btn_Search.set_visible(true);	//조회버튼T
+// 			this.tab01.tabpage1.btn_Del.set_visible(true);		//삭제버튼T
+// 			this.tab01.tabpage1.btn_Save.set_visible(true);		//저장버튼T
+// 			
+// 			this.tab01.tabpage1.div_search.D_VOU_TTL.set_enable(true);	//결의제목T
+// 			this.tab01.tabpage1.div_info.D_DRAFT_DESC.set_enable(true);	//기안내역T
+// 		}
+		
+		//전자결재승인대기 32 : C : 결의접수취소
+		else if(this.ds_ac_vou.getColumn(0, "staCd") == "32")
+		{			
+			this.btn_StaCd_R.set_visible(true);			        //진행상태버튼T
+			this.btn_StaCd_R.set_text("결의접수취소");
+			
+			//결의내역tab
+			this.tab01.tabpage1.btn_Search.set_visible(false);	//조회버튼T
+			this.tab01.tabpage1.btn_Del.set_visible(false);		//삭제버튼F
+			this.tab01.tabpage1.btn_Save.set_visible(false);	//저장버튼F
+			
+			this.tab01.tabpage1.div_search.D_VOU_TTL.set_enable(false);	//결의제목F
+			//this.tab01.tabpage1.div_info.D_DRAFT_DESC.set_enable(false);	//기안내역F
+		}
+		
+		//전자결제반려33 : Y : 전자결재신청
+// 		else if (this.ds_ac_vou.getColumn(0, "staCd") == "33") 
+// 		{
+// 			this.btn_StaCd_R.set_visible(true);			        //진행상태버튼T
+// 			this.btn_StaCd_R.set_text("전자결재신청");
+// 			
+// 			//결의내역tab
+// 			this.tab01.tabpage1.btn_Search.set_visible(false);	//조회버튼T
+// 			this.tab01.tabpage1.btn_Del.set_visible(false);		//삭제버튼F
+// 			this.tab01.tabpage1.btn_Save.set_visible(false);	//저장버튼F
+// 			
+// 			this.tab01.tabpage1.div_search.D_VOU_TTL.set_enable(false);	//결의제목F
+// 			this.tab01.tabpage1.div_info.D_DRAFT_DESC.set_enable(false);	//기안내역F
+// 		}
+
+		//접수반려42 : Y : 접수신청
+// 		else if (this.ds_ac_vou.getColumn(0, "staCd") == "42") 
+// 		{
+// 			this.btn_StaCd_R.set_visible(true);			//진행상태버튼T
+// 			this.btn_StaCd_R.set_text("접수신청");
+// 			
+// 			//결의내역tab
+// 			this.tab01.tabpage1.btn_Search.set_visible(true);	//조회버튼T
+// 			this.tab01.tabpage1.btn_Del.set_visible(false);		//삭제버튼F
+// 			this.tab01.tabpage1.btn_Save.set_visible(true);	//저장버튼T
+// 			
+// 			this.tab01.tabpage1.div_search.D_VOU_TTL.set_enable(true);	//결의제목T
+// 			this.tab01.tabpage1.div_info.D_DRAFT_DESC.set_enable(true);	//기안내역T
+// 		}
+				
+		else
+		{
+			this.btn_StaCd_R.set_visible(false);			//진행상태버튼F
+			this.btn_StaCd_R.set_text("");
+			
+			//결의내역tab
+			this.tab01.tabpage1.btn_Search.set_visible(false);	//조회버튼F
+			this.tab01.tabpage1.btn_Del.set_visible(false);		//삭제버튼F
+			this.tab01.tabpage1.btn_Save.set_visible(false);	//저장버튼F
+			
+			this.tab01.tabpage1.div_search.D_VOU_TTL.set_enable(false);	//결의제목F
+			//this.tab01.tabpage1.div_info.D_DRAFT_DESC.set_enable(false);	//기안내역F
+		}
+	}
+	
+	//호출 parent 확인 (1:결의서등록, 2:결의서등록 외)
+	if(F_FORM_FLAG == "2")
+	{
+		this.btn_StaCd_R.set_visible(false);	//진행상태버튼F
+		this.btn_StaCd_R.set_text("");
+		
+		this.tab01.tabpage1.btn_Search.set_visible(false);	//조회버튼F
+		this.tab01.tabpage1.btn_Del.set_visible(false);		//삭제버튼F
+		this.tab01.tabpage1.btn_Save.set_visible(false);		//저장버튼F
+		
+		this.tab01.tabpage1.div_search.S_VOU_KND.set_enable(false);		//결의종류F
+		this.tab01.tabpage1.div_search.D_VOU_TTL.set_enable(false);		//결의제목F
+		//this.tab01.tabpage1.div_info.D_DRAFT_DESC.set_enable(false);	//기안내역F
+		
+	}		
+	
+	//2016-03-03
+	if(this.ds_ac_vou.getColumn(0, "vouKnd") == "31")	// 결의종류
+	{
+		this.tab01.tabpage1.div_search.Static05.set_visible(true);
+		this.tab01.tabpage1.div_search.D_ORIGY_VOU.set_visible(true);
+	}
+	else
+	{
+		this.tab01.tabpage1.div_search.Static05.set_visible(false);
+		this.tab01.tabpage1.div_search.D_ORIGY_VOU.set_visible(false);
+	}
+			
+}
+
+//탭변경전
+this.tab01_canchange = function(obj:Tab, e:nexacro.TabIndexChangeEventInfo)
+{
+	if(this.ds_ac_vou.getRowType(this.ds_ac_vou.rowposition) != '1')
+	{
+		this.gfn_message("A", "기안내역 작성후 계정/증빙내역 작성이 가능 합니다.\n기안내역을 저장 하십시요.");
+		return false;
+	}
+	
+}
+
+
+//탭변경후
+this.tab01_onchanged = function(obj:Tab, e:nexacro.TabIndexChangeEventInfo)
+{
+	//결의상세 조회 키
+	/*var strArg  = "acntYy=" + nexacro.wrapQuote(gAcntYy);
+		strArg += " acntUnt=" + nexacro.wrapQuote(gAcntUnt);
+		strArg += " vouNo=" + nexacro.wrapQuote(gVouNo);
+	*/
+	
+	strAcntYy = this.ds_ac_vou.getColumn(0, "acntYy");
+	strAcntUnt = this.ds_ac_vou.getColumn(0, "acntUnt");
+	strVouNo = this.ds_ac_vou.getColumn(0, "vouNo");
+	strVouOrgId = this.ds_ac_vou.getColumn(0, "vouOrgId");
+	strVouKnd = this.ds_ac_vou.getColumn(0, "vouKnd");
+	strStaCd = this.ds_ac_vou.getColumn(0, "staCd");
+	
+	strBalDiv = this.ds_ac_vou.getColumn(0, "balDiv");
+	strDrcrCd = this.ds_ac_vou.getColumn(0, "drcrCd");
+	
+	strFormFlag = F_FORM_FLAG;
+	strLinkId = F_LINK_ID;
+		
+	if(obj.tabindex == 0)	//결의내역 (마스터)
+	{		
+		this.fn_Search();
+	}
+	else if(obj.tabindex == 1)	//계정/증빙내역
+	{		
+		//결의종류별 결의상세 tab div 호출
+		if(strVouKnd == "11" || strVouKnd == "22")	//수입, 여입
+		{
+			this.tab01.tabpage2.set_url("ac02::ac02010_p01_t01.xfdl");
+		}
+		else if(strVouKnd == "21" || strVouKnd == "12")	//지출, 수입환불
+		{
+			this.tab01.tabpage2.set_url("ac02::ac02010_p01_t02.xfdl");
+		}
+		else if(strVouKnd == "31")	//계정대체
+		{
+			this.tab01.tabpage2.set_url("ac02::ac02010_p01_t03.xfdl");
+		}
+		else if(strVouKnd == "32")	//자금대체
+		{
+			this.tab01.tabpage2.set_url("ac02::ac02010_p01_t04.xfdl");
+		}
+		else if(strVouKnd == "33")	//결산대체
+		{
+			this.tab01.tabpage2.set_url("ac02::ac02010_p01_t05.xfdl");
+		}
+		
+		//set_url 후 자동조회
+		this.tab01_onchanged_after(strAcntYy, strAcntUnt, strVouNo, strVouOrgId, strVouKnd, strStaCd, strBalDiv, strDrcrCd, strFormFlag, strLinkId);
+	}
+}
+
+this.tab01_onchanged_after = function(strAcntYy, strAcntUnt, strVouNo, strVouOrgId, strVouKnd, strStaCd, strBalDiv, strDrcrCd, strFormFlag, strLinkId)
+{
+		
+	this.tab01.tabpage2.fn_ds_gKey(strAcntYy, strAcntUnt, strVouNo, strVouOrgId, strVouKnd, strStaCd, strBalDiv, strDrcrCd, strFormFlag, strLinkId);
+}
+
+
+
+
+/*____________________________________________________________________________________________________________
+	
+	결의(상세)내역/증빙/원천세/계좌내역 건수 체크
+______________________________________________________________________________________________________________*/
+
+this.fn_vou_det_bill_inc_evdc_cnt = function()
+{
+	var strArg  = "acntYy=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(gAcntYy));
+		strArg += " acntUnt=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(gAcntUnt));
+		strArg += " vouNo=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(gVouNo));
+	//this.alert("strArg===>"+strArg);
+	this.gfn_transaction("VOU_DET_BILL_INC_EVDC_CNT",
+						 "txComUrl::com/admi/ac02/selectAc02010p01_03.do",
+						 "",
+						 "ds_vou_det_bill_inc_evdc_cnt=resultList",
+						 strArg,
+						 "fn_callBack");
+}
+
+
+/*____________________________________________________________________________________________________________
+	
+	결산대체 사업(예산) 건수 체크
+______________________________________________________________________________________________________________*/
+
+this.fn_vou_det_biz_cnt = function()
+{
+	var strArg  = "acntYy=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(gAcntYy));
+		strArg += " acntUnt=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(gAcntUnt));
+		strArg += " vouNo=" + nexacro.wrapQuote(this.gfn_getNullToEmpty(gVouNo));
+	//this.alert("strArg===>"+strArg);
+	this.gfn_transaction("VOU_DET_BIZ_CNT",
+						 "txComUrl::com/admi/ac02/selectAc02010p01_04.do",
+						 "",
+						 "ds_vou_det_biz_cnt=resultList",
+						 strArg,
+						 "fn_callBack",
+						 false);
+}
+
+
+//진행상태 처리 SP 전처리
+this.btn_StaCd_R_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	//처리코드
+	var inProcCd = "";
+	
+	//사업(예산) 존재여부
+	this.fn_vou_det_biz_cnt();
+	
+
+	//confirm
+	var bOK = this.gfn_message("C", this.btn_StaCd_R.text + " 을(를) 진행 하시겠습니까?");	
+		
+	if (bOK ==true)
+	{
+		//작성11 : Y : 결의접수신청
+		if(this.ds_ac_vou.getColumn(0, "staCd") == "11")
+		{		
+		//예산통제로직 제거 16.04.14 라병수
+// 			if(this.ds_ac_vou.getColumn(0, "vouKnd") == "33" && this.ds_vou_det_biz_cnt.getColumn(0, "bizCnt") == 0)
+// 			{
+// 				var bOK2 = this.gfn_message("C", "예산통제 대상 계정이 없습니다.\n바로 전자결재신청 을 진행 하시겠습니까?");
+// 				
+// 				if (bOK2 ==true)
+// 				{
+// 					inProcCd = "E";
+// 				}
+// 				else
+// 				{
+// 					return false;
+// 				}
+// 			}
+// 			else
+// 			{
+				inProcCd = "E";
+			//}
+		}
+		//예산통제신청21 : C : 예산통제회수
+// 		else if(this.ds_ac_vou.getColumn(0, "staCd") == "21")
+// 		{
+// 			inProcCd = "C";
+// 		}
+		//예산통제승인22 : Y : 전자결재신청
+// 		else if(this.ds_ac_vou.getColumn(0, "staCd") == "22")
+// 		{
+// 			//inProcCd = "Y"; 전자결재연동 이전에는 상태값만 변경했음.//16.04.14 라병수 전자결재신청가능하도록 수정
+// 			inProcCd = "E";
+// 		}
+		//예산통제반려23 : Y : 예산통제신청
+// 		else if(this.ds_ac_vou.getColumn(0, "staCd") == "23")
+// 		{
+// 			inProcCd = "Y";
+// 		}
+		//전자결재승인대기32 : C : 결의접수취소
+		else if(this.ds_ac_vou.getColumn(0, "staCd") == "32")
+		{
+			inProcCd = "C";
+		}
+		//전자결제반려33 : Y : 전자결재신청
+// 		else if(this.ds_ac_vou.getColumn(0, "staCd") == "33")
+// 		{
+// 			//inProcCd = "Y"; 전자결재연동 이전에는 상태값만 변경했음.//16.04.14 라병수 전자결재신청가능하도록 수정
+// 			inProcCd = "E";
+// 		}
+// 		//접수반려42 : Y : 접수신청
+// 		else if(this.ds_ac_vou.getColumn(0, "staCd") == "42")
+// 		{
+// 			inProcCd = "Y";
+// 		}
+
+		//EXEC
+		this.fn_P_AC_STA_CD_PROC(inProcCd);
+	}
+	else
+	{
+		return false;
+	}
+}
+
+//진행상태 처리 SP 실행
+this.fn_P_AC_STA_CD_PROC = function(inProcCd)
+{
+	/*	
+	
+	작성11 : Y : 예산통제신청(자금대체:전자결재신청)
+	작성11 : E : 예산통제신청(결산대체:전자결재신청)
+	예산통제신청21 : C : 예산통제회수
+	예산통제승인22 : Y : 전자결재신청
+	예산통제반려23 : Y : 예산통제신청
+	전자결제신청31 : C : 전자결재회수
+	전자결제반려33 : Y : 전자결재신청
+	접수반려42 : Y : 접수신청
+	
+	*/
+	
+// 	if(inProcCd == "E"){
+// 		
+// 		
+// 		//전자결재로직으로
+// 		this.ds_elecInput.addRow();
+// 		this.ds_elecInput.setColumn(0,"rowStatus",2);
+// 		this.ds_elecInput.setColumn(0,"chk",0);
+// 		//this.ds_elecInput.setColumn(0,"id","A0412");//비지니스 로직에서 쿼리로 만들것
+// 		this.ds_elecInput.setColumn(0,"formId","2016000009");//폼아이디 수입지출결의서 공문양식 : 2016000009
+// 		this.ds_elecInput.setColumn(0,"title",this.ds_ac_vou.getColumn(this.ds_ac_vou.rowposition,"vouTtl"));//메인타이틀 정해지면 맞춰서 넘길것
+// 		this.ds_elecInput.setColumn(0,"subjId","");//세부아이디(출장관련) 정해지면 맞춰서 넘길것(필요없어보임) 
+// 		this.ds_elecInput.setColumn(0,"subtitle","서브타이틀");//서브타이틀 정해지면 맞춰서 넘길것 
+// 		this.ds_elecInput.setColumn(0,"userId",application.gds_user.getColumn(0,"memberNo"));
+// 		this.ds_elecInput.setColumn(0,"strElecId","AFA"); //전자결재ID 구분자값(차후 변경될수있어 파라미터처리
+// 		this.ds_elecInput.setColumn(0,"strAcntYy",this.ds_ac_vou.getColumn(this.ds_ac_vou.rowposition,"acntYy")); // 전자결재ID 구분자 뒤에 연도 두자리 ex(15,16,17)
+// 		this.ds_elecInput.setColumn(0,"acntUnt",this.ds_ac_vou.getColumn(this.ds_ac_vou.rowposition,"acntUnt"));
+// 		this.ds_elecInput.setColumn(0,"acntYy",this.ds_ac_vou.getColumn(this.ds_ac_vou.rowposition,"acntYy"));
+// 		this.ds_elecInput.setColumn(0,"vouNo",this.ds_ac_vou.getColumn(this.ds_ac_vou.rowposition,"vouNo"));
+// 		this.ds_elecInput.setColumn(0,"aplyDt",this.ds_ac_vou.getColumn(this.ds_ac_vou.rowposition,"aplyDt"));
+// 		this.ds_elecInput.setColumn(0,"aplyUserId",this.ds_ac_vou.getColumn(this.ds_ac_vou.rowposition,"aplyUserId"));
+// 		
+// 		this.ds_elecInput.setColumn(0, "msg", this.ds_msg.getColumn(0, "msg"));
+// 		this.ds_elecInput.setColumn(0, "procCd", inProcCd);
+// 		this.ds_elecInput.setColumn(0, "userId", sMemberNo);
+// 		this.ds_elecInput.setColumn(0, "userIp", sIpAddr);
+// 		this.ds_elecInput.setColumn(0, "userPgm", "ac02010_p01.xfdl");
+// 		this.ds_elecInput.setColumn(0, "cfmDt", "");
+// 		
+// 		this.gfn_transaction("APPROVAL",
+// 							 "txComUrl::com/admi/ac02/saveAc02010_01_Approval.do",
+// 							 "resultList=ds_elecInput:u",
+// 							 "ds_elec=ds_elec",
+// 							 "",
+// 							 "fn_callBack");
+// 	}else{
+		var addRow = this.ds_P_AC_STA_CD_PROC.addRow();	
+			
+		this.ds_P_AC_STA_CD_PROC.setColumn(addRow, "rowStatus", this.ds_ac_vou.getColumn(0, "rowStatus"));
+		this.ds_P_AC_STA_CD_PROC.setColumn(addRow, "acntYy", this.ds_ac_vou.getColumn(0, "acntYy"));
+		this.ds_P_AC_STA_CD_PROC.setColumn(addRow, "acntUnt", this.ds_ac_vou.getColumn(0, "acntUnt"));
+		this.ds_P_AC_STA_CD_PROC.setColumn(addRow, "vouNo", this.ds_ac_vou.getColumn(0, "vouNo"));
+		this.ds_P_AC_STA_CD_PROC.setColumn(addRow, "msg", this.ds_msg.getColumn(0, "msg"));
+		this.ds_P_AC_STA_CD_PROC.setColumn(addRow, "procCd", inProcCd);
+		this.ds_P_AC_STA_CD_PROC.setColumn(addRow, "userId", sMemberNo);
+		this.ds_P_AC_STA_CD_PROC.setColumn(addRow, "userIp", sIpAddr);
+		this.ds_P_AC_STA_CD_PROC.setColumn(addRow, "userPgm", "ac02010_p01.xfdl");
+		this.ds_P_AC_STA_CD_PROC.setColumn(addRow, "cfmDt", "");
+		
+				
+		this.gfn_transaction("P_AC_STA_CD_PROC",
+							 "txComUrl::com/admi/ac02/P_AC_STA_CD_PROC.do",
+							 "resultList=ds_P_AC_STA_CD_PROC:u",
+							 "ds_P_AC_STA_CD_PROC_result=resultList",
+							 "",
+							 "fn_callBack");
+	//}
+	
+	
+}
+
+
+//계정대체 결의서
+this.tab01_tabpage1_div_search_S_VOU_KND_onitemchanged = function(obj:Combo, e:nexacro.ItemChangeEventInfo)
+{
+	//결의종류가 "계정대체" 일경우
+	if(this.tab01.tabpage1.div_search.S_VOU_KND.value == "31")
+	{
+		this.tab01.tabpage1.div_search.Static05.set_visible(true);
+		this.tab01.tabpage1.div_search.D_ORIGY_VOU.set_visible(true);
+		
+		var strParam = {
+		                 acntUnt:F_ACNT_UNT
+					   , acntYy:F_ACNT_YY
+					   , vouOrgId:F_VOU_ORG_ID
+					   , vouKnd:"21" //지출
+					   , vouTtl:""
+					   , autoSearch:true
+		               , autoClose:false 
+					   };
+
+		this.cfn_comOrigyVouPopup(strParam,"fn_popCallback");
+	}
+	else
+	{
+		this.tab01.tabpage1.div_search.Static05.set_visible(false);
+		this.tab01.tabpage1.div_search.D_ORIGY_VOU.set_visible(false);
+	}
+	if(this.tab01.tabpage1.div_search.S_VOU_KND.value == "21"){
+		this.tab01.tabpage1.div_search.preExpYn.set_visible(true);
+		this.tab01.tabpage1.div_search.preExpYn.set_enable(true);
+	}else{
+		this.tab01.tabpage1.div_search.preExpYn.set_visible(false);
+		this.tab01.tabpage1.div_search.preExpYn.set_enable(false);
+	}
+}
+
+/*____________________________________________________________________________________________________________
+	
+	팝업 콜백
+______________________________________________________________________________________________________________*/
+
+this.fn_popCallback = function (strID, rtnVal)
+{
+	if(rtnVal == "close") {
+		return;
+	}
+	
+	//Dataset을 return 할 경우
+	this.ds_dummy.clear();
+	this.ds_dummy.loadXML(rtnVal);
+	
+	//부서별예산조회팝업 호출
+	if(strID == "admi01010_p12") 
+	{	
+ 		this.ds_ac_vou.setColumn(0, "origyVouNo", this.ds_dummy.getColumn(0, "vouNo")); //결의번호 (원결의번호 설정)
+	}
+}
+
+this.fn_elec_search = function(){
+	if(this.ds_ac_vou.getColumn(0, "staCd") > 31 ){
+		this.tab01.tabpage1.div_search.btn_elecSearch.set_visible(true);
+	}else{
+		this.tab01.tabpage1.div_search.btn_elecSearch.set_visible(false);
+	}
+}
+
+//작성상태에 따라서 기안문보기 버튼 활성화
+this.tab01_tabpage1_div_search_S_STA_CD_onitemchanged = function(obj:Combo, e:nexacro.ItemChangeEventInfo)
+{
+	this.fn_elec_search();
+	this.fn_staCdChg();
+	
+}
+this.fn_staCdChg = function(){
+	
+	if(this.ds_ac_vou.getColumn(this.ds_ac_vou.rowposition,"vouKnd") == "21" ){
+		if(this.ds_ac_vou.getColumn(this.ds_ac_vou.rowposition,"staCd") == "11" ){
+			this.tab01.tabpage1.div_search.preExpYn.set_enable(true);
+			this.tab01.tabpage1.div_search.preExpYn.set_visible(true);
+		}else{
+			this.tab01.tabpage1.div_search.preExpYn.set_enable(false);
+			this.tab01.tabpage1.div_search.preExpYn.set_visible(false);
+		}
+	}else{
+		this.tab01.tabpage1.div_search.preExpYn.set_enable(false);
+		this.tab01.tabpage1.div_search.preExpYn.set_visible(false);	
+	}
+}
+
+this.tab01_tabpage1_btn_elecSearch_onclick = function(obj:Button,  e:nexacro.ClickEventInfo)
+{
+	system.execBrowser("http://gw.deu.ac.kr/frmLinkageTransfer11.aspx?docid="+this.ds_ac_vou.getColumn(0,"approvalDocid")+"&userid="+this.ds_ac_vou.getColumn(0,"aplyUserId")+"");
+	trace(this.ds_ac_vou.saveXML());
+
+
+}
+]]></Script>
+  </Form>
+</FDL>

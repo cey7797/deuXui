@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="com">
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
+	<property name="subproject.name" value="com"/>
+    <path id="com.classpath">
+        <pathelement location="target/classes"/>
+  		<fileset dir="../../ust_com/workspace/src/main/webapp/WEB-INF/lib">
+  		   <include name="*.jar"/>
+  		</fileset>
+    </path>
+    <target name="init">
+    	<echo message="init..."/>
+        <mkdir dir="target/classes"/>
+    	<mkdir dir="target/war"/>
+    	<mkdir dir="target/war_temp"/>
+        <copy includeemptydirs="false" todir="target/classes">
+            <fileset dir="src/main/java">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="target/classes">
+            <fileset dir="src/main/resources">
+                <exclude name="**/*.java"/>
+                <exclude name="**"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+    	<echo message="clean..."/>
+        <delete dir="target/classes"/>
+    	<delete dir="target/war"/>
+    	<delete dir="target/war_temp"/>
+    </target>
+    <target depends="clean" name="cleanall">
+    	<echo message="cleanall..."/>
+    </target>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac destdir="target/classes" includeantruntime="false" source="${source}" target="${target}" encoding="UTF-8">
+            <src path="src/main/java"/>
+            <src path="src/main/resources"/>
+            <classpath refid="com.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="make">
+	    <echo message="make war..."/>          	
+	    <copy includeemptydirs="false" todir="target/war_temp">
+	        <fileset dir="src/main/webapp">
+	            <exclude name="**/*.java"/>
+	        </fileset>
+	    </copy>
+	              	
+		<delete dir="target/war_temp/META-INF"/>
+	    <!--delete dir="target/war_temp/ClipReport4"/-->
+		<!--delete dir="target/war_temp/dext5Upload"/-->
+		<delete dir="target/war_temp/export"/>
+		<delete dir="target/war_temp/images"/>
+		<delete dir="target/war_temp/deuXui"/>
+		<delete dir="target/war_temp/XExportImport"/>
+		<!--delete dir="target/war_temp/WEB-INF/clipreport4"/-->
+		<!--delete dir="target/war_temp/webEditor"/-->
+	              	
+		<mkdir dir="target/war_temp/WEB-INF/classes"/>
+	    <copy includeemptydirs="false" todir="target/war_temp/WEB-INF/classes">
+	    	<fileset dir="target/classes"/>
+	    </copy>
+	    <copy includeemptydirs="false" todir="target/war_temp/WEB-INF/classes">
+	        <fileset dir="src/main/resources"/>
+	    </copy>
+	    <copy includeemptydirs="false" todir="target/war_temp">
+	        <fileset dir="target/m2e-wtp/web-resources"/>
+	    </copy>
+	              	
+	    <!--path정보 재확인필요 : rename dest="src/main/webapp/WEB-INF/clipreport4/License.properties"       src="src/main/webapp/WEB-INF/clipreport4/License.devServer.properties"/-->
+	
+	    <!--path정보 재확인필요 : rename dest="src/main/webapp/ClipReport4/reportview.jsp" 					src="src/main/webapp/ClipReport4/reportview.devServer.jsp"/-->
+	              	
+	  	<!--path정보 재확인필요 : rename dest="src/main/webapp/ClipReport4/createJSPReport.jsp" 	src="src/main/webapp/ClipReport4/createJSPReport.devServer.jsp"/-->
+	              	
+	  	<!--path정보 재확인필요 : rename dest="src/main/webapp/ClipReport4/reportCreatePARAM.jsp" 	src="src/main/webapp/ClipReport4/reportCreatePARAM.devServer.jsp"/-->
+	              	
+	    <!--move로 대체 : rename dest="src/main/webapp/dext5Upload/config/dext5upload.config.xml"    src="src/main/webapp/dext5Upload/config/dext5upload.config.devServer.xml"/-->
+	  	<!--move로 대체 : rename dest="src/main/webapp/dext5Upload/handler/dext5handler.jsp"       	src="src/main/webapp/dext5Upload/handler/dext5handler.devServer.jsp"/-->
+	    
+    	<move file="target/war_temp/dext5Upload/config/dext5upload.config.devServer.xml" tofile="target/war_temp/dext5Upload/config/dext5upload.config.xml"/>
+    	<move file="target/war_temp/dext5Upload/handler/dext5handler.devServer.jsp" tofile="target/war_temp/dext5Upload/handler/dext5handler.jsp"/>
+    	
+		<delete file="war/${subproject.name}.war" />
+	              	
+		<jar jarfile="war/${subproject.name}.war">
+			<fileset dir="target/war_temp">
+			</fileset>
+		</jar>
+    </target>
+</project>

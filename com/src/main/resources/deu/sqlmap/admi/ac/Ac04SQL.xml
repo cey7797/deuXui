@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Ac04SQL">
+
+    <typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>    
+    
+    <!--
+    #########################################################################################################################################
+    # 계산서등록(admi/ac/ac04/ac04010.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    <select id="ac04DAO.selectAcBizNo"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac04DAO.selectAcBizNo 계산서등록 - 사업자번호 조회 */
+		SELECT DISTINCT BIZ_REG_NO
+		     , SUBSTRING(BIZ_REG_NO,1,3) + '-' + SUBSTRING(BIZ_REG_NO,4,2) + '-' + SUBSTRING(BIZ_REG_NO,6,5) AS BIZ_REG_NM
+		  FROM BG_UNT A
+    </select>
+    
+    <select id="ac04DAO.selectAc04010MainList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac04DAO.selectAc04010MainList 계산서등록 main 조회 */
+		SELECT '' AS CHK
+		     , '' AS ROW_STATUS
+		     , CASE WHEN VOU_NO IS NULL OR VOU_NO = '' THEN 1 ELSE 0 END AS MOD_YN
+		     , A.BIZ_REG_NO
+			 , A.BILL_SEQ
+			 , A.ACNT_UNT
+			 , A.ACNT_YY
+			 , A.VOU_NO
+			 , A.VOU_SEQ
+			 , A.EVDC_SEQ
+			 , A.BILL_DIV
+			 , A.BUY_SELL_DIV
+			 , A.VEND_ID
+			 , ISNULL(A.ISS_AMT, 0) AS ISS_AMT
+			 , ISNULL(A.SPLY_AMT, 0) AS SPLY_AMT
+			 , ISNULL(A.VAT, 0) AS VAT
+			 , A.DEDUCT_YN
+			 , A.ELEC_YN
+			 , A.ISS_DT
+			 , A.REPT_DIV
+			 , CASE WHEN A.REPT_DT IS NOT NULL AND A.REPT_DT != '' THEN '1' ELSE '0' END REPT_YN 
+			 , A.REPT_DT
+			 , A.SLIP_NO
+			 , B.VEND_NM
+			 , B.BIZ_REG_NO AS VEND_BIZ_REG_NO
+		  FROM AC_BILL A
+		     LEFT OUTER JOIN VW_AC_VEND B
+		       ON CONVERT(VARCHAR, A.VEND_ID) = B.VEND_ID
+		 WHERE A.BIZ_REG_NO = #bizRegNo#
+		   AND A.BUY_SELL_DIV = #buySellDiv#
+		   <isNotEmpty property="reptDiv">
+		   AND A.REPT_DIV = #reptDiv#
+		   </isNotEmpty>
+		   <isNotEmpty property="billDiv">
+		   AND A.BILL_DIV = #billDiv#
+		   </isNotEmpty>
+		   <isNotEmpty property="vendNm">
+		   AND (    B.VEND_NM LIKE '%' + #vendNm# + '%'
+		         OR REPLACE(B.BIZ_REG_NO,'-', '') LIKE '%'+ REPLACE(#vendNm#,'-','') + '%' )
+		   </isNotEmpty>
+		   <isNotEmpty property="frDt">
+		   AND A.ISS_DT >= #frDt#
+		   </isNotEmpty>
+		   <isNotEmpty property="toDt">
+		   AND #toDt# >= A.ISS_DT 
+		   </isNotEmpty>
+		   <isNotEmpty property ="elecYn">
+		   AND CASE WHEN A.ELEC_YN IS NULL OR A.ELEC_YN = '' THEN 0 ELSE A.ELEC_YN END = #elecYn#
+		   </isNotEmpty>
+		   AND SUBSTRING(A.ISS_DT,1,4) = #yyyy#
+	  ORDER BY A.REPT_DIV DESC
+	         , A.BILL_DIV
+	         , A.ISS_DT DESC
+    </select>
+    
+    <insert id="ac04DAO.insertAc04010MainList"  parameterClass="java.util.HashMap">
+		  INSERT INTO AC_BILL
+		           (BIZ_REG_NO
+		           ,BILL_SEQ
+		           ,BILL_DIV
+		           ,BUY_SELL_DIV
+		           ,VEND_ID
+		           ,ISS_AMT
+		           ,SPLY_AMT
+		           ,VAT
+		           ,DEDUCT_YN
+		           ,ELEC_YN
+		           ,ISS_DT
+		           ,REPT_DIV
+		           ,INSERT_DT
+		           ,INSERT_ID
+		           ,INSERT_IP
+		           ,INSERT_PGM
+		           ,UPDATE_DT
+		           ,UPDATE_ID
+		           ,UPDATE_IP
+		           ,UPDATE_PGM)
+		     VALUES
+		           (#bizRegNo#
+		           , ( SELECT ISNULL(MAX(BILL_SEQ),0) + 1
+		                 FROM AC_BILL
+		                WHERE BIZ_REG_NO = #bizRegNo# )
+		           ,#billDiv#
+		           ,#buySellDiv#
+		           ,#vendId#
+		           ,CONVERT(BIGINT, #issAmt#)
+		           ,CONVERT(BIGINT, #splyAmt#)
+		           ,CONVERT(BIGINT, #vat#)
+		           ,#deductYn#
+		           ,#elecYn#
+		           ,#issDt#
+		           ,#reptDiv#
+		           ,GETDATE()
+		           ,#insertId#
+		           ,#insertIp#
+		           ,'ac04010'
+		           ,GETDATE()
+		           ,#updateId#
+		           ,#updateIp#
+		           ,'ac04010' )
+    </insert>
+    
+    <update id="ac04DAO.updateAc04010MainList"  parameterClass="java.util.HashMap">
+		  UPDATE AC_BILL
+		     SET BILL_DIV = #billDiv#
+		       , BUY_SELL_DIV = #buySellDiv#
+		       , VEND_ID = CONVERT(BIGINT,#vendId#)
+		       , ISS_AMT = CONVERT(BIGINT, #issAmt#)
+		       , SPLY_AMT = CONVERT(BIGINT, #splyAmt#) 
+		       , VAT = CONVERT(BIGINT, #vat#)
+		       , DEDUCT_YN = #deductYn#
+		       , ELEC_YN = #elecYn#
+		       , ISS_DT = #issDt#
+		       , REPT_DIV = #reptDiv#
+		       , UPDATE_DT = GETDATE()
+		       , UPDATE_ID = #updateId#
+		       , UPDATE_IP = #updateIp#
+		       , UPDATE_PGM = 'ac04010'
+		   WHERE BIZ_REG_NO = #bizRegNo#
+		     AND BILL_SEQ = CONVERT(BIGINT,#billSeq#)
+    </update>
+    
+    <delete id="ac04DAO.deleteAc04010MainList" parameterClass="java.util.HashMap">
+    	DELETE FROM AC_BILL
+     	 WHERE BIZ_REG_NO = #bizRegNo#
+		   AND BILL_SEQ = CONVERT(BIGINT,#billSeq#)
+    </delete>
+    
+    <!--
+    #########################################################################################################################################
+    # 계산서합계표현황(admi/ac/ac04/ac04020.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="ac04DAO.selectAc04020MainList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac04DAO.selectAc04020MainList 계산서합계표현황 main 조회 */
+		SELECT A.BIZ_REG_NO
+		     , SUBSTRING(A.ISS_DT,1,4) AS YYYY
+		     , A.BILL_DIV
+		     , A.BUY_SELL_DIV
+		     , A.VEND_ID
+		     , A.REPT_DIV
+		     , CASE WHEN A.ELEC_YN IS NULL OR A.ELEC_YN = '' THEN 0 ELSE A.ELEC_YN END AS ELEC_YN
+		     , ISNULL(SUM(ISNULL(A.ISS_AMT, 0)), 0) AS ISS_AMT_SUM
+		     , ISNULL(SUM(ISNULL(A.SPLY_AMT, 0)), 0) AS SPLY_AMT_SUM
+		     , ISNULL(SUM(ISNULL(A.VAT, 0)), 0) AS VAT_SUM
+			 , MAX(B.VEND_NM) AS VEND_NM
+			 , MAX(B.BIZ_REG_NO) AS VEND_BIZ_REG_NO
+		  FROM AC_BILL A
+		  LEFT OUTER JOIN VW_AC_VEND B
+		       ON CONVERT(VARCHAR, A.VEND_ID) = B.VEND_ID
+		 WHERE A.BIZ_REG_NO = #bizRegNo#
+		   AND SUBSTRING(A.ISS_DT,1,4) = #yyyy#
+		   AND A.BUY_SELL_DIV = #buySellDiv#
+		   <isNotEmpty property ="reptDiv">
+		   AND A.REPT_DIV = #reptDiv#
+		   </isNotEmpty>
+		   <isNotEmpty property ="billDiv">
+		   AND A.BILL_DIV = #billDiv#
+		   </isNotEmpty>
+		   <isNotEmpty property ="elecYn">
+		   AND CASE WHEN A.ELEC_YN IS NULL OR A.ELEC_YN = '' THEN 0 ELSE A.ELEC_YN END = #elecYn#
+		   </isNotEmpty>
+		 GROUP BY A.BIZ_REG_NO, A.BUY_SELL_DIV, SUBSTRING(A.ISS_DT,1,4), A.VEND_ID, A.REPT_DIV, A.BILL_DIV, CASE WHEN A.ELEC_YN IS NULL OR A.ELEC_YN = '' THEN 0 ELSE A.ELEC_YN END
+    </select>
+    
+    <select id="ac04DAO.selectAc04020SubList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac04DAO.selectAc04020SubList 계산서합계표현황 sub 조회 */
+		SELECT A.BIZ_REG_NO
+		     , A.ACNT_YY
+		     , A.BILL_DIV
+		     , A.BUY_SELL_DIV
+		     , A.VEND_ID
+		     , A.REPT_DIV
+		     , A.ISS_DT
+		     , A.ISS_AMT
+		     , A.SPLY_AMT
+		     , A.VAT
+			 , B.VEND_NM
+			 , B.BIZ_REG_NO
+			 , A.VOU_NO
+		  FROM AC_BILL A
+		  LEFT OUTER JOIN VW_AC_VEND B
+		       ON CONVERT(VARCHAR, A.VEND_ID) = B.VEND_ID
+		 WHERE A.BIZ_REG_NO = #bizRegNo#
+		   AND SUBSTRING(A.ISS_DT,1,4) = #yyyy#
+		   AND A.BUY_SELL_DIV = #buySellDiv#
+		   AND A.REPT_DIV = #reptDiv#
+		   AND A.BILL_DIV = #billDiv#
+		   AND A.VEND_ID = #vendId#
+		   AND CASE WHEN A.ELEC_YN IS NULL OR A.ELEC_YN = '' THEN 0 ELSE A.ELEC_YN END = #elecYn#
+    </select>
+    
+    <update id="ac04DAO.updateAc04020MainList"  parameterClass="java.util.HashMap">
+		  UPDATE AC_BILL
+		     SET REPT_DIV = CASE WHEN #reptDiv# = '20' AND #cfmDiv# = '20' THEN '22'
+		                         WHEN #reptDiv# = '20' AND #cfmDiv# = '10' THEN CASE WHEN SUBSTRING(ISS_DT,5,2) IN ('10', '11', '12') THEN '22' ELSE '21' END
+		                         WHEN #reptDiv# = '10' AND #cfmDiv# = '20' THEN CASE WHEN SUBSTRING(ISS_DT,5,2) IN ('07', '08', '09', '10', '11', '12') THEN '22' ELSE '12' END
+		                         ELSE CASE WHEN SUBSTRING(ISS_DT,5,2) IN ('01', '02', '03') THEN '11'
+		                                   WHEN SUBSTRING(ISS_DT,5,2) IN ('04', '05', '06') THEN '12'
+		                                   WHEN SUBSTRING(ISS_DT,5,2) IN ('07', '08', '09') THEN '21'
+		                                   ELSE '22' END END
+		       , UPDATE_DT = GETDATE()
+		       , UPDATE_ID = #updateId#
+		       , UPDATE_IP = #updateIp#
+		       , UPDATE_PGM = 'ac04020_p01'
+		   WHERE BIZ_REG_NO = #bizRegNo#
+		     AND ISS_DT BETWEEN #frDt# AND #toDt#
+		     AND BILL_DIV = #billDiv#
+    </update>
+    <!--
+    #########################################################################################################################################
+    # 소득자료등록(admi/ac/ac04/ac04040.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    <select id="ac04DAO.selectAc04040MainList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac04DAO.selectAc04030MainList 소득자료등록 main 조회 */
+		SELECT '' AS CHK
+		     , '' AS ROW_STATUS
+		     , CASE WHEN A.VOU_NO IS NULL OR A.VOU_NO = '' THEN 1 ELSE 0 END AS MOD_YN
+		     , A.BIZ_REG_NO
+			 , A.WHTAX_SEQ
+			 , A.ACNT_UNT
+			 , A.ACNT_YY
+			 , A.VOU_NO
+			 , A.VOU_SEQ
+			 , A.EVDC_SEQ
+			 , A.INC_DIV
+			 , A.RES_NO1
+			 , A.RES_NO2
+			 , A.RES_NO
+			 , A.USER_ID
+			 , A.INC_NM
+			 , A.PYMT_AMT
+			 , A.NEED_EXP
+			 , A.INC_AMT
+			 , A.INC_TAX
+			 , A.RES_TAX
+			 , A.PYMT_DT
+			 , CASE WHEN A.REPT_YYMM IS NOT NULL AND A.REPT_YYMM != '' THEN '1' ELSE '0' END REPT_YN 
+			 , A.REPT_YYMM
+			 , A.WRK_DD_CNT
+			 , A.WRK_UNTPRC
+			 , A.SLIP_NO
+			 , A.RESI_DIV
+			 , A.RESI_CNTY
+			 , A.ZIP_NO
+			 , A.ADDR
+			 , A.ADDR_DET
+			 , dbo.F_COM_DEPT_NM(B.VOU_ORG_ID, '' ) AS VOU_ORG_NM
+			 , dbo.F_AC_GET_ACNT_INFO(C.ACNT_YY, C.ACNT_UNT, C.ACNT_CD, '50', CASE WHEN C.BAL_DIV = '10' THEN 'ACNT_INC_NM' 
+			                                                                       WHEN C.BAL_DIV = '20' THEN 'ACNT_EXP_NM'
+			                                                                       ELSE 'ACNT_NM' END) AS ACNT_NM
+			 , B.VOU_TTL
+			 , dbo.F_COM_USER_NM(D.SLIP_CFM_USER_ID, 'NM') AS SLIP_CFM_USER_NM 
+			 , ISNULL(A.FOREIGN_YN, '0') AS FOREIGN_YN
+			 , A.FOREIGN_NO
+		  FROM AC_INC A
+		   LEFT OUTER JOIN AC_VOU B
+		    ON A.ACNT_UNT = B.ACNT_UNT
+		    AND A.ACNT_YY = B.ACNT_YY
+		    AND A.VOU_NO = B.VOU_NO
+		   LEFT OUTER JOIN AC_VOU_DET C
+		    ON A.ACNT_UNT = C.ACNT_UNT
+		    AND A.ACNT_YY = C.ACNT_YY
+		    AND A.VOU_NO = C.VOU_NO
+		    AND A.VOU_SEQ = C.VOU_SEQ
+		   LEFT OUTER JOIN AC_SLIP D
+		     ON A.ACNT_UNT = D.ACNT_UNT
+		    AND A.ACNT_YY = D.ACNT_YY
+		    AND A.SLIP_NO = D.SLIP_NO
+		 WHERE A.BIZ_REG_NO = #bizRegNo#
+		   <isNotEmpty property="incDiv">
+		   AND A.INC_DIV = #incDiv#
+		   </isNotEmpty>
+		   <isNotEmpty property="frDt">
+		   AND A.PYMT_DT >= #frDt#
+		   </isNotEmpty>
+		   <isNotEmpty property="toDt">
+		   AND #toDt# >= A.PYMT_DT 
+		   </isNotEmpty>
+		   <isNotEmpty property="reptYymm">
+		   AND A.REPT_YYMM = #reptYymm#
+		   </isNotEmpty>
+		   <isNotEmpty property="incNm">
+		   AND (  A.INC_NM LIKE '%' + #incNm# + '%'
+		        OR A.RES_NO LIKE '%' + #incNm# + '%' )
+		   </isNotEmpty>
+		   <isNotEmpty property="cfmUserNm">
+		   AND dbo.F_COM_USER_NM(D.SLIP_CFM_USER_ID, 'NM') LIKE '%' + #cfmUserNm# + '%'
+		   </isNotEmpty>
+	  ORDER BY A.PYMT_DT DESC
+	         , A.INC_DIV
+    </select>
+    
+    <insert id="ac04DAO.insertAc04040MainList"  parameterClass="java.util.HashMap">
+		  INSERT INTO AC_INC
+		           (BIZ_REG_NO
+		           ,WHTAX_SEQ
+		           ,INC_DIV
+		           ,RES_NO1
+		           ,RES_NO2
+		           ,RES_NO
+		           ,USER_ID
+		           ,INC_NM
+		           ,PYMT_AMT
+		           ,NEED_EXP
+		           ,INC_AMT
+		           ,INC_TAX
+		           ,RES_TAX
+		           ,PYMT_DT
+		           ,REPT_YYMM
+		           ,INSERT_DT
+		           ,INSERT_ID
+		           ,INSERT_IP
+		           ,INSERT_PGM
+		           ,UPDATE_DT
+		           ,UPDATE_ID
+		           ,UPDATE_PGM
+		           ,UPDATE_IP
+		           ,RESI_DIV
+		           ,RESI_CNTY
+		           ,ZIP_NO
+		           ,ADDR
+		           ,ADDR_DET
+		           ,FOREIGN_YN
+		           ,FOREIGN_NO)
+		     VALUES
+		           (#bizRegNo#
+		           , ( SELECT ISNULL(MAX(WHTAX_SEQ),0) + 1
+		                 FROM AC_INC
+		                WHERE BIZ_REG_NO = #bizRegNo# )
+		           ,#incDiv#
+		           ,SUBSTRING(#resno#,1,6)
+		           ,SUBSTRING(#resno#,7,7)
+		           ,#resno#
+		           ,#userId#
+		           ,#incNm#
+		           ,convert(bigint, #pymtAmt#)
+		           ,convert(bigint, #needExp#)
+		           ,convert(bigint, #incAmt#)
+		           ,convert(bigint, #incTax#)
+		           ,convert(bigint, #resTax#)
+		           ,#pymtDt#
+		           ,#reptYymm#
+		           ,GETDATE()
+		           ,#insertId#
+		           ,#insertIp#
+		           ,'ac04040'
+		           ,GETDATE()
+		           ,#updateId#
+		           ,#updateIp#
+		           ,'ac04040'
+		           ,#resiDiv#
+		           ,#resiCnty#
+		           ,#zipNo#
+		           ,#addr#
+		           ,#addrDet#
+		           ,#foreignYn#
+		           ,#foreignNo# )
+    </insert>
+    
+    <update id="ac04DAO.updateAc04040MainList"  parameterClass="java.util.HashMap">
+		  UPDATE AC_INC
+		     SET INC_DIV = #incDiv#
+		       , RES_NO1 = substring(#resNo#,1,6)
+		       , RES_NO2 = substring(#resNo#,7,7)
+		       , RES_NO = #resNo#
+		       , USER_ID = #userId#
+		       , INC_NM = #incNm#
+		       , PYMT_AMT = CONVERT(BIGINT, #pymtAmt#) 
+		       , NEED_EXP = CONVERT(BIGINT, #needExp#) 
+		       , INC_AMT = CONVERT(BIGINT, #incAmt#) 
+		       , INC_TAX = CONVERT(BIGINT, #incTax#) 
+		       , RES_TAX = CONVERT(BIGINT, #resTax#) 
+		       , PYMT_DT = #pymtDt#
+		       , REPT_YYMM = #reptYymm#
+		       , RESI_DIV  = #resiDiv#
+		       , RESI_CNTY = #resiCnty#
+		       , ZIP_NO    = #zipNo#
+		       , ADDR      = #addr#
+		       , ADDR_DET  = #addrDet#
+		       , FOREIGN_YN = #foreignYn#
+		       , FOREIGN_NO = #foreignNo#
+		       , UPDATE_DT = GETDATE()
+		       , UPDATE_ID = #updateId#
+		       , UPDATE_IP = #updateIp#
+		       , UPDATE_PGM = 'ac04040'
+		   WHERE BIZ_REG_NO = #bizRegNo#
+		     AND WHTAX_SEQ = CONVERT(BIGINT,#whtaxSeq#)
+    </update>
+    
+    <delete id="ac04DAO.deleteAc04040MainList" parameterClass="java.util.HashMap">
+    	DELETE FROM AC_INC
+     	 WHERE BIZ_REG_NO = #bizRegNo#
+		   AND WHTAX_SEQ = CONVERT(BIGINT,#whtaxSeq#)
+    </delete>
+    
+    <!--
+    #########################################################################################################################################
+    # 소득신고파일생성및신고완료처리(admi/ac/ac04/ac04050.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="ac04DAO.selectAc04050MainList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac04DAO.selectAc04050MainList 소득신고파일생성 및 신고완료처리 main 조회 */
+		SELECT 'ac04050' ac
+    </select>
+    
+    
+    <!--
+    #########################################################################################################################################
+    # 원천징수영수증(admi/ac/ac04/ac04060.xfdl)                                                                                                               
+    #########################################################################################################################################
+    -->
+    
+    
+    <select id="ac04DAO.selectAc04060MainList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+		/* ac04DAO.selectAc04060MainList 원천징수영수증 main 조회 */
+			SELECT A.INC_NM
+			     , A.RES_NO
+				 , SUM(ISNULL(A.INC_AMT,0)) AS INC_AMT
+				 , SUM(ISNULL(A.INC_TAX,0)) AS INC_TAX
+				 , SUM(ISNULL(A.RES_TAX,0)) AS RES_TAX
+				 , COUNT(1) AS RES_CNT
+			  FROM AC_INC A
+			 WHERE SUBSTRING(A.PYMT_DT,1,4) = #yyyy#
+			   AND A.INC_DIV = '20'
+			   <isNotEmpty property="incNm">
+			   AND (   A.INC_NM LIKE '%' + #incNm# + '%'
+			        OR REPLACE(A.RES_NO, '-', '') LIKE '%' + REPLACE(#incNm#, '-', '') + '%' )
+			   </isNotEmpty>
+			   <isNotEmpty property="frDt">
+			   AND A.PYMT_DT >= #frDt#
+			   </isNotEmpty>
+			   <isNotEmpty property="toDt">
+			   AND #frDt# >= A.PYMT_DT
+			   </isNotEmpty>
+			 GROUP BY INC_NM, RES_NO
+			 ORDER BY INC_NM, RES_NO
+    </select>
+    
+    <select id="ac04DAO.selectAc04060SubList"  parameterClass="java.util.HashMap" resultClass="egovMap">
+			SELECT A.INC_NM
+			     , A.RES_NO
+			     , A.PYMT_DT
+			     , A.REPT_YYMM
+			     , ISNULL(A.PYMT_AMT,0) AS PYMT_AMT
+			     , ISNULL(A.NEED_EXP,0) AS NEED_EXP
+				 , ISNULL(A.INC_AMT,0) AS INC_AMT
+				 , ISNULL(A.INC_TAX,0) AS INC_TAX
+				 , ISNULL(A.RES_TAX,0) AS RES_TAX
+				 , A.SLIP_NO
+			  FROM AC_INC A
+			 WHERE SUBSTRING(A.PYMT_DT,1,4) = #yyyy#
+			   AND A.INC_DIV = '20'
+			   AND A.INC_NM = #incNm#
+			   AND REPLACE(A.RES_NO, '-', '') = REPLACE(#resNo#, '-', '') 
+			   <isNotEmpty property="frDt">
+			   AND A.PYMT_DT >= #frDt#
+			   </isNotEmpty>
+			   <isNotEmpty property="toDt">
+			   AND #frDt# >= A.PYMT_DT
+			   </isNotEmpty>
+			 ORDER BY PYMT_DT
+    </select>
+</sqlMap>
